@@ -81,7 +81,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setDescription(`
 📩 |You've got Dm!`)
             .setFooter("Bot Owner : Rock Star
-                       "Owner Id : 654669770549100575", message.author.displayAvatarURL())
+                        Owner Id : 654669770549100575", message.author.displayAvatarURL())
                  message.channel.send(helpembed);
     }
     if (command === "play" || command === "p") {
