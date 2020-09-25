@@ -5,7 +5,7 @@ require("dotenv").config();
 require("./server.js");
 
 const bot = new Client({
-    enableMentions: "all"
+    disableMentions: "all"
 });
 
 const PREFIX = process.env.PREFIX;
