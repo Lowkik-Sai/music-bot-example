@@ -80,7 +80,8 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setColor("BLUE")
             .setDescription(`
 📩 |You've got Dm!`)
-            .setFooter("Owner : Rock Star", "Id : 654669770549100575", message.author.displayAvatarURL())
+            .setFooter("Bot Owner : Rock Star
+                       "Id : 654669770549100575", message.author.displayAvatarURL())
                  message.channel.send(helpembed);
     }
     if (command === "play" || command === "p") {
