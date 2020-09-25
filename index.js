@@ -81,8 +81,7 @@ __**Command list**__
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
             .setDescription(`
-📩|You've got mail!`)
-            .setFooter("Among Us Official India", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
+📩 |You've got Dm!`)
         message.channel.send(helpembed);
     }
     if (command === "play" || command === "p") {
