@@ -22,13 +22,6 @@ bot.on('ready', () => {
 });
 
 bot.on('message', msg => {
-  if (msg.content === '<@758889056649216041>') {
-    msg.author.send('My Prefix is ``-``,Type ``-help`` for more commands!');
-    msg.reply('This Server Prefix is ``-``');
-  }
-});
-
-bot.on('message', msg => {
   if (msg.content === '-ping') {
     msg.reply('pong');
   }
