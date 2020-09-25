@@ -61,7 +61,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
-            .setAuthor( message.author.displayAvatarURL())
+            .setAuthor("Help Command", message.author.displayAvatarURL())
             .setDescription(`
 __**Command list**__
 
