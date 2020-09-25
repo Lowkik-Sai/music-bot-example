@@ -12,6 +12,28 @@ const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
+bot.on('ready', () => {
+  console.log("Activity OK")
+  //CHANGE {type: 2} in 
+  //1 FOR PLAYING
+  //2 FOR LISTENING
+  //3 FOR WATCHING
+  bot.user.setActivity("Among Us Official India", {type: 3});
+});
+
+bot.on ("ready",fonction => {
+  console.log('I am ready!');
+//YOU CAN CHANGE THE STATUT ("dnd") BY
+//online - user is online
+//offline - user is offline or invisible
+//idle - user is AFK
+//dnd - user is in Do not Disturb
+  bot.user.setStatus("idle");
+  bot.user.setActivity("Among Us Official India");
+      return (console.error);
+  });
+
+
 bot.on("warn", console.warn);
 bot.on("error", console.error);
 bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully booted up!`));
