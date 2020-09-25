@@ -36,11 +36,17 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setAuthor(bot.user.tag, bot.user.displayAvatarURL())
             .setDescription(`
 __**Command list**__
-> \`play\` > **\`play [title/url]\`**
-> \`search\` > **\`search [title]\`**
-> \`skip\`, \`stop\`,  \`pause\`, \`resume\`
-> \`nowplaying\`, \`queue\`, \`volume\``)
-            .setFooter("©️ 2020 Zhycorp Nation", "https://api.zhycorp.xyz/assets/images/icon.jpg");
+
+1) \`play(p)\`  
+2) \`search(sc)\`
+3) \`skip(sk)\`
+4) \`stop(st)\`
+5)  \`pause(pa)\`
+6) \`resume(r)\`
+7) \`nowplaying(np)\`
+8) \`queue(q)\`
+9) \`volume(v)\``)
+            .setFooter("Among Us Official India", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.channel.send(helpembed);
         message.author.send(helpembed);
     }
@@ -144,20 +150,20 @@ __**Command list**__
             return handleVideo(video, message, voiceChannel);
         }
 
-    } else if (command === "skip") {
+    } else if (command === "skip" || command === "sk") {
         if (!message.member.voice.channel) return message.channel.send({embed: {color: "RED", description: "I'm sorry, but you need to be in a voice channel to skip a music!"}});
         if (!serverQueue) return message.channel.send({embed: {color: "RED", description: "There is nothing playing that I could skip for you"}});
         serverQueue.connection.dispatcher.end("[runCmd] Skip command has been used");
         return message.channel.send({embed: {color: "GREEN", description: "⏭️  **|**  I skipped the song for you"}});
 
-    } else if (command === "stop") {
+    } else if (command === "stop" || command === "st") {
         if (!message.member.voice.channel) return message.channel.send({embed: {color: "RED", description: "I'm sorry but you need to be in a voice channel to play music!"}});
         if (!serverQueue) return message.channel.send({embed: {color: "RED", description: "There is nothing playing that I could stop for you"}});
         serverQueue.songs = [];
         serverQueue.connection.dispatcher.end("[runCmd] Stop command has been used");
         return message.channel.send({embed: {color: "GREEN", description: "⏹️  **|**  Deleting queues and leaving voice channel..."}});
 
-    } else if (command === "volume" || command === "vol") {
+    } else if (command === "volume" || command === "v") {
         if (!message.member.voice.channel) return message.channel.send({embed: {color: "RED", description: "I'm sorry, but you need to be in a voice channel to set a volume!"}});
         if (!serverQueue) return message.channel.send({embed: {color: "RED", description: "There is nothing playing"}});
         if (!args[1]) return message.channel.send({embed: {color: "BLUE", description: `The current volume is: **\`${serverQueue.volume}%\`**`}});
@@ -179,7 +185,7 @@ __**Command list**__
             .setFooter(`• Now Playing: ${serverQueue.songs[0].title}`);
         return message.channel.send(embedQueue);
 
-    } else if (command === "pause") {
+    } else if (command === "pause" || command === "pa") {
         if (serverQueue && serverQueue.playing) {
             serverQueue.playing = false;
             serverQueue.connection.dispatcher.pause();
@@ -187,7 +193,7 @@ __**Command list**__
         }
         return message.channel.send({embed: {color: "RED", description: "There is nothing playing"}});
 
-    } else if (command === "resume") {
+    } else if (command === "resume" || command === "r") {
         if (serverQueue && !serverQueue.playing) {
             serverQueue.playing = true;
             serverQueue.connection.dispatcher.resume();
