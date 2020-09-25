@@ -61,7 +61,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
-            .setAuthor("Among Us Official India", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg")
+            .setAuthor( message.author.displayAvatarURL())
             .setDescription(`
 __**Command list**__
 
@@ -74,7 +74,7 @@ __**Command list**__
 7) \`nowplaying(np)\`
 8) \`queue(q)\`
 9) \`volume(v)\``)
-            .setFooter( message.author.displayAvatarURL());
+            .setFooter("Among Us Official India", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
     }
     if (command === "help" || command === "cmd") {
@@ -82,8 +82,7 @@ __**Command list**__
             .setColor("BLUE")
             .setDescription(`
 📩 |You've got Dm!`)
-            .setFooter( message.author.displayAvatarURL());
-        message.channel.send(helpembed);
+                 message.channel.send(helpembed);
     }
     if (command === "play" || command === "p") {
         const voiceChannel = message.member.voice.channel;
