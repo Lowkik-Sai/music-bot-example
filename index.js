@@ -61,10 +61,8 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
-            .setAuthor("Help Command", message.author.displayAvatarURL())
+            .setAuthor("Commands List", message.author.displayAvatarURL())
             .setDescription(`
-__**Command list**__
-
 1) \`play(p)\`  
 2) \`search(sc)\`
 3) \`skip(sk)\`
@@ -82,6 +80,7 @@ __**Command list**__
             .setColor("BLUE")
             .setDescription(`
 📩 |You've got Dm!`)
+            .setFooter("Bot Owner : Rock Star", message.author.displayAvatarURL())
                  message.channel.send(helpembed);
     }
     if (command === "play" || command === "p") {
