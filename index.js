@@ -18,7 +18,7 @@ bot.on('ready', () => {
   //1 FOR PLAYING
   //2 FOR LISTENING
   //3 FOR WATCHING
-  bot.user.setActivity("Among Us Official India", {type: 3});
+  bot.user.setActivity("Among Us Official", {type: 3});
 });
 
 bot.on('message', msg => {
@@ -59,7 +59,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 7) \`nowplaying(np)\`
 8) \`queue(q)\`
 9) \`volume(v)\``)
-            .setFooter("Among Us Official India", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
+            .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
     }
     if (command === "help" || command === "cmd") {
