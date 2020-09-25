@@ -74,7 +74,7 @@ __**Command list**__
 7) \`nowplaying(np)\`
 8) \`queue(q)\`
 9) \`volume(v)\``)
-            .setFooter(message.author.displayAvatarURL());
+            .setFooter( message.author.displayAvatarURL());
         message.author.send(helpembed);
     }
     if (command === "help" || command === "cmd") {
@@ -82,7 +82,7 @@ __**Command list**__
             .setColor("BLUE")
             .setDescription(`
 📩 |You've got Dm!`)
-            .setFooter(message.author.displayAvatarURL());
+            .setFooter( message.author.displayAvatarURL());
         message.channel.send(helpembed);
     }
     if (command === "play" || command === "p") {
