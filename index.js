@@ -42,6 +42,7 @@ __**Command list**__
 > \`nowplaying\`, \`queue\`, \`volume\``)
             .setFooter("©️ 2020 Zhycorp Nation", "https://api.zhycorp.xyz/assets/images/icon.jpg");
         message.channel.send(helpembed);
+        message.author.send(helpembed);
     }
     if (command === "play" || command === "p") {
         const voiceChannel = message.member.voice.channel;
