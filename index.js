@@ -21,6 +21,12 @@ bot.on('ready', () => {
   bot.user.setActivity("Among Us Official India", {type: 3});
 });
 
+bot.on('message', msg => {
+  if (msg.content === '-ping') {
+    msg.reply('pong');
+  }
+});
+
 bot.on ("ready",fonction => {
   console.log('I am ready!');
 //YOU CAN CHANGE THE STATUT ("dnd") BY
