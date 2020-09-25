@@ -61,7 +61,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
-            .setAuthor(bot.user.tag, bot.user.displayAvatarURL())
+            .setAuthor("Among Us Official India", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg")
             .setDescription(`
 __**Command list**__
 
@@ -74,7 +74,7 @@ __**Command list**__
 7) \`nowplaying(np)\`
 8) \`queue(q)\`
 9) \`volume(v)\``)
-            .setFooter("Among Us Official India", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
+            .setFooter("message.author.displayAvatarURL()");
         message.author.send(helpembed);
     }
     if (command === "help" || command === "cmd") {
