@@ -77,7 +77,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             .addField("Bot Owner", `The owner of this bot is Rock Star`)
             .addField("Owner Id", `The owner id is 654669770549100575`)
             .addField("My Id", `The bot id is 758889056649216041`)
-            .addField("My Prefix", `The bot prefix is ``-```)
+            .addField("My Prefix", `The bot prefix is `-``)
             .setTimestamp()
             .setFooter("Type -help for more commands!")
         message.channel.send(helpembed);
