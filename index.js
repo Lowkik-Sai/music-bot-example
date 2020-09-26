@@ -65,6 +65,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             .addField("Member Count", `This server has ${message.guild.memberCount} members`)
             .addField("Emoji Count", `This server has ${message.guild.emojis.cache.size} emojis`)
             .addField("Roles Count", `This server has ${message.guild.roles.cache.size} roles`)
+            .setTimestamp()
         message.channel.send(helpembed);
     }
     if (command === "help" || command === "cmd") {
@@ -81,7 +82,8 @@ bot.on("message", async (message) => { // eslint-disable-line
 7) \`nowplaying(np)\`
 8) \`queue(q)\`
 9) \`volume(v)\`
-10) \`invite(inv)\``)
+10) \`invite(inv)\`
+11) \`serverinfo(si)\``)
             .setTimestamp()
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
