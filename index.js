@@ -22,12 +22,6 @@ bot.on('ready', () => {
 });
 
 bot.on('message', msg => {
-  if (msg.content === '<@758889056649216041>') {
-    msg.reply('Type -help in any of the channel that I'm staying!');
-  }
-});
-
-bot.on('message', msg => {
   if (msg.content === 'prefix') {
     msg.reply('My Prefix is **-**');
   }
