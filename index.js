@@ -53,6 +53,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setTimestamp()
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
+        message.channel.send(helpembed);
     }
     if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
