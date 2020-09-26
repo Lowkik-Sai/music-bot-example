@@ -27,6 +27,12 @@ bot.on('message', msg => {
   }
 });
 
+bot.on('message', msg => {
+  if (msg.content === 'prefix') {
+    msg.reply('My Prefix is -');
+  }
+});
+
 bot.on("warn", console.warn);
 bot.on("error", console.error);
 bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully booted up!`));
@@ -78,6 +84,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             .addField("Owner Id", `The owner id is 654669770549100575`)
             .addField("My Id", `The bot id is 758889056649216041`)
             .addField("My Prefix", `The bot prefix is -`)
+            .addField("Invite Me!", `[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
             .setTimestamp()
             .setFooter("Type -help for more commands!")
         message.channel.send(helpembed);
