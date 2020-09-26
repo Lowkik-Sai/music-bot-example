@@ -68,7 +68,8 @@ bot.on("message", async (message) => { // eslint-disable-line
 6) \`resume(r)\`
 7) \`nowplaying(np)\`
 8) \`queue(q)\`
-9) \`volume(v)\``)
+9) \`volume(v)\`
+10) \`invite(inv)``)
             .setTimestamp()
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
