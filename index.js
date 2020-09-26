@@ -23,7 +23,7 @@ bot.on('ready', () => {
 
 bot.on('message', msg => {
   if (msg.content === '<@758889056649216041>') {
-    msg.reply('Type -help in any of the channel!');
+    msg.reply('Type -help in any of the channel that I'm in!');
   }
 });
 
@@ -74,7 +74,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
     message.delete().catch(O_o=>{}); 
     // And we get the bot to say the thing: 
-        message.channel.send(sayMessage);
+        message.channel.send(Message);
     }
     if (command === "serverinfo" || command === "si") {
         const helpembed = new MessageEmbed()
