@@ -27,6 +27,15 @@ bot.on('message', msg => {
   }
 });
 
+bot.on("message", async message => {
+  if(message.content.toLowerCase().startsWith(`(PREFIX)suggest`)) {
+     //a user says "!!suggest more commands"
+     message. /*ID <@206377170707152906>*/ .send(`The user {$message.author.name.toString()} has given a suggestion; "${message.content.toString()}`);
+     //then a DM is sent to the <@206377170707152906> ID saying (the ID is different from user ABC123's ID) "The user ABC123 has given a suggestion; "!!suggest more commands"
+     message.author.send(`The suggestion "${message.content.toString()}" has been sent!`);
+     return;
+   });
+
 bot.on("warn", console.warn);
 bot.on("error", console.error);
 bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully booted up!`));
