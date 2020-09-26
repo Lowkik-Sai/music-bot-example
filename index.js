@@ -22,8 +22,8 @@ bot.on('ready', () => {
 });
 
 bot.on('message', msg => {
-  if (msg.content === '-ping') {
-    msg.reply('pong');
+  if (msg.content === '<@758889056649216041>') {
+    msg.reply('Type -help in any of the channel!');
   }
 });
 
