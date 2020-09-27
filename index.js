@@ -95,7 +95,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   .on('expire', () => console.warn('Expired!'))
   // Upon non-PaginationEmbed error (e.g: Discord API Error)
   .on('error', console.error);
-        message.channel.send(hellEmbeds);
+        message.channel.send(helpEmbeds);
     }
     if (command === "serverinfo" || command === "si") {
         const helpembed = new MessageEmbed()
