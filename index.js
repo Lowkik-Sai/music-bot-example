@@ -97,7 +97,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   .on('error', console.error);
  
         await Embeds.build();
-        message.channel.send(helpembed);
+        message.channel.send(Embeds);
     }
     if (command === "serverinfo" || command === "si") {
         const helpembed = new MessageEmbed()
