@@ -62,7 +62,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
     }
     if (command === "hlp") {
-       const helpEmbeds = new helpPaginationEmbed.Embeds()
+       const helpembed = new MessageEmbed()
             .setArray(embeds)
             .setAuthorizedUsers([message.author.id])
             .setChannel(message.channel)
@@ -95,7 +95,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   .on('expire', () => console.warn('Expired!'))
   // Upon non-PaginationEmbed error (e.g: Discord API Error)
   .on('error', console.error);
-        message.channel.send(helpEmbeds);
+        message.channel.send(helpembed);
     }
     if (command === "serverinfo" || command === "si") {
         const helpembed = new MessageEmbed()
