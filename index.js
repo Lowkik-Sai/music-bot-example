@@ -61,6 +61,58 @@ bot.on("message", async (message) => { // eslint-disable-line
     const m = await message.channel.send("Ping?");
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
     }
+    if (command === "hlp") {
+       const Discord = require('discord.js');
+       const Pagination = require('discord-paginationembed');
+ 
+       const embeds = [];
+ 
+   for (let i = 1; i <= 5; ++i)
+       embeds.push(new Discord.MessageEmbed().addField('Page', i));
+ 
+       const Embeds = new PaginationEmbed.Embeds()
+               .setArray(embeds)
+               .setAuthorizedUsers([message.author.id])
+               .setChannel(message.channel)
+               .setPageIndicator(true)
+               .setTitle('Test Title')
+               .setDescription('Test Description')
+               .setFooter('Test Footer Text')
+               .setURL('https://gazmull.github.io/discord-paginationembed')
+               .setColor(0xFF00AE)
+       // Sets the client's assets to utilise. Available options:
+       //  - message: the client's Message object (edits the message instead of sending new one for this instance)
+       //  - prompt: custom content for the message sent when prompted to jump to a page
+       //      {{user}} is the placeholder for the user mention
+               .setClientAssets({ message, prompt: 'Page plz {{user}}' })
+               .setDeleteOnTimeout(true)
+               .setDisabledNavigationEmojis(['delete'])
+               .setFunctionEmojis({
+          '⬆': (_, instance) => {
+        for (const embed of instance.array)
+        embed.fields[0].value++;
+        },
+          '⬇': (_, instance) => {
+           for (const embed of instance.array)
+           embed.fields[0].value--;
+         }
+      })
+        // Listeners for PaginationEmbed's events
+        // After the initial embed has been sent
+        // (technically, after the client finished reacting with enabled navigation and function emojis).
+       .on('start', () => console.log('Started!'))
+        // When the instance is finished by a user reacting with `delete` navigation emoji
+        // or a function emoji that throws non-Error type.
+       .on('finish', (user) => console.log(`Finished! User: ${user.username}`))
+        // Upon a user reacting on the instance.
+       .on('react', (user, emoji) => console.log(`Reacted! User: ${user.username} | Emoji: ${emoji.name} (${emoji.id})`))
+        // When the awaiting timeout is reached.
+       .on('expire', () => console.warn('Expired!'))
+        // Upon an occurance of error (e.g: Discord API Error).
+       .on('error', console.error);
+ 
+        await Embeds.build();
+    }
     if (command === "serverinfo" || command === "si") {
         const helpembed = new MessageEmbed()
             .setColor("RED")
