@@ -83,18 +83,7 @@ bot.on("message", async (message) => { // eslint-disable-line
       for (const embed of instance.array)
         embed.fields[0].value--;
     }
-  })
-  // Listeners for PaginationEmbed's events
-  // Upon successfull `build()`
-  .on('start', () => console.log('Started!'))
-  // Upon a user deleting the embed
-  .on('finish', (user) => console.log(`Finished! User: ${user.username}`))
-  // Upon a user reacting to the embed
-  .on('react', (user, emoji) => console.log(`Reacted! User: ${user.username} | Emoji: ${emoji.name} (${emoji.id})`))
-  // Upon the awaiting time expired
-  .on('expire', () => console.warn('Expired!'))
-  // Upon non-PaginationEmbed error (e.g: Discord API Error)
-  .on('error', console.error);
+  });
         message.channel.send(helpembed);
     }
     if (command === "serverinfo" || command === "si") {
