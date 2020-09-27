@@ -27,13 +27,7 @@ bot.on('message', msg => {
   }
 });
 
-ut when I check for multiple reactions (like paper and scissors), the code simply will not work.
-
-I've searched everywhere for help on this and cannot find anything that is post-Discord rewrite.
-
-Any help appreciated!
-
-# test rps
+//test rps
 @bot.command()
 async def test(ctx):
 
