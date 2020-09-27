@@ -28,7 +28,7 @@ bot.on('message', msg => {
 });
 
 //test rps
-@bot.command()
+bot.command()
 async def test(ctx):
 
     eb = await getEmbed(ctx, "Rock, Paper, Scissors", "", {}, "", "Choose one:", discord.Colour.gold())
