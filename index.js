@@ -27,39 +27,6 @@ bot.on('message', msg => {
   }
 });
 
-//test rps
-bot.command()
-async test(ctx):
-
-    eb = await getEmbed(ctx, "Rock, Paper, Scissors", "", {}, "", "Choose one:", discord.Colour.gold())
-
-    msg = await ctx.message.channel.send(embed = eb)
-    channel = msg.channel
-    for emoji in ('🗿', '📄', "✂"):
-        await msg.add_reaction(emoji)
-
-    # now check for response
-    def checkR(reaction, user):
-        return user == ctx.message.author and str(reaction.emoji) == '🗿'
-    def checkP(reaction, user):
-        print("in paper")
-        return user == ctx.message.author and str(reaction.emoji) == '📄'
-    def checkS(reaction, user):
-        return user == ctx.message.author and str(reaction.emoji) == '✂'
-
-    try:
-        reaction, user = await bot.wait_for('reaction_add', timeout=5, check=checkR)
-        reaction, user = await bot.wait_for('reaction_add', timeout=5, check=checkP)
-        reaction, user = await bot.wait_for('reaction_add', timeout=5, check=checkS)
-    except asyncio.TimeoutError:
-        await embed(ctx, "Game timed out.")
-        return
-    else:
-        # we got a reaction
-        await embed(ctx, "GOT A REACTION")
-        await discord.Message.delete(msg)
-        pass
-
 bot.on("warn", console.warn);
 bot.on("error", console.error);
 bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully booted up!`));
