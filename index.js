@@ -122,7 +122,6 @@ bot.on("message", async (message) => { // eslint-disable-line
                             }).catch(() => {
                                     message.reply('No answer after 30 seconds, operation canceled.');
                             });
-                    break;
     }  
     if (command === "serverinfo" || command === "si") {
         const helpembed = new MessageEmbed()
