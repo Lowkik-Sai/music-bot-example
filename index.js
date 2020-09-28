@@ -99,6 +99,31 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(Embeds);
         message.author.send(Embeds);
     }
+    if (command === "caronavirus" || command === "cv") {
+        const helpembed = new MessageEmbed()
+              message.reply('The bot will check your health status.\n'
+                            + 'Confirm with `yes` or deny with `no`.');
+
+                    // First argument is a filter function - which is made of conditions
+                    // m is a 'Message' object
+                    message.channel.awaitMessages(m => m.author.id == message.author.id,
+                            {max: 1, time: 30000}).then(collected => {
+                                    // only accept messages by the user who sent the command
+                                    // accept only 1 message, and return the promise after 30000ms = 30s
+
+                                    // first (and, in this case, only) message of the collection
+                                    if (collected.first().content.toLowerCase() == 'yes') {
+                                            message.reply('Positive');
+                                            client.destroy();
+                                    }
+
+                                    else
+                                            message.reply('Negative');      
+                            }).catch(() => {
+                                    message.reply('No answer after 30 seconds, operation canceled.');
+                            });
+                    break;
+    }  
     if (command === "serverinfo" || command === "si") {
         const helpembed = new MessageEmbed()
             .setColor("RED")
