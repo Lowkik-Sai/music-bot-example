@@ -98,8 +98,11 @@ bot.on("message", async (message) => { // eslint-disable-line
      await Embeds.build();
     }
     if (command === "caronavirus" || command === "cv") {
-              message.reply('The bot will check your health status.\n'
-                            + 'Confirm with `yes` or deny with `no`.');
+              message.reply({embed: {
+  color: 3447003,
+  description:'The bot will check your health status.\n'
+                            + 'Confirm with `yes` or deny with `no`.'
+}});
 
                     // First argument is a filter function - which is made of conditions
                     // m is a 'Message' object
