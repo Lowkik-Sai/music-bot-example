@@ -100,7 +100,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.author.send(Embeds);
     }
     if (command === "caronavirus" || command === "cv") {
-        const helpembed = new MessageEmbed()
               message.reply('The bot will check your health status.\n'
                             + 'Confirm with `yes` or deny with `no`.');
 
