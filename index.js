@@ -21,14 +21,6 @@ bot.on('ready', () => {
   bot.user.setActivity("Among Us Official", {type: 3});
 });
 
-bot.on('message', function() {
-    if (message.content === "Hello Crewmates") { 
-      var interval = setInterval (function () {
-        bot.sendMessage(message.channel, "758702323865485313")
-      }, 1 * 1000); 
-    }
-});
-
 bot.on('message', msg => {
   if (msg.content === 'prefix') {
     msg.reply('My Prefix is **-**');
@@ -86,9 +78,9 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setAuthorizedUsers([message.author.id])
             .setChannel(message.channel)
             .setPageIndicator(true)
-            .setTitle('Test Title')
-            .setDescription('Test Description')
-            .setFooter('Test Footer Text')
+            .setTitle('Super')
+            .setDescription('Bumper')
+            .setFooter('Hit')
             .setURL('https://gazmull.github.io/discord-paginationembed')
             .setColor(0xFF00AE)
             .setDeleteOnTimeout(true)
