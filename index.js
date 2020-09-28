@@ -127,6 +127,11 @@ bot.on("message", async (message) => { // eslint-disable-line
                                     message.reply('No answer after 30 seconds, operation canceled.');
                             });
     }  
+    if (command === "carona" || command === "c") {
+        const messages = ["Carona - Positive", "Carona - Negative"]
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+        message.channel.send(randomMessage);
+    }
     if (command === "serverinfo" || command === "si") {
         const helpembed = new MessageEmbed()
             .setColor("RED")
