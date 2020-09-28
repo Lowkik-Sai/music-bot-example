@@ -118,7 +118,8 @@ bot.on("message", async (message) => { // eslint-disable-line
 
                                     else
                                             message.reply('Negative');      
-                            }).catch(() => {
+                            })
+                              .catch(collected => {
                                     message.reply('No answer after 30 seconds, operation canceled.');
                             });
     }  
