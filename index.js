@@ -130,11 +130,13 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "carona" || command === "c") {
         const messages = ["Carona - Positive", "Carona - Negative"]
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-        const random = new Discord.MessageEmbed()
+        const helpembed = new MessageEmbed()
              .setColor("VIOLET")
              .setTitle("Health Status")
              .setImage(message.guild.iconURL())
-        message.channel.send(random);
+             .setDescription(`randomMessage`)
+             .setTimestamp()
+        message.channel.send(randomMessage);
     }
     if (command === "serverinfo" || command === "si") {
         const helpembed = new MessageEmbed()
