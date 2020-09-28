@@ -133,9 +133,10 @@ bot.on("message", async (message) => { // eslint-disable-line
         const helpembed = new MessageEmbed()
              .setColor("VIOLET")
              .setTitle("Your Health Status")
-             .setAuthor(`Hey`, message.author.displayAvatarURL())
+             .setAuthor(message.author.username)
              .setDescription(randomMessage)
              .setTimestamp()
+             .setFooter(message.author.displayAvatarURL())
         message.channel.send(helpembed);
     }
     if (command === "serverinfo" || command === "si") {
