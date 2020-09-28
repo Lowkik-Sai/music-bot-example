@@ -47,6 +47,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     
     if (command === "invite" || command === "inv") {
         const helpembed = new MessageEmbed()
+        const timeout = '60000'
             .setColor("BLUE")
             .setAuthor("Invite Link", message.author.displayAvatarURL())
             .setDescription(`[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
@@ -62,8 +63,9 @@ bot.on("message", async (message) => { // eslint-disable-line
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
     }
     if (command === "hlp") {
-       const helpembed = new MessageEmbed()
-            .setArray(embeds)
+       const pagination = require('discord.js-pagination');
+       const Embeds = new PaginationEmbed.Embeds()
+            .setArray('Hello','Hey')
             .setAuthorizedUsers([message.author.id])
             .setChannel(message.channel)
             .setPageIndicator(true)
@@ -84,8 +86,9 @@ bot.on("message", async (message) => { // eslint-disable-line
         embed.fields[0].value--;
     }
   });
-        message.channel.send(helpembed);
-        message.author.send(helpembed);
+     await Embeds.build();
+        message.channel.send(Embeds);
+        message.author.send(Embeds);
     }
     if (command === "serverinfo" || command === "si") {
         const helpembed = new MessageEmbed()
