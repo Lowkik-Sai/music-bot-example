@@ -51,7 +51,9 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setAuthor("Invite Link", message.author.displayAvatarURL())
             .setDescription(`[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
             .setTimestamp()
-            .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
+            .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg")
+            .setDeleteOnTimeout(true)
+            .setDisabledNavigationEmojis(['DELETE']);
         message.author.send(helpembed);
         message.channel.send(helpembed);
     }
@@ -85,6 +87,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
   });
         message.channel.send(helpembed);
+        message.author.send(helpembed);
     }
     if (command === "serverinfo" || command === "si") {
         const helpembed = new MessageEmbed()
