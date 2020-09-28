@@ -132,8 +132,8 @@ bot.on("message", async (message) => { // eslint-disable-line
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
         const helpembed = new MessageEmbed()
              .setColor("VIOLET")
-             .setTitle("Health Status")
-             .setAuthor(msg.author.username, message.author.displayAvatarURL())
+             .setTitle("Your Health Status")
+             .setAuthor(`Hey`, message.author.displayAvatarURL())
              .setDescription(randomMessage)
              .setTimestamp()
         message.channel.send(helpembed);
