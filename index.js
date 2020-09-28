@@ -136,7 +136,7 @@ bot.on("message", async (message) => { // eslint-disable-line
              .setAuthor(message.author.username)
              .setDescription(randomMessage)
              .setTimestamp()
-             .setFooter(message.author.displayAvatarURL())
+             .setFooter("Stay Home,Stay Safe!", message.author.displayAvatarURL());
         message.channel.send(helpembed);
     }
     if (command === "serverinfo" || command === "si") {
