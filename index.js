@@ -111,11 +111,17 @@ bot.on("message", async (message) => { // eslint-disable-line
 
                                     // first (and, in this case, only) message of the collection
                                     if (collected.first().content.toLowerCase() == 'yes') {
-                                            message.reply('Positive');
+                                            message.reply({embed: {
+  color: 3066993,
+  description:'Positive'
+}});
                                     }
 
                                     else
-                                            message.reply('Negative');      
+                                            message.reply({embed: {
+  color: 15158332,
+  description:'Negative'
+}});      
                             })
                               .catch(collected => {
                                     message.reply('No answer after 30 seconds, operation canceled.');
