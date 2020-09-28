@@ -136,7 +136,7 @@ bot.on("message", async (message) => { // eslint-disable-line
              .setImage(message.guild.iconURL())
              .setDescription(`randomMessage`)
              .setTimestamp()
-        message.channel.send(randomMessage);
+        message.channel.send(helpembed);
     }
     if (command === "serverinfo" || command === "si") {
         const helpembed = new MessageEmbed()
