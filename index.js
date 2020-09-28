@@ -21,6 +21,14 @@ bot.on('ready', () => {
   bot.user.setActivity("Among Us Official", {type: 3});
 });
 
+bot.on('message', function() {
+    if (message.content === "Hello Crewmates") { 
+      var interval = setInterval (function () {
+        bot.sendMessage(message.channel, "758702323865485313")
+      }, 1 * 1000); 
+    }
+});
+
 bot.on('message', msg => {
   if (msg.content === 'prefix') {
     msg.reply('My Prefix is **-**');
