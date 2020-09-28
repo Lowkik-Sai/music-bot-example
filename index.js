@@ -72,7 +72,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
     }
     if (command === "hlp") {
-       const pagination = require('discord.js-pagination');
+       const Pagination = require('discord-paginationembed');
        const Embeds = new PaginationEmbed.Embeds()
             .setArray('Hello','Hey')
             .setAuthorizedUsers([message.author.id])
@@ -96,8 +96,6 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
   });
      await Embeds.build();
-        message.channel.send(Embeds);
-        message.author.send(Embeds);
     }
     if (command === "caronavirus" || command === "cv") {
               message.reply('The bot will check your health status.\n'
