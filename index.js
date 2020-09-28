@@ -113,7 +113,6 @@ bot.on("message", async (message) => { // eslint-disable-line
                                     // first (and, in this case, only) message of the collection
                                     if (collected.first().content.toLowerCase() == 'yes') {
                                             message.reply('Positive');
-                                            client.destroy();
                                     }
 
                                     else
