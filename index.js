@@ -63,17 +63,18 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
     }
-    if (command === "ascii" || command === "ai") {
-        const figlet = require('figlet');
-         figlet.text(msg, function (err, data){
-            if(err){
-                console.log('Something went wrong');
-                console.dir(err);
-            }
-            if(data.length > 2000) return message.channel.send('Please provide text shorter than 2000 characters')
+    if (command === "avatar" || command === "a") {
+        let member = message.mentions.users.first() || message.author
 
-            message.channel.send('```' + data + '```')
-        })
+        let avatar = member.displayAvatarURL({size: 1024})
+
+
+        const embed = new Discord.MessageEmbed()
+        .setTitle(`${member.username}'s avatar`)
+        .setImage(avatar)
+        .setColor("RANDOM")
+
+        message.channel.send(embed);
     }
     if (command === "ping") {
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
