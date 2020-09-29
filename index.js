@@ -65,12 +65,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if (command === "ascii" || command === "ai") {
         const figlet = require('figlet');
-        async run (client, message, args){
-        if(!args[0]) return message.channel.send('Please provide some text');
-
-        msg = args.join(" ");
-
-        figlet.text(msg, function (err, data){
+         figlet.text(msg, function (err, data){
             if(err){
                 console.log('Something went wrong');
                 console.dir(err);
@@ -80,7 +75,6 @@ bot.on("message", async (message) => { // eslint-disable-line
             message.channel.send('```' + data + '```')
         })
     }
-}
     if (command === "ping") {
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
