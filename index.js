@@ -72,7 +72,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         if(!reason) reason = 'Unspecified';
 
         member.ban(`${reason}`)
-        .catch(error => {
+        .catch(err => {
             if(err) return message.channel.send('Something went wrong')
         })
        const helpembed = new MessageEmbed()
