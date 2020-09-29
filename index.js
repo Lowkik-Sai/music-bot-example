@@ -82,7 +82,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         .addField('User Banned', member)
         .addField('Kicked by', message.author)
         .addField('Reason', reason)
-        .setFooter('Time kicked', client.user.displayAvatarURL())
+        .setFooter('Time kicked', bot.user.displayAvatarURL())
         .setTimestamp()
 
         message.channel.send(helpembed);
