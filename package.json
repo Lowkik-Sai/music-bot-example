@@ -33,7 +33,6 @@
     "express": "^4.17.1",
     "node-opus": "^0.3.3",
     "opusscript": "0.0.7",
-    "quick.db": "^7.0.0-b21",
     "simple-youtube-api": "^5.2.1",
     "ytdl-core": "^3.3.0"
   },
