@@ -69,12 +69,12 @@ bot.on("message", async (message) => { // eslint-disable-line
         let avatar = member.displayAvatarURL({size: 1024})
 
 
-        const embed = new Discord.MessageEmbed()
+        const helpembed = new MessageEmbed()
         .setTitle(`${member.username}'s avatar`)
         .setImage(avatar)
         .setColor("RANDOM")
 
-        message.channel.send(embed);
+        message.channel.send(helpembed);
     }
     if (command === "ping") {
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
