@@ -72,11 +72,10 @@ bot.on("message", async (message) => { // eslint-disable-line
         if(!reason) reason = 'Unspecified';
 
         member.ban(`${reason}`)
-        .catch(err => {
+        .catch(error => {
             if(err) return message.channel.send('Something went wrong')
-        })
-
-        const helpembed = new MessageEmbed()
+        }
+       const helpembed = new MessageEmbed()
         .setTitle('Member Banned')
         .setThumbnail(member.user.displayAvatarURL())
         .addField('User Banned', member)
@@ -86,8 +85,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setTimestamp()
 
         message.channel.send(helpembed);
-
-
     }
     if (command === "invite" || command === "inv") {
         const helpembed = new MessageEmbed()
