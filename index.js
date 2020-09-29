@@ -55,7 +55,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(helpembed);
     }
     if (command === "ban" ) {
-​        const user = message.mentions.users.first(); // returns the user object if an user mention exists
+​        const user = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]) // returns the user object if an user mention exists
         const banReason = args.slice(1).join(' '); // Reason of the ban (Everything behind the mention)
 ​
 // Check if an user mention exists in this message
