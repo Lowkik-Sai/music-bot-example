@@ -28,18 +28,30 @@
   },
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
-    "discord.js": "^12.3.1",
     "dotenv": "^8.2.0",
+    "canvacord": "^4.0.1",
     "express": "^4.17.1",
     "node-opus": "^0.3.3",
-    "opusscript": "0.0.7",
-    "simple-youtube-api": "^5.2.1",
-    "ytdl-core": "^3.3.0"
-  },
-  "optionalDependencies": {
-    "@discordjs/uws": "^11.149.1",
+    "discord-giveaways": "^4.1.8",
+    "discord.js": "^12.2.0",
     "discord.js-pagination": "^1.0.2",
     "figlet": "^1.4.0",
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "mathjs": "^7.0.1",
+    "ms": "^2.1.2",
+    "node-fetch": "^2.6.0",
+    "opusscript": "0.0.7",
+    "parse-ms": "^2.1.0",
+    "pretty-ms": "^7.0.0",
+    "process": "^0.11.10",
+    "quick.db": "^7.0.0-b21",
+    "random-puppy": "^1.1.0",
+    "simple-youtube-api": "^5.2.1",
+    "weather-js": "^2.0.0",
+    "ytdl-core": "^2.1.7",
+    "ytdl-core-discord": "^1.2.0"
+  },
+  "optionalDependencies": {
+    "@discordjs/uws": "^11.149.1"
   }
 }
