@@ -87,7 +87,7 @@ embed: banConfirmationEmbed
 }); // Sends a confirmation embed that the user has been successfully banned
 ​
 ​
-const modlogChannelID = ''; // Discord channel ID where you want to have logged the details about the ban
+const modlogChannelID = '726267742570938398'; // Discord channel ID where you want to have logged the details about the ban
 if (modlogChannelID.length !== 0) {
 if (!client.channels.get(modlogChannelID )) return undefined; // Check if the modlogChannelID is a real Discord server channel that really exists
 ​
