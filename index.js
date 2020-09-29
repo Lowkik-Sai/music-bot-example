@@ -63,15 +63,6 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
     }
-    if (command === "bal" || command === "b") {
-        const db = require('quick.db');
-        let user = message.mentions.users.first() || message.author;
-
-        let bal = await db.fetch(`money_${message.guild.id}_${user.id}`);
-        if(bal === null) bal = 0;
-
-        message.channel.send(`${user} currently has ${bal} coins`)
-    }
     if (command === "avatar" || command === "a") {
         let member = message.mentions.users.first() || message.author
 
