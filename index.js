@@ -63,7 +63,25 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
     }
-    if(command === "ping") {
+    if (command === "ascii" || command === "ai") {
+        const figlet = require('figlet');
+        async run (client, message, args){
+        if(!args[0]) return message.channel.send('Please provide some text');
+
+        msg = args.join(" ");
+
+        figlet.text(msg, function (err, data){
+            if(err){
+                console.log('Something went wrong');
+                console.dir(err);
+            }
+            if(data.length > 2000) return message.channel.send('Please provide text shorter than 2000 characters')
+
+            message.channel.send('```' + data + '```')
+        })
+    }
+}
+    if (command === "ping") {
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
     const m = await message.channel.send("Ping?");
