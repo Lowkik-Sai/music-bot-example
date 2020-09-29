@@ -37,6 +37,9 @@
     "ytdl-core": "^3.3.0"
   },
   "optionalDependencies": {
-    "@discordjs/uws": "^11.149.1"
+    "@discordjs/uws": "^11.149.1",
+    "discord.js-pagination": "^1.0.2",
+    "figlet": "^1.4.0",
+    "fs": "0.0.1-security"
   }
 }
