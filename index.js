@@ -74,7 +74,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         member.ban(`${reason}`)
         .catch(error => {
             if(err) return message.channel.send('Something went wrong')
-        }
+        })
        const helpembed = new MessageEmbed()
         .setTitle('Member Banned')
         .setThumbnail(member.user.displayAvatarURL())
