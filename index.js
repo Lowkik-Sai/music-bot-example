@@ -55,36 +55,53 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(helpembed);
     }
     if (command === "ban" ) {
-        if(!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send('You can\'t use that!')
-        if(!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send('I don\'t have the right permissions.')
-
-        const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-
-        if(!args[0]) return message.channel.send('Please specify a user');
-
-        if(!member) return message.channel.send('Can\'t seem to find this user. Sorry \'bout that :/');
-        if(!member.bannable) return message.channel.send('This user can\'t be banned. It is either because they are a mod/admin, or their highest role is higher than mine');
-
-        if(member.id === message.author.id) return message.channel.send('Bruh, you can\'t ban yourself!');
-
-        let reason = args.slice(1).join(" ");
-
-        if(!reason) reason = 'Unspecified';
-
-        member.ban(`${reason}`)
-        .catch(err => {
-            if(err) return message.channel.send('Something went wrong')
-        })
-       const helpembed = new MessageEmbed()
-        .setTitle('Member Banned')
-        .setThumbnail(member.user.displayAvatarURL())
-        .addField('User Banned', member)
-        .addField('Banned by', message.author)
-        .addField('Reason', reason)
-        .setFooter('Time kicked', bot.user.displayAvatarURL())
-        .setTimestamp()
-
-        message.channel.send(helpembed);
+        const args = message.content.split(' ').slice(1); // All arguments behind the command name with the prefix
+​
+        const user = message.mentions.users.first(); // returns the user object if an user mention exists
+        const banReason = args.slice(1).join(' '); // Reason of the ban (Everything behind the mention)
+​
+// Check if an user mention exists in this message
+if (!user) {
+try {
+// Check if a valid userID has been entered instead of a Discord user mention
+if (!message.guild.members.get(args.slice(0, 1).join(' '))) throw new Error('Couldn\' get a Discord user with this userID!');
+// If the client (bot) can get a user with this userID, it overwrites the current user variable to the user object that the client fetched
+user = message.guild.members.get(args.slice(0, 1).join(' '));
+user = user.user;
+} catch (error) {
+return message.reply('Couldn\' get a Discord user with this userID!');
+}
+}
+if (user === message.author) return message.channel.send('You can\'t ban yourself'); // Check if the user mention or the entered userID is the message author himsmelf
+if (!reason) return message.reply('You forgot to enter a reason for this ban!'); // Check if a reason has been given by the message author
+if (!message.guild.member(user).bannable) return message.reply('You can\'t ban this user because you the bot has not sufficient permissions!'); // Check if the user is bannable with the bot's permissions
+​
+await message.guild.ban(user) // Bans the user
+​
+// We need Discord for our next RichEmbeds
+const banConfirmationEmbed = new Discord.RichEmbed()
+.setColor('RED')
+.setDescription(`✅ ${user.tag} has been successfully banned!`);
+message.channel.send({
+embed: banConfirmationEmbed
+}); // Sends a confirmation embed that the user has been successfully banned
+​
+​
+const modlogChannelID = ''; // Discord channel ID where you want to have logged the details about the ban
+if (modlogChannelID.length !== 0) {
+if (!client.channels.get(modlogChannelID )) return undefined; // Check if the modlogChannelID is a real Discord server channel that really exists
+​
+const banConfirmationEmbedModlog = new Discord.RichEmbed()
+.setAuthor(`Banned by **${msg.author.username}#${msg.author.discriminator}**`, msg.author.displayAvatarURL)
+.setThumbnail(user.displayAvatarURL)
+.setColor('RED')
+.setTimestamp()
+.setDescription(`**Action**: Ban
+**User**: ${user.username}#${user.discriminator} (${user.id})
+**Reason**: ${reason}`);
+client.channels.get(modlogChannelID).send({
+embed: banConfirmationEmbedModlog
+}); // Sends the RichEmbed in the modlogchannel
     }
     if (command === "invite" || command === "inv") {
         const helpembed = new MessageEmbed()
