@@ -80,7 +80,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setTitle('Member Banned')
         .setThumbnail(member.user.displayAvatarURL())
         .addField('User Banned', member)
-        .addField('Kicked by', message.author)
+        .addField('Banned by', message.author)
         .addField('Reason', reason)
         .setFooter('Time kicked', bot.user.displayAvatarURL())
         .setTimestamp()
