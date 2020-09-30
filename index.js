@@ -32,7 +32,7 @@ bot.on("error", console.error);
 bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully booted up!`));
 bot.on("shardDisconnect", (event, id) => console.log(`[SHARD] Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect...`));
 bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnecting...`));
-bot.commands = new Collection();
+
 bot.virusData = {};
 bot.summedData = {};
 bot.lastCacheUpdate = 0;
