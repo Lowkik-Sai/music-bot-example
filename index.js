@@ -119,8 +119,6 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
 
-        async run (client, message, args){
-
         let countries = args.join(" ");
 
         //Credit to Sarastro#7725 for the command :)
