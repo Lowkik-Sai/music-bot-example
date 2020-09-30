@@ -162,7 +162,11 @@ bot.on("message", async (message) => { // eslint-disable-line
                 .addField('Deaths', deaths)
 
                 message.channel.send(embed)
-            })
+            }).catch(e){
+    if(e){Invalid
+    // If fails, Do something else
+    }
+}
         }
     }
     if (command === "avatar" || command === "a") {
