@@ -115,7 +115,6 @@ bot.on("message", async (message) => { // eslint-disable-line
     message.channel.send('Success!')
 
     }
-    
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
 
@@ -135,9 +134,9 @@ bot.on("message", async (message) => { // eslint-disable-line
             fetch(`https://covid19.mathdro.id/api`)
             .then(response => response.json())
             .then(data => {
-                let confirmed = data.confirmed.value.toLocaleString()
-                let recovered = data.recovered.value.toLocaleString()
-                let deaths = data.deaths.value.toLocaleString()
+                let confirmed = data.confirmed.toLocaleString()
+                let recovered = data.recovered.toLocaleString()
+                let deaths = data.deaths.toLocaleString()
 
                 const embed = new MessageEmbed()
                 .setTitle(`Worldwide COVID-19 Stats 🌎`)
@@ -151,9 +150,9 @@ bot.on("message", async (message) => { // eslint-disable-line
             fetch(`https://covid19.mathdro.id/api/countries/${countries}`)
             .then(response => response.json())
             .then(data => {
-                let confirmed = data.confirmed.value.toLocaleString()
-                let recovered = data.recovered.value.toLocaleString()
-                let deaths = data.deaths.value.toLocaleString()
+                let confirmed = data.confirmed.toLocaleString()
+                let recovered = data.recovered.toLocaleString()
+                let deaths = data.deaths.toLocaleString()
 
                 const embed = new MessageEmbed()
                 .setTitle(`COVID-19 Stats for **${countries}**`)
