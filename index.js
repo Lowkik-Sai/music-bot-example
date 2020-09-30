@@ -113,7 +113,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     message.channel.send('Success!')
 
     }
-    if (command === "covidcases" ) { 
+    if (command === "covid" ) { 
         const fetch = require('node-fetch');
 
         let countries = args.join(" ");
