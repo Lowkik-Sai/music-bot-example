@@ -120,7 +120,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         //Credit to Sarastro#7725 for the command :)
 
-        const noArgs = new Discord.MessageEmbed()
+        const noArgs = new MessageEmbed()
         .setTitle('Missing arguments')
         .setColor(0xFF0000)
         .setDescription('You are missing some args (ex: ;covid all || ;covid Canada)')
@@ -136,7 +136,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                 let recovered = data.recovered.value.toLocaleString()
                 let deaths = data.deaths.value.toLocaleString()
 
-                const embed = new Discord.MessageEmbed()
+                const embed = new MessageEmbed()
                 .setTitle(`Worldwide COVID-19 Stats 🌎`)
                 .addField('Confirmed Cases', confirmed)
                 .addField('Recovered', recovered)
@@ -152,7 +152,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                 let recovered = data.recovered.value.toLocaleString()
                 let deaths = data.deaths.value.toLocaleString()
 
-                const embed = new Discord.MessageEmbed()
+                const embed = new MessageEmbed()
                 .setTitle(`COVID-19 Stats for **${countries}**`)
                 .addField('Confirmed Cases', confirmed)
                 .addField('Recovered', recovered)
