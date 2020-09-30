@@ -477,7 +477,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         };
         return message.channel.send({embed: {color: "RED", description: "There is nothing playing"}});
     }
-});
+};
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = queue.get(message.guild.id);
