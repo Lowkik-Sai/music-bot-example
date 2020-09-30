@@ -63,6 +63,27 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
     }
+    if (command === "calculate" || command === "cal") {
+        const math = require('mathjs');
+        if(!args[0]) return message.channel.send('Please provide a question');
+
+        let resp;
+
+        try {
+            resp = math.evaluate(args.join(" "))
+        } catch (e) {
+            return message.channel.send('Please provide a **valid** question')
+        }
+
+        const helpembed = new MessageEmbed()
+        .setColor(0x808080)
+        .setTitle('Calculator')
+        .addField('Question', `\`\`\`css\n${args.join(' ')}\`\`\``)
+        .addField('Answer', `\`\`\`css\n${resp}\`\`\``)
+
+        message.channel.send(helpembed);
+
+    }
     if (command === "say" ) { 
         let msg;
         let textChannel = message.mentions.channels.first()
