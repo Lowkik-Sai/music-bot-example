@@ -100,7 +100,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
     }
     if (command === "ban" ) { 
-        let xdemb = new RichEmbed()
+        let xdemb = new MessageEmbed()
         .setColor("#00ff00")
         .setTitle("Ban Command")
         .addField("Description:", `Ban a member`, true)
@@ -126,7 +126,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         await member.ban(reason).catch(error => message.channel.send(`Sorry, I coldn't ban because of: ${error}`));
 
-        let bean = new RichEmbed()
+        let bean = new MessageEmbed()
         .setColor("#00ff00")
         .setTitle(`Ban | ${member.user.tag}`)
         .addField("User", member, true)
