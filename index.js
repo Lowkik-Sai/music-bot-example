@@ -166,7 +166,6 @@ bot.on("message", async (message) => { // eslint-disable-line
     if(e){Invalid
     // If fails, Do something else
     }
-}
         }
     }
     if (command === "avatar" || command === "a") {
