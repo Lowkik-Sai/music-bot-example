@@ -67,27 +67,6 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
     }
-    if (command === "calculate" || command === "cal") {
-        const math = require('mathjs');
-        if(!args[0]) return message.channel.send('Please provide a question');
-
-        let resp;
-
-        try {
-            resp = math.evaluate(args.join(" "))
-        } catch (e) {
-            return message.channel.send('Please provide a **valid** question')
-        }
-
-        const helpembed = new MessageEmbed()
-        .setColor(0x808080)
-        .setTitle('Calculator')
-        .addField('Question', `\`\`\`css\n${args.join(' ')}\`\`\``)
-        .addField('Answer', `\`\`\`css\n${resp}\`\`\``)
-
-        message.channel.send(helpembed);
-
-    }
     if (command === "say" ) { 
         let msg;
         let textChannel = message.mentions.channels.first()
@@ -100,77 +79,6 @@ bot.on("message", async (message) => { // eslint-disable-line
             msg = args.join(" ");
             message.channel.send(msg)
         }
-    }
-    if (command === "mute" ) { 
-        let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-        if(!tomute) return message.channel.send("Please tag user to mute!");
-        if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Sorry, you don't have permissions to use this!");
-        if(tomute.hasPermission("MANAGE_MESSAGES")) return message.channel.send("I cant mute this user");
-        if (tomute.id === message.author.id) return message.channel.send("You cannot mute yourself!");
-        let muterole = message.guild.roles.fetch(`name`, "muted");
-
-        if(!muterole){
-           try{
-             muterole = await message.guild.createRole({
-             name: "muted",
-             color: "#000000",
-             permissions:[]
-           })
-      message.guild.channels.forEach(async (channel, id) => {
-        await channel.overwritePermissions(muterole, {
-          SEND_MESSAGES: false,
-          ADD_REACTIONS: false
-        });
-      });
-    }catch(e){
-      console.log(e.stack);
-    }
-  }
-
-         let mutetime = args[1];
-         if(!mutetime) return message.channel.send("You didn't specify a time!");
-
-         await(tomute.addRole(muterole.id));
-         message.reply(`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}`);
-
-         setTimeout(function(){
-         tomute.removeRole(muterole.id);
-         message.channel.send(`<@${tomute.id}> has been unmuted!`);
-         }, ms(mutetime));
-
-         message.delete();
-
-    }
-    if (command === "ban" ) { 
-        if(!message.member.hasPermission("BAN_MEMBERS") && message.author.id !== "291221132256870400") return message.channel.send("Sorry you don't have permission to use this!");
-
-        let member = message.mentions.members.first();
-        if(!member) return message.channel.send(xdemb)
-        if(!member.bannable) return message.channel.send("I can't ban this user!")
-        if(member.user.id === "291221132256870400") return message.channel.send("I can't ban my owner!")
-
-        if(member.id === message.author.id) return message.channel.send("You can't ban your self")
-
-        let reason = args.slice(1).join(" ");
-
-        if(!reason) {
-            res = "No reason given";
-        } else {
-            res = reason
-        }
-
-        await member.ban(reason).catch(error => message.channel.send(`Sorry, I coldn't ban because of: ${error}`));
-
-        let bean = new MessageEmbed()
-        .setColor("#00ff00")
-        .setTitle(`Ban | ${member.user.tag}`)
-        .addField("User", member, true)
-        .addField("Moderator", message.author, true)
-        .addField("Reason", res)
-        .setTimestamp()
-
-        message.channel.send(bean)
-
     }
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
@@ -239,32 +147,6 @@ bot.on("message", async (message) => { // eslint-disable-line
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
     const m = await message.channel.send("Ping?");
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
-    }
-    if (command === "hlp") {
-       const Pagination = require('discord-paginationembed');
-       const Embeds = new PaginationEmbed.Embeds()
-            .setArray('Hello','Hey')
-            .setAuthorizedUsers([message.author.id])
-            .setChannel(message.channel)
-            .setPageIndicator(true)
-            .setTitle('Super')
-            .setDescription('Bumper')
-            .setFooter('Hit')
-            .setURL('https://gazmull.github.io/discord-paginationembed')
-            .setColor(0xFF00AE)
-            .setDeleteOnTimeout(true)
-            .setDisabledNavigationEmojis(['DELETE'])
-            .setFunctionEmojis({
-    '⬆': (_, instance) => {
-      for (const embed of instance.array)
-        embed.fields[0].value++;
-    },
-    '⬇': (_, instance) => {
-      for (const embed of instance.array)
-        embed.fields[0].value--;
-    }
-  });
-     await Embeds.build();
     }
     if (command === "caronavirus" || command === "cv") {
               message.reply({embed: {
