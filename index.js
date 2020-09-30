@@ -97,6 +97,21 @@ bot.on("message", async (message) => { // eslint-disable-line
             message.channel.send(msg)
         }
     }
+    if (command === "say" ) { 
+        if(!amount) return message.reply('please provide an amount of messages for me to delete')
+
+        if(amount > 100) return message.reply(`you cannot clear more than 100 messages at once`)
+
+        if(amount < 1) return message.reply(`you need to delete at least one message`)
+
+        await message.channel.messages.fetch({limit: amount}).then(messages => {
+            message.channel.bulkDelete(messages
+    )});
+
+
+    message.channel.send('Success!')
+
+    }
     if (command === "avatar" || command === "a") {
         let member = message.mentions.users.first() || message.author
 
