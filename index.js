@@ -11,6 +11,7 @@ const bot = new Client({
 const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
+const ms = require("ms");
 
 bot.on('ready', () => {
   console.log("Activity OK")
@@ -98,6 +99,46 @@ bot.on("message", async (message) => { // eslint-disable-line
             msg = args.join(" ");
             message.channel.send(msg)
         }
+    }
+    if (command === "mute" ) { 
+        let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+        if(!tomute) return message.channel.send("Please tag user to mute!");
+        if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Sorry, you don't have permissions to use this!");
+        if(tomute.hasPermission("MANAGE_MESSAGES")) return message.channel.send("I cant mute this user");
+        if (tomute.id === message.author.id) return message.channel.send("You cannot mute yourself!");
+        let muterole = message.guild.roles.find(`name`, "Odar Mute");
+
+        if(!muterole){
+           try{
+             muterole = await message.guild.createRole({
+             name: "Odar Mute",
+             color: "#000000",
+             permissions:[]
+           })
+      message.guild.channels.forEach(async (channel, id) => {
+        await channel.overwritePermissions(muterole, {
+          SEND_MESSAGES: false,
+          ADD_REACTIONS: false
+        });
+      });
+    }catch(e){
+      console.log(e.stack);
+    }
+  }
+
+         let mutetime = args[1];
+         if(!mutetime) return message.channel.send("You didn't specify a time!");
+
+         await(tomute.addRole(muterole.id));
+         message.reply(`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}`);
+
+         setTimeout(function(){
+         tomute.removeRole(muterole.id);
+         message.channel.send(`<@${tomute.id}> has been unmuted!`);
+         }, ms(mutetime));
+
+         message.delete();
+
     }
     if (command === "ban" ) { 
         if(!message.member.hasPermission("BAN_MEMBERS") && message.author.id !== "291221132256870400") return message.channel.send("Sorry you don't have permission to use this!");
