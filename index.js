@@ -63,6 +63,19 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
     }
+    if (command === "say" ) { 
+        let msg;
+        let textChannel = message.mentions.channels.first()
+        message.delete()
+
+        if(textChannel) {
+            msg = args.slice(1).join(" ");
+            textChannel.send(msg)
+        } else {
+            msg = args.join(" ");
+            message.channel.send(msg)
+        }
+    }
     if (command === "avatar" || command === "a") {
         let member = message.mentions.users.first() || message.author
 
