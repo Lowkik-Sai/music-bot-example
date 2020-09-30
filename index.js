@@ -1,6 +1,7 @@
 const { Client, Util, MessageEmbed } = require("discord.js");
 const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
+const ms = require("ms");
 require("dotenv").config();
 require("./server.js");
 
@@ -11,7 +12,7 @@ const bot = new Client({
 const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
-const ms = require("ms");
+
 
 bot.on('ready', () => {
   console.log("Activity OK")
@@ -106,12 +107,12 @@ bot.on("message", async (message) => { // eslint-disable-line
         if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Sorry, you don't have permissions to use this!");
         if(tomute.hasPermission("MANAGE_MESSAGES")) return message.channel.send("I cant mute this user");
         if (tomute.id === message.author.id) return message.channel.send("You cannot mute yourself!");
-        let muterole = message.guild.roles.find(`name`, "Odar Mute");
+        let muterole = message.guild.roles.find(`name`, "muted");
 
         if(!muterole){
            try{
              muterole = await message.guild.createRole({
-             name: "Odar Mute",
+             name: "muted",
              color: "#000000",
              permissions:[]
            })
