@@ -32,6 +32,30 @@ bot.on("error", console.error);
 bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully booted up!`));
 bot.on("shardDisconnect", (event, id) => console.log(`[SHARD] Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect...`));
 bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnecting...`));
+bot.commands = new Collection();
+bot.virusData = {};
+bot.summedData = {};
+bot.lastCacheUpdate = 0;
+
+async function updateData() {
+    if (Date.now() - bot.lastCacheUpdate < cacheTime) {
+        return;
+    }
+
+    const response = await fetch("https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/ncov_cases/FeatureServer/2/query?f=json&where=Confirmed%20%3E%200&outFields=Country_Region,Confirmed,Deaths,Recovered&orderByFields=Confirmed%20desc");
+    const data = await response.json();
+
+    bot.virusData = data.features;
+    bot.summedData = data.features.reduce((prev, curr) => {
+        return {
+            confirmed: prev.confirmed + curr.attributes.Confirmed,
+            recovered: prev.recovered + curr.attributes.Recovered,
+            deaths: prev.deaths + curr.attributes.Deaths
+        }
+    }, { confirmed: 0, recovered: 0, deaths: 0 });
+
+    bot.lastCacheUpdate = Date.now();
+}
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
