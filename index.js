@@ -86,15 +86,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(helpembed);
 
     }
-    if(command === 'corona') {
-    const fetch = require('node-fetch');
-    if (!args[0]) return message.reply('you need to enter a country name')
-    const url = `https://coronavirus-19-api.herokuapp.com/countries/${args[0]}`
-    req(url, function(err, response, body){
-        if(err) return msg.reply("err")
-        body = JSON.parse(body)
-        msg.reply(`Corona Fälle für: + \*\*${body.cases}\*\*\ ` ,)
-    })
     if (command === "say" ) { 
         let msg;
         let textChannel = message.mentions.channels.first()
@@ -477,7 +468,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         };
         return message.channel.send({embed: {color: "RED", description: "There is nothing playing"}});
     }
-};
+});
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = queue.get(message.guild.id);
