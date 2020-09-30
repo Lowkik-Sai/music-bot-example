@@ -87,6 +87,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
     }
     if(command === 'corona') {
+    const fetch = require('node-fetch');
     if (!args[0]) return message.reply('you need to enter a country name')
     const url = `https://coronavirus-19-api.herokuapp.com/countries/${args[0]}`
     req(url, function(err, response, body){
