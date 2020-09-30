@@ -113,6 +113,52 @@ bot.on("message", async (message) => { // eslint-disable-line
     message.channel.send('Success!')
 
     }
+    if (command === "country" ) { 
+        const fetch = require('node-fetch');
+        const countryName = args.join(" ").toLowerCase();
+        if (!countryName) {
+            return;
+        }
+
+        const countryStats = bot.virusData.find(data => data.attributes.Country_Region.toLowerCase() === countryName);
+        if (!countryStats) {
+            const embed = new MessageEmbed()
+                .setTitle("COVID-19 Stats")
+                .setDescription(`**Use one of:** ${bot.virusData.map(data => data.attributes.Country_Region).join(", ")}`);
+
+            message.channel.send(embed);
+            return;
+        }
+
+        const embed = new MessageEmbed()
+            .setTitle(`COVID-19 Stats: ${countryStats.attributes.Country_Region}`)
+            .addField("Confirmed", countryStats.attributes.Confirmed, true)
+            .addField("Recovered", countryStats.attributes.Recovered, true)
+            .addField("Deaths", countryStats.attributes.Deaths, true)
+            .setFooter(`Updated: ${new Date(bot.lastCacheUpdate).toUTCString()}`);
+
+        message.channel.send(embed);
+    }
+    if (command === "mostcases" ) { 
+        const fetch = require('node-fetch');
+        const embed = new MessageEmbed()
+            .setTitle("COVID-19 Most Cases")
+            .setDescription(bot.virusData.slice(0, 5).map((data, place) => `#${place + 1} - ${data.attributes.Country_Region} (${data.attributes.Confirmed} confirmed)`))
+            .setFooter(`Updated: ${new Date(bot.lastCacheUpdate).toUTCString()}`);
+
+        message.channel.send(embed);
+    }
+    if (command === "total" ) { 
+        const fetch = require('node-fetch');
+        const embed = new MessageEmbed()
+            .setTitle("COVID-19 Stats")
+            .addField("Confirmed", bot.summedData.confirmed, true)
+            .addField("Recovered", bot.summedData.recovered, true)
+            .addField("Deaths", bot.summedData.deaths, true)
+            .setFooter(`Updated: ${new Date(bot.lastCacheUpdate).toUTCString()}`);
+
+        message.channel.send(embed);
+    }
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
 
