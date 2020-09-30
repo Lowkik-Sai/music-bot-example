@@ -100,13 +100,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
     }
     if (command === "ban" ) { 
-        let xdemb = new MessageEmbed()
-        .setColor("#00ff00")
-        .setTitle("Ban Command")
-        .addField("Description:", `Ban a member`, true)
-        .addField("Usage:", `!ban [user] [reason]`, true)
-        .addField("Example:", `!ban @Odar spam`)
-
         if(!message.member.hasPermission("BAN_MEMBERS") && message.author.id !== "291221132256870400") return message.channel.send("Sorry you don't have permission to use this!");
 
         let member = message.mentions.members.first();
@@ -135,8 +128,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setTimestamp()
 
         message.channel.send(bean)
-
-        message.delete()
 
     }
     if (command === "covid" ) { 
