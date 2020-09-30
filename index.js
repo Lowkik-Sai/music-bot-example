@@ -98,6 +98,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
     }
     if (command === "purge" ) { 
+        const amount = args.join(" ");
         if(!amount) return message.reply('please provide an amount of messages for me to delete')
 
         if(amount > 100) return message.reply(`you cannot clear more than 100 messages at once`)
