@@ -107,7 +107,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Sorry, you don't have permissions to use this!");
         if(tomute.hasPermission("MANAGE_MESSAGES")) return message.channel.send("I cant mute this user");
         if (tomute.id === message.author.id) return message.channel.send("You cannot mute yourself!");
-        let muterole = message.guild.roles.find(`name`, "muted");
+        let muterole = message.guild.roles.fetch(`name`, "muted");
 
         if(!muterole){
            try{
