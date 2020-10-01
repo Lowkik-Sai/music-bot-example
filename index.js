@@ -81,6 +81,10 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
     }
     if (command === "ban" ) {
+        const LRU = require('lru-cache')
+        var cache = new LRU({
+          maxAge: config.throttlingMS
+       })
         if (!cache.get(req.message.author.id)) {
       var execArray = this.regPattern.exec(req.command.suffixe)
       var userId = execArray[1]
