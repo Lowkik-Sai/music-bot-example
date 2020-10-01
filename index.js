@@ -126,9 +126,9 @@ bot.on("message", async (message) => { // eslint-disable-line
                 .addField('Deaths', deaths)
 
                 message.channel.send(embed)
-            }).catch(error) {
-                return message.channel.send('Invalid country provided')
-            }
+            }).catch (err) {
+                    return message.channel.send({embed: {color: "RED", description: "Something Error!Solve it asap!"}});
+                }
 
         }
     }
