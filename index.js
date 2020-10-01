@@ -37,7 +37,7 @@ bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnectin
 
 
 
-bot.on("message", async (message) => { // eslint-disable-line
+bot.on("message", async (client, message, args) => { // eslint-disable-line
     if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
 
@@ -81,7 +81,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
     }
     if (command === "covid" ) { 
-        async (client, message, args)
         const fetch = require('node-fetch');
 
         let countries = args.join(" ");
