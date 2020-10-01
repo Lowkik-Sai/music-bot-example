@@ -286,6 +286,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setTimestamp()
               message.channel.send(helpembed);
     }
+    
     if (command === "play" || command === "p") {
         const voiceChannel = message.member.voice.channel;
         if (!voiceChannel) return message.channel.send({embed: {color: "RED", description: "I'm sorry, but you need to be in a voice channel to play a music!"}});
@@ -386,20 +387,20 @@ bot.on("message", async (message) => { // eslint-disable-line
             return handleVideo(video, message, voiceChannel);
         }
 
-    } else if (command === "skip" || command === "sk") {
+    } else if (command === "skip") {
         if (!message.member.voice.channel) return message.channel.send({embed: {color: "RED", description: "I'm sorry, but you need to be in a voice channel to skip a music!"}});
         if (!serverQueue) return message.channel.send({embed: {color: "RED", description: "There is nothing playing that I could skip for you"}});
         serverQueue.connection.dispatcher.end("[runCmd] Skip command has been used");
         return message.channel.send({embed: {color: "GREEN", description: "⏭️  **|**  I skipped the song for you"}});
 
-    } else if (command === "stop" || command === "st") {
+    } else if (command === "stop") {
         if (!message.member.voice.channel) return message.channel.send({embed: {color: "RED", description: "I'm sorry but you need to be in a voice channel to play music!"}});
         if (!serverQueue) return message.channel.send({embed: {color: "RED", description: "There is nothing playing that I could stop for you"}});
         serverQueue.songs = [];
         serverQueue.connection.dispatcher.end("[runCmd] Stop command has been used");
         return message.channel.send({embed: {color: "GREEN", description: "⏹️  **|**  Deleting queues and leaving voice channel..."}});
 
-    } else if (command === "volume" || command === "v") {
+    } else if (command === "volume" || command === "vol") {
         if (!message.member.voice.channel) return message.channel.send({embed: {color: "RED", description: "I'm sorry, but you need to be in a voice channel to set a volume!"}});
         if (!serverQueue) return message.channel.send({embed: {color: "RED", description: "There is nothing playing"}});
         if (!args[1]) return message.channel.send({embed: {color: "BLUE", description: `The current volume is: **\`${serverQueue.volume}%\`**`}});
@@ -413,15 +414,53 @@ bot.on("message", async (message) => { // eslint-disable-line
         return message.channel.send({embed: {color: "BLUE", description: `🎶  **|**  Now Playing: **\`${serverQueue.songs[0].title}\`**`}});
 
     } else if (command === "queue" || command === "q") {
+        
+        let number = message.guild.musicData.queue.map(
+            (x, i) => `${i + 1} - ${x.title}\nRquested By: **${x.author.tag}**`
+        );
+        number = chunk(number, 5);
+
+        let index = 0;
         if (!serverQueue) return message.channel.send({embed: {color: "RED", description: "There is nothing playing"}});
         let embedQueue = new MessageEmbed()
             .setColor("BLUE")
             .setAuthor("Song queue", message.author.displayAvatarURL())
             .setDescription(`${serverQueue.songs.map(song => `**-** ${song.title}`).join("\n")}`)
             .setFooter(`• Now Playing: ${serverQueue.songs[0].title}`);
-        return message.channel.send(embedQueue);
+        const m = await message.channel.send(embedQueue);
 
-    } else if (command === "pause" || command === "pa") {
+        if (number.length !== 1) {
+        await m.react("⬅");
+        await m.react("🛑");
+        await m.react("➡");
+        async function awaitReaction() {
+            const filter = (rect, usr) =>
+            ["⬅", "🛑", "➡"].includes(rect.emoji.name) &&
+                  usr.id === message.author.id;
+            const response = await m.awaitReactions(filter, {
+                max: 1,
+                time: 30000
+            });
+            if (!response.size) {
+                return undefined;
+            }
+            const emoji = response.first().emoji.name;
+            if (emoji === "⬅") index--;
+            if (emoji === "🛑") m.delete();
+            if (emoji === "➡") index++;
+
+            if (emoji !== "🛑") {
+                index = ((index % number.length) + number.length) % number.length;
+                embedQueue.setDescription(number[index].join("\n"));
+                embedQueue.setFooter(`Page ${index + 1} of ${number.length}`);
+                await m.edit(embedQueue);
+                return awaitReaction();
+            }
+        }
+            return awaitReaction();
+        }
+    
+    } else if (command === "pause") {
         if (serverQueue && serverQueue.playing) {
             serverQueue.playing = false;
             serverQueue.connection.dispatcher.pause();
@@ -429,7 +468,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
         return message.channel.send({embed: {color: "RED", description: "There is nothing playing"}});
 
-    } else if (command === "resume" || command === "r") {
+    } else if (command === "resume") {
         if (serverQueue && !serverQueue.playing) {
             serverQueue.playing = true;
             serverQueue.connection.dispatcher.resume();
@@ -443,7 +482,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         };
         return message.channel.send({embed: {color: "RED", description: "There is nothing playing"}});
     }
-};
+});
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = queue.get(message.guild.id);
@@ -482,6 +521,15 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     return;
 }
 
+function chunk(array, chunkSize) {
+    const temp = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+        temp.push(array.slice(i, i + chunkSize));
+    }
+    return temp;
+    return;
+}
+
 function play(guild, song) {
     const serverQueue = queue.get(guild.id);
 
@@ -510,3 +558,16 @@ function play(guild, song) {
 }
 
 bot.login(process.env.BOT_TOKEN);
+
+process.on('unhandledRejection', (reason, promise) => {
+    try {
+        console.error("Unhandled Rejection at: ", promise, "reason: ", reason.stack || reason);
+    } catch {
+        console.error(reason);
+    }
+});
+
+process.on('uncaughtException', err => {
+    console.error(`Caught exception: ${err}`);
+    process.exit(1);
+});
