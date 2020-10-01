@@ -353,20 +353,20 @@ bot.on("message", async (message) => { // eslint-disable-line
             return handleVideo(video, message, voiceChannel);
         }
 
-    } else if (command === "skip") {
+    } else if (command === "skip"|| command === "sk") {
         if (!message.member.voice.channel) return message.channel.send({embed: {color: "RED", description: "I'm sorry, but you need to be in a voice channel to skip a music!"}});
         if (!serverQueue) return message.channel.send({embed: {color: "RED", description: "There is nothing playing that I could skip for you"}});
         serverQueue.connection.dispatcher.end("[runCmd] Skip command has been used");
         return message.channel.send({embed: {color: "GREEN", description: "⏭️  **|**  I skipped the song for you"}});
 
-    } else if (command === "stop") {
+    } else if (command === "stop"|| command === "st") {
         if (!message.member.voice.channel) return message.channel.send({embed: {color: "RED", description: "I'm sorry but you need to be in a voice channel to play music!"}});
         if (!serverQueue) return message.channel.send({embed: {color: "RED", description: "There is nothing playing that I could stop for you"}});
         serverQueue.songs = [];
         serverQueue.connection.dispatcher.end("[runCmd] Stop command has been used");
         return message.channel.send({embed: {color: "GREEN", description: "⏹️  **|**  Deleting queues and leaving voice channel..."}});
 
-    } else if (command === "volume" || command === "vol") {
+    } else if (command === "volume" || command === "v") {
         if (!message.member.voice.channel) return message.channel.send({embed: {color: "RED", description: "I'm sorry, but you need to be in a voice channel to set a volume!"}});
         if (!serverQueue) return message.channel.send({embed: {color: "RED", description: "There is nothing playing"}});
         if (!args[1]) return message.channel.send({embed: {color: "BLUE", description: `The current volume is: **\`${serverQueue.volume}%\`**`}});
@@ -426,7 +426,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             return awaitReaction();
         }
     
-    } else if (command === "pause") {
+    } else if (command === "pause"|| command === "pa") {
         if (serverQueue && serverQueue.playing) {
             serverQueue.playing = false;
             serverQueue.connection.dispatcher.pause();
@@ -434,7 +434,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
         return message.channel.send({embed: {color: "RED", description: "There is nothing playing"}});
 
-    } else if (command === "resume") {
+    } else if (command === "resume"|| command === "r") {
         if (serverQueue && !serverQueue.playing) {
             serverQueue.playing = true;
             serverQueue.connection.dispatcher.resume();
