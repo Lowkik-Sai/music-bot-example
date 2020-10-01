@@ -82,6 +82,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if (command === "ban" ) {
         const LRU = require('lru-cache')
+        const config = require('./config.json')
         var cache = new LRU({
           maxAge: config.throttlingMS
        })
