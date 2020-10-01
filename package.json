@@ -33,7 +33,7 @@
     "express": "^4.17.1",
     "node-opus": "^0.3.3",
     "opusscript": "0.0.7",
-    "lru-cache": "^4.1.1"
+    "lru-cache": "^4.1.1",
     "simple-youtube-api": "^5.2.1",
     "node-fetch": "^2.6.1",
     "ms": "^2.1.0",
