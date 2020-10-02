@@ -212,7 +212,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "userinfo" || command === "ui" || command === "whois" ) {
        let member = message.mentions.users.first() || message.author
 
-const embed = new RichEmbed()
+ const helpembed = new MessageEmbed()
     .setColor("RANDOM")
     .setThumbnail(`${user.displayAvatarURL}`)
     .addField(`${user.tag}`, `${user}`, true)
@@ -224,7 +224,7 @@ const embed = new RichEmbed()
     .addField("Bot:", `${user.bot}`, true) 
     .addField("Roles:", member.roles.map(roles => `${roles}`).join(', '), true)
     .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
-message.channel.send({embed});
+message.channel.send({helpembed});
     }    
     if (command === "botinfo" || command === "bi") {
         const helpembed = new MessageEmbed()
