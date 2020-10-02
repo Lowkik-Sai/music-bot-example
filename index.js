@@ -16,19 +16,22 @@ const queue = new Map();
 
 bot.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
-  console.log(`Bot has started, with ${bot.users.size} users, in ${bot.channels.size} channels of ${bot.guilds.size} guilds.`); 
+  console.log(`Bot has started, with ${bot.users.cache.size} users, in ${bot.channels.cache.size} channels of ${bot.guilds.cache.size} guilds.`);
   // Example of changing the bot's playing game to something useful. `client.user` is what the
   // docs refer to as the "ClientUser".
+  bot.user.setActivity(`Serving ${bot.guilds.cache.size} servers`);
 });
 
 bot.on("guildCreate", guild => {
   // This event triggers when the bot joins a guild.
   console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  bot.user.setActivity(`Serving ${bot.guilds.cache.size} servers`);
 });
 
 bot.on("guildDelete", guild => {
   // this event triggers when the bot is removed from a guild.
   console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+  bot.user.setActivity(`Serving ${bot.guilds.cache.size} servers`);
 });
 
 bot.on('ready', () => {
