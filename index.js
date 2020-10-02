@@ -248,6 +248,7 @@ const embed = new MessageEmbed()
     .addField("In Server", message.guild.name, true)
     .addField("Game:", `${user.presence.game ? user.presence.game.name : 'None'}`, true)
     .addField("Bot:", `${user.bot}`, true)
+    .setTimestamp()
     .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
 message.channel.send({embed});
     }
@@ -269,10 +270,13 @@ message.channel.send({embed});
     if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
+            .setTitle("Help Commands")
             .setAuthor("Commands List", message.author.displayAvatarURL())
-            .addField("Music")
-            .addField("Moderation")
-            .addField("Utility")
+            .addField("Music", `Type -help music for more commands`)
+            .addField("Moderation", `Type -help moderation for more commands`)
+            .addField("Utility", `Type -help utility for more commands`)
+            .addField("Fun", `Type -help fun for more commands`)
+            .addField("Among Us", `Most commands work in servers/channels,Soon there will be more funny commands!`)
             .setTimestamp()
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
@@ -332,6 +336,8 @@ message.channel.send({embed});
     message.reply(`${member.user.tag} has been banned by ${message.author.tag} because: ${reason}`);
     }
     if(command === "purge") {
+    const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+    const command = args.shift().toLowerCase();
     // This command removes all messages from all users in the channel, up to 100.
     
     // get the delete count, as an actual number.
