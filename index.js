@@ -14,6 +14,22 @@ const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
 
+bot.on("ready", () => {
+  // This event will run if the bot starts, and logs in, successfully.
+  console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
+  // Example of changing the bot's playing game to something useful. `client.user` is what the
+  // docs refer to as the "ClientUser".
+});
+
+bot.on("guildCreate", guild => {
+  // This event triggers when the bot joins a guild.
+  console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+});
+
+bot.on("guildDelete", guild => {
+  // this event triggers when the bot is removed from a guild.
+  console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+});
 
 bot.on('ready', () => {
   console.log("Activity OK")
@@ -251,7 +267,9 @@ message.channel.send({embed});
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
             .setAuthor("Commands List", message.author.displayAvatarURL())
-            .addField("Music", \`Play\` \`Search\` \`Skip\` \`Stop\` \`Pause\` \`Resume\` \`NowPlaying\` \`Queue\` \`Volume\`)
+            .addField("Music")
+            .addField("Moderation")
+            .addField("Utility")
             .setTimestamp()
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
@@ -263,6 +281,68 @@ message.channel.send({embed});
 📩 |You've got Dm!`)
             .setTimestamp()
               message.channel.send(helpembed);
+    }
+    if(command === "kick") {
+    // This command must be limited to mods and admins. In this example we just hardcode the role names.
+    // Please read on Array.some() to understand this bit: 
+    // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some?
+    if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
+      return message.reply("Sorry, you don't have permissions to use this!");
+    
+    // Let's first check if we have a member and if we can kick them!
+    // message.mentions.members is a collection of people that have been mentioned, as GuildMembers.
+    // We can also support getting the member by ID, which would be args[0]
+    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
+    if(!member)
+      return message.reply("Please mention a valid member of this server");
+    if(!member.kickable) 
+      return message.reply("I cannot kick this user! Do they have a higher role? Do I have kick permissions?");
+    
+    // slice(1) removes the first part, which here should be the user mention or ID
+    // join(' ') takes all the various parts to make it a single string.
+    let reason = args.slice(1).join(' ');
+    if(!reason) reason = "No reason provided";
+    
+    // Now, time for a swift kick in the nuts!
+    await member.kick(reason)
+      .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
+    message.reply(`${member.user.tag} has been kicked by ${message.author.tag} because: ${reason}`);
+
+    }
+    if(command === "ban") {
+    // Most of this command is identical to kick, except that here we'll only let admins do it.
+    // In the real world mods could ban too, but this is just an example, right? ;)
+    if(!message.member.roles.some(r=>["Administrator"].includes(r.name)) )
+      return message.reply("Sorry, you don't have permissions to use this!");
+    
+    let member = message.mentions.members.first();
+    if(!member)
+      return message.reply("Please mention a valid member of this server");
+    if(!member.bannable) 
+      return message.reply("I cannot ban this user! Do they have a higher role? Do I have ban permissions?");
+
+    let reason = args.slice(1).join(' ');
+    if(!reason) reason = "No reason provided";
+    
+    await member.ban(reason)
+      .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
+    message.reply(`${member.user.tag} has been banned by ${message.author.tag} because: ${reason}`);
+  }
+  
+  if(command === "purge") {
+    // This command removes all messages from all users in the channel, up to 100.
+    
+    // get the delete count, as an actual number.
+    const deleteCount = parseInt(args[0], 10);
+    
+    // Ooooh nice, combined conditions. <3
+    if(!deleteCount || deleteCount < 2 || deleteCount > 100)
+      return message.reply("Please provide a number between 2 and 100 for the number of messages to delete");
+    
+    // So we get our messages, and delete them. Simple enough, right?
+    const fetched = await message.channel.fetchMessages({limit: deleteCount});
+    message.channel.bulkDelete(fetched)
+      .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
     }
     if (command === "play" || command === "p") {
         const voiceChannel = message.member.voice.channel;
