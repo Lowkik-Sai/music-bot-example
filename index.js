@@ -381,7 +381,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
     } else if (command === "queue" || command === "q") {
         
-        let number = message.guild.musicData.queue.map(
+        let number = message.guild.musicData.Queue.map(
             (x, i) => `${i + 1} - ${x.title}\nRquested By: **${x.author.tag}**`
         );
         number = chunk(number, 5);
