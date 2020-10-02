@@ -221,7 +221,7 @@ const member = message.guild.member(user);
 
 const embed = new MessageEmbed()
     .setColor("RANDOM")
-    .setThumbnail(message.author.avatarURL)
+    .setThumbnail(member.displayAvatarURL())
     .addField(`${user.tag}`, `${user}`, true)
     .addField("ID:", `${user.id}`, true)
     .addField("Nickname:", `${member.nickname !== null ? `${member.nickname}` : 'None'}`, true)
@@ -251,19 +251,7 @@ message.channel.send({embed});
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
             .setAuthor("Commands List", message.author.displayAvatarURL())
-            .setDescription(`
-1) \`play(p)\`  
-2) \`search(sc)\`
-3) \`skip(sk)\`
-4) \`stop(st)\`
-5)  \`pause(pa)\`
-6) \`resume(r)\`
-7) \`nowplaying(np)\`
-8) \`queue(q)\`
-9) \`volume(v)\`
-10) \`invite(inv)\`
-11) \`serverinfo(si)\`
-12) \`botinfo(bi)\``)
+            .addField("Music", \`Play\` \`Search\` \`Skip\` \`Stop\` \`Pause\` \`Resume\` \`NowPlaying\` \`Queue\` \`Volume\`)
             .setTimestamp()
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
