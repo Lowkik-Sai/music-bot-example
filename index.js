@@ -210,8 +210,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(helpembed);
     }
     if (command === "userinfo" || command === "ui" || command === "whois" ) {
-        const joined = formatDate(member.joinedAt);
-         const created = formatDate(member.user.createdAt);
        let member = message.mentions.users.first() || message.author
 
 const embed = new RichEmbed()
@@ -224,8 +222,6 @@ const embed = new RichEmbed()
     .addField("In Server", message.guild.name, true)
     .addField("Game:", `${user.presence.game ? user.presence.game.name : 'None'}`, true)
     .addField("Bot:", `${user.bot}`, true) 
-    .addField("Joined at:", `${joined}`, true)
-    .addField("Account Created at:", `${created}`, true)
     .addField("Roles:", member.roles.map(roles => `${roles}`).join(', '), true)
     .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
 message.channel.send({embed});
