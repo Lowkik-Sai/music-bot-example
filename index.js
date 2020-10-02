@@ -210,18 +210,13 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(helpembed);
     }
     if (command === "userinfo" || command === "ui" || command === "whois" ) {
-       let user;
-if (message.mentions.users.first()) {
-    user = message.mentions.users.first();
-} else {
-    user = message.`enter code here`author;
-}
+        const joined = formatDate(member.joinedAt);
+         const created = formatDate(member.user.createdAt);
+       let member = message.mentions.users.first() || message.author
 
-const member = message.guild.member(user);
-
-const embed = new Discord.RichEmbed()
+const embed = new RichEmbed()
     .setColor("RANDOM")
-    .setThumbnail(message.author.avatarURL)
+    .setThumbnail(`${user.displayAvatarURL}`)
     .addField(`${user.tag}`, `${user}`, true)
     .addField("ID:", `${user.id}`, true)
     .addField("Nickname:", `${member.nickname !== null ? `${member.nickname}` : 'None'}`, true)
@@ -229,6 +224,8 @@ const embed = new Discord.RichEmbed()
     .addField("In Server", message.guild.name, true)
     .addField("Game:", `${user.presence.game ? user.presence.game.name : 'None'}`, true)
     .addField("Bot:", `${user.bot}`, true) 
+    .addField("Joined at:", `${joined}`, true)
+    .addField("Account Created at:", `${created}`, true)
     .addField("Roles:", member.roles.map(roles => `${roles}`).join(', '), true)
     .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
 message.channel.send({embed});
