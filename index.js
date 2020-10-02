@@ -209,6 +209,24 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setTimestamp()
         message.channel.send(helpembed);
     }
+    if (command === "userinfo" || command === "ui" || command === "whois" ) {
+        let user = message.mentions.users.first() || message.author;
+        const joinDiscord = moment(user.createdAt).format('llll');
+        const joinServer = moment(user.joinedAt).format('llll');
+        let embed = new RichEmbed()
+            .setAuthor(user.username + '#' + user.discriminator, user.displayAvatarURL)
+            .setDescription(`${user}`)
+            .setColor(`RANDOM`)
+            .setThumbnail(`${user.displayAvatarURL}`)
+            .addField('Joined at:', `${moment.utc(user.joinedAt).format('dddd, MMMM Do YYYY, HH:mm:ss')}`, true)
+            .addField('Status:', user.presence.status, true)
+            .addField('Roles:', user.roles.map(r => `${r}`).join(' | '), true)
+            .setFooter(`ID: ${user.id}`)
+            .setTimestamp();
+
+    message.channel.send({ embed: embed });
+    return;
+    }
     if (command === "botinfo" || command === "bi") {
         const helpembed = new MessageEmbed()
             .setColor("ORANGE")
