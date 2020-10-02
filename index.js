@@ -11,6 +11,8 @@ const bot = new Client({
 
 const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
+const queue = new Map();
+
 
 
 bot.on('ready', () => {
@@ -379,12 +381,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         return message.channel.send({embed: {color: "BLUE", description: `🎶  **|**  Now Playing: **\`${serverQueue.songs[0].title}\`**`}});
 
     } else if (command === "queue" || command === "q") {
-        const queue = new Map();
-        
-        let number = message.guild.musicData.queue(
-            (x, i) => `${i + 1} - ${x.title}\nRquested By: **${x.author.tag}**`
-        );
-        number = chunk(number, 5);
 
         let index = 0;
         if (!serverQueue) return message.channel.send({embed: {color: "RED", description: "There is nothing playing"}});
