@@ -45,7 +45,7 @@ bot.on('ready', () => {
 
 bot.on('message', msg => {
   if (msg.content === 'prefix') {
-    msg.reply('My Prefix is **-**');
+    msg.reply('My Prefix is **+**');
   }
 });
 
