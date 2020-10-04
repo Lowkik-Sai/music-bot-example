@@ -270,13 +270,13 @@ message.channel.send({embed});
     if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
-            .setTitle("Help Commands")
+            .setTitle("Type +help <command name>")
             .setAuthor("Commands List", message.author.displayAvatarURL())
             .addField("Music", `Type -help music for more commands`)
             .addField("Moderation", `Type -help moderation for more commands`)
             .addField("Utility", `Type -help utility for more commands`)
             .addField("Fun", `Type -help fun for more commands`)
-            .addField("Among Us", `Most commands work in servers/channels,Soon there will be more funny commands!`)
+            .addField("Among Us", `Most commands work in discord servers,not in my Dms.Soon there will be more funny commands!`)
             .setTimestamp()
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.author.send(helpembed);
