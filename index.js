@@ -513,7 +513,7 @@ message.channel.send({embed});
             return handleVideo(video, message, voiceChannel);
         }
 
-    } else if (command === "skip") {
+    } else if (command === "skip"|| command === "sk") {
         if (!message.member.voice.channel) return message.channel.send({
             embed: {
                 color: "RED",
@@ -534,7 +534,7 @@ message.channel.send({embed});
             }
         });
 
-    } else if (command === "stop") {
+    } else if (command === "stop"|| command === "st") {
         if (!message.member.voice.channel) return message.channel.send({
             embed: {
                 color: "RED",
@@ -556,7 +556,7 @@ message.channel.send({embed});
             }
         });
 
-    } else if (command === "volume" || command === "vol") {
+    } else if (command === "volume" || command === "v") {
         if (!message.member.voice.channel) return message.channel.send({
             embed: {
                 color: "RED",
@@ -657,7 +657,7 @@ message.channel.send({embed});
             return awaitReaction();
         }
 
-    } else if (command === "pause") {
+    } else if (command === "pause"|| command === "pa") {
         if (serverQueue && serverQueue.playing) {
             serverQueue.playing = false;
             serverQueue.connection.dispatcher.pause();
@@ -675,7 +675,7 @@ message.channel.send({embed});
             }
         });
 
-    } else if (command === "resume") {
+    } else if (command === "resume"|| command === "r") {
         if (serverQueue && !serverQueue.playing) {
             serverQueue.playing = true;
             serverQueue.connection.dispatcher.resume();
@@ -692,7 +692,7 @@ message.channel.send({embed});
                 description: "There is nothing playing"
             }
         });
-    } else if (command === "loop") {
+    } else if (command === "loop"|| command === "l") {
         if (serverQueue) {
             serverQueue.loop = !serverQueue.loop;
             return message.channel.send({
