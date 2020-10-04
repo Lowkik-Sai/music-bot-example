@@ -513,7 +513,7 @@ message.channel.send({embed});
             return handleVideo(video, message, voiceChannel);
         }
 
-    } else if (command === "skip"|| command === "sk") {
+    } else if (command === "skip") {
         if (!message.member.voice.channel) return message.channel.send({
             embed: {
                 color: "RED",
@@ -534,7 +534,7 @@ message.channel.send({embed});
             }
         });
 
-    } else if (command === "stop"|| command === "st") {
+    } else if (command === "stop") {
         if (!message.member.voice.channel) return message.channel.send({
             embed: {
                 color: "RED",
@@ -556,7 +556,7 @@ message.channel.send({embed});
             }
         });
 
-    } else if (command === "volume" || command === "v") {
+    } else if (command === "volume" || command === "vol") {
         if (!message.member.voice.channel) return message.channel.send({
             embed: {
                 color: "RED",
@@ -606,8 +606,10 @@ message.channel.send({embed});
 
     } else if (command === "queue" || command === "q") {
 
-        let number = message.guild.musicData.queue.map(
-            (x, i) => `${i + 1} - ${x.title}\nRquested By: **${x.author.tag}**`
+        let songsss = serverQueue.songs.slice(1)
+        
+        let number = songsss.map(
+            (x, i) => `${i + 1} - ${x.title}`
         );
         number = chunk(number, 5);
 
@@ -621,8 +623,8 @@ message.channel.send({embed});
         let embedQueue = new MessageEmbed()
             .setColor("BLUE")
             .setAuthor("Song queue", message.author.displayAvatarURL())
-            .setDescription(`${serverQueue.songs.map(song => `**-** ${song.title}`).join("\n")}`)
-            .setFooter(`• Now Playing: ${serverQueue.songs[0].title}`);
+            .setDescription(number[index].join("\n"))
+            .setFooter(`• Now Playing: ${serverQueue.songs[0].title} | Page ${index + 1} of ${number.length}`);
         const m = await message.channel.send(embedQueue);
 
         if (number.length !== 1) {
@@ -655,7 +657,7 @@ message.channel.send({embed});
             return awaitReaction();
         }
 
-    } else if (command === "pause"|| command === "pa") {
+    } else if (command === "pause") {
         if (serverQueue && serverQueue.playing) {
             serverQueue.playing = false;
             serverQueue.connection.dispatcher.pause();
@@ -673,7 +675,7 @@ message.channel.send({embed});
             }
         });
 
-    } else if (command === "resume"|| command === "r") {
+    } else if (command === "resume") {
         if (serverQueue && !serverQueue.playing) {
             serverQueue.playing = true;
             serverQueue.connection.dispatcher.resume();
@@ -690,7 +692,7 @@ message.channel.send({embed});
                 description: "There is nothing playing"
             }
         });
-    } else if (command === "loop"|| command === "l") {
+    } else if (command === "loop") {
         if (serverQueue) {
             serverQueue.loop = !serverQueue.loop;
             return message.channel.send({
