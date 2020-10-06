@@ -26,7 +26,6 @@ invitech.createInvite({maxAge:0})
 .then(invite=>{
 cc.send(`\`${auditlog.executor.tag}\` added bot in __**${guild.name}**__\nLink:- https://discord.gg/${invite.code}`);
 });
-});
 
 bot.on('guildDelete', async guild => {
 let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
