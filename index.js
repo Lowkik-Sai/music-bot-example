@@ -152,6 +152,12 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         }
     }
+    if (command === "leave") {
+      message.guild
+        .leave()
+        .then(guild => console.log('left guild', guild.name))
+        .catch(console.error);
+    }
     if (command === "avatar" || command === "a") {
         let member = message.mentions.users.first() || message.author
 
