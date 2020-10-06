@@ -104,9 +104,9 @@ bot.on("message", async (message) => { // eslint-disable-line
       let m = '';
       m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
       m += `I am aware of ${message.guild.members.cache.size} members\n`;
-      m += `I am aware of ${client.channels.cache.size} channels overall\n`;
-      m += `I am aware of ${client.guilds.cache.size} guilds overall\n`;
-      m += `I am aware of ${client.users.cache.size} users overall\n`;
+      m += `I am aware of ${bot.channels.cache.size} channels overall\n`;
+      m += `I am aware of ${bot.guilds.cache.size} guilds overall\n`;
+      m += `I am aware of ${bot.users.cache.size} users overall\n`;
       message.channel
         .send(m)
         .then(msg => msg.edit('nah'))
