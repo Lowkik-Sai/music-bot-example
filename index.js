@@ -20,7 +20,7 @@ bot.on('guildCreate', async guild => {
 	});
 	const auditlog = fetchedLogs.entries.first();
 let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
-let cc=myg.channels.cache.find(channel=>channel.id=="762981236351959061");
+let cc=myg.channels.cache.find(channel=>channel.id=="762981207705124906");
 let invitech=guild.channels.cache.find(channel=>channel.type=='text');
 invitech.createInvite({maxAge:0})
 .then(invite=>{
@@ -30,8 +30,10 @@ cc.send(`\`${auditlog.executor.tag}\` added bot in __**${guild.name}**__\nLink:-
 bot.on('guildDelete', async guild => {
 let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
 let cc=myg.channels.cache.find(channel=>channel.id=="762981236351959061");
-cc.send(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-});
+cc.send({embed: {
+  color: 3066993,
+  description:`I have been removed from: ${guild.name} (id: ${guild.id})`
+}});
 });
 
 bot.on("ready", () => {
@@ -174,7 +176,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "leave") {
       message.guild
         .leave()
-        .then(guild => console.log('left guild', guild.name))
+        .then(guild => console.log('Left guild', guild.name))
         .catch(console.error);
     }
     if (command === "avatar" || command === "a") {
