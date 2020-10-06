@@ -352,7 +352,10 @@ message.channel.send({embed});
           })
           .then(() => {
             // We let the message author know we were able to ban the person
-            message.reply(`Successfully banned ${user.tag}`);
+            message.reply({embed: {
+  color: 3066993,
+  description:`Successfully banned ${user.tag}`
+}});
           })
           .catch(err => {
             // An error happened
