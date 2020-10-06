@@ -109,7 +109,6 @@ bot.on("message", async (message) => { // eslint-disable-line
       m += `I am aware of ${bot.users.cache.size} users overall\n`;
       message.channel
         .send(m)
-        .then(msg => msg.edit('nah'))
         .catch(console.error);
     }
     if (command === "covid" ) { 
