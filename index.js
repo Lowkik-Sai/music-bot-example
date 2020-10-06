@@ -29,8 +29,8 @@ cc.send(`\`${auditlog.executor.tag}\` added bot in __**${guild.name}**__\nLink:-
 
 bot.on('guildDelete', async guild => {
 let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
-let cc=myg.channels.cache.find(channel=>channel.id=="762981236351959061");
-cc.send({embed: {
+let ccc=myg.channels.cache.find(channel=>channel.id=="762981236351959061");
+ccc.send({embed: {
   color: 3066993,
   description:`I have been removed from: ${guild.name} (id: ${guild.id})`
 }});
