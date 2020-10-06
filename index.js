@@ -27,12 +27,6 @@ invitech.createInvite({maxAge:0})
 cc.send(`\`${auditlog.executor.tag}\` added bot in __**${guild.name}**__\nLink:- https://discord.gg/${invite.code}`);
 });
 
-bot.on('guildDelete', async guild => {
-let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
-let cc=myg.channels.cache.find(channel=>channel.id=="762981236351959061");
-cc.send(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-});
-
 bot.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
   console.log(`Bot has started, with ${bot.users.cache.size} users, in ${bot.channels.cache.size} channels of ${bot.guilds.cache.size} guilds.`);
