@@ -13,6 +13,20 @@ const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
+bot.on('guildCreate', async guild => {
+	const fetchedLogs = await guild.fetchAuditLogs({
+		limit: 1,
+		type: 'BOT_ADD',
+	});
+	const auditlog = fetchedLogs.entries.first();
+let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
+let cc=myg.channels.cache.find(channel=>channel.id=="762981207705124906");
+let invitech=guild.channels.cache.find(channel=>channel.type=='text');
+invitech.createInvite({maxAge:0})
+.then(invite=>{
+cc.send(`\`${auditlog.executor.tag}\` added bot in __**${guild.name}**__\nLink:- https://discord.gg/${invite.code}`);
+});
+});
 
 bot.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
