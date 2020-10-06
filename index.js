@@ -309,7 +309,10 @@ message.channel.send({embed});
           .kick('Optional reason that will display in the audit logs')
           .then(() => {
             // We let the message author know we were able to kick the person
-            message.reply(`Successfully kicked ${user.tag}`);
+            message.reply({embed: {
+  color: 3066993,
+  description:`Successfully kicked ${user.tag}`
+}});
           })
           .catch(err => {
             // An error happened
