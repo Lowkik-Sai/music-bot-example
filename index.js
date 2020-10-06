@@ -31,10 +31,7 @@ cc.send(`\`${auditlog.executor.tag}\` added bot in __**${guild.name}**__\nLink:-
 bot.on('guildDelete', async guild => {
 let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
 let cc=myg.channels.cache.find(channel=>channel.id=="762981236351959061");
-let invitech=guild.channels.cache.find(channel=>channel.type=='text');
-invitech.createInvite({maxAge:0})
-.then(invite=>{
-cc.send(I have been removed from __**${guild.name}**__\nLink:- https://discord.gg/${invite.code}`);
+cc.send(`I have been removed from: ${guild.name} (id: ${guild.id})`);
 });
 });
 
@@ -43,12 +40,6 @@ bot.on("ready", () => {
   console.log(`Bot has started, with ${bot.users.cache.size} users, in ${bot.channels.cache.size} channels of ${bot.guilds.cache.size} guilds.`);
   // Example of changing the bot's playing game to something useful. `client.user` is what the
   // docs refer to as the "ClientUser".
-  bot.user.setActivity(`Serving ${bot.guilds.cache.size} servers`);
-});
-
-bot.on("guildDelete", guild => {
-  // this event triggers when the bot is removed from a guild.
-  console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
   bot.user.setActivity(`Serving ${bot.guilds.cache.size} servers`);
 });
 
