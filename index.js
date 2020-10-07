@@ -201,7 +201,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         }
     }
-    if (command === "leave") {
+    if (command === "leave"&&m.author.id=="654669770549100575") {
       message.guild
         .leave()
         .then(guild => console.log('Left guild', guild.name))
