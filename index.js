@@ -147,7 +147,10 @@ bot.on("message", async (message) => { // eslint-disable-line
       m += `I am aware of ${bot.guilds.cache.size} guilds overall\n`;
       m += `I am aware of ${bot.users.cache.size} users overall\n`;
       message.channel
-        .send(m)
+        .send({embed: {
+  color: 3066993,
+  description:m
+}});
         .catch(console.error);
     }
     if (command === "covid" ) { 
