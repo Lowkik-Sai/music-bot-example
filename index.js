@@ -84,7 +84,23 @@ bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully
 bot.on("shardDisconnect", (event, id) => console.log(`[SHARD] Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect...`));
 bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnecting...`));
 
+bot.on("message", async (message) => { // eslint-disable-line
+    if (message.author.bot) return;
+    if (!message.content.startsWith(PREFIX)) return;
 
+    const args = message.content.split(" ");
+    const searchString = args.slice(1).join(" ");
+    const url = args[1] ? args[1].replace(/<(.+)>/g, "$1") : "";
+      
+    if (command === "invite" || command === "inv") {
+        const helpembed = new MessageEmbed()
+            .setColor("BLUE")
+            .setAuthor("Invite Link", message.author.displayAvatarURL())
+            .setDescription(`[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
+            .setTimestamp()
+            .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
+        msg.reply(helpembed);
+    }
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
@@ -98,15 +114,6 @@ bot.on("message", async (message) => { // eslint-disable-line
     let command = message.content.toLowerCase().split(" ")[0];
     command = command.slice(PREFIX.length);
     
-    if (command === "invite" || command === "inv") {
-        const helpembed = new MessageEmbed()
-            .setColor("BLUE")
-            .setAuthor("Invite Link", message.author.displayAvatarURL())
-            .setDescription(`[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
-            .setTimestamp()
-            .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
-        message.channel.send(helpembed);
-    }
     if (command === "invite" || command === "inv") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
