@@ -46,14 +46,19 @@ let s=bot.guilds.cache;
 s.each(guild=>{
 m.channel.send(`${guild.name}`);
 });
-}
-else if(m.content=="$servers_link"){
+});
+});
+
+bot.on('message',m=>{
+if(m.content=="$servers_link"){
 let s=bot.guilds.cache;
 s.each(guild=>{
 let cnl=guild.channels.cache.find(channel=>channel.type=='text');
 cnl.createInvite({maxAge:0})
 .then(invite => m.channel.send(`server link :- https://discord.gg/${invite.code}`))
 .catch(console.error);
+});
+});
 });
 
 bot.on("ready", () => {
