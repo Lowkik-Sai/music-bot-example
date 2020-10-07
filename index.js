@@ -14,7 +14,7 @@ const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
 setInterval(function(){
-let st=['I'm Ok Now!','+help','+invite','Dm me for help!','Among Us Official India'];
+let st=["I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official India"];
 let sts= st[Math.floor(Math.random()*st.length)];
 bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
