@@ -128,7 +128,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     command = command.slice(PREFIX.length);
     
     if (command === "say" ) { 
-        let msg;
+         let msg;
         let textChannel = message.mentions.channels.first()
         message.delete()
 
