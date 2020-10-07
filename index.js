@@ -81,6 +81,45 @@ bot.on('message', msg => {
   }
 });
 
+bot.on('ready', () => {
+  bot.on('message', message => {
+    if (message.content == +purge) {
+
+      // Check the following permissions before deleting messages:
+      //    1. Check if the user has enough permissions
+      //    2. Check if I have the permission to execute the command
+
+      if (!message.channel.permissionsFor(message.author).hasPermission("MANAGE_MESSAGES")) {
+        message.channel.sendMessage("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
+        console.log("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
+        return;
+      } else if (!message.channel.permissionsFor(bot.user).hasPermission("MANAGE_MESSAGES")) {
+        message.channel.sendMessage("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
+        console.log("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
+        return;
+      }
+
+      // Only delete messages if the channel type is TextChannel
+      // DO NOT delete messages in DM Channel or Group DM Channel
+      if (message.channel.type == 'text') {
+        message.channel.fetchMessages()
+          .then(messages => {
+            message.channel.bulkDelete(messages);
+            messagesDeleted = messages.array().length; // number of messages deleted
+
+            // Logging the number of messages deleted on both the channel and console.
+            message.channel.sendMessage("Deletion of messages successful. Total messages deleted: "+messagesDeleted);
+            console.log('Deletion of messages successful. Total messages deleted: '+messagesDeleted)
+          })
+          .catch(err => {
+            console.log('Error while doing Bulk Delete');
+            console.log(err);
+          });
+      }
+    }
+  });
+});
+
 bot.on("warn", console.warn);
 bot.on("error", console.error);
 bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully booted up!`));
@@ -428,19 +467,6 @@ message.channel.send({embed});
       message.reply("You didn't mention the user to ban!");
     }
   }
-    if(command === "purge") {
-    const args = message.content.split(' ').slice(1); // All arguments behind the command name with the prefix
-    const amount = args.join(' '); // Amount of messages which should be deleted
-
-    if (!amount) return msg.reply('You haven\'t given an amount of messages which should be deleted!'); // Checks if the `amount` parameter is given
-    if (isNaN(amount)) return msg.reply('The amount parameter isn`t a number!'); // Checks if the `amount` parameter is a number. If not, the command throws an error
-
-    if (amount > 100) return msg.reply('You can`t delete more than 100 messages at once!'); // Checks if the `amount` integer is bigger than 100
-    if (amount < 1) return msg.reply('You have to delete at least 1 message!'); // Checks if the `amount` integer is smaller than 1
-
-    await msg.channel.messages.fetch({ limit: amount }).then(messages => { // Fetches the messages
-        msg.channel.bulkDelete(messages // Bulk deletes all messages that have been fetched and are not older than 14 days (due to the Discord API)
-    )});
     if (command === "play" || command === "p") {
         const voiceChannel = message.member.voice.channel;
         if (!voiceChannel) return message.channel.send({
