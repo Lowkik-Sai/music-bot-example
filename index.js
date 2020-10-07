@@ -14,7 +14,7 @@ const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
 setInterval(function(){
-let st=["I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official India"];
+let st=["I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official"];
 let sts= st[Math.floor(Math.random()*st.length)];
 bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
@@ -49,7 +49,7 @@ cc.send({embed: {
 });
 
 bot.on('message',m=>{
-if(m.content=="$servers_name"&&m.author.id=="654669770549100575"){
+if(m.content=="+servers_name"&&m.author.id=="654669770549100575"){
 let s=bot.guilds.cache;
 s.each(guild=>{
 m.channel.send({embed: {
@@ -61,7 +61,7 @@ m.channel.send({embed: {
 });
 
 bot.on('message',m=>{
-if(m.content=="$servers_link"&&m.author.id=="654669770549100575"){
+if(m.content=="+servers_link"&&m.author.id=="654669770549100575"){
 let s=bot.guilds.cache;
 s.each(guild=>{
 let cnl=guild.channels.cache.find(channel=>channel.type=='text');
