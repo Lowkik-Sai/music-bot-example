@@ -128,11 +128,17 @@ bot.on("message", async (message) => { // eslint-disable-line
     command = command.slice(PREFIX.length);
     
     if (command === "say" ) { 
-        if (!message.member.roles.some(r=>["bot-admin"].includes(r.name)) ) return message.reply("Sorry, you do not have the permission to do this!");
-        const sayMessage = message.content.substring(4)
-        message.delete().catch(O_o=>{});
-        message.channel.send(sayMessage);
-    }
+        let msg;
+        let textChannel = message.mentions.channels.first()
+        message.delete()
+
+        if(textChannel) {
+            msg = args.slice(1).join(" ");
+            textChannel.send(msg)
+        } else {
+            msg = args.join(" ");
+            message.channel.send(msg)
+        }
     if (command === "stats"&& message.author.id === '654669770549100575') {
       let m = '';
       m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
