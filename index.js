@@ -13,6 +13,15 @@ const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
+setInterval(function(){
+let g=bot.guilds.cache.array();
+let st=[`in ${g.length} trusted servers.`,'+help , +invite , Dm me for help! , Among Us Official India'];
+let sts= st[Math.floor(Math.random()*st.length)];
+client.user.setPresence({ activity: { name: sts }, status: 'online' })
+.catch(console.error);
+},3000);
+});
+
 bot.on('guildCreate', async guild => {
 	const fetchedLogs = await guild.fetchAuditLogs({
 		limit: 1,
@@ -63,23 +72,6 @@ cnl.createInvite({maxAge:0})
 .catch(console.error);
 });
 };
-});
-
-bot.on("ready", () => {
-  // This event will run if the bot starts, and logs in, successfully.
-  console.log(`Bot has started, with ${bot.users.cache.size} users, in ${bot.channels.cache.size} channels of ${bot.guilds.cache.size} guilds.`);
-  // Example of changing the bot's playing game to something useful. `client.user` is what the
-  // docs refer to as the "ClientUser".
-  bot.user.setActivity(`Serving ${bot.guilds.cache.size} servers`);
-});
-
-bot.on('ready', () => {
-  console.log("Activity OK")
-  //CHANGE {type: 2} in 
-  //1 FOR PLAYING
-  //2 FOR LISTENING
-  //3 FOR WATCHING
-  bot.user.setActivity("Among Us Official", {type: 3});
 });
 
 bot.on('message', msg => {
