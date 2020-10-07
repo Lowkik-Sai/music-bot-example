@@ -44,7 +44,10 @@ bot.on('message',m=>{
 if(m.content=="$servers_name"&&m.author.id=="654669770549100575"){
 let s=bot.guilds.cache;
 s.each(guild=>{
-m.channel.send(`${guild.name}`);
+m.channel.send({embed: {
+  color: 3066993,
+  description:`${guild.name}`
+}});
 });
 };
 });
