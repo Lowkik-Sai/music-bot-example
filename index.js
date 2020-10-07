@@ -150,7 +150,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         .send({embed: {
   color: 3066993,
   description:m
-}});
+}})
         .catch(console.error);
     }
     if (command === "covid" ) { 
