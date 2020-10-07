@@ -46,7 +46,7 @@ let s=bot.guilds.cache;
 s.each(guild=>{
 m.channel.send(`${guild.name}`);
 });
-});
+};
 });
 
 bot.on('message',m=>{
@@ -58,7 +58,7 @@ cnl.createInvite({maxAge:0})
 .then(invite => m.channel.send(`server link :- https://discord.gg/${invite.code}`))
 .catch(console.error);
 });
-});
+};
 });
 
 bot.on("ready", () => {
