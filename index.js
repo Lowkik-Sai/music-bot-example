@@ -76,7 +76,7 @@ bot.on('message', msg => {
   if (msg.content === 'prefix') {
     msg.reply({embed: {
   color: 3066993,
-  description:My Constant Prefix is \`+\`
+  description:'My Prefix is \`+\`'
 }});
   }
 });
