@@ -432,23 +432,25 @@ message.channel.send({embed});
     }
   }
     if (command === "purge" || command === "clear") {
-       let messagecount = parseInt(args[1]) || 1;
+       //THIS IS THE CODE FOR THE COMMAND ONLY
+ 
+        const messageArray = message.content.split(' ');
+	const args = messageArray.slice(1);
 
-        const deletedMessages = -1;
+    if (!message.member.permissions.has("MANAGE_MESSAGES")) return message.channel.send('Lack of Perms!');
+    
+    let deleteAmount;
 
-        message.channel.fetchMessages({limit: Math.min(messagecount + 1, 100)}).then(messages => {
-            messages.forEach(m => {
-                if (m.author.id == bot.user.id) {
-                    m.delete().catch(console.error);
-                    deletedMessages++;
-                }
-            });
-        }).then(() => {
-                if (deletedMessages === -1) deletedMessages = 0;
-                message.channel.send(`:white_check_mark: Purged \`${deletedMessages}\` messages.`)
-                    .then(m => m.delete(2000));
-        }).catch(console.error);
+    if (isNaN(args[0]) || parseInt(args[0]) <= 0) { return message.reply('Please put a number only!') }
+
+    if (parseInt(args[0]) > 100) {
+        return message.reply('You can only delete 100 messages at a time!')
+    } else {
+        deleteAmount = parseInt(args[0]);
     }
+  }
+    message.channel.bulkDelete(deleteAmount + 1, true);
+    message.reply(`**Successfully** Deleted ***${deleteAmount}*** Messages.`)
     if (command === "play" || command === "p") {
         const voiceChannel = message.member.voice.channel; 
         if (!voiceChannel) return message.channel.send({
