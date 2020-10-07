@@ -139,7 +139,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             message.channel.send(msg)
         }
     }
-    if (command === 'stats' && msg.author.id === '654669770549100575') {
+    if (command === 'stats' && message.author.id === '654669770549100575') {
       let m = '';
       m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
       m += `I am aware of ${message.guild.members.cache.size} members\n`;
