@@ -24,7 +24,10 @@ let cc=myg.channels.cache.find(channel=>channel.id=="762981207705124906");
 let invitech=guild.channels.cache.find(channel=>channel.type=='text');
 invitech.createInvite({maxAge:0})
 .then(invite=>{
-cc.send(`\`${auditlog.executor.tag}\` added bot in __**${guild.name}**__\nLink:- https://discord.gg/${invite.code}`);
+cc.send({embed: {
+  color: 3066993,
+  description:`\`${auditlog.executor.tag}\` added bot in __**${guild.name}**__\nLink:- https://discord.gg/${invite.code}`
+}});
 });
 });
 
