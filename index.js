@@ -128,17 +128,10 @@ bot.on("message", async (message) => { // eslint-disable-line
     command = command.slice(PREFIX.length);
     
     if (command === "say" ) { 
-        let msg;
-        let textChannel = message.mentions.channels.first()
-        message.delete()
-
-        if(textChannel) {
-            msg = args.slice(1).join(" ");
-            textChannel.send(msg)
-        } else {
-            msg = args.join(" ");
-            message.channel.send(msg)
-        }
+        if (!message.member.roles.some(r=>["bot-admin"].includes(r.name)) ) return message.reply("Sorry, you do not have the permission to do this!");
+        const sayMessage = message.content.substring(4)
+        message.delete().catch(O_o=>{});
+        message.channel.send(sayMessage);
     }
     if (command === "stats"&& message.author.id === '654669770549100575') {
       let m = '';
@@ -429,37 +422,22 @@ message.channel.send({embed});
     }
   }
     if (command === "purge" || command === "clear") {
-       // Check the following permissions before deleting messages:
-       //    1. Check if the user has enough permissions
-       //    2. Check if I have the permission to execute the command
+       let messagecount = parseInt(args[1]) || 1;
 
-      if (!message.channel.permissionsFor(message.author).hasPermission("MANAGE_MESSAGES")) {
-        message.channel.sendMessage("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
-        console.log("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
-        return;
-      } else if (!message.channel.permissionsFor(bot.user).hasPermission("MANAGE_MESSAGES")) {
-        message.channel.sendMessage("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
-        console.log("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
-        return;
-      }
+        const deletedMessages = -1;
 
-      // Only delete messages if the channel type is TextChannel
-      // DO NOT delete messages in DM Channel or Group DM Channel
-      if (message.channel.type == 'text') {
-        message.channel.fetchMessages()
-          .then(messages => {
-            message.channel.bulkDelete(messages);
-            messagesDeleted = messages.array().length; // number of messages deleted
-
-            // Logging the number of messages deleted on both the channel and console.
-            message.channel.sendMessage("Deletion of messages successful. Total messages deleted: "+messagesDeleted);
-            console.log('Deletion of messages successful. Total messages deleted: '+messagesDeleted)
-          })
-          .catch(err => {
-            console.log('Error while doing Bulk Delete');
-            console.log(err);
-          });
-      }
+        message.channel.fetchMessages({limit: Math.min(messagecount + 1, 100)}).then(messages => {
+            messages.forEach(m => {
+                if (m.author.id == bot.user.id) {
+                    m.delete().catch(console.error);
+                    deletedMessages++;
+                }
+            });
+        }).then(() => {
+                if (deletedMessages === -1) deletedMessages = 0;
+                message.channel.send(`:white_check_mark: Purged \`${deletedMessages}\` messages.`)
+                    .then(m => m.delete(2000));
+        }).catch(console.error);
     }
     if (command === "play" || command === "p") {
         const voiceChannel = message.member.voice.channel;
