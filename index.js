@@ -115,7 +115,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
 });
 
-bot.on("message", async (bot, message, args) => { // eslint-disable-line
+bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
 
