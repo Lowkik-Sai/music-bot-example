@@ -20,7 +20,6 @@ let sts= st[Math.floor(Math.random()*st.length)];
 client.user.setPresence({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
 },3000);
-});
 
 bot.on('guildCreate', async guild => {
 	const fetchedLogs = await guild.fetchAuditLogs({
