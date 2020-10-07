@@ -432,25 +432,37 @@ message.channel.send({embed});
     }
   }
     if (command === "purge" || command === "clear") {
-       //THIS IS THE CODE FOR THE COMMAND ONLY
- 
-        const messageArray = message.content.split(' ');
-	const args = messageArray.slice(1);
-
-    if (!message.member.permissions.has("MANAGE_MESSAGES")) return message.channel.send('Lack of Perms!');
+       if (message.deletable) {
+            message.delete();
+        }
     
-    let deleteAmount;
+        // Member doesn't have permissions
+        if (!message.member.hasPermission("MANAGE_MESSAGES")) {
+            return message.reply("You can't delete messages....").then(m => m.delete(5000));
+        }
 
-    if (isNaN(args[0]) || parseInt(args[0]) <= 0) { return message.reply('Please put a number only!') }
+        // Check if args[0] is a number
+        if (isNaN(args[0]) || parseInt(args[0]) <= 0) {
+            return message.reply("Yeah.... That's not a numer? I also can't delete 0 messages by the way.").then(m => m.delete(5000));
+        }
 
-    if (parseInt(args[0]) > 100) {
-        return message.reply('You can only delete 100 messages at a time!')
-    } else {
-        deleteAmount = parseInt(args[0]);
+        // Maybe the bot can't delete messages
+        if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) {
+            return message.reply("Sorryy... I can't delete messages.").then(m => m.delete(5000));
+        }
+
+        let deleteAmount;
+
+        if (parseInt(args[0]) > 100) {
+            deleteAmount = 100;
+        } else {
+            deleteAmount = parseInt(args[0]);
+        }
+
+        message.channel.bulkDelete(deleteAmount, true)
+            .then(deleted => message.channel.send(`I deleted \`${deleted.size}\` messages.`))
+            .catch(err => message.reply(`Something went wrong... ${err}`));
     }
-  }
-    message.channel.bulkDelete(deleteAmount + 1, true);
-    message.reply(`**Successfully** Deleted ***${deleteAmount}*** Messages.`)
     if (command === "play" || command === "p") {
         const voiceChannel = message.member.voice.channel; 
         if (!voiceChannel) return message.channel.send({
