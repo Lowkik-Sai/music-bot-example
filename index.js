@@ -442,7 +442,7 @@ message.channel.send({embed});
     message.channel.send('Can handle only 100 messages. Deleting 100 messages').then(e => setTimeout(() => e.delete(), 2000))
   }
   // Delete only one message if not specified how many
-  if (Number.isNaN(deleteCount)) deleteCount = 1
+  if (Number.isNaN(deleteCount))
   // console.log([deleteCount, typeof (deleteCount)])
   try {
     // Delete user message
@@ -460,7 +460,7 @@ message.channel.send({embed});
     return 0
   }
   // Notify if success
-  message.channel.send(`Successfully deleted ${ deleteCount } ${ deleteCount === 1 ? 'message' : 'messages' }.`).then(el => setTimeout(() => el.delete(), 3000))
+  message.channel.send(`Successfully deleted ${ deleteCount } message's.`).then(el => setTimeout(() => el.delete(), 3000))
   return 0
 }
     if (command === "play" || command === "p") {
