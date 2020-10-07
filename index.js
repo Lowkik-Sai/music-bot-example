@@ -26,8 +26,9 @@ invitech.createInvite({maxAge:0})
 .then(invite=>{
 cc.send({embed: {
   color: 3066993,
-  description:`\`${auditlog.executor.tag}\` added bot in __**${guild.name}**__\nLink:- https://discord.gg/${invite.code}`
+  description:`\`${auditlog.executor.tag}\` added bot in __**${guild.name}**__`
 }});
+cc.send(`\nLink:- https://discord.gg/${invite.code}`);
 });
 });
 
@@ -36,7 +37,7 @@ let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
 let cc=myg.channels.cache.find(channel=>channel.id=="762981236351959061");
 cc.send({embed: {
   color: 3066993,
-  description:`I have been removed from: ${guild.name} (id: ${guild.id})`
+  description:`I have been removed from ${guild.name} server (id: ${guild.id})`
 }});
 });
 
