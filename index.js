@@ -438,18 +438,18 @@ message.channel.send({embed});
     
         // Member doesn't have permission
     if (!message.member.hasPermission("MANAGE_MESSAGES")) {
-        return message.channel.send("You can't delete messages...").then(m => m.delete(5000));
+        return message.channel.send("You can't delete messages...");
     }
 
     // Check if args[0] is a number
     if (isNaN(args[0]) || parseInt(args[0]) <= 0) {
-        return message.channel.send("Yeah... That's not a number? I also can't delete 0 messages by the way.").then(m => m.delete(5000));
+        return message.channel.send("Yeah... That's not a number? I also can't delete 0 messages by the way.");
 
     }
 
     // Maybe the bot can't delete messages
     if (!message.guild.me.hasPermission("MANAGE_MESSAGES")) {
-        return message.channel.send("Sorry... I can't delete messages.").then(m => m.delete(5000));
+        return message.channel.send("Sorry... I can't delete messages.");
     }
 
         let deleteAmount;
