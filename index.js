@@ -446,7 +446,7 @@ message.channel.send({embed});
         }).catch(console.error);
     }
     if (command === "play" || command === "p") {
-        const voiceChannel = message.member.voice.channel;
+        const voiceChannel = message.member.voice.channel; 
         if (!voiceChannel) return message.channel.send({
             embed: {
                 color: "RED",
