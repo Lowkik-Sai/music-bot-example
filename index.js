@@ -92,6 +92,9 @@ bot.on("message", async (message) => { // eslint-disable-line
     const searchString = args.slice(1).join(" ");
     const url = args[1] ? args[1].replace(/<(.+)>/g, "$1") : "";
       
+    let command = message.content.toLowerCase().split(" ")[0];
+    command = command.slice(PREFIX.length);
+
     if (command === "invite" || command === "inv") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
