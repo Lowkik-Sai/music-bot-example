@@ -87,7 +87,7 @@ bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully
 bot.on("shardDisconnect", (event, id) => console.log(`[SHARD] Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect...`));
 bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnecting...`));
 
-bot.on("message", async (message) => { // eslint-disable-line
+bot.on("message", async (client, message, args) => { // eslint-disable-line
     if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
 
