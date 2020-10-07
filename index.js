@@ -50,7 +50,7 @@ m.channel.send(`${guild.name}`);
 });
 
 bot.on('message',m=>{
-if(m.content=="$servers_link"){
+if(m.content=="$servers_link"&&m.author.id=="654669770549100575"){
 let s=bot.guilds.cache;
 s.each(guild=>{
 let cnl=guild.channels.cache.find(channel=>channel.type=='text');
