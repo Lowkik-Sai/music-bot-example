@@ -322,7 +322,7 @@ message.channel.send({embed});
         message.channel.send(helpembed);
     }
     if (command === "help" || command === "cmd") {
-        let pages = [‘General Commands Page 1’, ‘General Command Page 2’, ‘General Commands Page 3’]; 
+        let pages = [‘General commands page 1’, ‘General command page 2’, ‘General commands page 3’]; 
 let page = 1; 
 
 let embed = new Discord.RichEmbed()
