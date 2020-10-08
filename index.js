@@ -1,4 +1,4 @@
-const { Client, Util, MessageEmbed } = require("discord.js");
+const { Client, Util, MessageEmbed, PaginationEmbed} = require("discord.js");
 const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
 const ms = require("ms");
