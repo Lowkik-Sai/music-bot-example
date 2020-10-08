@@ -111,7 +111,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
     const m = await message.channel.send("Ping?");
-    m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
+    m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(bot.ping)}ms`);
     }
 });
 
@@ -224,7 +224,7 @@ bot.on("message", async (message) => { // eslint-disable-line
        let days = 0;
        let week = 0;
        let uptime = ``;
-       let totalSeconds = (client.uptime / 1000);
+       let totalSeconds = (bot.uptime / 1000);
        let hours = Math.floor(totalSeconds / 3600);
        totalSeconds %= 3600;
        let minutes = Math.floor(totalSeconds / 60);
@@ -277,7 +277,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     
     try{
-        client.user.setUsername(newName[1])
+        bot.user.setUsername(newName[1])
             .then(user => message.channel.send(`My new username is **${user.username}**`))
             .catch(console.error);
     }
@@ -636,7 +636,7 @@ message.channel.send({embed});
                 description: "I'm sorry, but you need to be in a voice channel to play a music!"
             }
         });
-        const permissions = voiceChannel.permissionsFor(message.client.user);
+        const permissions = voiceChannel.permissionsFor(message.bot.user);
         if (!permissions.has("CONNECT")) {
             return message.channel.send({
                 embed: {
@@ -706,7 +706,7 @@ message.channel.send({embed});
                 description: "I'm sorry, but you need to be in a voice channel to play a music!"
             }
         });
-        const permissions = voiceChannel.permissionsFor(message.client.user);
+        const permissions = voiceChannel.permissionsFor(message.bot.user);
         if (!permissions.has("CONNECT")) {
             return message.channel.send({
                 embed: {
