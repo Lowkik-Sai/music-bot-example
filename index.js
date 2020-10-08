@@ -539,7 +539,7 @@ const status = {
 
     const embed = new MessageEmbed()
         .setDescription(`<@${member.user.id}>`)
-        .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL)
+        .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL())
         .setColor(randomColor)
         .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
         .setThumbnail(member.displayAvatarURL())
@@ -590,8 +590,7 @@ const status = {
 
     let serverembed = new MessageEmbed()
         .setColor("#9400D3")
-        .setAuthor(`Among Us Bot Info`, bot.user.displayAvatarURL)
-        .setAuthor(`${message.guild}`, message.author.displayAvatarURL())
+        .setAuthor(`Among Us Bot Info`, bot.user.displayAvatarURL())
         .setDescription(`Among Us Music Bot Information`)
         .addField("Bot Owner", `Roc$tarLS109#8861(Rock Star)`)
         .addField("Owner Id", `654669770549100575`)
