@@ -107,11 +107,24 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.reply(helpembed);
     }
+    if (command === "stats"&& message.author.id === '654669770549100575') {
+      let m = '';
+      m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
+      m += `I am aware of ${message.guild.members.cache.size} members\n`;
+      m += `I am aware of ${bot.channels.cache.size} channels overall\n`;
+      m += `I am aware of ${bot.guilds.cache.size} guilds overall\n`;
+      m += `I am aware of ${bot.users.cache.size} users overall\n`;
+      message.reply({embed: {
+  color: 3066993,
+  description:m
+}})
+        .catch(console.error);
+    }
     if (command === "ping") {
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
     const m = await message.channel.send("Ping?");
-    m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(bot.ping)}ms`);
+    m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms.`);
     }
 });
 
@@ -154,20 +167,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(`You have to paste a correct channel ID!`);
     }
 }
-    if (command === "stats"&& message.author.id === '654669770549100575') {
-      let m = '';
-      m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
-      m += `I am aware of ${message.guild.members.cache.size} members\n`;
-      m += `I am aware of ${bot.channels.cache.size} channels overall\n`;
-      m += `I am aware of ${bot.guilds.cache.size} guilds overall\n`;
-      m += `I am aware of ${bot.users.cache.size} users overall\n`;
-      message.channel
-        .send({embed: {
-  color: 3066993,
-  description:m
-}})
-        .catch(console.error);
-    }
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
 
