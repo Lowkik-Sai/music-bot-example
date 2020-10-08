@@ -239,7 +239,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         message.channel.send(helpembed);
     }
-    if (command ==== "addrole" || command === "ar") {
+    if (command === "addrole" || command === "ar") {
        //Pay attention in order to assign a role of a user, the bot needs to be above that role, that means you can't assign an equal or highest role than bot's role
     let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.cache.get(args[0]);
     
