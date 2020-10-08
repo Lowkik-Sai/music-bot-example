@@ -636,18 +636,55 @@ const member = message.guild.member(user);
 
 }
     if (command === "help" || command === "cmd") {
-        const helpembed = new MessageEmbed()
-            .setColor("BLUE")
-            .setTitle("Type +help <command name>")
-            .setAuthor("Commands List", message.author.displayAvatarURL())
-            .addField("Music", `Play | Search | Stop | Skip | Resume | Pause | NowPlaying | Volume | Loop | Queue`)
-            .addField("Moderation", `Kick | Ban | Purge - Small Bug Fixing it Hold On Please...`)
-            .addField("Utility", `BotInfo | ServerInfo | UserInfo`)
-            .addField("Fun", `Covid | Carona | Commands are adding Wait some days!`)
-            .addField("Among Us", `Most commands work in discord servers,not in my Dms.Soon there will be more funny commands!`)
-            .setTimestamp()
-            .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
-        message.author.send(helpembed);
+        const Pagination = require('discord-paginationembed');
+ 
+const embeds = [];
+ 
+for (let i = 1; i <= 5; ++i)
+  embeds.push(new Discord.MessageEmbed().addField('Page', i));
+ 
+const Embeds = new PaginationEmbed.Embeds()
+  .setArray(embeds)
+  .setAuthorizedUsers([message.author.id])
+  .setChannel(message.channel)
+  .setPageIndicator(true)
+  .setTitle('Test Title')
+  .setDescription('Test Description')
+  .setFooter('Test Footer Text')
+  .setURL('https://gazmull.github.io/discord-paginationembed')
+  .setColor(0xFF00AE)
+  // Sets the client's assets to utilise. Available options:
+  //  - message: the client's Message object (edits the message instead of sending new one for this instance)
+  //  - prompt: custom content for the message sent when prompted to jump to a page
+  //      {{user}} is the placeholder for the user mention
+  .setClientAssets({ message, prompt: 'Page plz {{user}}' })
+  .setDeleteOnTimeout(true)
+  .setDisabledNavigationEmojis(['delete'])
+  .setFunctionEmojis({
+    '⬆': (_, instance) => {
+      for (const embed of instance.array)
+        embed.fields[0].value++;
+    },
+    '⬇': (_, instance) => {
+      for (const embed of instance.array)
+        embed.fields[0].value--;
+    }
+  })
+  // Listeners for PaginationEmbed's events
+  // After the initial embed has been sent
+  // (technically, after the client finished reacting with enabled navigation and function emojis).
+  .on('start', () => console.log('Started!'))
+  // When the instance is finished by a user reacting with `delete` navigation emoji
+  // or a function emoji that throws non-Error type.
+  .on('finish', (user) => console.log(`Finished! User: ${user.username}`))
+  // Upon a user reacting on the instance.
+  .on('react', (user, emoji) => console.log(`Reacted! User: ${user.username} | Emoji: ${emoji.name} (${emoji.id})`))
+  // When the awaiting timeout is reached.
+  .on('expire', () => console.warn('Expired!'))
+  // Upon an occurance of error (e.g: Discord API Error).
+  .on('error', console.error);
+ 
+await Embeds.build();
     }
     if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
