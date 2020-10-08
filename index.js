@@ -140,6 +140,20 @@ bot.on("message", async (message) => { // eslint-disable-line
             message.channel.send(msg)
         }
     }
+    if (command === "channelinvite" || command === "ci") {
+       const setChannelID = message.content.split(' ');
+
+    try{
+        message.guild.channels.cache.get(setChannelID[1]).createInvite().then(invite =>
+            message.channel.send("The channel invite has been created: \n" + invite.url)
+        );
+    }
+
+    catch(error){
+        console.error(`I could not create the invite for the channel: ${error}`);
+        message.channel.send(`You have to paste a correct channel ID!`);
+    }
+}
     if (command === "stats"&& message.author.id === '654669770549100575') {
       let m = '';
       m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
