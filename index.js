@@ -597,7 +597,7 @@ const status = {
         .addField("Bot Owner", `Roc$tarLS109#8861(Rock Star)`)
         .addField("Owner Id", `654669770549100575`)
         .addField("My Id", `758889056649216041`)
-        .addField("My Prefix", `The bot prefix is +`)
+        .addField("My Prefix", `+`)
         .addField(`Servers`,`${servers}`, true)
         .addField(`Users`, `${users}`, true)
         .addField(`Invite Me!`, `[Click Here!](https://discord.com/oauth2/authorize?client_id=758889056649216041&scope=bot&permissions=2146942463&response_type=code)`, true)
