@@ -220,6 +220,12 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         }
     }
+    if (command === "leave"message.author.id=="654669770549100575") {
+       message.channel.send{embed: {
+  color: 3066993,
+  description:Bye Bye...
+}})
+    }
     if (command === "leave"&&message.author.id=="654669770549100575") {
       message.guild
         .leave()
