@@ -232,20 +232,22 @@ bot.on("message", async (message) => { // eslint-disable-line
         .then(guild => console.log('Left guild', guild.name))
         .catch(console.error);
     }
-    if (command === "embedid" ) {
-        const starChannel = bot.channels.cache.find(channel => channel.name.toLowerCase() === '☘━━•ʙᴏᴛ-ᴄᴏᴍᴍᴀɴᴅs');
-        const fetchedMessages = await starChannel.messages.fetch({ limit: 100 });
-        const stars = fetchedMessages.filter((m) => m.embeds.length != 0).find((m) => m.embeds[0].footer && m.embeds[0].footer.text.includes(message.id));
-        const image = message.attachment.size > 0 ? await (reaction, message.attachment.array()[0].url) : '';
+    if (command === "setbotnick" ) {
+        const newName = message.content.split(' ');
 
-        const embed = new MessageEmbed()
-           .setAuthor(message.author.tag, message.author.displayAvatarURL({ format: 'png', dynamic: true }))
-           .setDescription(message.content)
-           .addField("Original:", `[**Jump to message**](https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`)
-           .setFooter(`Message ID: ${message.id}`)
-           .setTimestamp()
-        message.channel.send(embed);
-     }
+    if(!message.member.hasPermission("ADMINISTRATOR")){
+        return message.channel.send("You don't have the permissions to use this command!");
+    }
+    
+    try{
+        client.user.setUsername(newName[1])
+            .then(user => message.channel.send(`My new username is **${user.username}**`))
+            .catch(console.error);
+    }
+    catch(error){
+        message.channel.send("I could not set my new username :sob:");
+    }
+}
     if (command === "avatar" || command === "a") {
         let member = message.mentions.users.first() || message.author
 
