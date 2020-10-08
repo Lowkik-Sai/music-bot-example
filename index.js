@@ -322,19 +322,48 @@ message.channel.send({embed});
         message.channel.send(helpembed);
     }
     if (command === "help" || command === "cmd") {
-        const helpembed = new MessageEmbed()
-            .setColor("BLUE")
-            .setTitle("Type +help <command name>")
-            .setAuthor("Commands List", message.author.displayAvatarURL())
-            .addField("Music", `\`Play | Search | Stop | Skip | Resume | Pause | NowPlaying | Volume | Loop | Queue\``)
-            .addField("Moderation", `\`Kick | Ban | Purge - Small Bug Fixing it Hold On Please...\``)
-            .addField("Utility", `\`BotInfo | ServerInfo | UserInfo\``)
-            .addField("Fun", `\`Covid | Carona | Commands are adding Wait some days!\``)
-            .addField("Among Us", `Most commands work in discord servers,not in my Dms.Soon there will be more funny commands!`)
-            .setTimestamp()
-            .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
-        message.author.send(helpembed);
-    }
+        let pages = [‘General Commands Page 1’, ‘General Command Page 2’, ‘General Commands Page 3’]; 
+let page = 1; 
+
+let embed = new Discord.RichEmbed()
+.setColor("#15f153")
+.setFooter(Page ${page} of ${pages.length})
+.setDescription(pages[page-1])
+
+message.author.send(embed).then(msg => {
+
+msg.react(‘:arrow_left:’).then( r => {
+msg.react(‘:arrow_right:’)
+
+// Filters
+const backwardsFilter = (reaction, user) => reaction.emoji.name === ‘:arrow_left:’ && user.id === message.author.id;
+const forwardsFilter = (reaction, user) => reaction.emoji.name === ‘:arrow_right:’ && user.id === message.author.id;
+
+const backwards = msg.createReactionCollector(backwardsFilter, {timer: 6000});
+const forwards = msg.createReactionCollector(forwardsFilter, {timer: 6000});
+
+backwards.on(‘collect’, r => {
+if (page === 1) return;
+page-;
+embed.setDescription(pages[page-1]);
+embed.setFooter(Page ${page} of ${pages.length});
+msg.edit(embed)
+
+r.remove(r.users.filter(u => u === message.author).first());
+})
+
+forwards.on(‘collect’, r => {
+if (page === pages.length) return;
+page++;
+embed.setDescription(pages[page-1]);
+embed.setFooter(Page ${page} of ${pages.length});
+msg.edit(embed)
+
+r.remove(r.users.filter(u => u === message.author).first());
+})
+})
+})
+}
     if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
