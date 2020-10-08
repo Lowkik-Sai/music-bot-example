@@ -509,7 +509,15 @@ const status = {
     var permissions = [];
     var acknowledgements = 'None';
    
-    const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
+    let user;
+if (message.mentions.users.first()) {
+    user = message.mentions.users.first();
+} else {
+    user = message.author;
+}
+
+const member = message.guild.member(user);
+
     const randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); }); 
     
     if(message.member.hasPermission("KICK_MEMBERS")){
@@ -562,10 +570,10 @@ const status = {
 
     const embed = new MessageEmbed()
         .setDescription(`<@${member.user.id}>`)
-        .setAuthor(`${member.user.tag}`, member.displayAvatarURL())
+        .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL())
         .setColor(randomColor)
         .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
-        .setImage(member.displayAvatarURL())
+        .setImage(member.user.displayAvatarURL())
         .setTimestamp()
         .addField(`${user.tag}`, `${user}`, true)
         .addField("ID:", `${user.id}`, true)
