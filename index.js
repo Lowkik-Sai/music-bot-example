@@ -476,44 +476,130 @@ bot.on("message", async (message) => { // eslint-disable-line
     return message.channel.send(serverembed);
 }
     if (command === "userinfo" || command === "ui" || command === "whois" ) {
-      let user;
-if (message.mentions.users.first()) {
-    user = message.mentions.users.first();
-} else {
-    user = message.author;
+
+const status = {
+    online: "Online",
+    idle: "Idle",
+    dnd: "Do Not Disturb",
+    offline: "Offline/Invisible"
+};
+    var permissions = [];
+    var acknowledgements = 'None';
+   
+    const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
+    const randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); }); 
+    
+    if(message.member.hasPermission("KICK_MEMBERS")){
+        permissions.push("Kick Members");
+    }
+    
+    if(message.member.hasPermission("BAN_MEMBERS")){
+        permissions.push("Ban Members");
+    }
+    
+    if(message.member.hasPermission("ADMINISTRATOR")){
+        permissions.push("Administrator");
+    }
+
+    if(message.member.hasPermission("MANAGE_MESSAGES")){
+        permissions.push("Manage Messages");
+    }
+    
+    if(message.member.hasPermission("MANAGE_CHANNELS")){
+        permissions.push("Manage Channels");
+    }
+    
+    if(message.member.hasPermission("MENTION_EVERYONE")){
+        permissions.push("Mention Everyone");
+    }
+
+    if(message.member.hasPermission("MANAGE_NICKNAMES")){
+        permissions.push("Manage Nicknames");
+    }
+
+    if(message.member.hasPermission("MANAGE_ROLES")){
+        permissions.push("Manage Roles");
+    }
+
+    if(message.member.hasPermission("MANAGE_WEBHOOKS")){
+        permissions.push("Manage Webhooks");
+    }
+
+    if(message.member.hasPermission("MANAGE_EMOJIS")){
+        permissions.push("Manage Emojis");
+    }
+
+    if(permissions.length == 0){
+        permissions.push("No Key Permissions Found");
+    }
+
+    if(member.user.id == message.guild.ownerID){
+        acknowledgements = 'Server Owner';
+    }
+
+    const embed = new MessageEmbed()
+        .setDescription(`<@${member.user.id}>`)
+        .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL)
+        .setColor(randomColor)
+        .setFooter(`ID: ${message.author.id}`)
+        .setThumbnail(member.user.displayAvatarURL)
+        .setTimestamp()
+        .addField("Status",`${status[member.user.presence.status]}`, true)
+        .addField("Permissions: ", `${permissions.join(', ')}`, true)
+        .addField(`Roles [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
+        .addField("Acknowledgements: ", `${acknowledgements}`, true);
+        
+    message.channel.send({embed});
+
 }
-
-const member = message.guild.member(user);
-
-const embed = new MessageEmbed()
-    .setColor("RANDOM")
-    .setThumbnail(member.displayAvatarURL())
-    .addField(`${user.tag}`, `${user}`, true)
-    .addField("ID:", `${user.id}`, true)
-    .addField("Nickname:", `${member.nickname !== null ? `${member.nickname}` : 'None'}`, true)
-    .addField("Status:", `${user.presence.status}`, true)
-    .addField("In Server", message.guild.name, true)
-    .addField("Game:", `${user.presence.game ? user.presence.game.name : 'None'}`, true)
-    .addField("Bot:", `${user.bot}`, true)
-    .setTimestamp()
-    .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
-message.channel.send({embed});
-    }
     if (command === "botinfo" || command === "bi") {
-        const helpembed = new MessageEmbed()
-            .setColor("ORANGE")
-            .setTitle("Bot Info")
-            .setAuthor(`${message.guild}`, message.author.displayAvatarURL())
-            .setDescription(`Among Us Music Bot Information`)
-            .addField("Bot Owner", `The owner of this bot is Rock Star`)
-            .addField("Owner Id", `The owner id is 654669770549100575`)
-            .addField("My Id", `The bot id is 758889056649216041`)
-            .addField("My Prefix", `The bot prefix is -`)
-            .addField("Invite Me", `[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
-            .setTimestamp()
-            .setFooter("Type -help for more commands!")
-        message.channel.send(helpembed);
+    let days = 0;
+    let week = 0;
+
+    let uptime = ``;
+    let totalSeconds = (client.uptime / 1000);
+    let hours = Math.floor(totalSeconds / 3600);
+    totalSeconds %= 3600;
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = Math.floor(totalSeconds % 60);
+
+    let servers = client.guilds.cache.size;
+    let users = client.users.cache.size;
+
+    if(hours > 23){
+        days = days + 1;
+        hours = 0;
     }
+
+    if(days == 7){
+        days = 0;
+        week = week + 1;
+    }
+
+    if(week > 0){
+        uptime += `${week} week, `;
+    }
+
+    if(minutes > 60){
+        minutes = 0;
+    }
+
+    uptime += `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
+
+    let serverembed = new MessageEmbed()
+        .setColor("#9400D3")
+        .setAuthor(`RaptorSA`, client.user.displayAvatarURL)
+        .addField(`Version`,`1.0`, true)
+        .addField(`Library`,`Discord.js` , true)
+        .addField(`Creator`,`Cramenorn#0484`, true)
+        .addField(`Servers`, `${servers}`, true)
+        .addField(`Users`, `${users}`, true)
+        .addField(`Invite`, `[Invite RaptorSA](https://discordapp.com/oauth2/authorize?client_id=467684534624976896&scope=bot&permissions=26)`, true)
+        .setFooter(`Uptime: ${uptime}`);
+
+    message.channel.send(serverembed);    
+
+}
     if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
