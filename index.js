@@ -398,18 +398,50 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(helpembed);
     }
     if (command === "serverinfo" || command === "si") {
-        const helpembed = new MessageEmbed()
-            .setColor("RED")
-            .setTitle("Server Info")
-            .setImage(message.guild.iconURL())
-            .setDescription(`${message.guild}'s information`)
-            .addField("Owner", `The owner of this server is ${message.guild.owner}`)
-            .addField("Member Count", `This server has ${message.guild.memberCount} members`)
-            .addField("Emoji Count", `This server has ${message.guild.emojis.cache.size} emojis`)
-            .addField("Roles Count", `This server has ${message.guild.roles.cache.size} roles`)
-            .setTimestamp()
-        message.channel.send(helpembed);
+        function checkBots(guild) {
+        let botCount = 0;
+        guild.members.cache.forEach(member => {
+            if(member.user.bot) botCount++;
+        });
+        return botCount;
     }
+    
+    function checkMembers(guild) {
+        let memberCount = 0;
+        guild.members.cache.forEach(member => {
+            if(!member.user.bot) memberCount++;
+        });
+        return memberCount;
+    }
+
+    function checkOnlineUsers(guild) {
+        let onlineCount = 0;
+        guild.members.cache.forEach(member => {
+            if(member.user.presence.status === "online")
+                onlineCount++; 
+        });
+        return onlineCount;
+    }
+
+    let sicon = message.guild.iconURL;
+    let serverembed = new MessageEmbed()
+        .setAuthor(`${message.guild.name} - Informations`, message.guild.iconURL)
+        .setColor("#15f153")
+        .addField('Server owner', message.guild.owner, true)
+        .addField('Server region', message.guild.region, true)
+        .setThumbnail(sicon)
+        .addField("Server Name", message.guild.name)
+        .addField('Verification level', message.guild.verificationLevel, true)
+        .addField('Channel count', message.guild.channels.cache.size, true)
+        .addField('Total member count', message.guild.memberCount)
+        .addField('Humans', checkMembers(message.guild), true)
+        .addField('Bots', checkBots(message.guild), true)
+        .addField('Online', checkOnlineUsers(message.guild))
+        .setFooter('Guild created at:')
+        .setTimestamp(message.guild.createdAt);
+
+    return message.channel.send(serverembed);
+}
     if (command === "userinfo" || command === "ui" || command === "whois" ) {
       let user;
 if (message.mentions.users.first()) {
