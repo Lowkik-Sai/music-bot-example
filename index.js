@@ -457,12 +457,10 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
 
     let serverembed = new MessageEmbed()
-        .setAuthor(`${message.guild.name} - Informations`, message.guild.iconURL)
+        .setAuthor(`${message.guild.name} Server Info`, message.guild.iconURL)
         .setColor("#15f153")
-        .setTitle("Server Info")
         .addField('Server owner', message.guild.owner, true)
         .addField('Server region', message.guild.region, true)
-        .setThumbnail(message.guild.iconURL())
         .addField("Server Name", message.guild.name)
         .addField('Verification level', message.guild.verificationLevel, true)
         .addField('Channel count', message.guild.channels.cache.size, true)
