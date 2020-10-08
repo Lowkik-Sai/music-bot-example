@@ -722,7 +722,7 @@ message.channel.send({embed});
         let number = songsss.map(
             (x, i) => `${i + 1} - ${x.title}`
         );
-        number = chunk(number, 5);
+        number = chunk(number, 1);
 
         let index = 0;
         if (!serverQueue) return message.channel.send({
