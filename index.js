@@ -208,7 +208,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if (command === "leave"&&message.author.id=="654669770549100575") {
       message.guild
-        .then(guild => message.channel.send(Bye,Bye...))
+        .then(guild => message.channel.send('Bye,Bye...'))
         .leave()
         .then(guild => console.log('Left guild', guild.name))
         .catch(console.error);
