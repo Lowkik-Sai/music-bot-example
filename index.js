@@ -641,7 +641,7 @@ const member = message.guild.member(user);
 const embeds = [];
  
 for (let i = 1; i <= 5; ++i)
-  embeds.push(new Discord.MessageEmbed().addField('Page', i));
+  embeds.push(new MessageEmbed().addField('Page', i));
  
 const Embeds = new PaginationEmbed.Embeds()
   .setArray(embeds)
