@@ -1,4 +1,5 @@
-const { Client, Util, MessageEmbed, PaginationEmbed} = require("discord.js");
+const { Client, Util, MessageEmbed} = require("discord.js");
+const Pagination = require('discord-paginationembed');
 const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
 const ms = require("ms");
@@ -643,7 +644,7 @@ const embeds = [];
 for (let i = 1; i <= 5; ++i)
   embeds.push(new MessageEmbed().addField('Page', i));
  
-const Embeds = new PaginationEmbed()
+const Embeds = new Pagination()
   .setArray(embeds)
   .setAuthorizedUsers([message.author.id])
   .setChannel(message.channel)
