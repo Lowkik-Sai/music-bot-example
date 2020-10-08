@@ -220,6 +220,28 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         }
     }
+    if (command === "someone" ) {
+       var sToggle = true;
+
+    if(sToggle === true && !args[0]) {
+            let randoMember = message.guild.members.cache.random().id;
+            message.channel.send('<@' + randoMember + '>');
+    }
+    else if(sToggle === false && message.member.hasPermission('ADMINISTRATOR') && !args[0]) {
+            let randoMember = message.guild.members.cache.random().id;
+            message.channel.send('<@' + randoMember + '>');
+    } 
+        
+    if(args[0] === "toggle" && message.member.hasPermission('ADMINISTRATOR')) {
+    sToggle = !sToggle;
+        if(sToggle === true) {
+            message.channel.send("Enabled `someone` globally.")
+        }
+        else {
+            message.channel.send("Disabled `someone` globally. Command locked to ADMINS only.")
+        }
+    }
+}
     if (command === "uptime" ) {
        let days = 0;
        let week = 0;
