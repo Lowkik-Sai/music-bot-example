@@ -322,46 +322,18 @@ message.channel.send({embed});
         message.channel.send(helpembed);
     }
     if (command === "help" || command === "cmd") {
-        
-const embed = new MessageEmbed().setColor("#E96A00");
-
-switch (pageNumber) {
-    //if you get it from msg.content it will be a string unless you parse it
-    case "1":
-        embed
-            .setTitle("Command List: Basic")
-            .addFields([
-                { name: '‎', value: '‎' },
-                { name: '**r!help**', value: 'Shows a list of all the commands.' },
-                { name: '**r!invite**', value: 'Get the invite link for this bot.' },
-                { name: '**r!hello (shutting down soon)**', value: 'Just a simple hello.' },
-            ])
-            .setFooter('Ryam v1b • Help Menu');
-        break;
-    case "2":
-        embed
-            .setTitle('Commandlist: Fun')
-            .addField([
-                { name: '‎', value: '‎' },
-                { name: '**r!yeet**', value: 'Yeet peoples you mention, just for fun.' },
-                { name: '**r!gn**', value: 'Says goodnight to the mentioned user. Respect them.' },
-                { name: '**r!pump**', value: 'Shoot a pump to mentioned user and see how many you damaged them.' },
-                { name: '**r!snipe**', value: 'Snipe those scared kids and see how much you damaged them.' },
-                { name: '**r!fullsweat**', value: 'Full sweat on a mentioned user and see what you did.' },
-            ]);
-        break;
-    case "3":
-        embed
-            .setTitle('Commandlist: Admin')
-            .addFields([
-                { name: '‎', value: '‎' },
-                { name: '**r!ping**', value: 'Test command.' },
-                { name: '**r!server**', value: 'Shows the name of the server this bot is on.' },
-                { name: '**r!clear**', value: 'Delete/clear messages mentioned.' },
-                { name: '**r!avatar**', value: 'Shows the avatar of that person.' },
-            ]);
-        }
-         msg.channel.send(embed);
+        const helpembed = new MessageEmbed()
+            .setColor("BLUE")
+            .setTitle("Type +help <command name>")
+            .setAuthor("Commands List", message.author.displayAvatarURL())
+            .addField("Music", `Play | Search | Stop | Skip | Resume | Pause | NowPlaying | Volume | Loop | Queue`)
+            .addField("Moderation", `Kick | Ban | Purge - Small Bug Fixing it Hold On Please...`)
+            .addField("Utility", `BotInfo | ServerInfo | UserInfo`)
+            .addField("Fun", `Covid | Carona | Commands are adding Wait some days!`)
+            .addField("Among Us", `Most commands work in discord servers,not in my Dms.Soon there will be more funny commands!`)
+            .setTimestamp()
+            .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
+        message.author.send(helpembed);
     }
     if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
