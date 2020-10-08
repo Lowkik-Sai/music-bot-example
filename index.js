@@ -102,7 +102,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
             .setAuthor("Invite Link", message.author.displayAvatarURL())
-            .setDescription(`[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
+            .setDescription(`[Click here!](https://discord.com/oauth2/authorize?client_id=758889056649216041&scope=bot&permissions=2146942463&response_type=code)`)
             .setTimestamp()
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.reply(helpembed);
@@ -596,11 +596,10 @@ const status = {
         .addField("Bot Owner", `Roc$tarLS109#8861(Rock Star)`)
         .addField("Owner Id", `654669770549100575`)
         .addField("My Id", `758889056649216041`)
-        .addField("My Prefix", `The bot prefix is -`)
-        .addField("Invite Me", `[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)           
+        .addField("My Prefix", `The bot prefix is +`)
         .addField(`Servers`,`${servers}`, true)
         .addField(`Users`, `${users}`, true)
-        .addField(`Invite`, `[Click Here!](https://discordapp.com/oauth2/authorize?client_id=467684534624976896&scope=bot&permissions=26)`, true)
+        .addField(`Invite Me!`, `[Click Here!](https://discord.com/oauth2/authorize?client_id=758889056649216041&scope=bot&permissions=2146942463&response_type=code)`, true)
         .setFooter(`Uptime: ${uptime}`);
 
     message.channel.send(serverembed);    
