@@ -14,11 +14,11 @@ const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
 setInterval(function(){
-let st=["I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
+let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
 let sts= st[Math.floor(Math.random()*st.length)];
 bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
-},3000);
+},10000);
 
 bot.on('guildCreate', async guild => {
 	const fetchedLogs = await guild.fetchAuditLogs({
@@ -252,7 +252,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
        let serverembed = new MessageEmbed()
            .setColor("#228B22")
-           .addField('Uptime', `${uptime}`);
+           .setFooter(`Uptime: ${uptime}`);
 
        message.channel.send(serverembed);
 
@@ -456,13 +456,13 @@ bot.on("message", async (message) => { // eslint-disable-line
         return onlineCount;
     }
 
-    let sicon = message.guild.iconURL;
     let serverembed = new MessageEmbed()
         .setAuthor(`${message.guild.name} - Informations`, message.guild.iconURL)
         .setColor("#15f153")
+        .setTitle("Server Info")
         .addField('Server owner', message.guild.owner, true)
         .addField('Server region', message.guild.region, true)
-        .setThumbnail(sicon)
+        .setThumbnail(message.guild.iconURL())
         .addField("Server Name", message.guild.name)
         .addField('Verification level', message.guild.verificationLevel, true)
         .addField('Channel count', message.guild.channels.cache.size, true)
@@ -470,6 +470,8 @@ bot.on("message", async (message) => { // eslint-disable-line
         .addField('Humans', checkMembers(message.guild), true)
         .addField('Bots', checkBots(message.guild), true)
         .addField('Online', checkOnlineUsers(message.guild))
+        .addField('Emoji Count', `${message.guild.emojis.cache.size}`)
+        .addField('Roles Count', `${message.guild.roles.cache.size}`)          
         .setFooter('Guild created at:')
         .setTimestamp(message.guild.createdAt);
 
@@ -541,9 +543,11 @@ const status = {
         .setDescription(`<@${member.user.id}>`)
         .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL)
         .setColor(randomColor)
-        .setFooter(`ID: ${message.author.id}`)
-        .setThumbnail(member.user.displayAvatarURL)
+        .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
+        .setThumbnail(member.displayAvatarURL())
         .setTimestamp()
+        .addField(`${user.tag}`, `${user}`, true)
+        .addField("ID:", `${user.id}`, true)
         .addField("Status",`${status[member.user.presence.status]}`, true)
         .addField("Permissions: ", `${permissions.join(', ')}`, true)
         .addField(`Roles [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
