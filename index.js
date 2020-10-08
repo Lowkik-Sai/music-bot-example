@@ -233,7 +233,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         .catch(console.error);
     }
     if (command === "embedid" ) {
-        const fetchedMessages = await starChannel.messages.fetch({ limit: 100 });
+        const fetchedMessages = await starsChannel.messages.fetch({ limit: 100 });
         const stars = fetchedMessages.filter((m) => m.embeds.length != 0).find((m) => m.embeds[0].footer && m.embeds[0].footer.text.includes(message.id));
         const image = message.attachment.size > 0 ? await (reaction, message.attachment.array()[0].url) : '';
 
