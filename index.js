@@ -252,7 +252,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
        let serverembed = new MessageEmbed()
            .setColor("#228B22")
-           .addField('Uptime', uptime);
+           .addField('Uptime', `${uptime}`);
 
        message.channel.send(serverembed);
 
