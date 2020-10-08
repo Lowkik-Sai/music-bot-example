@@ -557,14 +557,14 @@ const status = {
     let week = 0;
 
     let uptime = ``;
-    let totalSeconds = (client.uptime / 1000);
+    let totalSeconds = (bot.uptime / 1000);
     let hours = Math.floor(totalSeconds / 3600);
     totalSeconds %= 3600;
     let minutes = Math.floor(totalSeconds / 60);
     let seconds = Math.floor(totalSeconds % 60);
 
-    let servers = client.guilds.cache.size;
-    let users = client.users.cache.size;
+    let servers = bot.guilds.cache.size;
+    let users = bot.users.cache.size;
 
     if(hours > 23){
         days = days + 1;
@@ -588,13 +588,13 @@ const status = {
 
     let serverembed = new MessageEmbed()
         .setColor("#9400D3")
-        .setAuthor(`RaptorSA`, client.user.displayAvatarURL)
+        .setAuthor(`RaptorSA`, bot.user.displayAvatarURL)
         .addField(`Version`,`1.0`, true)
         .addField(`Library`,`Discord.js` , true)
-        .addField(`Creator`,`Cramenorn#0484`, true)
+        .addField(`Creator`,`Roc$tarLS109#8861`, true)
         .addField(`Servers`, `${servers}`, true)
         .addField(`Users`, `${users}`, true)
-        .addField(`Invite`, `[Invite RaptorSA](https://discordapp.com/oauth2/authorize?client_id=467684534624976896&scope=bot&permissions=26)`, true)
+        .addField(`Invite`, `[Click Here!](https://discordapp.com/oauth2/authorize?client_id=467684534624976896&scope=bot&permissions=26)`, true)
         .setFooter(`Uptime: ${uptime}`);
 
     message.channel.send(serverembed);    
