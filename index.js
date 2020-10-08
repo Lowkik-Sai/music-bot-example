@@ -269,13 +269,9 @@ bot.on("message", async (message) => { // eslint-disable-line
         .then(guild => console.log('Left guild', guild.name))
         .catch(console.error);
     }
-    if (command === "setbotnick" ) {
+    if (command === "setbotnick"&&message.author.id=="654669770549100575") {
         const newName = message.content.split(' ');
 
-    if(!message.member.hasPermission("ADMINISTRATOR")){
-        return message.channel.send("You don't have the permissions to use this command!");
-    }
-    
     try{
         bot.user.setUsername(newName[1])
             .then(user => message.channel.send(`My new username is **${user.username}**`))
