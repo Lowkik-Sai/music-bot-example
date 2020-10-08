@@ -360,10 +360,9 @@ switch (pageNumber) {
                 { name: '**r!clear**', value: 'Delete/clear messages mentioned.' },
                 { name: '**r!avatar**', value: 'Shows the avatar of that person.' },
             ]);
-        break;
-}
-
-msg.channel.send(embed);
+        }
+         msg.channel.send(embed);
+    }
     if (command === "help" || command === "cmd") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
