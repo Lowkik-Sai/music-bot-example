@@ -224,12 +224,11 @@ bot.on("message", async (message) => { // eslint-disable-line
 }
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
-
         let countries = args.join(" ");
 
         //Credit to Sarastro#7725 for the command :)
 
-        const noArgs = new MessageEmbed()
+        const noArgs = new Discord.MessageEmbed()
         .setTitle('Missing arguments')
         .setColor(0xFF0000)
         .setDescription('You are missing some args (ex: ;covid all || ;covid Canada)')
@@ -245,7 +244,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                 let recovered = data.recovered.value.toLocaleString()
                 let deaths = data.deaths.value.toLocaleString()
 
-                const embed = new MessageEmbed()
+                const embed = new Discord.MessageEmbed()
                 .setTitle(`Worldwide COVID-19 Stats 🌎`)
                 .addField('Confirmed Cases', confirmed)
                 .addField('Recovered', recovered)
@@ -261,19 +260,19 @@ bot.on("message", async (message) => { // eslint-disable-line
                 let recovered = data.recovered.value.toLocaleString()
                 let deaths = data.deaths.value.toLocaleString()
 
-                const embed = new MessageEmbed()
+                const embed = new Discord.MessageEmbed()
                 .setTitle(`COVID-19 Stats for **${countries}**`)
                 .addField('Confirmed Cases', confirmed)
                 .addField('Recovered', recovered)
                 .addField('Deaths', deaths)
 
                 message.channel.send(embed)
-            }).catch (err => {
-                    return message.channel.send({embed: {color: "RED", description: "Something Error!Solve it asap!"}});
-                })
-
+            }).catch(e => {
+                return message.channel.send('Invalid country provided')
+            })
         }
     }
+}
     if (command === "someone" ) {
        var sToggle = true;
 
@@ -295,7 +294,6 @@ bot.on("message", async (message) => { // eslint-disable-line
             message.channel.send("Disabled `someone` globally. Command locked to ADMINS only.")
         }
     }
-}
     if (command === "uptime" ) {
        let days = 0;
        let week = 0;
@@ -1039,7 +1037,7 @@ const member = message.guild.member(user);
         );
         number = chunk(number, 5);
 
-        let index = 0;
+        let i = 0;
         if (!serverQueue) return message.channel.send({
             embed: {
                 color: "RED",
