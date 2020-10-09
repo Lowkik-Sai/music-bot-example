@@ -285,6 +285,58 @@ bot.on("message", async (message) => { // eslint-disable-line
           });
       }
     }
+    if (command === "covid" ) { 
+        const fetch = require('node-fetch');
+        const Discord = require('discord.js');
+
+        let countries = args.join(" ");
+
+        //Credit to Sarastro#7725 for the command :)
+
+        const noArgs = new MessageEmbed()
+        .setTitle('Missing arguments')
+        .setColor(0xFF0000)
+        .setDescription('You are missing some args (ex: ;covid all || ;covid Canada)')
+        .setTimestamp()
+
+        if(!args[0]) return message.channel.send(noArgs);
+
+        if(args[0] === "all"){
+            fetch(`https://covid19.mathdro.id/api`)
+            .then(response => response.json())
+            .then(data => {
+                let confirmed = data.confirmed.value.toLocaleString()
+                let recovered = data.recovered.value.toLocaleString()
+                let deaths = data.deaths.value.toLocaleString()
+
+                const embed = new MessageEmbed()
+                .setTitle(`Worldwide COVID-19 Stats 🌎`)
+                .addField('Confirmed Cases', confirmed)
+                .addField('Recovered', recovered)
+                .addField('Deaths', deaths)
+
+                message.channel.send(embed)
+            })
+        } else {
+            fetch(`https://covid19.mathdro.id/api/countries/${countries}`)
+            .then(response => response.json())
+            .then(data => {
+                let confirmed = data.confirmed.value.toLocaleString()
+                let recovered = data.recovered.value.toLocaleString()
+                let deaths = data.deaths.value.toLocaleString()
+
+                const embed = new MessageEmbed()
+                .setTitle(`COVID-19 Stats for **${countries}**`)
+                .addField('Confirmed Cases', confirmed)
+                .addField('Recovered', recovered)
+                .addField('Deaths', deaths)
+
+                message.channel.send(embed)
+            }).catch (err => {
+                    return message.channel.send({embed: {color: "RED", description: "Something Error!Solve it asap!"}});
+                })
+        }
+    }
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
@@ -339,58 +391,6 @@ bot.on("message", async (message) => { // eslint-disable-line
   description:m
 }})
         .catch(console.error);
-    }
-    if (command === "covid" ) { 
-        const fetch = require('node-fetch');
-        const Discord = require('discord.js');
-
-        let countries = args.join(" ");
-
-        //Credit to Sarastro#7725 for the command :)
-
-        const noArgs = new MessageEmbed()
-        .setTitle('Missing arguments')
-        .setColor(0xFF0000)
-        .setDescription('You are missing some args (ex: ;covid all || ;covid Canada)')
-        .setTimestamp()
-
-        if(!args[0]) return message.channel.send(noArgs);
-
-        if(args[0] === "all"){
-            fetch(`https://covid19.mathdro.id/api`)
-            .then(response => response.json())
-            .then(data => {
-                let confirmed = data.confirmed.value.toLocaleString()
-                let recovered = data.recovered.value.toLocaleString()
-                let deaths = data.deaths.value.toLocaleString()
-
-                const embed = new MessageEmbed()
-                .setTitle(`Worldwide COVID-19 Stats 🌎`)
-                .addField('Confirmed Cases', confirmed)
-                .addField('Recovered', recovered)
-                .addField('Deaths', deaths)
-
-                message.channel.send(embed)
-            })
-        } else {
-            fetch(`https://covid19.mathdro.id/api/countries/${countries}`)
-            .then(response => response.json())
-            .then(data => {
-                let confirmed = data.confirmed.value.toLocaleString()
-                let recovered = data.recovered.value.toLocaleString()
-                let deaths = data.deaths.value.toLocaleString()
-
-                const embed = new MessageEmbed()
-                .setTitle(`COVID-19 Stats for **${countries}**`)
-                .addField('Confirmed Cases', confirmed)
-                .addField('Recovered', recovered)
-                .addField('Deaths', deaths)
-
-                message.channel.send(embed)
-            }).catch (err => {
-                    return message.channel.send({embed: {color: "RED", description: "Something Error!Solve it asap!"}});
-                })
-        }
     }
     if (command === "uptime" ) {
        let days = 0;
