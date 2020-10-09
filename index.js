@@ -658,17 +658,8 @@ const Embeds = new PaginationEmbed.Embeds()
   //  - message: the client's Message object (edits the message instead of sending new one for this instance)
   //  - prompt: custom content for the message sent when prompted to jump to a page
   //      {{user}} is the placeholder for the user mention
-  .setDeleteOnTimeout(true)
-  .setFunctionEmojis({
-    '⬆': (_, instance) => {
-      for (const embed of instance.array)
-        embed.fields[0].value++;
-    },
-    '⬇': (_, instance) => {
-      for (const embed of instance.array)
-        embed.fields[0].value--;
-    }
-  })
+  .setDeleteOnTimeout(false)
+  
   // Listeners for PaginationEmbed's events
   // After the initial embed has been sent
   // (technically, after the client finished reacting with enabled navigation and function emojis).
