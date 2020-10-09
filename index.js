@@ -213,20 +213,78 @@ bot.on("message", async (message) => { // eslint-disable-line
 	}
 
 	message.channel.send(`First argument: ${args[0]}`);
-    }  else if (command === 'prune') {
-		const amount = parseInt(args[0]) + 1;
+    }
+    if (command === "addrole" || command === "ar") {
+       //Pay attention in order to assign a role of a user, the bot needs to be above that role, that means you can't assign an equal or highest role than bot's role
+    let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.cache.get(args[0]);
+    
+    if(!message.member.hasPermission("MANAGE_ROLES")){
+        message.channel.send("You don't have the permissions to use this command!");
+    }
 
-		if (isNaN(amount)) {
-			return message.reply('that doesn\'t seem to be a valid number.');
-		} else if (amount <= 1 || amount > 100) {
-			return message.reply('you need to input a number between 1 and 99.');
-		}
+    else{
 
-		message.channel.bulkDelete(amount, true).catch(err => {
-			console.error(err);
-			message.channel.send('there was an error trying to prune messages in this channel!');
-		});
-	}
+        if(!rMember) 
+            return message.channel.send("Couldn't find that user, yo.");
+
+        let role = args.join(" ").slice(23);
+        if(!role) 
+            return message.channel.send("Specify a role!");
+
+        let gRole = message.guild.roles.cache.find(roles => roles.name === role);
+        if(!gRole) 
+            return message.channel.send("Couldn't find that role.");
+
+        if(rMember.roles.cache.has(gRole.id)) 
+            return message.channel.send("They already have that role.");
+
+        else{
+            rMember.roles.add(gRole.id).catch(console.error);
+            
+            try{
+                rMember.send(`Congrats, you have been given the role ${gRole.name}`);
+                message.channel.send(`The user ${rMember} has a new role ${gRole.name}`);
+            }
+            catch(e){
+                console.log(e.stack);
+                message.channel.send(`Congrats to <@${rMember.id}>, they have been given the role ${gRole.name}.`)
+            }
+        }
+    }
+} 
+    if (command === "purge" || command === "clear" ) {
+      // Check the following permissions before deleting messages:
+      //    1. Check if the user has enough permissions
+      //    2. Check if I have the permission to execute the command
+
+      if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
+        message.channel.sendMessage("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
+        console.log("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
+        return;
+      } else if (!message.channel.permissionsFor(bot.user).has("MANAGE_MESSAGES")) {
+        message.channel.sendMessage("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
+        console.log("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
+        return;
+      }
+
+      // Only delete messages if the channel type is TextChannel
+      // DO NOT delete messages in DM Channel or Group DM Channel
+      if (message.channel.type == 'text') {
+        message.channel.messages.fetch()
+          .then(messages => {
+            message.channel.bulkDelete(messages);
+            messagesDeleted = messages.array().length; // number of messages deleted
+
+            // Logging the number of messages deleted on both the channel and console.
+            message.channel.sendMessage("Deletion of messages successful. Total messages deleted: "+messagesDeleted);
+            console.log('Deletion of messages successful. Total messages deleted: '+messagesDeleted)
+          })
+          .catch(err => {
+            console.log('Error while doing Bulk Delete');
+            console.log(err);
+          });
+      }
+    }
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
@@ -408,44 +466,6 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         message.channel.send(helpembed);
     }
-    if (command === "addrole" || command === "ar") {
-       //Pay attention in order to assign a role of a user, the bot needs to be above that role, that means you can't assign an equal or highest role than bot's role
-    let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.cache.get(args[0]);
-    
-    if(!message.member.hasPermission("MANAGE_ROLES")){
-        message.channel.send("You don't have the permissions to use this command!");
-    }
-
-    else{
-
-        if(!rMember) 
-            return message.channel.send("Couldn't find that user, yo.");
-
-        let role = args.join(" ").slice(23);
-        if(!role) 
-            return message.channel.send("Specify a role!");
-
-        let gRole = message.guild.roles.cache.find(roles => roles.name === role);
-        if(!gRole) 
-            return message.channel.send("Couldn't find that role.");
-
-        if(rMember.roles.cache.has(gRole.id)) 
-            return message.channel.send("They already have that role.");
-
-        else{
-            rMember.roles.add(gRole.id).catch(console.error);
-            
-            try{
-                rMember.send(`Congrats, you have been given the role ${gRole.name}`);
-                message.channel.send(`The user ${rMember} has a new role ${gRole.name}`);
-            }
-            catch(e){
-                console.log(e.stack);
-                message.channel.send(`Congrats to <@${rMember.id}>, they have been given the role ${gRole.name}.`)
-            }
-        }
-    }
-}
     if (command === "removerole" || command === "rr" ) {
        let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.cache.get(args[0]);
 
@@ -483,39 +503,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
     }
 }
-    if (command === "purge" || command === "clear" ) {
-      // Check the following permissions before deleting messages:
-      //    1. Check if the user has enough permissions
-      //    2. Check if I have the permission to execute the command
-
-      if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
-        message.channel.sendMessage("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
-        console.log("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
-        return;
-      } else if (!message.channel.permissionsFor(bot.user).has("MANAGE_MESSAGES")) {
-        message.channel.sendMessage("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
-        console.log("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
-        return;
-      }
-
-      // Only delete messages if the channel type is TextChannel
-      // DO NOT delete messages in DM Channel or Group DM Channel
-      if (message.channel.type == 'text') {
-        message.channel.messages.fetch()
-          .then(messages => {
-            message.channel.bulkDelete(messages);
-            messagesDeleted = messages.array().length; // number of messages deleted
-
-            // Logging the number of messages deleted on both the channel and console.
-            message.channel.sendMessage("Deletion of messages successful. Total messages deleted: "+messagesDeleted);
-            console.log('Deletion of messages successful. Total messages deleted: '+messagesDeleted)
-          })
-          .catch(err => {
-            console.log('Error while doing Bulk Delete');
-            console.log(err);
-          });
-      }
-    }
     if (command === "caronavirus" || command === "cv") {
               message.reply({embed: {
   color: 3447003,
