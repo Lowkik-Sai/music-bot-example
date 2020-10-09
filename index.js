@@ -381,7 +381,7 @@ bot.on("message", async (message) => { // eslint-disable-line
        //Pay attention in order to assign a role of a user, the bot needs to be above that role, that means you can't assign an equal or highest role than bot's role
     let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.cache.get(args[0]);
     
-    if(!message.member.hasPermission("MANAGE_ROLES")){
+    if(!message.member.has("MANAGE_ROLES")){
         message.channel.send("You don't have the permissions to use this command!");
     }
 
@@ -418,7 +418,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "removerole" || command === "rr" ) {
        let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.cache.get(args[0]);
 
-    if(!message.member.hasPermission("MANAGE_ROLES")){
+    if(!message.member.has("MANAGE_ROLES")){
         message.channel.send("You don't have the permissions to use this command!");
     }
     
@@ -457,11 +457,11 @@ bot.on("message", async (message) => { // eslint-disable-line
       //    1. Check if the user has enough permissions
       //    2. Check if I have the permission to execute the command
 
-      if (!message.channel.permissionsFor(message.author).hasPermission("MANAGE_MESSAGES")) {
+      if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
         message.channel.sendMessage("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
         console.log("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
         return;
-      } else if (!message.channel.permissionsFor(bot.user).hasPermission("MANAGE_MESSAGES")) {
+      } else if (!message.channel.permissionsFor(bot.user).has("MANAGE_MESSAGES")) {
         message.channel.sendMessage("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
         console.log("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
         return;
