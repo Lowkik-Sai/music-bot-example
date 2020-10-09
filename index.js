@@ -129,7 +129,7 @@ bot.on("message", async (bot, message) => { // eslint-disable-line
   
         const img = await randomPuppy(random);
   
-        const memeEmbed = new Discord.MessageEmbed()
+        const memeEmbed = new MessageEmbed()
         .setColor("RANDOM")
         .setImage(img)
         .setTitle(`Your meme. From r/${random}`)
