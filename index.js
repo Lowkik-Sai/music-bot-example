@@ -723,9 +723,7 @@ const member = message.guild.member(user);
         .setImage(member.user.displayAvatarURL())
         .setTimestamp()
         .addField("Permissions: ", `${permissions.join(', ')}`, true)
-        . [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
-        .addField("Acknowledgements: ", `${acknowledgements}`, true);
-        
+
     message.channel.send({embed});
 
 }
