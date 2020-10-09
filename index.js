@@ -108,19 +108,6 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.reply(helpembed);
     }
-    if (command === "758889056649216041") {
-      let m = '';
-      m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
-      m += `I am aware of ${message.guild.members.cache.size} members\n`;
-      m += `I am aware of ${bot.channels.cache.size} channels overall\n`;
-      m += `I am aware of ${bot.guilds.cache.size} guilds overall\n`;
-      m += `I am aware of ${bot.users.cache.size} users overall\n`;
-      message.reply({embed: {
-  color: 3066993,
-  description:m
-}})
-        .catch(console.error);
-    }
     if (command === "meme" ) {
         const randomPuppy = require('random-puppy');
         const Discord = require('discord.js');
@@ -466,40 +453,37 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
 }
     if (command === "purge" || command === "clear" ) {
-        const Discord = require('discord.js')
-        console.log("purging messages")
+      // Check the following permissions before deleting messages:
+      //    1. Check if the user has enough permissions
+      //    2. Check if I have the permission to execute the command
 
-        const amount = parseInt(args[0]) + 1;
+      if (!message.channel.permissionsFor(message.author).hasPermission("MANAGE_MESSAGES")) {
+        message.channel.sendMessage("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
+        console.log("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
+        return;
+      } else if (!message.channel.permissionsFor(bot.user).hasPermission("MANAGE_MESSAGES")) {
+        message.channel.sendMessage("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
+        console.log("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
+        return;
+      }
 
-        if (isNaN(amount)) {
-            return message.reply('that doesn\'t seem to be a valid number.');
-        } else if (amount <= 1 || amount > 100) {
-            return message.reply('you need to input a number between 1 and 99.');
-        }
+      // Only delete messages if the channel type is TextChannel
+      // DO NOT delete messages in DM Channel or Group DM Channel
+      if (message.channel.type == 'text') {
+        message.channel.fetchMessages()
+          .then(messages => {
+            message.channel.bulkDelete(messages);
+            messagesDeleted = messages.array().length; // number of messages deleted
 
-        message.channel.bulkDelete(amount, true).then(deletedMessages => {
-            // Filter the deleted messages with .filter()
-            var botMessages = deletedMessages.filter(m => m.author.bot);
-            var userPins = deletedMessages.filter(m => m.pinned);
-            var userMessages = deletedMessages.filter(m => !m.author.bot);
-
-            const embed = new Discord.RichEmbed()
-                .setTitle("Success")
-                .setColor(0x00AE86)
-                .setFooter("Guardian", "https://raw.githubusercontent.com/phantomdev-github/Resources/master/Discord%20Bots/Guardian/src/avatar.png")
-                .setThumbnail("https://raw.githubusercontent.com/phantomdev-github/Resources/master/Discord%20Bots/Guardian/src/avatar.png")
-                .setTimestamp()
-                .setURL("https://github.com/phantomdev-github/Resources/tree/master/Discord%20Bots/Guardian")
-                .addField("Bot Messages Purged", botMessages.size, false)
-                .addField("User Pins Purged", userPins.size, false)
-                .addField("User Messages Purged", userMessages.size, false)
-                .addField("Total Messages Purged", deletedMessages.size, false);
-
-            message.channel.send(embed);
-        }).catch(err => {
-            console.error(err);
-            message.channel.send('there was an error trying to prune messages in this channel!');
-        });
+            // Logging the number of messages deleted on both the channel and console.
+            message.channel.sendMessage("Deletion of messages successful. Total messages deleted: "+messagesDeleted);
+            console.log('Deletion of messages successful. Total messages deleted: '+messagesDeleted)
+          })
+          .catch(err => {
+            console.log('Error while doing Bulk Delete');
+            console.log(err);
+          });
+      }
     }
     if (command === "caronavirus" || command === "cv") {
               message.reply({embed: {
