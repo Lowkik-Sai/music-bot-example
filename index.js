@@ -91,7 +91,8 @@ bot.on("message", async (bot, message) => { // eslint-disable-line
     if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
 
-    const args = message.content.split(" ");
+    
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const searchString = args.slice(1).join(" ");
     const url = args[1] ? args[1].replace(/<(.+)>/g, "$1") : "";
       
@@ -214,7 +215,8 @@ bot.on("message", async (bot, message) => { // eslint-disable-line
     if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
 
-    const args = message.content.split(" ");
+    
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const searchString = args.slice(1).join(" ");
     const url = args[1] ? args[1].replace(/<(.+)>/g, "$1") : "";
     const serverQueue = queue.get(message.guild.id);
