@@ -34,6 +34,8 @@
     "express": "^4.17.1",
     "node-opus": "^0.3.3",
     "opusscript": "0.0.7",
+    "figlet": "^1.4.0",
+    "quick.db": "^7.0.0-b21",
     "simple-youtube-api": "^5.2.1",
     "node-fetch": "^2.6.0",
     "mathjs": "^7.0.1",
