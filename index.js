@@ -120,7 +120,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 }})
         .catch(console.error);
     }
-    if (command === "statisticsofamongus") {
+    if (command === "758889056649216041") {
       let m = '';
       m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
       m += `I am aware of ${message.guild.members.cache.size} members\n`;
@@ -224,6 +224,8 @@ bot.on("message", async (message) => { // eslint-disable-line
 }
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
+        const Discord = require('discord.js');
+
         let countries = args.join(" ");
 
         //Credit to Sarastro#7725 for the command :)
