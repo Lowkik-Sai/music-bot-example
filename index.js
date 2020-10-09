@@ -647,7 +647,7 @@ const Embeds = new PaginationEmbed.Embeds()
   .setArray(embeds)
   .setAuthorizedUsers([message.author.id])
   .setChannel(message.channel)
-  .setPageIndicator(true)
+  .setPageIndicator(false)
   .setTitle('Among Us')
   .setDescription('Commands List')
   .setFooter('Type +help <commandname>')
@@ -657,7 +657,6 @@ const Embeds = new PaginationEmbed.Embeds()
   //  - message: the client's Message object (edits the message instead of sending new one for this instance)
   //  - prompt: custom content for the message sent when prompted to jump to a page
   //      {{user}} is the placeholder for the user mention
-  .setClientAssets({ prompt: 'Page plz {{user}}' })
   .setDeleteOnTimeout(true)
   .setDisabledNavigationEmojis(['delete'])
   .setFunctionEmojis({
