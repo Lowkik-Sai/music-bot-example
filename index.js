@@ -470,7 +470,7 @@ bot.on("message", async (message) => { // eslint-disable-line
       // Only delete messages if the channel type is TextChannel
       // DO NOT delete messages in DM Channel or Group DM Channel
       if (message.channel.type == 'text') {
-        message.channel.fetchMessages()
+        message.channel.messages.fetch()
           .then(messages => {
             message.channel.bulkDelete(messages);
             messagesDeleted = messages.array().length; // number of messages deleted
