@@ -466,8 +466,8 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
 }
     if (command === "purge" || command === "clear" ) {
-       let hasPerms = require("./helpers.js").hasPerms;
-       let inPrivate = require("./helpers.js").inPrivate;
+       const hasPerms = require("./helpers.js").hasPerms;
+       const inPrivate = require("./helpers.js").inPrivate;
 
     if (inPrivate(msg)) {
       msg.channel.send("You Cant Purge Message In DM's!");
