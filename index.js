@@ -191,6 +191,22 @@ bot.on("message", async (message) => { // eslint-disable-line
 
 	message.channel.send(`First argument: ${args[0]}`);
     }
+    if (command === "ascii" ) {
+        const figlet = require('figlet');
+        if(!args[0]) return message.channel.send('Please provide some text');
+
+        msg = args.join(" ");
+
+        figlet.text(msg, function (err, data){
+            if(err){
+                console.log('Something went wrong');
+                console.dir(err);
+            }
+            if(data.length > 2000) return message.channel.send('Please provide text shorter than 2000 characters')
+
+            message.channel.send('```' + data + '```')
+        })
+    }
     if (command === "calculate" ) {
         const math = require('mathjs');
 
