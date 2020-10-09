@@ -6,7 +6,7 @@ require("dotenv").config();
 require("./server.js");
 
 const bot = new Client({
-    disableMentions: "all"
+    disableMentions: "everyone"
 });
 
 const PREFIX = process.env.PREFIX;
@@ -638,7 +638,10 @@ const member = message.guild.member(user);
     if (command === "help" || command === "cmd") {
         const PaginationEmbed = require('discord-paginationembed');
  
-const embeds = [];
+const embeds = [
+                Fun Commands,Covid
+                Mod Commands,Ban
+               ];
  
 for (let i = 1; i <= 5; ++i)
   embeds.push(new MessageEmbed().addField('Page', i));
@@ -648,8 +651,8 @@ const Embeds = new PaginationEmbed.Embeds()
   .setAuthorizedUsers([message.author.id])
   .setChannel(message.channel)
   .setPageIndicator(true)
-  .setTitle('Mod Commands', 'Fun Commands', 'Info Commands', 'hey', 'hi')
-  .setDescription('Kick,Ban,Unban,Mute,Unmute', 'Covid,Carona', 'Botinfo,Serverinfo,Userinfo', 'hey', 'hii')
+  .setTitle('Among Us')
+  .setDescription('Commands List')
   .setFooter('Type +help <commandname>')
   .setURL('https://gazmull.github.io/discord-paginationembed')
   .setColor(0xFF00AE)
