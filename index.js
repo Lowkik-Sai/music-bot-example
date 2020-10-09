@@ -107,19 +107,6 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.reply(helpembed);
     }
-    if (command === "stats"&& message.author.id === '654669770549100575') {
-      let m = '';
-      m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
-      m += `I am aware of ${message.guild.members.cache.size} members\n`;
-      m += `I am aware of ${bot.channels.cache.size} channels overall\n`;
-      m += `I am aware of ${bot.guilds.cache.size} guilds overall\n`;
-      m += `I am aware of ${bot.users.cache.size} users overall\n`;
-      message.reply({embed: {
-  color: 3066993,
-  description:m
-}})
-        .catch(console.error);
-    }
     if (command === "758889056649216041") {
       let m = '';
       m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
@@ -222,6 +209,19 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(`You have to paste a correct channel ID!`);
     }
 }
+    if (command === "stats"&& message.author.id === '654669770549100575') {
+      let m = '';
+      m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
+      m += `I am aware of ${message.guild.members.cache.size} members\n`;
+      m += `I am aware of ${bot.channels.cache.size} channels overall\n`;
+      m += `I am aware of ${bot.guilds.cache.size} guilds overall\n`;
+      m += `I am aware of ${bot.users.cache.size} users overall\n`;
+      message.reply({embed: {
+  color: 3066993,
+  description:m
+}})
+        .catch(console.error);
+    }
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
         const Discord = require('discord.js');
