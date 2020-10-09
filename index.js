@@ -199,6 +199,24 @@ await Embeds.build();
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
+    if (!message.content.startsWith(PREFIX) || message.author.bot) return;
+
+    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const command = args.shift().toLowerCase();
+    // the rest of your code
+    if (command === 'args-info') {
+	if (!args.length) {
+		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+	}
+	else if (args[0] === 'foo') {
+		return message.channel.send('bar');
+	}
+
+	message.channel.send(`First argument: ${args[0]}`);
+    }
+});
+
+bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
 
@@ -1105,16 +1123,7 @@ const member = message.guild.member(user);
             return awaitReaction();
         }
 
-    } else if (command === 'args-info') {
-	if (!args.length) {
-		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
-	}
-	else if (args[0] === 'foo') {
-		return message.channel.send('bar');
-	}
-
-	message.channel.send(`First argument: ${args[0]}`);
-    }else if (command === "pause"|| command === "pa") {
+    } else if (command === "pause"|| command === "pa") {
         if (serverQueue && serverQueue.playing) {
             serverQueue.playing = false;
             serverQueue.connection.dispatcher.pause();
