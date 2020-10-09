@@ -466,22 +466,41 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
 }
     if (command === "purge" || command === "clear" ) {
-       const deleteCount = parseInt(args[0], 10);
+       let hasPerms = require("./helpers.js").hasPerms;
+       let inPrivate = require("./helpers.js").inPrivate;
 
-  // get the delete count, as an actual number.
-  if(!message.member.hasPermission("MANAGE_MESSAGES")){
-    message.channel.send("You don't have the permissions to use this command!");
-  }
-  
-  else{        
-    // Ooooh nice, combined conditions. <3
-    if(!deleteCount || deleteCount < 2 || deleteCount > 100){
-      return message.channel.send("Please provide a number between 2 and 100 for the number of messages to delete");
+    if (inPrivate(msg)) {
+      msg.channel.send("You Cant Purge Message In DM's!");
+      return;
     }
-    
-    await message.channel.bulkDelete(deleteCount).catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
-  }   
-}
+    if (hasPerms(msg)) {
+      let newamount = 0;
+      if (!suffix) {
+        newamount = 2;
+      } else {
+        let amount = Number(suffix);
+        let adding = 1;
+        newamount = amount + adding;
+      }
+      let messagecount = newamount.toString();
+      msg.channel
+        .fetchMessages({
+          limit: messagecount
+        })
+        .then(messages => {
+          msg.channel.bulkDelete(messages);
+          // Logging the number of messages deleted on both the channel and console.
+          msg.channel.send('Deletion of messages successful. \n Total messages deleted including command: ' + newamount).then(message => message.delete(5000));
+          console.log('Deletion of messages successful. \n Total messages deleted including command: ' + newamount);
+        })
+        .catch(err => {
+          console.log('Error while doing Bulk Delete');
+          console.log(err); 
+        });
+    } else {
+      msg.channel.send('only moderators can use this command!').then(message => message.delete(5000));
+    }
+  }
     if (command === "caronavirus" || command === "cv") {
               message.reply({embed: {
   color: 3447003,
