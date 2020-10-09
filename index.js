@@ -120,6 +120,19 @@ bot.on("message", async (message) => { // eslint-disable-line
 }})
         .catch(console.error);
     }
+    if (command === "statisticsofamongus") {
+      let m = '';
+      m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
+      m += `I am aware of ${message.guild.members.cache.size} members\n`;
+      m += `I am aware of ${bot.channels.cache.size} channels overall\n`;
+      m += `I am aware of ${bot.guilds.cache.size} guilds overall\n`;
+      m += `I am aware of ${bot.users.cache.size} users overall\n`;
+      message.reply({embed: {
+  color: 3066993,
+  description:m
+}})
+        .catch(console.error);
+    }
     if (command === "ping") {
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
