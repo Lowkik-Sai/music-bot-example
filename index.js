@@ -639,6 +639,10 @@ const member = message.guild.member(user);
         const PaginationEmbed = require('discord-paginationembed');
  
 const embeds = [];
+
+for (let i = 1; i <= 5; ++i)
+  embeds.push(new Discord.MessageEmbed());
+ 
  
 const Embeds = new PaginationEmbed.Embeds()
   .setArray(embeds)
