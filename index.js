@@ -111,6 +111,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "meme" ) {
         const randomPuppy = require('random-puppy');
         const Discord = require('discord.js');
+
         const subReddits = ["dankmemes", "meme", "memes"]
         const random = subReddits[Math.floor(Math.random() * subReddits.length)]
   
@@ -123,30 +124,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setURL(`https://reddit.com/r/${random}`)
   
         message.channel.send(memeEmbed);
-    }
-    if (command === "calculate" ) {
-        const math = require('mathjs');
-
-        const Discord = require('discord.js');
-
-        if(!args[0]) return message.channel.send('Please provide a question');
-
-        let resp;
-
-        try {
-            resp = math.evaluate(args.join(" "))
-        } catch (e) {
-            return message.channel.send('Please provide a **valid** question')
-        }
-
-        const embed = new Discord.MessageEmbed()
-        .setColor(0x808080)
-        .setTitle('Calculator')
-        .addField('Question', `\`\`\`css\n${args.join(' ')}\`\`\``)
-        .addField('Answer', `\`\`\`css\n${resp}\`\`\``)
-
-        message.channel.send(embed);
-
     }
     if (command === "ping") {
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
@@ -213,6 +190,30 @@ bot.on("message", async (message) => { // eslint-disable-line
 	}
 
 	message.channel.send(`First argument: ${args[0]}`);
+    }
+    if (command === "calculate" ) {
+        const math = require('mathjs');
+
+        const Discord = require('discord.js');
+
+        if(!args[0]) return message.channel.send('Please provide a question');
+
+        let resp;
+
+        try {
+            resp = math.evaluate(args.join(" "))
+        } catch (e) {
+            return message.channel.send('Please provide a **valid** question')
+        }
+
+        const embed = new Discord.MessageEmbed()
+        .setColor(0x808080)
+        .setTitle('Calculator')
+        .addField('Question', `\`\`\`css\n${args.join(' ')}\`\`\``)
+        .addField('Answer', `\`\`\`css\n${resp}\`\`\``)
+
+        message.channel.send(embed);
+
     }
     if (command === "addrole" || command === "ar") {
        //Pay attention in order to assign a role of a user, the bot needs to be above that role, that means you can't assign an equal or highest role than bot's role
