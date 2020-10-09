@@ -87,7 +87,7 @@ bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully
 bot.on("shardDisconnect", (event, id) => console.log(`[SHARD] Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect...`));
 bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnecting...`));
 
-bot.on("message", async (message) => { // eslint-disable-line
+bot.on("message", async (bot, message) => { // eslint-disable-line
     if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
 
@@ -119,6 +119,22 @@ bot.on("message", async (message) => { // eslint-disable-line
   description:m
 }})
         .catch(console.error);
+    }
+    if (command === "meme" ) {
+        const randomPuppy = require('random-puppy');
+        const Discord = require('discord.js');
+        const subReddits = ["dankmemes", "meme", "memes"]
+        const random = subReddits[Math.floor(Math.random() * subReddits.length)]
+  
+        const img = await randomPuppy(random);
+  
+        const memeEmbed = new Discord.MessageEmbed()
+        .setColor("RANDOM")
+        .setImage(img)
+        .setTitle(`Your meme. From r/${random}`)
+        .setURL(`https://reddit.com/r/${random}`)
+  
+        message.channel.send(memeEmbed);
     }
     if (command === "calculate" ) {
         const math = require('mathjs');
@@ -194,7 +210,7 @@ await Embeds.build();
     }
 });
 
-bot.on("message", async (message) => { // eslint-disable-line
+bot.on("message", async (bot, message) => { // eslint-disable-line
     if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
 
