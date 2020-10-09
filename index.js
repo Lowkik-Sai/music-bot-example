@@ -683,6 +683,9 @@ const Embeds = new PaginationEmbed.Embeds()
   .on('expire', () => console.warn('Expired!'))
   // Upon an occurance of error (e.g: Discord API Error).
   .on('error', console.error);
+  // When the awaiting timeout is reached.
+  .on('expire', () => message.reply('Expired!'))
+
  
 await Embeds.build();
     }
