@@ -660,6 +660,76 @@ const member = message.guild.member(user);
     message.channel.send({embed});
 
 }
+    if (command === "checkperms" ) {
+        var permissions = [];
+    let user;
+if (message.mentions.users.first()) {
+    user = message.mentions.users.first();
+} else {
+    user = message.author;
+}
+
+const member = message.guild.member(user);
+
+    const randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); }); 
+    
+    if(message.member.hasPermission("KICK_MEMBERS")){
+        permissions.push("Kick Members");
+    }
+    
+    if(message.member.hasPermission("BAN_MEMBERS")){
+        permissions.push("Ban Members");
+    }
+    
+    if(message.member.hasPermission("ADMINISTRATOR")){
+        permissions.push("Administrator");
+    }
+
+    if(message.member.hasPermission("MANAGE_MESSAGES")){
+        permissions.push("Manage Messages");
+    }
+    
+    if(message.member.hasPermission("MANAGE_CHANNELS")){
+        permissions.push("Manage Channels");
+    }
+    
+    if(message.member.hasPermission("MENTION_EVERYONE")){
+        permissions.push("Mention Everyone");
+    }
+
+    if(message.member.hasPermission("MANAGE_NICKNAMES")){
+        permissions.push("Manage Nicknames");
+    }
+
+    if(message.member.hasPermission("MANAGE_ROLES")){
+        permissions.push("Manage Roles");
+    }
+
+    if(message.member.hasPermission("MANAGE_WEBHOOKS")){
+        permissions.push("Manage Webhooks");
+    }
+
+    if(message.member.hasPermission("MANAGE_EMOJIS")){
+        permissions.push("Manage Emojis");
+    }
+
+    if(permissions.length == 0){
+        permissions.push("No Key Permissions Found");
+    }
+       const embed = new MessageEmbed()
+        .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL())
+        .setColor(randomColor)
+        .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
+        .setImage(member.user.displayAvatarURL())
+        .setTimestamp()
+        .addField("Permissions: ", `${permissions.join(', ')}`, true)
+        . [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
+        .addField("Acknowledgements: ", `${acknowledgements}`, true);
+        
+    message.channel.send({embed});
+
+}
+
     if (command === "botinfo" || command === "bi") {
     let days = 0;
     let week = 0;
