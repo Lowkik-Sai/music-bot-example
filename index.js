@@ -126,6 +126,48 @@ bot.on("message", async (message) => { // eslint-disable-line
     const m = await message.channel.send("Ping?");
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms.`);
     }
+    if (command === "help" || command === "cmd") {
+        const PaginationEmbed = require('discord-paginationembed');
+ 
+const embeds = [];
+
+for (let i = 1; i <= 5; ++i)
+  embeds.push(new MessageEmbed());
+ 
+ 
+const Embeds = new PaginationEmbed.Embeds()
+  .setArray(embeds)
+  .setAuthorizedUsers([message.author.id])
+  .setChannel(message.channel)
+  .setPageIndicator(true)
+  .setTitle('Among Us')
+  .setDescription('Commands List')
+  .setFooter('Type +help <commandname>')
+  .setURL('https://gazmull.github.io/discord-paginationembed')
+  .setColor(0xFF00AE)
+  // Sets the client's assets to utilise. Available options:
+  //  - message: the client's Message object (edits the message instead of sending new one for this instance)
+  //  - prompt: custom content for the message sent when prompted to jump to a page
+  //      {{user}} is the placeholder for the user mention
+  .setDeleteOnTimeout(false)
+  
+  // Listeners for PaginationEmbed's events
+  // After the initial embed has been sent
+  // (technically, after the client finished reacting with enabled navigation and function emojis).
+  .on('start', () => console.log('Started!'))
+  // When the instance is finished by a user reacting with `delete` navigation emoji
+  // or a function emoji that throws non-Error type.
+  .on('finish', (user) => console.log(`Finished! User: ${user.username}`))
+  // Upon a user reacting on the instance.
+  .on('react', (user, emoji) => console.log(`Reacted! User: ${user.username} | Emoji: ${emoji.name} (${emoji.id})`))
+  // When the awaiting timeout is reached.
+  .on('expire', () => console.warn('Expired!'))
+  // Upon an occurance of error (e.g: Discord API Error).
+  .on('error', console.error);
+
+ 
+await Embeds.build();
+    }
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
@@ -635,48 +677,6 @@ const member = message.guild.member(user);
     message.channel.send(serverembed);    
 
 }
-    if (command === "help" || command === "cmd") {
-        const PaginationEmbed = require('discord-paginationembed');
- 
-const embeds = [];
-
-for (let i = 1; i <= 5; ++i)
-  embeds.push(new MessageEmbed());
- 
- 
-const Embeds = new PaginationEmbed.Embeds()
-  .setArray(embeds)
-  .setAuthorizedUsers([message.author.id])
-  .setChannel(message.channel)
-  .setPageIndicator(true)
-  .setTitle('Among Us')
-  .setDescription('Commands List')
-  .setFooter('Type +help <commandname>')
-  .setURL('https://gazmull.github.io/discord-paginationembed')
-  .setColor(0xFF00AE)
-  // Sets the client's assets to utilise. Available options:
-  //  - message: the client's Message object (edits the message instead of sending new one for this instance)
-  //  - prompt: custom content for the message sent when prompted to jump to a page
-  //      {{user}} is the placeholder for the user mention
-  .setDeleteOnTimeout(false)
-  
-  // Listeners for PaginationEmbed's events
-  // After the initial embed has been sent
-  // (technically, after the client finished reacting with enabled navigation and function emojis).
-  .on('start', () => console.log('Started!'))
-  // When the instance is finished by a user reacting with `delete` navigation emoji
-  // or a function emoji that throws non-Error type.
-  .on('finish', (user) => console.log(`Finished! User: ${user.username}`))
-  // Upon a user reacting on the instance.
-  .on('react', (user, emoji) => console.log(`Reacted! User: ${user.username} | Emoji: ${emoji.name} (${emoji.id})`))
-  // When the awaiting timeout is reached.
-  .on('expire', () => console.warn('Expired!'))
-  // Upon an occurance of error (e.g: Discord API Error).
-  .on('error', console.error);
-
- 
-await Embeds.build();
-    }
     if(command === "kick") {
     if (!message.guild) return;
     // Assuming we mention someone in the message, this will return the user
