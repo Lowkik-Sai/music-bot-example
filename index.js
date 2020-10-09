@@ -272,7 +272,6 @@ bot.on("message", async (message) => { // eslint-disable-line
             })
         }
     }
-}
     if (command === "someone" ) {
        var sToggle = true;
 
