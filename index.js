@@ -660,6 +660,28 @@ const member = message.guild.member(user);
     message.channel.send({embed});
 
 }
+    if (command === "roles" ) {
+       let user;
+if (message.mentions.users.first()) {
+    user = message.mentions.users.first();
+} else {
+    user = message.author;
+}
+
+    const member = message.guild.member(user);
+
+    const randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); }); 
+    const embed = new MessageEmbed()
+        .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL())
+        .setColor(randomColor)
+        .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
+        .setImage(member.user.displayAvatarURL())
+        .setTimestamp()
+        .addField(`Roles [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
+        
+    message.channel.send({embed});
+
+}
     if (command === "checkperms" ) {
         var permissions = [];
     let user;
