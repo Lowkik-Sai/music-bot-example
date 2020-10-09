@@ -36,6 +36,7 @@
     "opusscript": "0.0.7",
     "simple-youtube-api": "^5.2.1",
     "node-fetch": "^2.6.0",
+    "mathjs": "^7.0.1",
     "discord-paginationembed": "^2.1.0",
     "ms": "^2.1.0",
     "ytdl-core": "^3.3.0"
