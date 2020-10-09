@@ -252,39 +252,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
     }
 } 
-    if (command === "purge" || command === "clear" ) {
-      // Check the following permissions before deleting messages:
-      //    1. Check if the user has enough permissions
-      //    2. Check if I have the permission to execute the command
-
-      if (!message.channel.permissionsFor(message.author).has("MANAGE_MESSAGES")) {
-        message.channel.sendMessage("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
-        console.log("Sorry, you don't have the permission to execute the command \""+message.content+"\"");
-        return;
-      } else if (!message.channel.permissionsFor(bot.user).has("MANAGE_MESSAGES")) {
-        message.channel.sendMessage("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
-        console.log("Sorry, I don't have the permission to execute the command \""+message.content+"\"");
-        return;
-      }
-
-      // Only delete messages if the channel type is TextChannel
-      // DO NOT delete messages in DM Channel or Group DM Channel
-      if (message.channel.type == 'text') {
-        message.channel.messages.fetch()
-          .then(messages => {
-            message.channel.bulkDelete(messages);
-            messagesDeleted = messages.array().length; // number of messages deleted
-
-            // Logging the number of messages deleted on both the channel and console.
-            message.channel.sendMessage("Deletion of messages successful. Total messages deleted: "+messagesDeleted);
-            console.log('Deletion of messages successful. Total messages deleted: '+messagesDeleted)
-          })
-          .catch(err => {
-            console.log('Error while doing Bulk Delete');
-            console.log(err);
-          });
-      }
-    }
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
         const Discord = require('discord.js');
@@ -336,7 +303,33 @@ bot.on("message", async (message) => { // eslint-disable-line
                     return message.channel.send({embed: {color: "RED", description: "Something Error!Solve it asap!"}});
                 })
         }
-    }
+    }  
+    if (command === "say" ) { 
+         let msg;
+        let textChannel = message.mentions.channels.first()
+        message.delete()
+
+        if(textChannel) {
+            msg = args.slice(1).join(" ");
+            textChannel.send(msg)
+        } else {
+            msg = args.join(" ");
+            message.channel.send(msg)
+        }
+    }  else if (command === "purge" || command === "clear") {
+		const amount = parseInt(args[0]) + 1;
+
+		if (isNaN(amount)) {
+			return message.reply('that doesn\'t seem to be a valid number.');
+		} else if (amount <= 1 || amount > 100) {
+			return message.reply('you need to input a number between 1 and 99.');
+		}
+
+		message.channel.bulkDelete(amount, true).catch(err => {
+			console.error(err);
+			message.channel.send('there was an error trying to prune messages in this channel!');
+		});
+	}
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
@@ -352,19 +345,6 @@ bot.on("message", async (message) => { // eslint-disable-line
     let command = message.content.toLowerCase().split(" ")[0];
     command = command.slice(PREFIX.length);
     
-    if (command === "say" ) { 
-         let msg;
-        let textChannel = message.mentions.channels.first()
-        message.delete()
-
-        if(textChannel) {
-            msg = args.slice(1).join(" ");
-            textChannel.send(msg)
-        } else {
-            msg = args.join(" ");
-            message.channel.send(msg)
-        }
-    }
     if (command === "channelinvite" || command === "ci") {
        const setChannelID = message.content.split(' ');
 
