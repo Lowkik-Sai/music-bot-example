@@ -686,14 +686,6 @@ const Embeds = new PaginationEmbed.Embeds()
  
 await Embeds.build();
     }
-    if (command === "help" || command === "cmd") {
-        const helpembed = new MessageEmbed()
-            .setColor("BLUE")
-            .setDescription(`
-📩 |You've got Dm!`)
-            .setTimestamp()
-              message.channel.send(helpembed);
-    }
     if(command === "kick") {
     if (!message.guild) return;
     // Assuming we mention someone in the message, this will return the user
