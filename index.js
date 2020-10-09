@@ -659,7 +659,6 @@ const Embeds = new PaginationEmbed.Embeds()
   //  - prompt: custom content for the message sent when prompted to jump to a page
   //      {{user}} is the placeholder for the user mention
   .setDeleteOnTimeout(true)
-  .setDisabledNavigationEmojis(['delete'])
   .setFunctionEmojis({
     '⬆': (_, instance) => {
       for (const embed of instance.array)
