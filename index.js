@@ -638,10 +638,7 @@ const member = message.guild.member(user);
     if (command === "help" || command === "cmd") {
         const PaginationEmbed = require('discord-paginationembed');
  
-const embeds = [
-                Fun Commands,Covid
-                Mod Commands,Ban
-               ];
+const embeds = [];
  
 for (let i = 1; i <= 5; ++i)
   embeds.push(new MessageEmbed().addField('Page', i));
