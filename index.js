@@ -648,15 +648,16 @@ const Embeds = new PaginationEmbed.Embeds()
   .setAuthorizedUsers([message.author.id])
   .setChannel(message.channel)
   .setPageIndicator(true)
-  .setTitle('Test Title')
-  .setDescription('Test Description')
-  .setFooter('Test Footer Text')
+  .setTitle('Mod Commands', 'Fun Commands', 'Info Commands')
+  .setDescription('Kick,Ban,Unban,Mute,Unmute', 'Covid,Carona', 'Botinfo,Serverinfo,Userinfo')
+  .setFooter('Type +help <commandname>')
   .setURL('https://gazmull.github.io/discord-paginationembed')
   .setColor(0xFF00AE)
   // Sets the client's assets to utilise. Available options:
   //  - message: the client's Message object (edits the message instead of sending new one for this instance)
   //  - prompt: custom content for the message sent when prompted to jump to a page
   //      {{user}} is the placeholder for the user mention
+  .setClientAssets({ prompt: 'Page plz {{user}}' })
   .setDeleteOnTimeout(true)
   .setDisabledNavigationEmojis(['delete'])
   .setFunctionEmojis({
