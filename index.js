@@ -558,7 +558,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     let serverembed = new MessageEmbed()
         .setAuthor(`${message.guild.name} Server Info`, message.guild.iconURL)
         .setColor("#15f153")
-        .setImage(message.guild.iconURL)
+        .setImage(message.guild.iconURL())
         .addField('Server owner', message.guild.owner, true)
         .addField('Server region', message.guild.region, true)
         .addField("Server Name", message.guild.name)
@@ -646,7 +646,6 @@ const member = message.guild.member(user);
     }
 
     const embed = new MessageEmbed()
-        .setDescription(`<@${member.user.id}>`)
         .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL())
         .setColor(randomColor)
         .setFooter(`Replying to ${message.author.username}#${message.author.discriminator}`)
