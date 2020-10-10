@@ -731,7 +731,7 @@ bot.on("message", async (message) => { // eslint-disable-line
    let contact = new MessageEmbed()
    .setColor("00ff00")
    .setThumbnail(Sender.displayAvatarURL)
-   .setDescription(`Contact message from [${message.guild.name}](${Invite.url})`)
+   .setDescription(`Contact message from [${message.guild.name}]`)
    .setTitle("Message from contact command!")
    .addField("User", Sender, true)
    .addField("User ID: ", Sender.id, true)
