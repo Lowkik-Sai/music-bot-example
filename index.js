@@ -288,10 +288,16 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         if(warnings === null) {
             db.set(`warnings_${message.guild.id}_${user.id}`, 1);
-            user.send({embed: {
-   color: 3066993,
-   description:`You were warned in ${message.guild.name} for the follwoing reason: \`${reason}\``
-}});
+            const warnembed = new MessageEmbed()
+              .setTitle('Warning')
+              .setDescription(`You were warned in ${message.guild.name}`)
+              .addField('Reason:', `${reason}`)
+              .addField('Moderator:', `${message.author.tag}`)
+              .setColor("RANDOM")
+              .setTimestamp()
+
+            user.send(warnembed);
+
             const helpembed = new MessageEmbed()
               .setTitle('Warning')
               .setDescription(`**${user.username}** has been warned!`)
