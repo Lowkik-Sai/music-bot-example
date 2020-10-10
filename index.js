@@ -753,7 +753,20 @@ module.exports.run = async (bot, message, args) => {
 
     message.channel.send(embed).then(msg => {msg.delete(10000)});
 
-      }
+    }
+    if (command === "eval" ) {
+        const Discord = require("discord.js")
+        const Client = new Discord.Client
+
+  if(message.author.id !== "654669770549100575") return;
+
+    const command = message.content.split(' ').slice(1).join(' ');
+    message.channel.send(
+`\`\`\`js
+${eval(command)}
+\`\`\``);
+
+  }
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
         const Discord = require('discord.js');
