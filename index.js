@@ -926,6 +926,30 @@ const OFFSET = '!'.charCodeAt(0);
     console.log(movie)
 
 }
+    if (command === "kill" ) {
+       const Discord = require("discord.js")
+
+let killed = message.mentions.members.first();
+if(!killed) {
+
+let emb = new MessageEmbed()
+.setColor("#00f00")
+.setDescription(`${message.author} decied to kill themself 💔 REST IN PEACE`)
+
+message.channel.send(emb)
+
+} else {
+
+let emb = new Discord.RichEmbed()
+.setColor("#00f00")
+.setDescription(`${killed} was killed by ${message.author} 💔 REST IN PEACE`)
+
+message.channel.send(emb)
+
+
+}
+
+}
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
         const Discord = require('discord.js');
