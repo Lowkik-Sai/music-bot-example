@@ -211,7 +211,10 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if (command === "ascii" ) {
         const figlet = require('figlet');
-        if(!args[0]) return message.channel.send('Please provide some text');
+        if(!args[0]) return message.channel.send({embed: {
+   color: 3066993,
+   description:'Please provide some text'
+}});
 
         msg = args.join(" ");
 
@@ -433,6 +436,11 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
     }
     if (command === "buy" ) {
+        const sayMessage = args.join(" ")
+    if(!sayMessage) return message.reply({embed: {
+  color: 3066993,
+  description:"Proper Usage : +buy <store item>"
+}})
        const db = require('quick.db');
        const Discord = require('discord.js');
 
@@ -510,7 +518,10 @@ bot.on("message", async (message) => { // eslint-disable-line
 
        let colorOfChoice = args.join(" ");
 
-        if(!args[0]) return message.channel.send('Provide a valid HEX code (#FF0000)');
+        if(!args[0]) return message.channel.send({embed: {
+   color: 3066993,
+   description:'Provide a valid HEX code (#FF0000)'
+}});
 
         let image = await canva.color(`#${colorOfChoice}`)
 
@@ -525,7 +536,10 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         let text = args.join(" ");
 
-        if(!args[0]) return message.channel.send('Provide a valid HEX code (#FF0000)');
+        if(!args[0]) return message.channel.send({embed: {
+    color: 3066993,
+    description:'Provide a valid HEX code (#FF0000)'
+}});
 
         let image = await canva.changemymind(text);
 
@@ -590,7 +604,10 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         const Discord = require('discord.js');
 
-        if(!args[0]) return message.channel.send('Please provide a question');
+        if(!args[0]) return message.channel.send({embed: {
+    color: 3066993,
+    description:'Please provide a question'
+}});
 
         let resp;
 
@@ -787,7 +804,7 @@ ${eval(command)}
         const noArgs = new MessageEmbed()
         .setTitle('Missing arguments')
         .setColor(0xFF0000)
-        .setDescription('You are missing some args (ex: ;covid all || ;covid Canada)')
+        .setDescription('You are missing some args (ex: +covid all || +covid <country name>)')
         .setTimestamp()
 
         if(!args[0]) return message.channel.send(noArgs);
