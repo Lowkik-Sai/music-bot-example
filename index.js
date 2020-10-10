@@ -700,8 +700,6 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "embed" ) {
         const Discord = require("discord.js")
 
-module.exports.run = async (bot, message, args) => {
-
   if(message.author.id !== "654669770549100575") return;
 
   const command = args.join(' ').split(' | ')
@@ -718,7 +716,6 @@ module.exports.run = async (bot, message, args) => {
     if (command === "contact" ) {
         const Discord = require("discord.js");
 
-module.exports.run = async (bot, message, args) => {
   if(args[0] == "help"){
     let helpembxd = new MessageEmbed()
     .setColor("#00ff00")
