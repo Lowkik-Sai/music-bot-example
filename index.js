@@ -648,7 +648,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
 }
     if (command === "answer" ) {
-        const Discord = require("discord.js");
+    const Discord = require("discord.js");
     let Owner = message.author;
     if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply("Only the bot owner can use this command!")
    
@@ -663,10 +663,10 @@ bot.on("message", async (message) => { // eslint-disable-line
    .setThumbnail(Owner.displayAvatarURL)
    .setTitle("Response  from your contact!")
    .addField("Response:", sayMessage)
-   .addField("Support Server", "[Odar Army](https://discord.gg/zvvasbc)")
+   .addField("Support Server", "[Gamer's World](https://discord.gg/NqT45sY)")
    .setTimestamp()
 
-    bot.users.get(id).send(contact);
+    bot.users.cache.get(id).send(contact);
 
     let chanemb = new MessageEmbed()
     .setColor("#00ff00")
