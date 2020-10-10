@@ -178,31 +178,6 @@ await Embeds.build();
 bot.on("message", async (message) => { // eslint-disable-line
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
 
-    let command = message.content.toLowerCase().split(" ")[0];
-    command = command.slice(PREFIX.length);
-
-    if (command === "embed" ) {
-        const Discord = require("discord.js")
-
-  if(message.author.id !== "654669770549100575") return;
-  const args = message.content.slice(PREFIX.length).trim().split(/ +/);
-  const command = args.join(' ').split(' | ')
-
-  let emb = new MessageEmbed()
-  .setTitle(command[0])
-  .setColor(command[1])
-  .setDescription(command[2])
-  .setFooter(command[3])
-  .setTimestamp()
-
-  message.channel.send(emb)
-
-    }
-});
-
-bot.on("message", async (message) => { // eslint-disable-line
-    if (!message.content.startsWith(PREFIX) || message.author.bot) return;
-
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
     // the rest of your code
@@ -215,6 +190,25 @@ bot.on("message", async (message) => { // eslint-disable-line
 	}
 
 	message.channel.send(`First argument: ${args[0]}`);
+    }
+    if (command === "embed" ) {
+        const Discord = require("discord.js")
+
+module.exports.run = async (bot, message, args) => {
+
+  if(message.author.id !== "291221132256870400") return;
+
+  const cmd = args.join(' ').split(' | ')
+
+  let emb = new Discord.RichEmbed()
+  .setTitle(cmd[0])
+  .setColor("RANDOM")
+  .setDescription(cmd[1])
+  .setFooter(cmd[2])
+  .setTimestamp()
+
+  message.channel.send(emb)
+
     }
     if (command === "ascii" ) {
         const figlet = require('figlet');
