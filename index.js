@@ -613,7 +613,10 @@ bot.on("message", async (message) => { // eslint-disable-line
         const Discord = require("discord.js");
         let giveMeAJoke = require('give-me-a-joke');;
     giveMeAJoke.getRandomCNJoke(function(joke){
-        message.channel.send(joke)
+        message.channel.send({embed: {
+   color: 3066993,
+   description:joke
+}})
     })
 }
     if (command === "addrole" || command === "ar") {
