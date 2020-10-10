@@ -830,9 +830,12 @@ const OFFSET = '!'.charCodeAt(0);
        const { stringify } = require('querystring');
        const Discord = require("discord.js");
 
-    if(args.length < 1) message.channel.send('I need to know what to search...');
-
-    await message.channel.send('<a:googling:426453223310622740> Googling....').then(msg => {msg.delete(1000)});
+    const sayMessage = args.join(" ")
+    if(!sayMessage) return message.reply({embed: {
+  color: 3066993,
+  description:"I need to know what to search..."
+}})
+    await message.channel.send('<a:googling:426453223310622740> Googling....');
 
     const params = {
         q: args.join(' '),
