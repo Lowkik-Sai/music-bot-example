@@ -311,6 +311,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
 
         if(warnings !== null){
+            const id = args.shift();
             db.add(`warnings_${message.guild.id}_${user.id}`, 1)
             const warnembed = new MessageEmbed()
               .setTitle('Warning')
