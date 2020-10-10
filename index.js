@@ -185,7 +185,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         const Discord = require("discord.js")
 
   if(message.author.id !== "654669770549100575") return;
-
+  const args = message.content.slice(PREFIX.length).trim().split(/ +/);
   const command = args.join(' ').split(' | ')
 
   let emb = new MessageEmbed()
