@@ -535,7 +535,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     return string.split("\n").map(line => line.replace(whitespace, "")).join("\n");
   };
   
-  const format = async (msg) => {
+  const format = async (message) => {
     const messages = message.channel.messages.array().reverse();
     let code;
     const codeRegex = /```(?:js|json|javascript)?\n?((?:\n|.)+?)\n?```/ig;
