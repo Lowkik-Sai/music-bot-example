@@ -517,12 +517,12 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "beautify" ) {
     let res;
     try {
-      await msg.channel.send("Searching for code to beautify...");
-      res = await format(msg);
+      await message.channel.send("Searching for code to beautify...");
+      res = await format(message);
     } catch(e) {
       res = e;
     }
-    return msg.channel.send(res);
+    return message.channel.send(res);
   };
   
   const { js_beautify } = require("js-beautify");
@@ -536,7 +536,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   };
   
   const format = async (msg) => {
-    const messages = msg.channel.messages.array().reverse();
+    const messages = message.channel.messages.array().reverse();
     let code;
     const codeRegex = /```(?:js|json|javascript)?\n?((?:\n|.)+?)\n?```/ig;
   
