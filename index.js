@@ -1169,7 +1169,7 @@ const member = message.guild.member(user);
         .addField(`${user.tag}`, `${user}`, true)
         .addField("ID:", `${user.id}`, true)
         .addField("Status",`${status[member.user.presence.status]}`, true)
-        .addField("Flags", `${userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'None'})
+        .addField("Flags", `${userFlags.length ? userFlags.map(flag => flags[flag]).join(', ')` : 'None'})
         .addField("Time Created at:", `${moment(member.user.createdTimestamp).format('LT')} ${moment(member.user.createdTimestamp).format('LL')} ${moment(member.user.createdTimestamp).fromNow()}`)			
         .addField("Server Joined at:", `${moment(member.joinedAt).format('LL LTS')}`)
         .addField("Permissions: ", `${permissions.join(', ')}`, true)
