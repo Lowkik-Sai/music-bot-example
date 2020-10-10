@@ -705,9 +705,9 @@ bot.on("message", async (message) => { // eslint-disable-line
   const command = args.join(' ').split(' | ')
 
   let emb = new MessageEmbed()
-  .setTitle(cmd[0])
-  .setColor(cmd[1])
-  .setDescription(cmd[2])
+  .setTitle(command[0])
+  .setColor(command[1])
+  .setDescription(command[2])
   .setTimestamp()
 
   message.channel.send(emb)
