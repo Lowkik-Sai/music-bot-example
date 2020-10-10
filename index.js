@@ -214,18 +214,33 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
 
-        if(!user) return message.channel.send('Please specify a user, via mention or ID');
+        if(!user) return message.channel.send({embed: {
+  color: 3066993,
+  description:'Please specify a user, via mention or ID'
+}}); 
 
-        if(user.bot) return message.channel.send('You can\'t warn bots');
+        if(user.bot) return message.channel.send({embed: {
+  color: 3066993,
+  description:'You can\'t warn bots'
+}});
 
-        if(user.id === message.author.id) return message.channel.send('You can\'t clear your own warnings');
+        if(user.id === message.author.id) return message.channel.send({embed: {
+   color: 3066993,
+   description: 'You can\'t clear your own warnings'
+}});
 
-        if(warnings === null) return message.channel.send(`**${user.username} has no warnings**`);
+        if(warnings === null) return message.channel.send({embed: {
+   color: 3066993,
+   description:`**${user.username} has no warnings**`
+}});
 
 
         db.delete(`warnings_${message.guild.id}_${user.id}`);
 
-        message.channel.send('Success!')
+        message.channel.send({embed: {
+   color: 3066993,
+   description: `Successfully deleted warnings of ${user.username}`
+}})
     }
     if (command === "warn" ) {
         const Discord = require('discord.js');
@@ -235,13 +250,25 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
 
-        if(!user) return message.channel.send('Please specify a user, via mention or ID');
+        if(!user) return message.channel.send({embed: {
+   color: 3066993,
+   description:'Please specify a user, via mention or ID'
+}});
 
-        if(user.bot) return message.channel.send('You can\'t warn bots');
+        if(user.bot) return message.channel.send({embed: {
+   color: 3066993,
+   description:'You can\'t warn bots'
+}});
 
-        if(message.author.id === user.id) return message.channel.send('You can\'t warn yourself nitwit');
+        if(message.author.id === user.id) return message.channel.send({embed: {
+   color: 3066993,
+   description: 'You can\'t warn yourself nitwit'
+}});
 
-        if(message.guild.owner.id === user.id) return message.channel.send('You can\'t warn the server\'s owner');
+        if(message.guild.owner.id === user.id) return message.channel.send({embed: {
+   color: 3066993,
+   description:'You can\'t warn the server\'s owner'
+}});
 
         let reason = args.slice(1).join(" ");
 
@@ -249,7 +276,10 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         let warnings = db.get(`warnings_${message.guild.id}_${user.id}`);
 
-        if(warnings === 3) return message.channel.send(`${user} has already reached three warnings`);
+        if(warnings === 5) return message.channel.send({embed: {
+   color: 3066993,
+   description:`${user} has already reached three warnings`
+}});
 
 
         if(warnings === null) {
@@ -260,8 +290,14 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         if(warnings !== null){
             db.add(`warnings_${message.guild.id}_${user.id}`, 1)
-            user.send(`You were warned in ${message.guild.name} for the follwoing reason: \`${reason}\``)
-            await message.channel.send(`**${user.username}** has been warned`)
+            user.send({embed: {
+   color: 3066993,
+   description:`You were warned in ${message.guild.name} for the follwoing reason: \`${reason}\``
+}})
+            await message.channel.send({embed: {
+   color: 3066993,
+   description:`**${user.username}** has been warned`
+}})
         }
     }
     if (command === "warnings" ) { 
@@ -274,7 +310,10 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         if(warnings === null) warnings = 0;
 
-        message.channel.send(`**${user.username}** has *${warnings}* warning(s)`);
+        message.channel.send({embed: {
+   color: 3066993,
+   description:`**${user.username}** has *${warnings}* warning(s)`
+}});
     }
     if (command === "bal" ) {
         const db = require('quick.db');
@@ -296,19 +335,25 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         let user = message.author;
         let timeout = 86400000;
-        let amount = 500;
+        let amount = 100;
 
         let daily = await db.fetch(`daily_${message.guild.id}_${user.id}`);
 
         if(daily !== null && timeout - (Date.now() - daily) > 0){
             let time = ms(timeout - (Date.now() - daily));
 
-            return message.channel.send(`You've already collected your daily award. Come back in ${time.days}d, ${time.hours}h, ${time.minutes}m, and ${time.seconds}s`)
+            return message.channel.send({embed: {
+    color: 3066993,
+    description:`You've already collected your daily award. Come back in ${time.days}d, ${time.hours}h, ${time.minutes}m, and ${time.seconds}s`
+{})
         } else {
             db.add(`money_${message.guild.id}_${user.id}`, amount);
             db.set(`daily_${message.guild.id}_${user.id}`, Date.now());
 
-            message.channel.send(`Successfully added ${amount} coins to your account`)
+            message.channel.send({embed: {
+    color: 3066993,
+    description:`Successfully added ${amount} coins to your account`
+}})
         }
     }
     if (command === "buy" ) {
@@ -324,13 +369,19 @@ bot.on("message", async (message) => { // eslint-disable-line
             if(amount < 500) return message.channel.send('You do not have enough money to buy this item. Please try another one');
             db.subtract(`money_${message.guild.id}_${message.author.id}`, 500);
             db.push(message.author.id, "Car");
-            message.channel.send('Successfully bought one car')
+            message.channel.send({embed: {
+    color: 3066993,
+    description:'Successfully bought one car'
+}})
         }
         if(purchase === 'watch' || purchase === 'Watch'){
             if(amount < 250) return message.channel.send('You do not have enough money to buy this item. Please try another one');
             db.subtract(`money_${message.guild.id}_${message.author.id}`, 250);
             db.push(message.author.id, "Watch");
-            message.channel.send('Successfully bought one car')
+            message.channel.send({embed: {
+   color: 3066993,
+   description:'Successfully bought one car'
+}})
         }
     }
     if (command === "store" ) {
