@@ -610,6 +610,13 @@ module.exports.run = async (bot, message, args) => {
         message.channel.send(embed);
 
     }
+    if (command === "givemeajoke" || command === "joke" ) {
+        const Discord = require("discord.js");
+        let giveMeAJoke = require('give-me-a-joke');;
+    giveMeAJoke.getRandomCNJoke(function(joke){
+        message.channel.send(joke)
+    })
+}
     if (command === "addrole" || command === "ar") {
        const Discord = require("discord.js");
 //!addrole <@user> <Role>
