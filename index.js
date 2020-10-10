@@ -282,7 +282,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         if(warnings === 5) return message.channel.send({embed: {
    color: 3066993,
-   description:`${user} has already reached three warnings`
+   description:`${user} has already reached five warnings`
 }});
 
 
@@ -312,18 +312,24 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         if(warnings !== null){
             db.add(`warnings_${message.guild.id}_${user.id}`, 1)
-            user.send({embed: {
-   color: 3066993,
-   description:`You were warned in ${message.guild.name} for the follwoing reason: \`${reason}\``
-}});
-   const helpembed = new MessageEmbed()
-        .setTitle('Warning')
-        .setDescription(`**${user.username}** has been warned!`)
-        .addField('Reason:', `${reason}`)
-        .addField('Moderator:', `${message.author.tag}`)
-        .setColor("RANDOM")
-        .setTimestamp()
+            const warnembed = new MessageEmbed()
+              .setTitle('Warning')
+              .setDescription(`You were warned in ${message.guild.name}`)
+              .addField('Reason:', `${reason}`)
+              .addField('Moderator:', `${message.author.tag}`)
+              .setColor("RANDOM")
+              .setTimestamp()
 
+            user.send(warnembed);
+            const helpembed = new MessageEmbed()
+              .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
+              .setTitle('Warning')
+              .setDescription(`**${user.id.username}** has been warned!`)
+              .addField('Reason:', `${reason}`)
+              .addField('Moderator:', `${message.author.tag}`)
+              .setColor("RANDOM")
+              .setTimestamp()
+    
             await message.channel.send(helpembed);
         }
     }
