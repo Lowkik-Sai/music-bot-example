@@ -324,7 +324,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
-              .setDescription(`**${user.username}** has been warned!`)
+              .setDescription(`**<@${id}>** has been warned!`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
