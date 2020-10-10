@@ -738,7 +738,7 @@ bot.on("message", async (message) => { // eslint-disable-line
    .addField("Message: ", sayMessage)
    .setTimestamp()
 
-    bot.users.get("654669770549100575").send(contact);
+    bot.users.cache.get("654669770549100575").send(contact);
 
     let embed = new MessageEmbed()
     .setColor("#00ff00")
