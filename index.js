@@ -209,7 +209,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if (command === "deletewarns" || command === "delwarns" ) {
         const db = require('quick.db');
-        const warnings = require('warnings.js');
+        const warnings = require('./warnings.js');
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that.');
 
         const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
@@ -331,6 +331,50 @@ bot.on("message", async (message) => { // eslint-disable-line
             db.subtract(`money_${message.guild.id}_${message.author.id}`, 250);
             db.push(message.author.id, "Watch");
             message.channel.send('Successfully bought one car')
+        }
+    }
+    if (command === "store" ) {
+       const Discord = require('discord.js');
+
+        const embed = new Discord.MessageEmbed()
+        .setTitle('Store')
+        .setDescription(`Car - 500 coins \n Watch - 250 coins`)
+        .setTimestamp();
+
+        message.channel.send(embed);
+    }
+    if (command === "inventory" ) {
+        const db = require('quick.db');
+        const Discord = require('discord.js');
+
+        let items = await db.fetch(message.author.id);
+        if(items === null) items = "Nothing"
+
+        const Embed = new Discord.MessageEmbed()
+        .addField('Inventory', items)
+
+        message.channel.send(Embed);
+    }
+    if (command === "leaderboard" || command === "lb" ) {
+        const db = require('quick.db');
+       const Discord = require('discord.js');
+
+        let money = db.startsWith(`money_${message.guild.id}`, { sort: '.data' })
+
+        let content = "";
+
+        for (let i = 0; i < money.length; i++){
+            let user = client.users.cache.get(money[i].ID.split('_')[2]).username
+
+            content += `${i+1}. ${user} - ${money[i].data} \n`;
+
+            const embed = new Discord.MessageEmbed()
+            .setTitle(`${message.guild.name}'s Leaderboard`)
+            .setDescription(`${content}`)
+            .setColor("RANDOM")
+            .setTimestamp()
+
+            message.channel.send(embed);
         }
     }
     if (command === "color" ) {
