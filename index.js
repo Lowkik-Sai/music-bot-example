@@ -178,6 +178,9 @@ await Embeds.build();
 bot.on("message", async (message) => { // eslint-disable-line
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
 
+    let command = message.content.toLowerCase().split(" ")[0];
+    command = command.slice(PREFIX.length);
+
     if (command === "embed" ) {
         const Discord = require("discord.js")
 
