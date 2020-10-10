@@ -1109,7 +1109,9 @@ if (message.mentions.users.first()) {
 } else {
     user = message.author;
 }
-
+const joinDiscord = moment(user.createdAt).format('llll');
+const joinServer = moment(user.joinedAt).format('llll');
+       
 const member = message.guild.member(user);
 
     const randomColor = "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); }); 
@@ -1172,6 +1174,8 @@ const member = message.guild.member(user);
         .addField(`${user.tag}`, `${user}`, true)
         .addField("ID:", `${user.id}`, true)
         .addField("Status",`${status[member.user.presence.status]}`, true)
+        .addField("Server Joined at:", `${moment.utc(member.joinedAt).format("dddd, MMMM Do YYYY")}`, true)
+        .addField("Account Created On:", `${moment.utc(user.createdAt).format("dddd, MMMM Do YYYY")}`, true) 
         .addField("Permissions: ", `${permissions.join(', ')}`, true)
         .addField(`Roles [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
         .addField("Acknowledgements: ", `${acknowledgements}`, true);
