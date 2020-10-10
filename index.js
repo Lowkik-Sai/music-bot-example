@@ -299,7 +299,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         message.channel.send(color);
     }
-    if (command === "changemymind || command === "cmm" ) {
+    if (command === "changemymind" || command === "cmm" ) {
         const canva = require('canvacord');
         const Discord = require('discord.js');
         const { changemymind } = require('canvacord');
