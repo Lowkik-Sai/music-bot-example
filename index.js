@@ -345,7 +345,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             return message.channel.send({embed: {
     color: 3066993,
     description:`You've already collected your daily award. Come back in ${time.days}d, ${time.hours}h, ${time.minutes}m, and ${time.seconds}s`
-{})
+}})
         } else {
             db.add(`money_${message.guild.id}_${user.id}`, amount);
             db.set(`daily_${message.guild.id}_${user.id}`, Date.now());
