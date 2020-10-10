@@ -204,6 +204,8 @@ bot.on("message", async (message) => { // eslint-disable-line
       .setColor("RANDOM")
       .setDescription(args[1])
       .setFooter(args[2])
+      .addField(args[3] , args[4])
+      .setImage(args[5])
       .setTimestamp()
 
   message.channel.send(emb)
