@@ -678,7 +678,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
   let role = args.join(" ").slice(22);
   if(!role) return message.channel.send("Specify a role!");
-  let gRole = message.guild.roles.cache.find(`name`, role);
+  let gRole = message.guild.roles.cache.find(r => r.name === role );
   if(!gRole) return message.channel.send("Couldn't find that role.");
 
   if(rMember.roles.has(gRole.id)) return message.channel.send("This user already have that role.");
@@ -712,7 +712,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   let role = args.join(" ").slice(22);
 
   if(!role) return message.channel.send("Specify a role!");
-  let gRole = message.guild.roles.cache.find(`name`, role);
+  let gRole = message.guild.roles.cache.find(r => r.name === role);
   if(!gRole) return message.channel.send("Couldn't find that role.");
 
   if(!rMember.roles.has(gRole.id)) return message.channel.send("This user doesn't have that role.");
