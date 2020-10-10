@@ -539,43 +539,73 @@ bot.on("message", async (message) => { // eslint-disable-line
 
     }
     if (command === "addrole" || command === "ar") {
-       //Pay attention in order to assign a role of a user, the bot needs to be above that role, that means you can't assign an equal or highest role than bot's role
-    let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.cache.get(args[0]);
-    
-    if(!message.member.hasPermission("MANAGE_ROLES")){
-        message.channel.send("You don't have the permissions to use this command!");
-    }
+       const Discord = require("discord.js");
+//!addrole <@user> <Role>
+  if(args[0] == "help"){
+    let helpembxd = new MessageEmbed()
+    .setColor("#00ff00")
+    .addField("Addrole Command", "Usage: !addrole <@user> <role>")
 
-    else{
+    message.channel.send(helpembxd);
+    return;
+  } 
 
-        if(!rMember) 
-            return message.channel.send("Couldn't find that user, yo.");
+  let xdemb = new Discord.RichEmbed()
+  .setColor("#00ff00")
+  .setTitle(`Addrole command`)
+  .addField("Description:", "Add role to member", true)
+  .addField("Usage", "!addrole [user] [role]", true)
+  .addField("Example", "!addrole @Odar Member")
 
-        let role = args.join(" ").slice(23);
-        if(!role) 
-            return message.channel.send("Specify a role!");
+  if(!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send("You don't have premmsions to do that!");
+  let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
+  if(!rMember) return message.channel.send(xdemb);
 
-        let gRole = message.guild.roles.cache.find(roles => roles.name === role);
-        if(!gRole) 
-            return message.channel.send("Couldn't find that role.");
+  let role = args.join(" ").slice(22);
+  if(!role) return message.channel.send("Specify a role!");
+  let gRole = message.guild.roles.find(`name`, role);
+  if(!gRole) return message.channel.send("Couldn't find that role.");
 
-        if(rMember.roles.cache.has(gRole.id)) 
-            return message.channel.send("They already have that role.");
+  if(rMember.roles.has(gRole.id)) return message.channel.send("This user already have that role.");
+  await(rMember.addRole(gRole.id));
 
-        else{
-            rMember.roles.add(gRole.id).catch(console.error);
-            
-            try{
-                rMember.send(`Congrats, you have been given the role ${gRole.name}`);
-                message.channel.send(`The user ${rMember} has a new role ${gRole.name}`);
-            }
-            catch(e){
-                console.log(e.stack);
-                message.channel.send(`Congrats to <@${rMember.id}>, they have been given the role ${gRole.name}.`)
-            }
-        }
-    }
-} 
+    await message.channel.send(`***I just gave ${rMember.user.username} the ${gRole.name} role!***`)
+  
+}
+    if (command === "removerole" || command === "rr" ) {
+        const Discord = require("discord.js");
+  if(args[0] == "help"){
+    let helpembxd = new MessageEmbed()
+    .setColor("#00ff00")
+    .addField("Removerole Command", "Usage: !removerole <@user> <role>")
+
+    message.channel.send(helpembxd);
+    return;
+  } 
+
+  let xdemb = new Discord.RichEmbed()
+  .setColor("#00ff00")
+  .setTitle(`Removerole command`)
+  .addField("Description:", "Take role from member", true)
+  .addField("Usage", "!removerole [user] [role]", true)
+  .addField("Example", "!removerole @Odar Member")
+
+  if(!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send("You need the `manage members`premission to do that!.");
+  let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
+  if(!rMember) return message.channel.send(xdemb);
+
+  let role = args.join(" ").slice(22);
+
+  if(!role) return message.channel.send("Specify a role!");
+  let gRole = message.guild.roles.find(`name`, role);
+  if(!gRole) return message.channel.send("Couldn't find that role.");
+
+  if(!rMember.roles.has(gRole.id)) return message.channel.send("This user doesn't have that role.");
+  await(rMember.removeRole(gRole.id));
+
+  await message.channel.send(`***I just removed ${rMember.user.username}'s ${gRole.name} role!***`)
+
+}
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
         const Discord = require('discord.js');
