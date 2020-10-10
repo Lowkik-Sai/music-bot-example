@@ -230,7 +230,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             message.channel.send('```' + data + '```')
         })
     }
-    if (command === "finduser ) {
+    if (command === "finduser" ) {
         let users = bot.users;
 
     let searchTerm = args[0];
