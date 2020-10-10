@@ -178,6 +178,28 @@ await Embeds.build();
 bot.on("message", async (message) => { // eslint-disable-line
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
 
+    if (command === "embed" ) {
+        const Discord = require("discord.js")
+
+  if(message.author.id !== "654669770549100575") return;
+
+  const command = args.join(' ').split(' | ')
+
+  let emb = new MessageEmbed()
+  .setTitle(command[0])
+  .setColor(command[1])
+  .setDescription(command[2])
+  .setFooter(command[3])
+  .setTimestamp()
+
+  message.channel.send(emb)
+
+    }
+});
+
+bot.on("message", async (message) => { // eslint-disable-line
+    if (!message.content.startsWith(PREFIX) || message.author.bot) return;
+
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
     // the rest of your code
@@ -695,22 +717,6 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (args.length < 1) return message.channel.send("Please provide some text to clapify")
     
     message.channel.send(args.map(randomizeCase).join(':clap:'));
-
-    }
-    if (command === "embed" ) {
-        const Discord = require("discord.js")
-
-  if(message.author.id !== "654669770549100575") return;
-
-  const command = args.join(' ').split(' | ')
-
-  let emb = new MessageEmbed()
-  .setTitle(command[0])
-  .setColor(command[1])
-  .setDescription(command[2])
-  .setTimestamp()
-
-  message.channel.send(emb)
 
     }
     if (command === "contact" ) {
