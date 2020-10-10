@@ -195,7 +195,7 @@ bot.on("message", async (message) => { // eslint-disable-line
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
   color: 3066993,
-  description:"Proper Usage : +embed <Title>  <Description> <Footer>"
+  description:"Proper Usage : +embed <Title> <Description> <Field Header> <Field Description> <Footer>"
 }})
  
 
@@ -203,8 +203,8 @@ bot.on("message", async (message) => { // eslint-disable-line
       .setTitle(args[0])
       .setColor("RANDOM")
       .setDescription(args[1])
-      .setFooter(args[2])
-      .addField(args[3] , args[4])
+      .setFooter(args[4])
+      .addField(args[2] , args[3])
       .setImage(args[5])
       .setTimestamp()
 
