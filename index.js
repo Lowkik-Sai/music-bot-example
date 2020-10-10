@@ -194,7 +194,6 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "embed" ) {
         const Discord = require("discord.js")
 
-module.exports.run = async (bot, message, args) => {
 
   if(message.author.id !== "291221132256870400") return;
 
