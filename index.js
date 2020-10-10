@@ -302,7 +302,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setTitle('Warning')
         .setDescription(`**${user.username}** has been warned!`)
         .addField('Reason:', `${reason}`)
-        .addField('Moderator:', `${message.author.tag}`}
+        .addField('Moderator:', `${message.author.tag}`)
         .setColor("RANDOM")
         .setTimestamp()
 
