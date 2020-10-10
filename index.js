@@ -299,11 +299,12 @@ bot.on("message", async (message) => { // eslint-disable-line
    description:`You were warned in ${message.guild.name} for the follwoing reason: \`${reason}\``
 }});
    const helpembed = new MessageEmbed()
-        .setTitle(`${member.username}`)
+        .setTitle('Warning')
         .setDescription(`**${user.username}** has been warned!`)
         .addField('Reason:', `${reason}`)
         .addField('Moderator:', `${message.author.tag}`}
         .setColor("RANDOM")
+        .setTimestamp()
 
             await message.channel.send(helpembed);
         }
