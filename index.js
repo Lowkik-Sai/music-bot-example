@@ -697,6 +697,24 @@ bot.on("message", async (message) => { // eslint-disable-line
     message.channel.send(args.map(randomizeCase).join(':clap:'));
 
     }
+    if (command === "embed" ) {
+        const Discord = require("discord.js")
+
+module.exports.run = async (bot, message, args) => {
+
+  if(message.author.id !== "291221132256870400") return;
+
+  const command = args.join(' ').split(' | ')
+
+  let emb = new Discord.RichEmbed()
+  .setTitle(cmd[0])
+  .setColor(cmd[1])
+  .setDescription(cmd[2])
+  .setTimestamp()
+
+  message.channel.send(emb)
+
+    }
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
         const Discord = require('discord.js');
