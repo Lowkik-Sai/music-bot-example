@@ -191,20 +191,15 @@ bot.on("message", async (message) => { // eslint-disable-line
 
 	message.channel.send(`First argument: ${args[0]}`);
     }
-    if (command === "embed" ) {
-        const Discord = require("discord.js")
-
-
+ if (command === "embed" ) {
   if(message.author.id !== "654669770549100575") return;
 
-  const cmd = args.join(' ').split(' | ')
-
-  let emb = new MessageEmbed()
-  .setTitle(cmd[0])
-  .setColor("RANDOM")
-  .setDescription(cmd[1])
-  .setFooter(cmd[2])
-  .setTimestamp()
+    let emb = new MessageEmbed()
+      .setTitle(args[0])
+      .setColor("RANDOM")
+      .setDescription(args[1])
+      .setFooter(args[2])
+      .setTimestamp()
 
   message.channel.send(emb)
 
