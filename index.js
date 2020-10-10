@@ -243,6 +243,21 @@ bot.on("message", async (message) => { // eslint-disable-line
             message.channel.send('Successfully bought one car')
         }
     }
+    if (command === "changemymind || command === "cmm" ) {
+        const canva = require('canvacord');
+        const Discord = require('discord.js');
+        const { changemymind } = require('canvacord');
+
+        let text = args.join(" ");
+
+        if(!args[0]) return message.channel.send('Provide a valid HEX code (#FF0000)');
+
+        let image = await canva.changemymind(text);
+
+        let changeMyMind = new Discord.MessageAttachment(image, "cmm.png")
+
+        message.channel.send(changeMyMind);
+    }
     if (command === "calculate" ) {
         const math = require('mathjs');
 
