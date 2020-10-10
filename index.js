@@ -689,7 +689,14 @@ bot.on("message", async (message) => { // eslint-disable-line
 
     message.channel.send(chanemb).then(msg => {msg.delete(5000)});
 
-      }
+    }
+    if (command === "clap" ) {
+      const randomizeCase = word => word.split('').map(c => Math.random() > 0.5 ? c.toUpperCase() : c.toLowerCase()).join('');
+    if (args.length < 1) return message.channel.send("Please provide some text to clapify")
+    
+    message.channel.send(args.map(randomizeCase).join(':clap:'));
+
+    }
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
         const Discord = require('discord.js');
