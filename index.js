@@ -192,7 +192,12 @@ bot.on("message", async (message) => { // eslint-disable-line
 	message.channel.send(`First argument: ${args[0]}`);
     }
  if (command === "embed" ) {
-  if(message.author.id !== "654669770549100575") return;
+     const sayMessage = args.join(" ")
+    if(!sayMessage) return message.reply({embed: {
+  color: 3066993,
+  description:"Proper Usage : +embed <Title>  <Description> <Footer>"
+}})
+ 
 
     let emb = new MessageEmbed()
       .setTitle(args[0])
