@@ -706,7 +706,7 @@ module.exports.run = async (bot, message, args) => {
 
   const command = args.join(' ').split(' | ')
 
-  let emb = new Discord.RichEmbed()
+  let emb = new MessageEmbed()
   .setTitle(cmd[0])
   .setColor(cmd[1])
   .setDescription(cmd[2])
@@ -720,7 +720,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.run = async (bot, message, args) => {
   if(args[0] == "help"){
-    let helpembxd = new Discord.RichEmbed()
+    let helpembxd = new MessageEmbed()
     .setColor("#00ff00")
     .addField("Contact Command", "Usage: !Contact <reason>")
 
@@ -731,7 +731,7 @@ module.exports.run = async (bot, message, args) => {
     const sayMessage = args.join(" ");
     if(!sayMessage) return message.channel.send("Please give us reason for contacting").then(msg => {msg.delete(5000)});
 
-   let contact = new Discord.RichEmbed()
+   let contact = new MessageEmbed()
    .setColor("00ff00")
    .setThumbnail(Sender.displayAvatarURL)
    .setDescription(`Contact message from [${message.guild.name}](${Invite.url})`)
