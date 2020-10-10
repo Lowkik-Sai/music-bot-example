@@ -209,7 +209,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if (command === "deletewarns" || command === "delwarns" ) {
         const db = require('quick.db');
-        const warnings = require('./warnings');
+        const warnings = require('warnings.js');
         if(!message.member.hasPermission("MANAGE_SERVER")) return message.channel.send('You can\'t use that.');
 
         const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
