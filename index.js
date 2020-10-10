@@ -519,12 +519,23 @@ bot.on("message", async (message) => { // eslint-disable-line
     let res;
     try {
       await message.channel.send("Searching for code to beautify...");
-      res = await format(message);
+      res = await format(msg);
     } catch(e) {
       res = e;
     }
     return message.channel.send(res);
   };
+  
+  exports.conf = {
+    enabled: true,
+    guildOnly: false,
+    aliases: ["pretty"]
+  };
+  
+  exports.help = {
+    name: 'beautify'
+  };
+  
   
   const { js_beautify } = require("js-beautify");
   
@@ -536,7 +547,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     return string.split("\n").map(line => line.replace(whitespace, "")).join("\n");
   };
   
-  const format = async (message) => {
+  const format = async (msg) => {
     const messages = message.channel.messages.array().reverse();
     let code;
     const codeRegex = /```(?:js|json|javascript)?\n?((?:\n|.)+?)\n?```/ig;
