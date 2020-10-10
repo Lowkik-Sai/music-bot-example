@@ -654,7 +654,10 @@ bot.on("message", async (message) => { // eslint-disable-line
    
     const id = args.shift();
     const sayMessage = args.join(" ")
-    if(!sayMessage) return message.reply("Usage `!answer ID  your message`")
+    if(!sayMessage) return message.reply({embed: {
+  color: 3066993,
+  description:"Usage !answer <ID>  <your message>"
+}})
     
 
    let contact = new MessageEmbed()
