@@ -838,7 +838,7 @@ const OFFSET = '!'.charCodeAt(0);
     await message.channel.send('<a:googling:426453223310622740> Googling....');
 
     const params = {
-        q: args.join(' '),
+        q: args.join(" "),
         safe: 'on',
         lr: 'lang_en',
         hl: 'en'
@@ -894,15 +894,18 @@ const OFFSET = '!'.charCodeAt(0);
       const {Command} = require('sylphy');
       const imdb = require('imdb-api');
 
-    if (!args.join(` `)) return message.channel.send('Oh no, you didn\'t give a movie or serie to search for.');
+    if (!args.join(" ")) return message.channel.send({embed: {
+   color: 3066993,
+   description:'Oh no, you didn\'t give a movie or serie to search for.'
+}});
     let movie;
     try {
-        movie = await imdb.get(args.join(` `), {apiKey: "6fb3a82"});
-    } catch (e) {
+        movie = await imdb.get(args.join(" "), {apiKey: "6fb3a82"});
+    } catch (err) {
         return console.log(e)
     }
 
-    let imdbemb = new Discord.RichEmbed()
+    let imdbemb = new MessageEmbed()
     .setColor("#00ff00")
     .setTitle(movie.title)
     .setURL(movie.imdburl)
