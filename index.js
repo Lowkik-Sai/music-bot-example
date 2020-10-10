@@ -195,7 +195,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         const Discord = require("discord.js")
 
 
-  if(message.author.id !== "291221132256870400") return;
+  if(message.author.id !== "654669770549100575") return;
 
   const cmd = args.join(' ').split(' | ')
 
