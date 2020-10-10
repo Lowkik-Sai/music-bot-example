@@ -299,6 +299,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             user.send(warnembed);
 
             const helpembed = new MessageEmbed()
+              .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
               .setDescription(`**${user.username}** has been warned!`)
               .addField('Reason:', `${reason}`)
