@@ -216,11 +216,10 @@ bot.on("message", async (message) => { // eslint-disable-line
         let bal = await db.fetch(`money_${message.guild.id}_${user.id}`);
         if(bal === null) bal = 0;
 
-        message.channel.send()
         message.channel.send({embed: {
   color: 3447003,
   description:`${user} currently has ${bal} coins!`
-}})
+}});
     }
     if (command === "calculate" ) {
         const math = require('mathjs');
