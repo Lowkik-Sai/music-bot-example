@@ -199,7 +199,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
   const cmd = args.join(' ').split(' | ')
 
-  let emb = new Discord.RichEmbed()
+  let emb = new MessageEmbed()
   .setTitle(cmd[0])
   .setColor("RANDOM")
   .setDescription(cmd[1])
