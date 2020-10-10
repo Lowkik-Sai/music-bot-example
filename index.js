@@ -230,6 +230,17 @@ bot.on("message", async (message) => { // eslint-disable-line
             message.channel.send('```' + data + '```')
         })
     }
+    if (command === "finduser ) {
+        let users = bot.users;
+
+    let searchTerm = args[0];
+    if(!searchTerm) return message.channel.send("Please type a term to search!");
+
+    let matches = users.filter(u => u.tag.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    message.channel.send(matches.map(u => u.tag));
+
+     }
     if (command === "deletewarns" || command === "delwarns" ) {
         const db = require('quick.db');
         const warnings = require('./warnings.js');
