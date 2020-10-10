@@ -235,7 +235,11 @@ bot.on("message", async (message) => { // eslint-disable-line
 }});
 
 
-        db.delete(`warnings_${message.guild.id}_${user.id}`);
+        db.delete(`warnings_${message.guild.id}_${user.id}`)
+        user.send({embed: {
+   color: 3066993,
+   description:`Your warnings in ${message.guild.name} are successfully deleted!`
+}});
 
         message.channel.send({embed: {
    color: 3066993,
@@ -293,11 +297,11 @@ bot.on("message", async (message) => { // eslint-disable-line
             user.send({embed: {
    color: 3066993,
    description:`You were warned in ${message.guild.name} for the follwoing reason: \`${reason}\``
-}})
+}});
             await message.channel.send({embed: {
    color: 3066993,
    description:`**${user.username}** has been warned`
-}})
+}});
         }
     }
     if (command === "warnings" ) { 
