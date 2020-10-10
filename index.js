@@ -298,10 +298,14 @@ bot.on("message", async (message) => { // eslint-disable-line
    color: 3066993,
    description:`You were warned in ${message.guild.name} for the follwoing reason: \`${reason}\``
 }});
-            await message.channel.send({embed: {
-   color: 3066993,
-   description:`**${user.username}** has been warned`
-}});
+   const helpembed = new MessageEmbed()
+        .setTitle(`${member.username}`)
+        .setDescription(`**${user.username}** has been warned!`)
+        .addField('Reason:', `${reason}`)
+        .addField('Moderator:', `${message.author.tag}`}
+        .setColor("RANDOM")
+
+            await message.channel.send(helpembed);
         }
     }
     if (command === "warnings" ) { 
