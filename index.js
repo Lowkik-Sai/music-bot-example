@@ -272,13 +272,13 @@ bot.on("message", async (message) => { // eslint-disable-line
         let items = await db.fetch(message.author.id, { items: [] });
         let amount = await db.fetch(`money_${message.guild.id}_${message.author.id}`)
 
-        if(purchase === 'car' || 'Car'){
+        if(purchase === 'car' || purchase === 'Car'){
             if(amount < 500) return message.channel.send('You do not have enough money to buy this item. Please try another one');
             db.subtract(`money_${message.guild.id}_${message.author.id}`, 500);
             db.push(message.author.id, "Car");
             message.channel.send('Successfully bought one car')
         }
-        if(purchase === 'watch' || 'Watch'){
+        if(purchase === 'watch' || purchase === 'Watch'){
             if(amount < 250) return message.channel.send('You do not have enough money to buy this item. Please try another one');
             db.subtract(`money_${message.guild.id}_${message.author.id}`, 250);
             db.push(message.author.id, "Watch");
