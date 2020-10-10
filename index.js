@@ -608,8 +608,6 @@ bot.on("message", async (message) => { // eslint-disable-line
 }
     if (command === "answer" ) {
         const Discord = require("discord.js");
-
-    let Invite = message.guild.channels.first().createInvite()
     let Owner = message.author;
     if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply("Only the bot owner can use this command!")
    
@@ -618,7 +616,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if(!sayMessage) return message.reply("Usage `!answer ID  your message`")
     
 
-   let contact = new Discord.RichEmbed()
+   let contact = new MessageEmbed()
    .setAuthor(Owner.username)
    .setColor("00ff00")
    .setThumbnail(Owner.displayAvatarURL)
@@ -629,7 +627,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
     bot.users.get(id).send(contact);
 
-    let chanemb = new Discord.RichEmbed()
+    let chanemb = new MessageEmbed()
     .setColor("#00ff00")
     .setDescription(`Message sent to <@${id}>`);
 
