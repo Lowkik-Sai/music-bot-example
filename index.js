@@ -901,7 +901,7 @@ const OFFSET = '!'.charCodeAt(0);
     let movie;
     try {
         movie = await imdb.get(args.join(" "), {apiKey: "6fb3a82"});
-    } catch (err) {
+    } catch (e) {
         return console.log(e)
     }
 
