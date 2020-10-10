@@ -579,23 +579,12 @@ bot.on("message", async (message) => { // eslint-disable-line
     let res;
     try {
       await message.channel.send("Searching for code to beautify...");
-      res = await format(msg);
+      res = await format(message);
     } catch(e) {
       res = e;
     }
     return message.channel.send(res);
   };
-  
-  exports.conf = {
-    enabled: true,
-    guildOnly: false,
-    aliases: ["pretty"]
-  };
-  
-  exports.help = {
-    name: 'beautify'
-  };
-  
   
   const { js_beautify } = require("js-beautify");
   
