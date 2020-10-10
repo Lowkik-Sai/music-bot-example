@@ -384,20 +384,36 @@ bot.on("message", async (message) => { // eslint-disable-line
             msg = args.join(" ");
             message.channel.send(msg)
         }
-    }  else if (command === "purge" || command === "clear") {
-		const amount = parseInt(args[0]) + 1;
+    }  
+    if (command === "purge" || command === "clear") {
+		const amount = args.join(" ");
 
-		if (isNaN(amount)) {
-			return message.reply('that doesn\'t seem to be a valid number.');
-		} else if (amount <= 1 || amount > 100) {
-			return message.reply('you need to input a number between 1 and 99.');
-		}
+        if(!amount) return message.reply({embed: {
+  color: 3447003,
+  description:'please provide an amount of messages for me to delete'
+}});
 
-		message.channel.bulkDelete(amount, true).catch(err => {
-			console.error(err);
-			message.channel.send('there was an error trying to prune messages in this channel!');
-		});
-	}
+        if(amount > 100) return message.reply({embed: {
+  color: 3447003,
+  description:`you cannot clear more than 100 messages at once`
+}}); 
+
+        if(amount < 1) return message.reply({embed: {
+  color: 3447003,
+  description:`you need to delete at least one message`
+}}); 
+
+        await message.channel.messages.fetch({limit: amount}).then(messages => {
+            message.channel.bulkDelete(messages
+    )});
+
+
+    message.channel.send({embed: {
+  color: 3447003,
+  description:'Success!'
+}});
+
+    }
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
