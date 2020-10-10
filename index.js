@@ -410,7 +410,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         const db = require('quick.db');
        const Discord = require('discord.js');
 
-        let money = db.startsWith(`money_${message.guild.id}`, { sort: '.data' })
+        let money = db.fetch(`money_${message.guild.id}`, { sort: '.data' })
 
         let content = "";
 
@@ -419,7 +419,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
             content += `${i+1}. ${user} - ${money[i].data} \n`;
 
-            const embed = new Discord.MessageEmbed()
+            const embed = new MessageEmbed()
             .setTitle(`${message.guild.name}'s Leaderboard`)
             .setDescription(`${content}`)
             .setColor("RANDOM")
