@@ -668,7 +668,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
   color: 3066993,
-  description:"Usage !answer <ID>  <your message>"
+  description:"Proper Usage : +answer <ID>  <your message>"
 }})
     
 
