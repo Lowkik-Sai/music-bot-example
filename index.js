@@ -392,7 +392,10 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         if(author !== null && timeout - (Date.now() - author) > 0){
             let time = ms(timeout - (Date.now() - author));
-            return message.channel.send(`You cannot work again for ${time.minutes}m and ${time.seconds}s`)
+            return message.channel.send({embed: {
+    color: 3066993,
+    description: `You cannot work again for ${time.minutes}m and ${time.seconds}s`
+}})
         } else {
             let amount = Math.floor(Math.random() * 80) + 1;
             db.add(`money_${message.guild.id}_${user.id}`, amount)
