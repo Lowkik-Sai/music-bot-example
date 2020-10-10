@@ -1172,7 +1172,6 @@ const member = message.guild.member(user);
         .addField(`${user.tag}`, `${user}`, true)
         .addField("ID:", `${user.id}`, true)
         .addField("Status",`${status[member.user.presence.status]}`, true)
-        .addField("Flags", `${userFlags.length ? userFlags.map(flag => flags[flag]).join(', ')` : 'None'})
         .addField("Permissions: ", `${permissions.join(', ')}`, true)
         .addField(`Roles [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
         .addField("Acknowledgements: ", `${acknowledgements}`, true);
