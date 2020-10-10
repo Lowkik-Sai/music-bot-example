@@ -1512,7 +1512,7 @@ const member = message.guild.member(user);
 
   if(!muterole){
     try{
-      muterole = await message.guild.createRole({
+      muterole = await message.guild.roles.create({
         name: "MuTeD",
         color: "#000000",
         permissions:[]
