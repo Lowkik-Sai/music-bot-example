@@ -397,6 +397,21 @@ bot.on("message", async (message) => { // eslint-disable-line
   description:`${user} currently has ${bal} coins!`
 }});
     }
+    if (command === "hastebin" ) {
+        const hastebin = require('hastebin-gen');
+
+     let haste = args.slice(0).join(" ")
+
+        let type = args.slice(1).join(" ")
+
+        if (!args[0]) { return message.channel.send("What do you want to post in Hastebin?") }
+
+        hastebin(haste).then(r => {
+
+            message.channel.send("`Posted to Hastebin at this URL:`  " + r);
+
+        }).catch(console.error);
+}        
     if (command === "daily" ) {
        const db = require('quick.db');
        const ms = require('parse-ms');
