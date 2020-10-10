@@ -1074,6 +1074,22 @@ bot.on("message", async (message) => { // eslint-disable-line
     return message.channel.send(serverembed);
 }
     if (command === "userinfo" || command === "ui" || command === "whois" ) {
+        const moment = require('moment');
+const flags = {
+	DISCORD_EMPLOYEE: 'Discord Employee',
+	DISCORD_PARTNER: 'Discord Partner',
+	BUGHUNTER_LEVEL_1: 'Bug Hunter (Level 1)',
+	BUGHUNTER_LEVEL_2: 'Bug Hunter (Level 2)',
+	HYPESQUAD_EVENTS: 'HypeSquad Events',
+	HOUSE_BRAVERY: 'House of Bravery',
+	HOUSE_BRILLIANCE: 'House of Brilliance',
+	HOUSE_BALANCE: 'House of Balance',
+	EARLY_SUPPORTER: 'Early Supporter',
+	TEAM_USER: 'Team User',
+	SYSTEM: 'System',
+	VERIFIED_BOT: 'Verified Bot',
+	VERIFIED_DEVELOPER: 'Verified Bot Developer'
+};
 
 const status = {
     online: "Online",
@@ -1142,7 +1158,8 @@ const member = message.guild.member(user);
     if(member.user.id == message.guild.ownerID){
         acknowledgements = 'Server Owner';
     }
-
+    
+    const userFlags = member.user.flags.toArray();
     const embed = new MessageEmbed()
         .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL())
         .setColor(randomColor)
@@ -1152,6 +1169,9 @@ const member = message.guild.member(user);
         .addField(`${user.tag}`, `${user}`, true)
         .addField("ID:", `${user.id}`, true)
         .addField("Status",`${status[member.user.presence.status]}`, true)
+        .addField("Flags", `${userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'None'})
+        .addField("Time Created at:", `${moment(member.user.createdTimestamp).format('LT')} ${moment(member.user.createdTimestamp).format('LL')} ${moment(member.user.createdTimestamp).fromNow()}`)			
+        .addField("Server Joined at:", `${moment(member.joinedAt).format('LL LTS')}`)
         .addField("Permissions: ", `${permissions.join(', ')}`, true)
         .addField(`Roles [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
         .addField("Acknowledgements: ", `${acknowledgements}`, true);
