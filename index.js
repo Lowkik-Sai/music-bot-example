@@ -1517,7 +1517,7 @@ const member = message.guild.member(user);
         color: "#000000",
         permissions:[]
       })
-      message.guild.channels.forEach(async (channel, id) => {
+      message.guild.channels.cache.forEach(async (channel, id) => {
        await channel.overwritePermissions([
   {
      id: muterole.id,
@@ -1534,7 +1534,7 @@ const member = message.guild.member(user);
   if(!mutetime) return message.channel.send("You didn't specify a time!");
 
   await(tomute.roles.add(muterole.id));
-  message.channel.send(`<@${tomute.id}> has been muted!`);
+  message.channel.send(`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}!`);
 
   setTimeout(function(){
     tomute.roles.remove(muterole.id);
