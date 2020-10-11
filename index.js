@@ -143,7 +143,7 @@ const embeds = [
     { title: 'Owner', description: 'Answer' },
 ]
 
-for (let i = -1; i <= 0; ++i)
+for (let i = 0; i <= 4; ++i)
   embeds.push(new MessageEmbed());
  
  
