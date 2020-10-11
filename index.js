@@ -57,7 +57,7 @@ m.channel.send({embed: {
   description:`${guild.name}`
 }});
 });
-} else message.channel.send("Sorry you are not my owner! 😂");
+} else m.channel.send("Sorry you are not my owner! 😂");
 });
 
 bot.on('message',m=>{
