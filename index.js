@@ -57,7 +57,7 @@ m.channel.send({embed: {
   description:`${guild.name}`
 }});
 });
-};
+} else message.channel.send("Sorry you are not my owner! 😂");
 });
 
 bot.on('message',m=>{
@@ -848,7 +848,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 ${eval(command)}
 \`\`\``);
 
-  }
+  } else message.channel.send("Sorry you are not my owner! 😂");
     if (command === "flip" ) {
         const mapping = '¡"#$%⅋,)(*+\'-˙/0ƖᄅƐㄣϛ9ㄥ86:;<=>?@∀qƆpƎℲפHIſʞ˥WNOԀQɹS┴∩ΛMX⅄Z[/]^_`ɐqɔpǝɟƃɥᴉɾʞlɯuodbɹsʇnʌʍxʎz{|}~';
 // Start with the character '!'
