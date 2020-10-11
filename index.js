@@ -134,7 +134,38 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "help" || command === "cmd") {
         const PaginationEmbed = require('discord-paginationembed');
  
-const embeds = [];
+const embeds = [
+               {               
+               .setTitle('Fun')
+               .setDescription("Covid,Carona,HasteBin")
+               .setColor("RANDOM")
+               .setTimestamp()
+               },
+               {
+               .setTitle('Mod')
+               .setDescription("Ban,Kick,Mute")
+               .setColor("RANDOM")
+               .setTimestamp()
+               },
+               {
+               .setTitle('ken')
+               .setDescription("kue")
+               .setColor("RANDOM")
+               .setTimestamp()
+               },
+               {
+               .setTitle('jsbd')
+               .setDescription("sue")
+               .setColor("RANDOM")
+               .setTimestamp()
+               },
+               {
+               .setTitle('iwj')
+               .setDescription("fue")
+               .setColor("RANDOM")
+               .setTimestamp()
+               },
+               ];
 
 for (let i = 1; i <= 5; ++i)
   embeds.push(new MessageEmbed());
@@ -148,7 +179,6 @@ const Embeds = new PaginationEmbed.Embeds()
   .setTitle('Among Us')
   .setDescription('Commands List')
   .setFooter('Type +help <commandname>')
-  .setURL('https://gazmull.github.io/discord-paginationembed')
   .setColor(0xFF00AE)
   // Sets the client's assets to utilise. Available options:
   //  - message: the client's Message object (edits the message instead of sending new one for this instance)
