@@ -523,12 +523,13 @@ bot.on("message", async (message) => { // eslint-disable-line
         const db = require('quick.db');
         const Discord = require('discord.js');
 
-        let money = db.fetch(`money_${message.guild.id}`, { sort: '.data' })
-        console.log(money)
+        let bal = db.fetch(`money_${message.guild.id}`, { sort: '.data' })
+        if(bal === null) money = 0
+        console.log(bal)
 
         let content = "";
 
-        for (let i = 0; i < money.length; i++){
+        for (let i = 0; i < bal.length; i++){
             let user = client.users.cache.get(money[i].ID.split('_')[2]).username
 
             content += `${i+1}. ${user} - ${money[i].data} \n`;
