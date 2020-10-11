@@ -698,7 +698,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
     await message.channel.send({embed: {
    color: 3066993,
-   description:`👍Successfully,I added ${gRole.name} role to ${rMember.user.username}!`
+   description:`👍 | Successfully,I added ${gRole.name} role to ${rMember.user.username}!`
 }})
   
 }
@@ -747,7 +747,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
   await message.channel.send({embed: {
   color: 3066993,
-  description:`👍Successfully,I removed ${gRole.name} role from ${rMember.user.username}!`
+  description:`👍 | Successfully,I removed ${gRole.name} role from ${rMember.user.username}!`
 }})
 
 }
