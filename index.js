@@ -672,19 +672,34 @@ bot.on("message", async (message) => { // eslint-disable-line
   .addField("Usage", "!addrole [user] [role]", true)
   .addField("Example", "!addrole @Odar Member")
 
-  if(!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send("You don't have premmsions to do that!");
+  if(!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send({embed: {
+   color: 3066993,
+   description"You don't have premmsions to do that!"
+}});
   let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
   if(!rMember) return message.channel.send(xdemb);
 
   let role = args.join(" ").slice(22);
-  if(!role) return message.channel.send("Specify a role!");
+  if(!role) return message.channel.send({embed: {
+   color: 3066993,
+   description:"Specify a role!"
+}});
   let gRole = message.guild.roles.cache.find(r => r.name === role );
-  if(!gRole) return message.channel.send("Couldn't find that role.");
+  if(!gRole) return message.channel.send({embed: {
+   color: 3066993,
+   description:"Couldn't find that role."
+}});
 
-  if(rMember.roles.cache.has(gRole.id)) return message.channel.send("This user already have that role.");
+  if(rMember.roles.cache.has(gRole.id)) return message.channel.send({embed: {
+   color: 3066993,
+   description:"This user already have that role."
+}});
   await(rMember.roles.add(gRole.id));
 
-    await message.channel.send(`***I just gave ${rMember.user.username} the ${gRole.name} role!***`)
+    await message.channel.send({embed: {
+   color: 3066993,
+   description:`***Successfully,I added ${gRole.name} role to ${rMember.user.username} the !***`
+}})
   
 }
     if (command === "removerole" || command === "rr" ) {
@@ -705,20 +720,35 @@ bot.on("message", async (message) => { // eslint-disable-line
   .addField("Usage", "!removerole [user] [role]", true)
   .addField("Example", "!removerole @Odar Member")
 
-  if(!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send("You need the `manage members`premission to do that!.");
+  if(!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send({embed: {
+   color: 3066993,
+   description:"You need the `manage members`premission to do that!."
+}});
   let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
   if(!rMember) return message.channel.send(xdemb);
 
   let role = args.join(" ").slice(22);
 
-  if(!role) return message.channel.send("Specify a role!");
+  if(!role) return message.channel.send({embed: {
+  color: 3066993,
+  description:"Specify a role!"
+}});
   let gRole = message.guild.roles.cache.find(r => r.name === role);
-  if(!gRole) return message.channel.send("Couldn't find that role.");
+  if(!gRole) return message.channel.send({embed: {
+   color: 3066993,
+   description:"Couldn't find that role."
+}});
 
-  if(!rMember.roles.cache.has(gRole.id)) return message.channel.send("This user doesn't have that role.");
+  if(!rMember.roles.cache.has(gRole.id)) return message.channel.send({embed: {
+   color: 3066993,
+   description:"This user doesn't have that role."
+}});
   await(rMember.roles.remove(gRole.id));
 
-  await message.channel.send(`***I just removed ${rMember.user.username}'s ${gRole.name} role!***`)
+  await message.channel.send({embed: {
+  color: 3066993,
+  description:`***Successfully,I removed ${gRole.name} role from ${rMember.user.username} !***`
+}})
 
 }
     if (command === "answer" ) {
