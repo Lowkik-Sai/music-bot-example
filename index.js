@@ -1503,7 +1503,7 @@ const member = message.guild.member(user);
        const ms = require("ms");
   //!mute @user 1s/m/h/d
 
-  let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+  let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
   if(!tomute) return message.channel.send("Please tag user to mute!");
   if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("Sorry, you don't have permissions to use this!");
   if(tomute.hasPermission("MANAGE_MESSAGES")) return message.channel.send("I cant mute this user");
