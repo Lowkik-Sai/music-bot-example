@@ -1524,6 +1524,7 @@ const member = message.guild.member(user);
      deny: ['SEND_MESSAGES', 'ADD_REACTIONS'],
   },
 ]);
+});
     }catch(e){
       console.log(e.stack);
     }
