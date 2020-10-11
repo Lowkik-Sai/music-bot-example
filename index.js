@@ -1533,7 +1533,7 @@ const member = message.guild.member(user);
   let mutetime = args[1];
   if(!mutetime) return message.channel.send("You didn't specify a time!");
 
-  await(tomute.addRole(muterole.id));
+  await(tomute.roles.add(muterole.id));
   message.reply(`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}`);
 
   setTimeout(function(){
