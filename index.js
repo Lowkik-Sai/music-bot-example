@@ -674,7 +674,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
   if(!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send({embed: {
    color: 3066993,
-   description:"You don't have permissions to do that!"
+   description:"You don't have permissions to do that!👎"
 }});
   let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
   if(!rMember) return message.channel.send(xdemb);
@@ -682,12 +682,12 @@ bot.on("message", async (message) => { // eslint-disable-line
   let role = args.join(" ").slice(22);
   if(!role) return message.channel.send({embed: {
    color: 3066993,
-   description:"Specify a role!"
+   description:"Specify a role!🙂"
 }});
   let gRole = message.guild.roles.cache.find(r => r.name === role );
   if(!gRole) return message.channel.send({embed: {
    color: 3066993,
-   description:"Couldn't find that role."
+   description:"Couldn't find that role!🙂"
 }});
 
   if(rMember.roles.cache.has(gRole.id)) return message.channel.send({embed: {
@@ -698,7 +698,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
     await message.channel.send({embed: {
    color: 3066993,
-   description:`***Successfully,I added ${gRole.name} role to ${rMember.user.username} the !***`
+   description:`Successfully,I added ${gRole.name} role to ${rMember.user.username}👍!***`
 }})
   
 }
@@ -722,7 +722,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
   if(!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send({embed: {
    color: 3066993,
-   description:"You need the `manage members`permission to do that!."
+   description:"You don't have permissions to do that!👎"
 }});
   let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
   if(!rMember) return message.channel.send(xdemb);
@@ -731,12 +731,12 @@ bot.on("message", async (message) => { // eslint-disable-line
 
   if(!role) return message.channel.send({embed: {
   color: 3066993,
-  description:"Specify a role!"
+  description:"Specify a role!🙂"
 }});
   let gRole = message.guild.roles.cache.find(r => r.name === role);
   if(!gRole) return message.channel.send({embed: {
    color: 3066993,
-   description:"Couldn't find that role."
+   description:"Couldn't find that role!🙂"
 }});
 
   if(!rMember.roles.cache.has(gRole.id)) return message.channel.send({embed: {
@@ -747,7 +747,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
   await message.channel.send({embed: {
   color: 3066993,
-  description:`***Successfully,I removed ${gRole.name} role from ${rMember.user.username} !***`
+  description:`Successfully,I removed ${gRole.name} role from ${rMember.user.username}👍!***`
 }})
 
 }
