@@ -674,7 +674,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
   if(!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send({embed: {
    color: 3066993,
-   description"You don't have premmsions to do that!"
+   description:"You don't have permissions to do that!"
 }});
   let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
   if(!rMember) return message.channel.send(xdemb);
@@ -722,7 +722,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
   if(!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send({embed: {
    color: 3066993,
-   description:"You need the `manage members`premission to do that!."
+   description:"You need the `manage members`permission to do that!."
 }});
   let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
   if(!rMember) return message.channel.send(xdemb);
