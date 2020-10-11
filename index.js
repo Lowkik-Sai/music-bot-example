@@ -1079,7 +1079,7 @@ message.channel.send(emb)
 
     message.channel.send({embed: {
   color: 3447003,
-  description:'Success!'
+  description:`Successfully deleted ${amount} messages!`
 }});
 
     }
