@@ -143,7 +143,7 @@ const embeds = [
     { title: 'Owner', description: 'Answer' },
 ]
 
-for (let i = 0; i <= 4; ++i)
+for (let i = 0; i <= 0; ++i)
   embeds.push(new MessageEmbed());
  
  
@@ -153,7 +153,7 @@ const Embeds = new PaginationEmbed.Embeds()
   .setChannel(message.channel)
   .setPageIndicator(true)
   .setFooter('Type +help <commandname>')
-  .setURL('https://gazmull.github.io/discord-paginationembed')
+  .setURL('https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg')
   .setColor(0xFF00AE)
   .setTimestamp()
   // Sets the client's assets to utilise. Available options:
