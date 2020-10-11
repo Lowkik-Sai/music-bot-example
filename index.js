@@ -519,12 +519,12 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(Embed);
     }
     if (command === "leaderboard" || command === "lb" ) {
-        console.log(money);
 
         const db = require('quick.db');
         const Discord = require('discord.js');
 
         let money = db.fetch(`money_${message.guild.id}`, { sort: '.data' })
+        console.log(money)
 
         let content = "";
 
