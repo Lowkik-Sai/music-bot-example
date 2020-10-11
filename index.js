@@ -135,27 +135,10 @@ bot.on("message", async (message) => { // eslint-disable-line
         const PaginationEmbed = require('discord-paginationembed');
  
 const embeds = [
-               {               
-               title : 'fun'
-               description : 'Covid,Carona'
-               },
-               {
-               title : 'mod'
-               description : 'ban,kick,mute'
-               },
-               {
-               title : 'info'
-               description : 'info,bi'
-               },
-               {
-               title : 'fjehd'
-               description : 'kend'
-               },
-               {
-               title : 'sjd'
-               description : 'Caronapositive'
-               },
-               ];
+    { title: 'Fun', description: 'Covid,Carona' },
+    { title: 'Mod', description: 'Kick,Ban' },
+    { title: 'Info', description: 'Serverinfo,Botinfi' },
+];
 
 for (let i = 1; i <= 5; ++i)
   embeds.push(new MessageEmbed());
@@ -167,8 +150,8 @@ const Embeds = new PaginationEmbed.Embeds()
   .setChannel(message.channel)
   .setPageIndicator(true)
   .setFooter('Type +help <commandname>')
+  .setURL('https://gazmull.github.io/discord-paginationembed')
   .setColor(0xFF00AE)
-  .setTimestamp()
   // Sets the client's assets to utilise. Available options:
   //  - message: the client's Message object (edits the message instead of sending new one for this instance)
   //  - prompt: custom content for the message sent when prompted to jump to a page
