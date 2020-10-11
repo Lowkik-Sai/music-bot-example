@@ -682,7 +682,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   if(!gRole) return message.channel.send("Couldn't find that role.");
 
   if(rMember.roles.cache.has(gRole.id)) return message.channel.send("This user already have that role.");
-  await(rMember.addRole(gRole.id));
+  await(rMember.roles.add(gRole.id));
 
     await message.channel.send(`***I just gave ${rMember.user.username} the ${gRole.name} role!***`)
   
@@ -716,7 +716,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   if(!gRole) return message.channel.send("Couldn't find that role.");
 
   if(!rMember.roles.cache.has(gRole.id)) return message.channel.send("This user doesn't have that role.");
-  await(rMember.removeRole(gRole.id));
+  await(rMember.roles.remove(gRole.id));
 
   await message.channel.send(`***I just removed ${rMember.user.username}'s ${gRole.name} role!***`)
 
