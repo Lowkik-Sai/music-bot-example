@@ -136,34 +136,24 @@ bot.on("message", async (message) => { // eslint-disable-line
  
 const embeds = [
                {               
-               .setTitle('Fun')
-               .setDescription("Covid,Carona,HasteBin")
-               .setColor("RANDOM")
-               .setTimestamp()
+               title : 'fun'
+               description : 'Covid,Carona'
                },
                {
-               .setTitle('Mod')
-               .setDescription("Ban,Kick,Mute")
-               .setColor("RANDOM")
-               .setTimestamp()
+               title : 'mod'
+               description : 'ban,kick,mute'
                },
                {
-               .setTitle('ken')
-               .setDescription("kue")
-               .setColor("RANDOM")
-               .setTimestamp()
+               title : 'info'
+               description : 'info,bi'
                },
                {
-               .setTitle('jsbd')
-               .setDescription("sue")
-               .setColor("RANDOM")
-               .setTimestamp()
+               title : 'fjehd'
+               description : 'kend'
                },
                {
-               .setTitle('iwj')
-               .setDescription("fue")
-               .setColor("RANDOM")
-               .setTimestamp()
+               title : 'sjd'
+               description : 'Caronapositive'
                },
                ];
 
@@ -176,10 +166,9 @@ const Embeds = new PaginationEmbed.Embeds()
   .setAuthorizedUsers([message.author.id])
   .setChannel(message.channel)
   .setPageIndicator(true)
-  .setTitle('Among Us')
-  .setDescription('Commands List')
   .setFooter('Type +help <commandname>')
   .setColor(0xFF00AE)
+  .setTimestamp()
   // Sets the client's assets to utilise. Available options:
   //  - message: the client's Message object (edits the message instead of sending new one for this instance)
   //  - prompt: custom content for the message sent when prompted to jump to a page
