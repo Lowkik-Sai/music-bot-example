@@ -133,25 +133,27 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if (command === "help" || command === "cmd") {
         const PaginationEmbed = require('discord-paginationembed');
- 
-const embeds = [
-    { title: 'Fun', description: 'Covid,Carona' },
-    { title: 'Mod', description: 'Kick,Ban' },
-    { title: 'Info', description: 'Serverinfo,Botinfi' },
-];
 
-for (let i = 1; i <= 5; ++i)
+for (let i = 1; i <= 6; ++i)
   embeds.push(new MessageEmbed());
  
  
 const Embeds = new PaginationEmbed.Embeds()
-  .setArray(embeds)
+  .setArray([
+    { title: 'Fun Commands', description: 'CovidStats,Carona' },
+    { title: 'Mod Commands', description: 'Kick,Ban,Mute' },
+    { title: 'Info Commands', description: 'ServerInfo,BotInfo,UserInfo' },
+    { title: 'Role Commands', description: 'AddRole,RemoveRole' },
+    { title: 'Utility', description: 'Hastebin,Report,etc commands are coming asap!' },
+    { title: 'Owner', description: 'Answer' },
+])
   .setAuthorizedUsers([message.author.id])
   .setChannel(message.channel)
   .setPageIndicator(true)
   .setFooter('Type +help <commandname>')
   .setURL('https://gazmull.github.io/discord-paginationembed')
   .setColor(0xFF00AE)
+  .setTimestamp()
   // Sets the client's assets to utilise. Available options:
   //  - message: the client's Message object (edits the message instead of sending new one for this instance)
   //  - prompt: custom content for the message sent when prompted to jump to a page
