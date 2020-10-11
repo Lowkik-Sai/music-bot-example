@@ -134,19 +134,21 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "help" || command === "cmd") {
         const PaginationEmbed = require('discord-paginationembed');
 
-for (let i = 1; i <= 6; ++i)
-  embeds.push(new MessageEmbed());
- 
- 
-const Embeds = new PaginationEmbed.Embeds()
-  .setArray([
+const embed = [
     { title: 'Fun Commands', description: 'CovidStats,Carona' },
     { title: 'Mod Commands', description: 'Kick,Ban,Mute' },
     { title: 'Info Commands', description: 'ServerInfo,BotInfo,UserInfo' },
     { title: 'Role Commands', description: 'AddRole,RemoveRole' },
     { title: 'Utility', description: 'Hastebin,Report,etc commands are coming asap!' },
     { title: 'Owner', description: 'Answer' },
-])
+];
+
+for (let i = 0; i <= 1; ++i)
+  embeds.push(new MessageEmbed());
+ 
+ 
+const Embeds = new PaginationEmbed.Embeds()
+  .setArray(embeds)
   .setAuthorizedUsers([message.author.id])
   .setChannel(message.channel)
   .setPageIndicator(true)
