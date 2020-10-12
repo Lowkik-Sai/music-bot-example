@@ -317,43 +317,31 @@ return message.channel.send({embed: {
     if (command === "warn" ) {
         const Discord = require('discord.js');
         const db = require('quick.db');
-
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that');
-
         const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
-
         if(!user) return message.channel.send({embed: {
    color: 3066993,
    description:'Please specify a user, via mention or ID'
 }});
-
         if(user.bot) return message.channel.send({embed: {
    color: 3066993,
    description:'You can\'t warn bots'
 }});
-
         if(message.author.id === user.id) return message.channel.send({embed: {
    color: 3066993,
    description: 'You can\'t warn yourself nitwit'
 }});
-
         if(message.guild.owner.id === user.id) return message.channel.send({embed: {
    color: 3066993,
    description:'You can\'t warn the server\'s owner'
 }});
-
         let reason = args.slice(1).join(" ");
-
         if(!reason) reason = 'Unspecified';
-
         let warnings = db.get(`warnings_${message.guild.id}_${user.id}`);
-
         if(warnings === 5) return message.channel.send({embed: {
    color: 3066993,
    description:`${user} has already reached five warnings`
 }});
-
-
         if(warnings === null) {
             db.set(`warnings_${message.guild.id}_${user.id}`, 1);
             const warnembed = new MessageEmbed()
@@ -363,9 +351,7 @@ return message.channel.send({embed: {
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
               .setTimestamp()
-
             user.send(warnembed);
-
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
@@ -378,7 +364,7 @@ return message.channel.send({embed: {
             await message.channel.send(helpembed);
         }
 
-        if(warnings !== null){
+        if(warnings !== null) {
             const id = args[0];
             db.add(`warnings_${message.guild.id}_${user.id}`, 1)
             const warnembed = new MessageEmbed()
@@ -388,7 +374,6 @@ return message.channel.send({embed: {
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
               .setTimestamp()
-
             user.send(warnembed);
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
