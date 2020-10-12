@@ -253,7 +253,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         const warnings = require('./warnings.js');
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that.');
 
-        const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+        const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
 
         if(!user) return message.channel.send({embed: {
   color: 3066993,
@@ -293,7 +293,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that');
 
-        const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+        const user = message.users.members.first() || message.guild.members.cache.get(args[0]);
 
         if(!user) return message.channel.send({embed: {
    color: 3066993,
@@ -366,7 +366,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
-              .setDescription(`**<@${id}>** has been warned!`)
+              .setDescription(`<@${id}> has been warned!`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
