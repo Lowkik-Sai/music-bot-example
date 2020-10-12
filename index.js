@@ -99,7 +99,7 @@ bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnectin
 
 bot.on("message", message => {
     const db = require("quick.db");
-    const args = message.content.slice(prefix.length).trim().split(/ +/g);
+    const args = message.content.slice(PREFIX.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
     if(command == "setautorole"){
         let roleName = args.slice(0).join(" ");
