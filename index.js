@@ -874,8 +874,11 @@ bot.on("message", async (message) => { // eslint-disable-line
         const Discord = require("discord.js")
         const Client = new Discord.Client
 
-  if(message.author.id !== "654669770549100575") return;
-
+  let Owner = message.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
     const command = message.content.split(' ').slice(1).join(' ');
     message.channel.send(
 `\`\`\`js
@@ -1350,19 +1353,34 @@ bot.on("message", async (message) => { // eslint-disable-line
        message.channel.send(serverembed);
 
 }
-    if (command === "leave"&&message.author.id=="654669770549100575") {
+    if (command === "leave") {
+    let Owner = message.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
        message.channel.send({embed: {
   color: 3066993,
   description:`Bye,Bye...I'm Leaving Server!`
 }});
     }
-    if (command === "leave"&&message.author.id=="654669770549100575") {
+    if (command === "leave") {
+    let Owner = message.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
       message.guild
         .leave()
         .then(guild => console.log('Left guild', guild.name))
         .catch(console.error);
     }
-    if (command === "setbotnick"&&message.author.id=="654669770549100575") {
+    if (command === "setbotnick") {
+    let Owner = message.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
         const newName = message.content.split(' ');
 
     try{
