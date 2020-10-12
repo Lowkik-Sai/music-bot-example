@@ -980,7 +980,7 @@ message.channel.send(emb)
 
 } else {
 
-let emb = new Discord.RichEmbed()
+let emb = new MessageEmbed()
 .setColor("#00f00")
 .setDescription(`${killed} was killed by ${message.author} 💔 REST IN PEACE`)
 
