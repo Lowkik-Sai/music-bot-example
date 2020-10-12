@@ -118,11 +118,12 @@ bot.on("message", message => {
         db.delete(`welcomechannel_${message.guild.id}`)
     }
 });
-bot.on("guildMemberAdd", member => {
+
+bot.on("guildMemberAdd", message => {
     let roleId = db.get(`autorole_${member.guild.id}`);
-    if(roleId) member.addRole(roleId).catch(console.error);
+    if(roleId) = member.roles.add(roleId).catch(console.error);
     let channelId = db.get(`welcomechannel_${member.guild.id}`);
-    if(channelId) channel = member.guild.channels.get(channelId).catch(console.error);
+    if(channelId) channel = member.guild.channels.cache.get(channelId).catch(console.error);
     if(channel) channel.send("x")
 });
 
