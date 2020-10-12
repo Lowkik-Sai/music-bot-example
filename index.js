@@ -121,7 +121,7 @@ bot.on("message", message => {
 
 bot.on("guildMemberAdd", message => {
     let roleId = db.get(`autorole_${member.guild.id}`);
-    if(roleId) = member.roles.add(roleId).catch(console.error);
+    if(roleId) member.roles.add(roleId).catch(console.error);
     let channelId = db.get(`welcomechannel_${member.guild.id}`);
     if(channelId) channel = member.guild.channels.cache.get(channelId).catch(console.error);
     if(channel) channel.send("x")
