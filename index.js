@@ -366,7 +366,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
 
         if(warnings !== null){
-            const id = args[0];
+            const id = args.shift();
             db.add(`warnings_${message.guild.id}_${user.id}`, 1)
             const warnembed = new MessageEmbed()
               .setTitle('Warning')
@@ -403,30 +403,6 @@ bot.on("message", async (message) => { // eslint-disable-line
    color: 3066993,
    description:`**${user.username}** has *${warnings}* warning(s)`
 }});
-    }
-        if(warnings !== null){
-            const id = args.shift();
-            db.add(`warnings_${message.guild.id}_${user.id}`, 1)
-            const warnembed = new MessageEmbed()
-              .setTitle('Warning')
-              .setDescription(`You were warned in ${message.guild.name}`)
-              .addField('Reason:', `${reason}`)
-              .addField('Moderator:', `${message.author.tag}`)
-              .setColor("RANDOM")
-              .setTimestamp()
-
-            user.send(warnembed);
-            const helpembed = new MessageEmbed()
-              .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
-              .setTitle('Warning')
-              .setDescription(`**<@${id}>** has been warned!`)
-              .addField('Reason:', `${reason}`)
-              .addField('Moderator:', `${message.author.tag}`)
-              .setColor("RANDOM")
-              .setTimestamp()
-    
-            await message.channel.send(helpembed);
-        }
     }
     if (command === "bal" ) {
         const db = require('quick.db');
