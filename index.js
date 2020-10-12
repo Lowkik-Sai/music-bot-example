@@ -99,11 +99,19 @@ bot.on("shardDisconnect", (event, id) => console.log(`[SHARD] Shard ${id} discon
 bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnecting...`));
 
 bot.on("guildMemberAdd", message => {
-    let roleId = db.get(`autorole_${member.guild.id}`);
-    if(roleId) member.roles.add(roleId).catch(console.error);
-    let channelId = db.get(`welcomechannel_${member.guild.id}`);
-    if(channelId) channel = member.guild.channels.cache.get(channelId).catch(console.error);
-    if(channel) channel.send("Hello")
+    let chx = db.get(`welchannel_${member.guild.id}`); //defining var
+  
+  if(chx === null) { //check if var have value or not
+    return;
+  }
+
+  let wembed = new MessageEmbed() //define embed
+  .setAuthor(member.user.username, member.user.avatarURL())
+  .setColor("#ff2050")
+  .setThumbnail(member.user.avatarURL())
+  .setDescription(`We are very happy to have you in our server`);
+  
+  bot.channels.cache.get(chx).send(wembed) //get channel and send embed
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
@@ -238,10 +246,18 @@ bot.on("message", async (message) => { // eslint-disable-line
         db.delete(`autorole_${message.guild.id}`)
     }
     if(command == "setwelcomechannel"){
-        let channelName = args.slice(0).join(" ");
-        let channel = message.guild.member.cache.find(channel => channel.name == channelName)
-        db.set(`welcomechannel_${message.guild.id}`, channel.id)
+        let channel = message.mentions.channels.first() //mentioned channel
+    
+    if(!channel) { //if channel is not mentioned
+      return message.channel.send("Please Mention the channel first")
     }
+    
+    //Now we gonna use quick.db
+    
+    db.set(`welchannel_${message.guild.id}`, channel.id) //set id in var
+    
+    message.channel.send(`Welcome Channel is seted as ${channel}`) //send success message
+  }
     if(command == "unsetwelcomechannel"){
         db.delete(`welcomechannel_${message.guild.id}`)
     }
