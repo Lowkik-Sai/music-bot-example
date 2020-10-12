@@ -366,8 +366,8 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
 
         if(warnings !== null){
-            const id = args[0],
             db.add(`warnings_${message.guild.id}_${user.id}`, 1)
+            const id = args[0],
             const warnembed = new MessageEmbed()
               .setTitle('Warning')
               .setDescription(`You were warned in ${message.guild.name}`)
