@@ -103,7 +103,7 @@ bot.on("message", message => {
     const command = args.shift().toLowerCase();
     if(command == "setautorole"){
         let roleName = args.slice(0).join(" ");
-        let role = message.guild.roles.cache.find(role => role.name == roleName).catch(message.reply("Couldn't find that role"))
+        let role = message.guild.roles.cache.find(role => role.name == roleName)
         db.set(`autorole_${message.guild.id}`, role.id)
     }
     if(command == "unsetautorole"){
@@ -111,7 +111,7 @@ bot.on("message", message => {
     }
     if(command == "setwelcomechannel"){
         let channelName = args.slice(0).join(" ");
-        let channel = message.guild.channels.cache.find(channel => channel.name == channelName).catch(message.reply("Couldn't find that channel"))
+        let channel = message.guild.channels.cache.find(channel => channel.name == channelName)
         db.set(`welcomechannel_${message.guild.id}`, channel.id)
     }
     if(command == "unsetwelcomechannel"){
