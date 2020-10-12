@@ -103,7 +103,7 @@ bot.on("message", message => {
     const command = args.shift().toLowerCase();
     if(command == "setautorole"){
         let roleName = args.slice(0).join(" ");
-        let role = message.guild.roles.find(role => role.name == roleName).catch(message.reply("Couldn't find that role")
+        let role = message.guild.roles.find(role => role.name == roleName).catch(message.reply("Couldn't find that role"))
         db.set(`autorole_${message.guild.id}`, role.id)
     }
     if(command == "unsetautorole"){
