@@ -167,8 +167,6 @@ const embeds = [
     { title: 'Owner', description: 'Answer' },
     { title: 'Music', description: 'play, search,stop, skip,resume' },
 ]
-
-for (let i = 0; i <= 0; ++i)
   embeds.push(new MessageEmbed());
  
  
