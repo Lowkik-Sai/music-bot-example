@@ -285,35 +285,27 @@ bot.on("message", async (message) => { // eslint-disable-line
    description: 'You can\'t clear your own warnings'
 }});
 
-        if(warnings === null) {
-return message.channel.send({embed: {
+        if(warnings === null) return message.channel.send({embed: {
    color: 3066993,
-   description:`**${user.username} has no warnings**`
+   description:`**${user.username} / <@${id}> has no warnings**`
 }});
-   
-       message.channel.send({embed: {
-   color: 3066993,
-   description: `Successfully deleted all warnings of ${user.username}`
-}})
-}
 
-       if(warnings !== null) {
-return message.channel.send({embed: {
+       if(warnings !== null) return message.channel.send({embed: {
    color: 3066993,
    description:`**<@${id}> has no warnings**`
 }});
-      message.channel.send({embed: {
-   color: 3066993,
-   description: `Successfully deleted all warnings of <@${id}>`
-}})
-}
 
         db.delete(`warnings_${message.guild.id}_${user.id}`)
         user.send({embed: {
    color: 3066993,
    description:`Your warnings in ${message.guild.name} are successfully deleted!`
 }});
+        message.channel.send({embed: {
+   color: 3066993,
+   description: `👍 | Successfully deleted all warnings!`
+}})
     }
+    
     if (command === "warn" ) {
         const Discord = require('discord.js');
         const db = require('quick.db');
@@ -346,7 +338,7 @@ return message.channel.send({embed: {
             db.set(`warnings_${message.guild.id}_${user.id}`, 1);
             const warnembed = new MessageEmbed()
               .setTitle('Warning')
-              .setDescription(`You were warned in ${message.guild.name}`)
+              .setDescription(`⚠️ | You were warned in ${message.guild.name}`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
@@ -355,7 +347,7 @@ return message.channel.send({embed: {
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
-              .setDescription(`**${user.username}** has been warned!`)
+              .setDescription(`**${user.username}** has been warned! ⚠️`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
@@ -363,13 +355,12 @@ return message.channel.send({embed: {
     
             await message.channel.send(helpembed);
         }
-
-        if(warnings !== null) {
+        if(warnings !== null){
             const id = args[0];
             db.add(`warnings_${message.guild.id}_${user.id}`, 1)
             const warnembed = new MessageEmbed()
               .setTitle('Warning')
-              .setDescription(`You were warned in ${message.guild.name}`)
+              .setDescription(`⚠️ | You were warned in ${message.guild.name}`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
@@ -378,7 +369,7 @@ return message.channel.send({embed: {
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
-              .setDescription(`<@${id}> has been warned!`)
+              .setDescription(`<@${id}> has been warned! ⚠️`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
@@ -389,7 +380,6 @@ return message.channel.send({embed: {
     }
     if (command === "warnings" ) { 
         const db = require('quick.db');
-        const id = args[0];
         const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.author;
 
 
@@ -400,13 +390,6 @@ return message.channel.send({embed: {
         message.channel.send({embed: {
    color: 3066993,
    description:`**${user.username}** has *${warnings}* warning(s)`
-}});
-
-        if(warnings !== null) warnings = 0;
-
-        message.channel.send({embed: {
-   color: 3066993,
-   description:`**<@${id}>** has *${warnings}* warning(s)`
 }});
     }
     if (command === "bal" ) {
