@@ -103,7 +103,7 @@ bot.on("guildMemberAdd", message => {
     if(roleId) member.roles.add(roleId).catch(console.error);
     let channelId = db.get(`welcomechannel_${member.guild.id}`);
     if(channelId) channel = member.guild.channels.cache.get(channelId).catch(console.error);
-    if(channel) channel.send("x")
+    if(channel) channel.send("Hello")
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
@@ -239,7 +239,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if(command == "setwelcomechannel"){
         let channelName = args.slice(0).join(" ");
-        let channel = message.guild.channels.cache.find(channel => channel.name == channelName)
+        let channel = message.guild.member.cache.find(channel => channel.name == channelName)
         db.set(`welcomechannel_${message.guild.id}`, channel.id)
     }
     if(command == "unsetwelcomechannel"){
