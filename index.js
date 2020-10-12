@@ -97,6 +97,35 @@ bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully
 bot.on("shardDisconnect", (event, id) => console.log(`[SHARD] Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect...`));
 bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnecting...`));
 
+bot.on("message", message => {
+    const db = require("quick.db");
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
+    const command = args.shift().toLowerCase();
+    if(command == "setautorole"){
+        let roleName = args.slice(0).join(" ");
+        let role = message.guild.roles.find(role => role.name == roleName).catch(message.reply("Couldn't find that role")
+        db.set(`autorole_${message.guild.id}`, role.id)
+    }
+    if(command == "unsetautorole"){
+        db.delete(`autorole_${message.guild.id})
+    }
+    if(command == "setwelcomechannel"){
+        let channelName = args.slice(0).join(" ");
+        let channel = message.guild.channels.find(channel => channel.name == channelName).catch(message.reply("Couldn't find that channel")
+        db.set(`welcomechannel_${message.guild.id}`, channel.id)
+    }
+    if(command == "unsetwelcomechannel"){
+        db.delete(`welcomechannel_${message.guild.id})
+    }
+})
+bot.on("guildMemberAdd", member => {
+    let roleId = db.get(`autorole_${member.guild.id}`);
+    if(roleId) member.addRole(roleId).catch(console.error);
+    let channelId = db.get(`welcomechannel_${member.guild.id}`);
+    if(channelId) channel = member.guild.channels.get(channelId).catch(console.error);
+    if(channel) channel.send("x")
+})
+
 bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
