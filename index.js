@@ -366,7 +366,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
 
         if(warnings !== null){
-            const id = args.shift();
+            const id = args[0];
             db.add(`warnings_${message.guild.id}_${user.id}`, 1)
             const warnembed = new MessageEmbed()
               .setTitle('Warning')
@@ -380,7 +380,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
-              .setDescription(`<@${args[0]}> has been warned!`)
+              .setDescription(`<@${id}> has been warned!`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
