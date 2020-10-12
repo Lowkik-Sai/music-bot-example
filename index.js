@@ -253,7 +253,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         const warnings = require('./warnings.js');
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that.');
 
-        const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
+        const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
         if(!user) return message.channel.send({embed: {
   color: 3066993,
@@ -293,7 +293,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that');
 
-        const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
+        const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
 
         if(!user) return message.channel.send({embed: {
    color: 3066993,
@@ -378,7 +378,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "warnings" ) { 
         const db = require('quick.db');
 
-        const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
+        const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.author;
 
 
         let warnings = await db.get(`warnings_${message.guild.id}_${user.id}`);
