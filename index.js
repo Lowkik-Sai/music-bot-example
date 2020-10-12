@@ -1,6 +1,7 @@
 const { Client, Util, MessageEmbed} = require("discord.js");
 const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
+const db = require("quick.db");
 const ms = require("ms");
 require("dotenv").config();
 require("./server.js");
@@ -96,28 +97,6 @@ bot.on("error", console.error);
 bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully booted up!`));
 bot.on("shardDisconnect", (event, id) => console.log(`[SHARD] Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect...`));
 bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnecting...`));
-
-bot.on("message", message => {
-    const db = require("quick.db");
-    const args = message.content.slice(PREFIX.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase();
-    if(command == "setautorole"){
-        let roleName = args.slice(0).join(" ");
-        let role = message.guild.roles.cache.find(role => role.name == roleName)
-        db.set(`autorole_${message.guild.id}`, role.id)
-    }
-    if(command == "unsetautorole"){
-        db.delete(`autorole_${message.guild.id}`)
-    }
-    if(command == "setwelcomechannel"){
-        let channelName = args.slice(0).join(" ");
-        let channel = message.guild.channels.cache.find(channel => channel.name == channelName)
-        db.set(`welcomechannel_${message.guild.id}`, channel.id)
-    }
-    if(command == "unsetwelcomechannel"){
-        db.delete(`welcomechannel_${message.guild.id}`)
-    }
-});
 
 bot.on("guildMemberAdd", message => {
     let roleId = db.get(`autorole_${member.guild.id}`);
@@ -250,7 +229,23 @@ bot.on("message", async (message) => { // eslint-disable-line
 
 	message.channel.send(`First argument: ${args[0]}`);
     }
- if (command === "embed" ) {
+    if(command == "setautorole"){
+        let roleName = args.slice(0).join(" ");
+        let role = message.guild.roles.cache.find(role => role.name == roleName)
+        db.set(`autorole_${message.guild.id}`, role.id)
+    }
+    if(command == "unsetautorole"){
+        db.delete(`autorole_${message.guild.id}`)
+    }
+    if(command == "setwelcomechannel"){
+        let channelName = args.slice(0).join(" ");
+        let channel = message.guild.channels.cache.find(channel => channel.name == channelName)
+        db.set(`welcomechannel_${message.guild.id}`, channel.id)
+    }
+    if(command == "unsetwelcomechannel"){
+        db.delete(`welcomechannel_${message.guild.id}`)
+    }
+    if (command === "embed" ) {
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
   color: 3066993,
@@ -301,7 +296,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
      }
     if (command === "deletewarns" || command === "delwarns" ) {
-        const db = require('quick.db');
+        
         const id = args.shift();
         const warnings = require('./warnings.js');
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that.');
@@ -347,7 +342,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if (command === "warn" ) {
         const Discord = require('discord.js');
-        const db = require('quick.db');
+        
 
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that');
 
@@ -434,7 +429,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
     }
     if (command === "warnings" ) { 
-        const db = require('quick.db');
+        
 
         const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]) || message.author;
 
@@ -449,7 +444,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 }});
     }
     if (command === "bal" ) {
-        const db = require('quick.db');
+        
         const Discord = require('discord.js');
 
         let user = message.mentions.users.first() || message.author;
@@ -478,7 +473,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         }).catch(console.error);
 }        
     if (command === "daily" ) {
-       const db = require('quick.db');
+       
        const ms = require('parse-ms');
 
         let user = message.author;
@@ -505,7 +500,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         }
     }
     if (command === "work" ) {
-       const db = require('quick.db');
+       
        const ms = require('parse-ms');
         let user = message.author;
         let timeout = 600000;
@@ -534,7 +529,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   color: 3066993,
   description:"Proper Usage : +buy <store item>"
 }})
-       const db = require('quick.db');
+       
        const Discord = require('discord.js');
 
         let purchase = args.join(" ");
@@ -572,7 +567,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(embed);
     }
     if (command === "inventory" ) {
-        const db = require('quick.db');
+        
         const Discord = require('discord.js');
 
         let items = await db.fetch(message.author.id);
@@ -585,7 +580,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if (command === "leaderboard" || command === "lb" ) {
 
-        const db = require('quick.db');
+        
         const Discord = require('discord.js');
 
         let bal = db.fetch(`money_${message.guild.id}`, { sort: '.data' })
