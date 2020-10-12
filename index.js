@@ -49,7 +49,12 @@ cc.send({embed: {
 });
 
 bot.on('message',m=>{
-if(m.content=="+servers_name"&&m.author.id=="654669770549100575"){
+if(m.content=="+servers_name"){
+let Owner = message.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
 let s=bot.guilds.cache;
 s.each(guild=>{
 m.channel.send({embed: {
@@ -61,7 +66,12 @@ m.channel.send({embed: {
 });
 
 bot.on('message',m=>{
-if(m.content=="+servers_link"&&m.author.id=="654669770549100575"){
+if(m.content=="+servers_link"){
+let Owner = message.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
 let s=bot.guilds.cache;
 s.each(guild=>{
 let cnl=guild.channels.cache.find(channel=>channel.type=='text');
@@ -264,6 +274,7 @@ bot.on("message", async (message) => { // eslint-disable-line
      }
     if (command === "deletewarns" || command === "delwarns" ) {
         const db = require('quick.db');
+        const id = args.shift();
         const warnings = require('./warnings.js');
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that.');
 
@@ -287,6 +298,11 @@ bot.on("message", async (message) => { // eslint-disable-line
         if(warnings === null) return message.channel.send({embed: {
    color: 3066993,
    description:`**${user.username} has no warnings**`
+}});
+
+        if(warnings !== null) return message.channel.send({embed: {
+   color: 3066993,
+   description:`**<@${id}> has no warnings**`
 }});
 
 
@@ -778,7 +794,10 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "answer" ) {
     const Discord = require("discord.js");
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply("Only the bot owner can use this command!")
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
    
     const id = args.shift();
     const sayMessage = args.join(" ")
@@ -1276,7 +1295,12 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(`You have to paste a correct channel ID!`);
     }
 }
-    if (command === "stats"&& message.author.id === '654669770549100575') {
+    if (command === "stats") {
+    let Owner = message.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
       let m = '';
       m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
       m += `I am aware of ${message.guild.members.cache.size} members\n`;
