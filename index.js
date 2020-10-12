@@ -263,38 +263,27 @@ bot.on("message", async (message) => { // eslint-disable-line
 
      }
     if (command === "deletewarns" || command === "delwarns" ) {
-        const db = require('quick.db');
-        const id = args[0];
+                const db = require('quick.db');
         const warnings = require('./warnings.js');
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that.');
-
         const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
-
         if(!user) return message.channel.send({embed: {
   color: 3066993,
   description:'Please specify a user, via mention or ID'
 }}); 
-
         if(user.bot) return message.channel.send({embed: {
   color: 3066993,
   description:'You can\'t warn bots'
 }});
-
         if(user.id === message.author.id) return message.channel.send({embed: {
    color: 3066993,
    description: 'You can\'t clear your own warnings'
 }});
-
         if(warnings === null) return message.channel.send({embed: {
    color: 3066993,
-   description:`**${user.username} / <@${id}> has no warnings**`
+   description:`**${user.username} has no warnings**`
 }});
-
-       if(warnings !== null) return message.channel.send({embed: {
-   color: 3066993,
-   description:`**<@${id}> has no warnings**`
-}});
-
+  
         db.delete(`warnings_${message.guild.id}_${user.id}`)
         user.send({embed: {
    color: 3066993,
@@ -302,10 +291,9 @@ bot.on("message", async (message) => { // eslint-disable-line
 }});
         message.channel.send({embed: {
    color: 3066993,
-   description: `👍 | Successfully deleted all warnings!`
+   description: `Successfully deleted warnings of ${user.username}`
 }})
     }
-    
     if (command === "warn" ) {
         const Discord = require('discord.js');
         const db = require('quick.db');
@@ -335,11 +323,10 @@ bot.on("message", async (message) => { // eslint-disable-line
    description:`${user} has already reached five warnings`
 }});
         if(warnings === null) {
-            const id = args[0];
             db.set(`warnings_${message.guild.id}_${user.id}`, 1);
             const warnembed = new MessageEmbed()
               .setTitle('Warning')
-              .setDescription(`⚠️ | You were warned in ${message.guild.name}`)
+              .setDescription(`You were warned in ${message.guild.name}`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
@@ -348,7 +335,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
-              .setDescription(`**<@${id}>** has been warned! ⚠️`)
+              .setDescription(`**${user.username}** has been warned!`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
@@ -356,11 +343,13 @@ bot.on("message", async (message) => { // eslint-disable-line
     
             await message.channel.send(helpembed);
         }
+
         if(warnings !== null){
+            const id = args[0];
             db.add(`warnings_${message.guild.id}_${user.id}`, 1)
             const warnembed = new MessageEmbed()
               .setTitle('Warning')
-              .setDescription(`⚠️ | You were warned in ${message.guild.name}`)
+              .setDescription(`You were warned in ${message.guild.name}`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
@@ -369,7 +358,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
-              .setDescription(`${user.username} has been warned! ⚠️`)
+              .setDescription(`<@${id}> has been warned!`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
               .setColor("RANDOM")
@@ -381,12 +370,8 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "warnings" ) { 
         const db = require('quick.db');
         const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.author;
-
-
         let warnings = await db.get(`warnings_${message.guild.id}_${user.id}`);
-
         if(warnings === null) warnings = 0;
-
         message.channel.send({embed: {
    color: 3066993,
    description:`**${user.username}** has *${warnings}* warning(s)`
