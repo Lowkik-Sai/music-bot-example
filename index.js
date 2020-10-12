@@ -264,6 +264,7 @@ bot.on("message", async (message) => { // eslint-disable-line
      }
     if (command === "deletewarns" || command === "delwarns" ) {
         const db = require('quick.db');
+        const id = args[0];
         const warnings = require('./warnings.js');
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that.');
 
@@ -284,22 +285,34 @@ bot.on("message", async (message) => { // eslint-disable-line
    description: 'You can\'t clear your own warnings'
 }});
 
-        if(warnings === null) return message.channel.send({embed: {
+        if(warnings === null) {
+return message.channel.send({embed: {
    color: 3066993,
    description:`**${user.username} has no warnings**`
 }});
+   
+       message.channel.send({embed: {
+   color: 3066993,
+   description: `Successfully deleted all warnings of ${user.username}`
+}})
+}
 
+       if(warnings !== null) {
+return message.channel.send({embed: {
+   color: 3066993,
+   description:`**<@${id}> has no warnings**`
+}});
+      message.channel.send({embed: {
+   color: 3066993,
+   description: `Successfully deleted all warnings of <@${id}>`
+}})
+}
 
         db.delete(`warnings_${message.guild.id}_${user.id}`)
         user.send({embed: {
    color: 3066993,
    description:`Your warnings in ${message.guild.name} are successfully deleted!`
 }});
-
-        message.channel.send({embed: {
-   color: 3066993,
-   description: `Successfully deleted warnings of ${user.username}`
-}})
     }
     if (command === "warn" ) {
         const Discord = require('discord.js');
