@@ -307,7 +307,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that');
 
-        const user = message.users.members.first() || message.guild.members.cache.get(args[0]);
+        const user = message.mentions.users.first() || message.guild.members.cache.get(args[0]);
 
         if(!user) return message.channel.send({embed: {
    color: 3066993,
