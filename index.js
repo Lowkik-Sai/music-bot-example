@@ -131,6 +131,21 @@ bot.on("message", async (message) => { // eslint-disable-line
     const m = await message.channel.send("Ping?");
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms.`);
     }
+    if (command === "support" ) {
+        const Discord = require("discord.js");
+
+module.exports.run = async (bot, message, args) => {
+    let bicon = bot.user.displayAvatarURL;
+    let embed = new Discord.RichEmbed()
+    .setColor("#00ff00")
+    .setThumbnail(bicon)
+    .setTitle("Support Info")
+    .addField("To see the bot commands use", "`+help`")
+    .addField("To report bug use", "`+contact <reason>`")
+    .addField("If you need help with somehign else, Join server and Dm Rock Star", "[Support Sever](https://discord.gg/NqT45sY)")
+
+    message.channel.send(embed)
+}
     if (command === "help" || command === "cmd") {
         const PaginationEmbed = require('discord-paginationembed');
 
@@ -850,6 +865,42 @@ ${eval(command)}
 \`\`\``);
 
   }
+    if (command === "morse" ) {
+       const Discord = require("discord.js");
+    let alpha = " ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split(""),
+				morse = "/,.-,-...,-.-.,-..,.,..-.,--.,....,..,.---,-.-,.-..,--,-.,---,.--.,--.-,.-.,...,-,..-,...-,.--,-..-,-.--,--..,.----,..---,...--,....-,.....,-....,--...,---..,----.,-----".split(","),
+				text = args.join(" ").toUpperCase();
+	               if (!text) return message.channel.send('Place a text or a morse code to be encoded or decoded.') // but you can change the answer :)
+	
+			while (text.includes("Ä") || text.includes("Ö") || text.includes("Ü")) {
+				text = text.replace("Ä","AE").replace("Ö","OE").replace("Ü","UE");
+			}
+			if (text.startsWith(".") || text.startsWith("-")) {
+				text = text.split(" ");
+				let length = text.length;
+				for (i = 0; i < length; i++) {
+					text[i] = alpha[morse.indexOf(text[i])];
+				}
+				text = text.join("");
+			} else {
+				text = text.split("");
+				let length = text.length;
+				for (i = 0; i < length; i++) {
+					text [i] = morse[alpha.indexOf(text[i])];
+				}
+				text = text.join(" ");
+			}
+			return message.channel.send("```"+text+"```");
+
+}
+    if (command === "reverse" ) {
+        if (args.length < 1) {
+        throw 'You must input text to be reversed!';
+    }
+    msg.reply(args.join(' ').split('').reverse().join(''));
+
+
+}
     if (command === "flip" ) {
         const mapping = '¡"#$%⅋,)(*+\'-˙/0ƖᄅƐㄣϛ9ㄥ86:;<=>?@∀qƆpƎℲפHIſʞ˥WNOԀQɹS┴∩ΛMX⅄Z[/]^_`ɐqɔpǝɟƃɥᴉɾʞlɯuodbɹsʇnʌʍxʎz{|}~';
 // Start with the character '!'
@@ -964,6 +1015,21 @@ const OFFSET = '!'.charCodeAt(0);
     message.channel.send(imdbemb)
 
     console.log(movie)
+
+}
+    if (command === "rate" ) {
+       const Discord = require("discord.js")
+
+let ratus = message.mentions.members.first();
+if(!ratus) return message.channel.send("Tag someone to rate them!");
+
+let rates = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+
+let result = Math.floor((Math.random() * rates.length));
+
+if(ratus.user.id === message.author.id) {
+  return message.channel.send(`**${message.author.username}**, I'd give you ${result}/10<:thonk:427846193503272960>`);
+} else return message.channel.send(`I'd give **__${ratus.user.username}__** ${result}/10 <:thonk:427846193503272960>`);
 
 }
     if (command === "kill" ) {
