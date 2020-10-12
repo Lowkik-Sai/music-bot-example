@@ -141,6 +141,7 @@ const embeds = [
     { title: 'Role Commands', description: 'AddRole,RemoveRole' },
     { title: 'Utility', description: 'Hastebin,Report,etc commands are coming asap!' },
     { title: 'Owner', description: 'Answer' },
+    { title: 'Music', description: 'play, search,stop, skip,resume' },
 ]
 
 for (let i = 0; i <= 0; ++i)
@@ -151,12 +152,10 @@ const Embeds = new PaginationEmbed.Embeds()
   .setArray(embeds)
   .setAuthorizedUsers([message.author.id])
   .setChannel(message.channel)
-  .setTitle('Among Us')
-  .setDescription('Commands List')
   .setPageIndicator(true)
   .setFooter('Type +help <commandname>')
   .setURL('https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg')
-  .setColor(0xFF00AE)
+  .setColor("RANDOM")
   .setTimestamp()
   // Sets the client's assets to utilise. Available options:
   //  - message: the client's Message object (edits the message instead of sending new one for this instance)
