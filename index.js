@@ -404,7 +404,7 @@ return message.channel.send({embed: {
     }
     if (command === "warnings" ) { 
         const db = require('quick.db');
-
+        const id = args[0];
         const user = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.author;
 
 
@@ -415,6 +415,13 @@ return message.channel.send({embed: {
         message.channel.send({embed: {
    color: 3066993,
    description:`**${user.username}** has *${warnings}* warning(s)`
+}});
+
+        if(warnings !== null) warnings = 0;
+
+        message.channel.send({embed: {
+   color: 3066993,
+   description:`**<@${id}>** has *${warnings}* warning(s)`
 }});
     }
     if (command === "bal" ) {
