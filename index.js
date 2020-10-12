@@ -50,8 +50,8 @@ cc.send({embed: {
 
 bot.on('message',m=>{
 if(m.content=="+servers_name"){
-let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+let Owner = m.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return m.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -67,8 +67,8 @@ m.channel.send({embed: {
 
 bot.on('message',m=>{
 if(m.content=="+servers_link"){
-let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+let Owner = m.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return m.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
