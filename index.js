@@ -1963,14 +1963,15 @@ const member = message.guild.member(user);
         const Discord = require("discord.js");
 //!tempmute @user 1s/m/h/d
 
-  let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));   
-  if(!tomute) return message.reply("Couldn't find user.");  
-  if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply("Can't mute them!");  
-  let muterole = message.guild.roles.find(muterole => muterole.name === "MuTeD");  
-//start of create role   if(!muterole){
+  let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+  if(!tomute) return message.reply("Couldn't find user.");
+  if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply("Can't mute them!");
+  let muterole = message.guild.roles.find(`name`, "muted");
+  //start of create role
+  if(!muterole){
     try{
       muterole = await message.guild.createRole({
-        name: "MuTeD",
+        name: "muted",
         color: "#000000",
         permissions:[]
       })
@@ -1982,15 +1983,23 @@ const member = message.guild.member(user);
       });
     }catch(e){
       console.log(e.stack);
-    }   }   //end of create role   let mutetime = args[1];   if(!mutetime) return message.reply("You didn't specify a time!");
+    }
+  }
+  //end of create role
+  let mutetime = args[1];
+  if(!mutetime) return message.reply("You didn't specify a time!");
 
-  await(tomute.addRole(muterole.id));  
- message.reply(`<@${tomute.id}> has been muted for ${message(message(mutetime))}`);
+  await(tomute.addRole(muterole.id));
+  message.reply(`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}`);
 
   setTimeout(function(){
     tomute.removeRole(muterole.id);
-    message.channel.send(`<@${tomute.id}> has been unmuted!`);   }, message (mutetime));
-   }
+    message.channel.send(`<@${tomute.id}> has been unmuted!`);
+  }, ms(mutetime));
+
+
+//end of module
+}
     if (command === "unmute" ) {
     if (!message.member.hasPermission("MANAGE_ROLES")) {
       return message.channel.send(
