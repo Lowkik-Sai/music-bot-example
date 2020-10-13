@@ -1966,12 +1966,12 @@ const member = message.guild.member(user);
   let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
   if(!tomute) return message.reply("Couldn't find user.");
   if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply("Can't mute them!");
-  let muterole = message.guild.roles.cache.find(muterole => muterole.name === "muted");  
+  let muterole = message.guild.roles.cache.find(muterole => muterole.name === "MuTeD");  
 //start of create role
   if(!muterole){
     try{
       muterole = await message.guild.roles.create({
-        name: "muted",
+        name: "MuTeD",
         color: "#000000",
         permissions:[]
       })
@@ -2021,7 +2021,7 @@ const member = message.guild.member(user);
       );
     }
     
-    let muterole = message.guild.roles.cache.find(x => x.name === "Muted")
+    let muterole = message.guild.roles.cache.find(x => x.name === "MuTeD")
     
     
  if(user.roles.cache.has(muterole)) {
