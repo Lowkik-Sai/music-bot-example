@@ -1960,12 +1960,12 @@ const member = message.guild.member(user);
     
   }
     if (command === "mute" ) {
-         if (msg.member.hasPermission(8192)) {
-      if (textSplit(msg.content, 2)) {
+         if (message.member.hasPermission(8192)) {
+      if (textSplit(message.content, 2)) {
         let user;
-        if (msg.mentions.users.first()) user = msg.mentions.users.first();
+        if (message.mentions.users.first()) user = message.mentions.users.first();
         if (user) {
-          let time = /(\d+)(s|m|h|d)/.exec(textSplit(msg.content, 2));
+          let time = /(\d+)(s|m|h|d)/.exec(textSplit(message.content, 2));
           if (time) {
             let muteTime;
             switch (time[2]) {
@@ -1984,14 +1984,14 @@ const member = message.guild.member(user);
             }
             mutedUsers[user.id] = (new Date).getTime() + muteTime;
             fs.writeFileSync("mutedUsers.json", JSON.stringify(mutedUsers), "utf8");
-            msg.channel.send(`Muted **${user.tag}** for **${textSplit(msg.content, 2)}**`);
-            user.send(`You've been muted by the staff of **${msg.guild.name}** for **${textSplit(msg.content, 2)}**`).catch(err => {
-              msg.channel.send("Unable to notify user through DMs");
+            message.channel.send(`Muted **${user.tag}** for **${textSplit(message.content, 2)}**`);
+            user.send(`You've been muted by the staff of **${message.guild.name}** for **${textSplit(message.content, 2)}**`).catch(err => {
+              message.channel.send("Unable to notify user through DMs");
             });
-          } else msg.channel.send("One or more arguments are invalid");
-        } else msg.channel.send("One or more arguments are invalid");
-      } else msg.channel.send(`Missing arguments; use \`${config.prefix}help <command>\` for proper usage`);
-    } else msg.channel.send("This command can only be executed by a member with the ​`Manage Messages​` permission");
+          } else message.channel.send("One or more arguments are invalid");
+        } else message.channel.send("One or more arguments are invalid");
+      } else message.channel.send(`Missing arguments; use \`${config.PREFIX}help <command>\` for proper usage`);
+    } else message.channel.send("This command can only be executed by a member with the ​`Manage Messages​` permission");
   }
     if (command === "unmute" ) {
     if (!message.member.hasPermission("MANAGE_ROLES")) {
