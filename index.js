@@ -311,6 +311,35 @@ bot.on("message", async (message) => { // eslint-disable-line
     message.channel.send(matches.map(u => u.tag));
 
      }
+    if (command === "blacklist" ) {
+        const Discord = require("discord.js")
+  
+    if (message.author.id != 654669770549100575) return message.reply("you do not have permission to use this command!")
+    const user = message.mentions.users.first()
+    if (!user) return message.reply("Please mention someone!")
+    
+    let blacklist = await db.fetch(`blacklist_${user.id}`)
+    
+    if (blacklist === "Not") {
+      db.set(`blacklist_${user.id}`, "Blacklisted") 
+      let embed = new Discord.MessageEmbed()
+      .setDescription(`${user} has been blacklisted!`)
+      
+      message.channel.send(embed)
+    } else if (blacklist === "Blacklisted") {
+       db.set(`blacklist_${user.id}`, "Not") 
+      let embed = new Discord.MessageEmbed()
+      .setDescription(`${user} has been unblacklisted!`)
+      
+      message.channel.send(embed)
+    } else {
+       db.set(`blacklist_${user.id}`, "Not") 
+      let embed = new Discord.MessageEmbed()
+      .setDescription(`Set up data for ${user}!`)
+      
+      message.channel.send(embed)
+    }
+  }
     if (command === "deletewarns" || command === "delwarns" ) {
         
         const id = args.shift();
