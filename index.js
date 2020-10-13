@@ -1157,6 +1157,62 @@ message.channel.send("Fetching Informtion for API").then(msg => {
 
 
 }
+    if (command === "addcommand" || command === "addcmd" ) {
+        if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send(":x: You need `MANAGE_MESSAGES` perms to use this command")
+
+    let cmdname = args[0]
+
+    if(!cmdname) return message.channel.send(`:x: You have to give command name, \`addcmd <cmd_name> <cmd_responce>\``)
+
+    let cmdresponce = args.slice(1).join(" ")
+
+    if(!cmdresponce) return message.channel.send(`:x: You have to give command cmd responce, \`addcmd <cmd_name> <cmd_responce>\``)
+
+    let database = db.get(`cmd_${message.guild.id}`)
+
+    if(database && database.find(x => x.name === cmdname.toLowerCase())) return message.channel.send(":x: This command name is already added in guild custom commands.")
+
+    let data = {
+      name: cmdname.toLowerCase(),
+      responce: cmdresponce
+    }
+
+    db.push(`cmd_${message.guild.id}`, data)
+
+    return message.channel.send("Added **" + cmdname.toLowerCase() + "** as a custom command in guild.")
+
+
+  }
+    if (command === "deletecommand" || command === "delcmd" ) {
+        let cmdname = args[0]
+
+    if(!cmdname) return message.channel.send(":x: Gimm me commmand name, `delcmd <cmd_name>`")
+
+    let database = db.get(`cmd_${message.guild.id}`)
+
+    if(database) {
+      let data = database.find(x => x.name === cmdname.toLowerCase())
+
+      if(!data) return message.channel.send(":x: Unable to find this command.")
+
+      let value = database.indexOf(data)
+      delete database[value]
+
+      var filter = database.filter(x => {
+        return x != null && x != ''
+      })
+
+      db.set(`cmd_${message.guild.id}`, filter)
+      return message.channel.send(`Deleted the **${cmdname}** Command!`)
+
+
+    } else {
+      return message.channel.send(":x: Sorry but i am unable to find that command!")
+    
+
+
+  }
+  }
     if (command === "imdb" ) {
         const discord = require("discord.js");
         const imdb = require("imdb-api");
