@@ -1100,43 +1100,34 @@ const OFFSET = '!'.charCodeAt(0);
 
 }
     if (command === "imdb" ) {
-      const Discord = require("discord.js");
-      const chalk = require('chalk');
-      const {Command} = require('sylphy');
-      const imdb = require('imdb-api');
+        const discord = require("discord.js");
+        const imdb = require("imdb-api");
 
-    if (!args.join(" ")) return message.channel.send({embed: {
-   color: 3066993,
-   description:'Oh no, you didn\'t give a movie or serie to search for.'
-}});
-    let movie;
-    try {
-        movie = await imdb.get(args.join(" "), {apiKey: "6fb3a82"});
-    } catch (e) {
-        return console.log(e)
-    }
-
-    let imdbemb = new MessageEmbed()
-    .setColor("#00ff00")
-    .setTitle(movie.title)
-    .setURL(movie.imdburl)
-    .setDescription(movie.plot)
-    .setThumbnail(movie.poster)
-    .addField("Rate", movie.rating, true)
-    .addField("Time", movie.runtime, true)
-    .addField("Awards", movie.awards, true)
-    .addField("Langueages", movie.languages, true)
-    .addField("Genres", movie.genres, true)
-    .addField("PG", movie.rated, true)
-    .addField("Coutry", movie.country, true)
-    .addField("Released", movie.released)
-    .setFooter('All information is provided by IMDB')
     
-    message.channel.send(imdbemb)
-
-    console.log(movie)
-
-}
+    if(!args.length) {
+      return message.channel.send("Please give the name of movie or series")
+    }
+    
+    const imob = new imdb.Client({apiKey: "5e36f0db"}) //You need to paste you imdb api
+    
+    let movie = await imob.get({'name': args.join(" ")})
+    
+    let embed = new discord.MessageEmbed()
+    .setTitle(movie.title)
+    .setColor("#ff2050")
+    .setThumbnail(movie.poster)
+    .setDescription(movie.plot)
+    .setFooter(`Ratings: ${movie.rating}`)
+    .addField("Country", movie.country, true)
+    .addField("Languages", movie.languages, true)
+    .addField("Type", movie.type, true);
+    
+    
+    message.channel.send(embed)
+    
+    
+    
+  }
     if (command === "rate" ) {
        const Discord = require("discord.js")
 
