@@ -1961,11 +1961,11 @@ const member = message.guild.member(user);
   }
     if (command === "mute" ) {
          if (message.member.hasPermission(8192)) {
-      if (textSplit(message.content, 2)) {
+      const mutetime = args[1]
         let user;
         if (message.mentions.users.first()) user = message.mentions.users.first();
         if (user) {
-          let time = /(\d+)(s|m|h|d)/.exec(textSplit(message.content, 2));
+          let time = /(\d+)(s|m|h|d)/.exec(mutetime);
           if (time) {
             let muteTime;
             switch (time[2]) {
