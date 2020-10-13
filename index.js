@@ -1961,32 +1961,13 @@ const member = message.guild.member(user);
   }
     if (command === "mute" ) {
         const Discord = require("discord.js");
+        const ms = require("ms");
 //!tempmute @user 1s/m/h/d
 
   let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
   if(!tomute) return message.reply("Couldn't find user.");
   if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply("Can't mute them!");
-  let muterole = message.guild.roles.cache.find(muterole => muterole.name === "MuTeD");  
-//start of create role
-  if(!muterole){
-    try{
-      muterole = await message.guild.roles.create({
-        name: "MuTeD",
-        color: "#000000",
-        permissions:[]
-      })
-      message.guild.channels.cache.forEach(async (channel, id) => {
-        await channel.overwritePermissions([
-  {
-     id: muterole,
-     deny: ['SEND_MESSAGES', 'ADD_REACTIONS'],
-  },
-]);
-      });
-    }catch(e){
-      console.log(e.stack);
-    }
-  }
+  let muterole = message.guild.roles.cache.find(muterole => muterole.name === "muted");  
   //end of create role
   let mutetime = args[1];
   if(!mutetime) return message.reply("You didn't specify a time!");
