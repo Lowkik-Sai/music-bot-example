@@ -1960,29 +1960,39 @@ const member = message.guild.member(user);
     
   }
     if (command === "mute" ) {
-        const Discord = require("discord.js");
-        const ms = require("ms");
-//!tempmute @user 1s/m/h/d
-
-  let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-  if(!tomute) return message.reply("Couldn't find user.");
-  if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply("Can't mute them!");
-  let muterole = message.guild.roles.cache.find(muterole => muterole.name === "muted");  
-  //end of create role
-  let mutetime = args[1];
-  if(!mutetime) return message.reply("You didn't specify a time!");
-
-  await(tomute.roles.add(muterole.id));
-  message.reply(`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}`);
-
-  setTimeout(function(){
-    tomute.roles.remove(muterole.id);
-    message.channel.send(`<@${tomute.id}> has been unmuted!`);
-  }, ms(mutetime));
-
-
-//end of module
-}
+         if (msg.member.hasPermission(8192)) {
+      if (textSplit(msg.content, 2)) {
+        let user;
+        if (msg.mentions.users.first()) user = msg.mentions.users.first();
+        if (user) {
+          let time = /(\d+)(s|m|h|d)/.exec(textSplit(msg.content, 2));
+          if (time) {
+            let muteTime;
+            switch (time[2]) {
+              case "s":
+                muteTime = time[1] * 1000;
+                break;
+              case "m":
+                muteTime = time[1] * 1000 * 60;
+                break;
+              case "h":
+                muteTime = time[1] * 1000 * 60 * 60;
+                break;
+              case "d":
+                muteTime = time[1] * 1000 * 60 * 60 * 24;
+                break;
+            }
+            mutedUsers[user.id] = (new Date).getTime() + muteTime;
+            fs.writeFileSync("mutedUsers.json", JSON.stringify(mutedUsers), "utf8");
+            msg.channel.send(`Muted **${user.tag}** for **${textSplit(msg.content, 2)}**`);
+            user.send(`You've been muted by the staff of **${msg.guild.name}** for **${textSplit(msg.content, 2)}**`).catch(err => {
+              msg.channel.send("Unable to notify user through DMs");
+            });
+          } else msg.channel.send("One or more arguments are invalid");
+        } else msg.channel.send("One or more arguments are invalid");
+      } else msg.channel.send(`Missing arguments; use \`${config.prefix}help <command>\` for proper usage`);
+    } else msg.channel.send("This command can only be executed by a member with the ​`Manage Messages​` permission");
+  }
     if (command === "unmute" ) {
     if (!message.member.hasPermission("MANAGE_ROLES")) {
       return message.channel.send(
