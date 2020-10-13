@@ -1100,7 +1100,6 @@ const OFFSET = '!'.charCodeAt(0);
 
 }
     if (command === "level" || command === "lvl" ) {
-        const db = require('quick.db')
         const discord = require('discord.js')
         const { getInfo } = require("./xp.js")
         const user = message.mentions.users.first() || message.author;
