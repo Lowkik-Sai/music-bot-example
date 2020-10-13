@@ -1960,38 +1960,37 @@ const member = message.guild.member(user);
     
   }
     if (command === "mute" ) {
-         if (message.member.hasPermission(8192)) {
-      const mutetime = args[1]
-        let user;
-        if (message.mentions.users.first()) user = message.mentions.users.first();
-        if (user) {
-          let time = /(\d+)(s|m|h|d)/.exec(mutetime);
-          if (time) {
-            let muteTime;
-            switch (time[2]) {
-              case "s":
-                muteTime = time[1] * 1000;
-                break;
-              case "m":
-                muteTime = time[1] * 1000 * 60;
-                break;
-              case "h":
-                muteTime = time[1] * 1000 * 60 * 60;
-                break;
-              case "d":
-                muteTime = time[1] * 1000 * 60 * 60 * 24;
-                break;
-            }
-            mutedUsers[user.id] = (new Date).getTime() + muteTime;
-            fs.writeFileSync("mutedUsers.json", JSON.stringify(mutedUsers), "utf8");
-            message.channel.send(`Muted **${user.tag}** for **${textSplit(message.content, 2)}**`);
-            user.send(`You've been muted by the staff of **${message.guild.name}** for **${textSplit(message.content, 2)}**`).catch(err => {
-              message.channel.send("Unable to notify user through DMs");
-            });
-          } else message.channel.send("One or more arguments are invalid");
-        } else message.channel.send("One or more arguments are invalid");
-      } else message.channel.send(`Missing arguments; use \`${config.PREFIX}help <command>\` for proper usage`);
-    } else message.channel.send("This command can only be executed by a member with the ​`Manage Messages​` permission");
+      const person = message.guild.member(
+        message.mentions.users.first() && message.guild.members.cache.get(args[0])
+      );
+      if (!person) return message.reply("Couldn't find that member!");
+      if (person.hasPermission('MANAGE_MESSAGES'))
+        return message.reply("You don't have permissions to mute members!");
+
+      const muterole = message.guild.roles.fetch(
+        (role) => role.name === 'Muted'
+      );
+
+      if (!muterole) {
+        muterole = message.guild.roles.create(
+          (name = 'Muted'),
+          (color = 0x000000),
+          Permissions('VIEW_CHANNEL')
+        );
+        message.channel.updateOverwrite(muterole, { SEND_MESSAGES: false });
+      }
+
+      const time = args[1];
+
+      if (!time)
+        return message.reply('How many time do you want him to be quiet?');
+
+      person.roles.add(muterole);
+      message.channel.send(`@${person.id} has been muted for ${ms(ms(time))}`);
+
+      setTimeout(function () {
+        person.roles.remove(muterole);
+      }, ms(time));
   }
     if (command === "unmute" ) {
     if (!message.member.hasPermission("MANAGE_ROLES")) {
