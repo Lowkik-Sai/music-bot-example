@@ -322,19 +322,19 @@ bot.on("message", async (message) => { // eslint-disable-line
     
     if (blacklist === "Not") {
       db.set(`blacklist_${user.id}`, "Blacklisted") 
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
       .setDescription(`${user} has been blacklisted!`)
       
       message.channel.send(embed)
     } else if (blacklist === "Blacklisted") {
        db.set(`blacklist_${user.id}`, "Not") 
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
       .setDescription(`${user} has been unblacklisted!`)
       
       message.channel.send(embed)
     } else {
        db.set(`blacklist_${user.id}`, "Not") 
-      let embed = new Discord.MessageEmbed()
+      let embed = new MessageEmbed()
       .setDescription(`Set up data for ${user}!`)
       
       message.channel.send(embed)
@@ -604,7 +604,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "store" ) {
        const Discord = require('discord.js');
 
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
         .setTitle('Store')
         .setDescription(`Car - 500 coins \n Watch - 250 coins`)
         .setTimestamp();
@@ -618,7 +618,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         let items = await db.fetch(message.author.id);
         if(items === null) items = "Nothing"
 
-        const Embed = new Discord.MessageEmbed()
+        const Embed = new MessageEmbed()
         .addField('Inventory', items)
 
         message.channel.send(Embed);
@@ -742,7 +742,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             return message.channel.send('Please provide a **valid** question')
         }
 
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
         .setColor(0x808080)
         .setTitle('Calculator')
         .addField('Question', `\`\`\`css\n${args.join(' ')}\`\`\``)
@@ -900,6 +900,37 @@ bot.on("message", async (message) => { // eslint-disable-line
     message.channel.send(args.map(randomizeCase).join(':clap:'));
 
     }
+    if (command === "suggest" ) {
+       if(!args.length) {
+      return message.channel.send("Please Give the Suggestion")
+    }
+    
+    let channel = message.guild.channels.cache.find((x) => (x.name === "suggestion" || x.name === "suggestions"))
+    
+    
+    if(!channel) {
+      return message.channel.send("there is no channel with name - suggestions")
+    }
+                                                    
+    
+    let embed = new MessageEmbed()
+    .setAuthor("SUGGESTION: " + message.author.tag, message.author.avatarURL())
+    .setThumbnail(message.author.avatarURL())
+    .setColor("#ff2050")
+    .setDescription(args.join(" "))
+    .setTimestamp()
+    
+    
+    channel.send(embed).then(m => {
+      m.react("✅")
+      m.react("❌")
+    })
+    
+
+    
+    message.channel.send("Sended Your Suggestion to " + channel)
+    
+  }
     if (command === "contact" ) {
         const Discord = require("discord.js");
 
