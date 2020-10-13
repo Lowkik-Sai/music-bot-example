@@ -1976,10 +1976,12 @@ const member = message.guild.member(user);
         permissions:[]
       })
       message.guild.channels.cache.forEach(async (channel, id) => {
-        await channel.overwritePermissions(muterole, {
-          SEND_MESSAGES: false,
-          ADD_REACTIONS: false
-        });
+        await channel.overwritePermissions([
+  {
+     id: muterole,
+     deny: ['SEND_MESSAGES', 'ADD_REACTIONS'],
+  },
+]);
       });
     }catch(e){
       console.log(e.stack);
