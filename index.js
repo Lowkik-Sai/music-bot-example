@@ -1842,6 +1842,18 @@ const member = message.guild.member(user);
     message.channel.send(serverembed);    
 
 }
+    if (command === "snipe" ) {
+       const msg = client.snipes.get(message.channel.id)
+    if(!msg) return message.channel.send("There are no deleted messages in this channel!")
+    const embed = new MessageEmbed()
+    .setAuthor(msg.author)
+    .setDescription(msg.content)
+    if(msg.image)embed.setImage(msg.image)
+    
+    message.channel.send(embed)
+   
+    
+  }
     if (command === "mute" ) {
     if (!message.member.hasPermission("MANAGE_ROLES")) {
       return message.channel.send(
