@@ -1966,8 +1966,8 @@ const member = message.guild.member(user);
   let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
   if(!tomute) return message.reply("Couldn't find user.");
   if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply("Can't mute them!");
-  let muterole = message.guild.roles.find(`name`, "muted");
-  //start of create role
+  let muterole = message.guild.roles.find(muterole => muterole.name === "muted");  
+//start of create role
   if(!muterole){
     try{
       muterole = await message.guild.createRole({
@@ -1989,13 +1989,13 @@ const member = message.guild.member(user);
   let mutetime = args[1];
   if(!mutetime) return message.reply("You didn't specify a time!");
 
-  await(tomute.addRole(muterole.id));
-  message.reply(`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}`);
+  await(tomute.roles.add(muterole.id));
+  message.reply(`<@${tomute.id}> has been muted for ${message(message(mutetime))}`);
 
   setTimeout(function(){
-    tomute.removeRole(muterole.id);
+    tomute.roles.remove(muterole.id);
     message.channel.send(`<@${tomute.id}> has been unmuted!`);
-  }, ms(mutetime));
+  }, message (mutetime));
 
 
 //end of module
