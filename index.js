@@ -1961,7 +1961,7 @@ const member = message.guild.member(user);
   }
     if (command === "mute" ) {
       const person = message.guild.member(
-        message.mentions.users.first() && message.guild.members.cache.get(args[0])
+        message.mentions.users.first() && message.guild.members.cache.get(args[1])
       );
       if (!person) return message.reply("Couldn't find that member!");
       if (person.hasPermission('MANAGE_MESSAGES'))
@@ -1980,7 +1980,7 @@ const member = message.guild.member(user);
         message.channel.updateOverwrite(muterole, { SEND_MESSAGES: false });
       }
 
-      const time = args[1];
+      const time = args[2];
 
       if (!time)
         return message.reply('How many time do you want him to be quiet?');
