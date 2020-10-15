@@ -625,7 +625,7 @@ if (author !== null && timeout - (Date.now() - author) > 0) {
     message.channel.send(timeEmbed)
   } else {
 
-let moneyEmbed = new Discord.RichEmbed()
+let moneyEmbed = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Cross:618736602901905418> You need atleast 200 coins in your wallet to rob someone`);
 
@@ -633,7 +633,7 @@ if (author2 < 200) {
     return message.channel.send(moneyEmbed)
 
 }
-let moneyEmbed2 = new Discord.RichEmbed()
+let moneyEmbed2 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Cross:618736602901905418> ${user.user.username} does not have anything you can rob`);
 if (targetuser < 0) {
@@ -646,7 +646,7 @@ let vip = await db.fetch(`bronze_${user.id}`)
 if(vip === true) random = Math.floor(Math.random() * 200) + 1;
 if (vip === null) random = Math.floor(Math.random() * 100) + 1;
 
-let embed = new Discord.RichEmbed()
+let embed = new MessageEmbed()
 .setDescription(`<:Check:618736570337591296> You robbed ${user} and got away with ${random} coins`)
 .setColor("#FFFFFF")
 message.channel.send(embed)
@@ -671,15 +671,15 @@ let moneydb = await db.fetch(`money_${message.guild.id}_${user.id}`)
 
 let random = Math.floor(Math.random() * 37);
 
-let moneyhelp = new Discord.RichEmbed()
+let moneyhelp = new MessageEmbed()
 .setColor("#FFFFFF")
 .setDescription(`<:Cross:618736602901905418> Specify an amount to gamble | m!roulette <color> <amount>`);
 
-let moneymore = new Discord.RichEmbed()
+let moneymore = new MessageEmbed()
 .setColor("#FFFFFF")
 .setDescription(`<:Cross:618736602901905418> You are betting more than you have`);
 
-let colorbad = new Discord.RichEmbed()
+let colorbad = new MessageEmbed()
 .setColor("#FFFFFF")
 .setDescription(`<:Cross:618736602901905418> Specify a color | Red [1.5x] Black [2x] Green [15x]`);
 
@@ -699,7 +699,7 @@ let colorbad = new Discord.RichEmbed()
     if (random == 0 && colour == 2) { // Green
         money *= 15
         db.add(`money_${message.guild.id}_${user.id}`, money)
-        let moneyEmbed1 = new Discord.RichEmbed()
+        let moneyEmbed1 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Green:618767721361833995> You won ${money} coins\n\nMultiplier: 15x`);
         message.channel.send(moneyEmbed1)
@@ -707,20 +707,20 @@ let colorbad = new Discord.RichEmbed()
     } else if (isOdd(random) && colour == 1) { // Red
         money = parseInt(money * 1.5)
         db.add(`money_${message.guild.id}_${user.id}`, money)
-        let moneyEmbed2 = new Discord.RichEmbed()
+        let moneyEmbed2 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Red:618767705444450342> You won ${money} coins\n\nMultiplier: 1.5x`);
         message.channel.send(moneyEmbed2)
     } else if (!isOdd(random) && colour == 0) { // Black
         money = parseInt(money * 2)
         db.add(`money_${message.guild.id}_${user.id}`, money)
-        let moneyEmbed3 = new Discord.RichEmbed()
+        let moneyEmbed3 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Black:618767682996666408> You won ${money} coins\n\nMultiplier: 2x`);
         message.channel.send(moneyEmbed3)
     } else { // Wrong
         db.subtract(`money_${message.guild.id}_${user.id}`, money)
-        let moneyEmbed4 = new Discord.RichEmbed()
+        let moneyEmbed4 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Cross:618736602901905418> You lost ${money} coins\n\nMultiplier: 0x`);
         message.channel.send(moneyEmbed4)
@@ -730,7 +730,7 @@ let colorbad = new Discord.RichEmbed()
 let user = message.author;
 
     if(args[0] == 'nikes') {
-        let Embed2 = new Discord.RichEmbed()
+        let Embed2 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Cross:618736602901905418> You don't have Nikes to sell`);
 
@@ -741,14 +741,14 @@ let user = message.author;
         db.fetch(`nikes_${message.guild.id}_${user.id}`)
         db.subtract(`nikes_${message.guild.id}_${user.id}`, 1)
 
-        let Embed3 = new Discord.RichEmbed()
+        let Embed3 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Check:618736570337591296> Sold Fresh Nikes For 600 Coins`);
 
         db.add(`money_${message.guild.id}_${user.id}`, 600)
         message.channel.send(Embed3)
     } else if(args[0] == 'car') {
-        let Embed2 = new Discord.RichEmbed()
+        let Embed2 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Cross:618736602901905418> You don't have a Car to sell`);
 
@@ -759,14 +759,14 @@ let user = message.author;
         db.fetch(`car_${message.guild.id}_${user.id}`)
         db.subtract(`car_${message.guild.id}_${user.id}`, 1)
 
-        let Embed3 = new Discord.RichEmbed()
+        let Embed3 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Check:618736570337591296> Sold a Car For 800 Coins`);
 
         db.add(`money_${message.guild.id}_${user.id}`, 800)
         message.channel.send(Embed3)
     } else if(args[0] == 'mansion') {
-        let Embed2 = new Discord.RichEmbed()
+        let Embed2 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Cross:618736602901905418> You don't have a Mansion to sell`);
 
@@ -777,7 +777,7 @@ let user = message.author;
         db.fetch(`house_${message.guild.id}_${user.id}`)
         db.subtract(`house_${message.guild.id}_${user.id}`, 1)
 
-        let Embed3 = new Discord.RichEmbed()
+        let Embed3 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Check:618736570337591296> Sold a Mansion For 1200 Coins`);
 
@@ -795,11 +795,11 @@ const slotItems = ["<:Grape:618765748940177421>", "<:Watermelon:6187659043180380
     let money = parseInt(args[0]);
     let win = false;
 
-    let moneymore = new Discord.RichEmbed()
+    let moneymore = new MessageEmbed()
     .setColor("#FFFFFF")
     .setDescription(`<:Cross:618736602901905418> You are betting more than you have`);
 
-    let moneyhelp = new Discord.RichEmbed()
+    let moneyhelp = new MessageEmbed()
     .setColor("#FFFFFF")
     .setDescription(`<:Cross:618736602901905418> Specify an amount`);
 
@@ -817,13 +817,13 @@ const slotItems = ["<:Grape:618765748940177421>", "<:Watermelon:6187659043180380
         win = true;
     }
     if (win) {
-        let slotsEmbed1 = new Discord.RichEmbed()
+        let slotsEmbed1 = new MessageEmbed()
             .setDescription(`${slotItems[number[0]]} | ${slotItems[number[1]]} | ${slotItems[number[2]]}\n\nYou won ${money} coins`)
             .setColor("#FFFFFF")
         message.channel.send(slotsEmbed1)
         db.add(`money_${message.guild.id}_${user.id}`, money)
     } else {
-        let slotsEmbed = new Discord.RichEmbed()
+        let slotsEmbed = new MessageEmbed()
             .setDescription(`${slotItems[number[0]]} | ${slotItems[number[1]]} | ${slotItems[number[2]]}\n\nYou lost ${money} coins`)
             .setColor("#FFFFFF")
         message.channel.send(slotsEmbed)
@@ -843,12 +843,12 @@ const ms = require("parse-ms");
   if (weekly !== null && timeout - (Date.now() - weekly) > 0) {
     let time = ms(timeout - (Date.now() - weekly));
   
-    let timeEmbed = new Discord.RichEmbed()
+    let timeEmbed = new MessageEmbed()
     .setColor("#FFFFFF")
     .setDescription(`<:Cross:618736602901905418> You have already collected your weekly reward\n\nCollect it again in ${time.days}d ${time.hours}h ${time.minutes}m ${time.seconds}s `);
     message.channel.send(timeEmbed)
   } else {
-    let moneyEmbed = new Discord.RichEmbed()
+    let moneyEmbed = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Check:618736570337591296> You've collected your weekly reward of ${amount} coins`);
   message.channel.send(moneyEmbed)
@@ -864,28 +864,28 @@ const ms = require("parse-ms");
 
   let member = db.fetch(`money_${message.guild.id}_${message.author.id}`)
 
-  let embed1 = new Discord.RichEmbed()
+  let embed1 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Cross:618736602901905418> Mention someone to pay`);
 
   if (!user) {
       return message.channel.send(embed1)
   }
-  let embed2 = new Discord.RichEmbed()
+  let embed2 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Cross:618736602901905418> Specify an amount to pay`);
   
   if (!args[1]) {
       return message.channel.send(embed2)
   }
-  let embed3 = new Discord.RichEmbed()
+  let embed3 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Cross:618736602901905418> You can't pay someone negative money`);
 
   if (message.content.includes('-')) { 
       return message.channel.send(embed3)
   }
-  let embed4 = new Discord.RichEmbed()
+  let embed4 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Cross:618736602901905418> You don't have that much money`);
 
@@ -893,7 +893,7 @@ const ms = require("parse-ms");
       return message.channel.send(embed4)
   }
 
-  let embed5 = new Discord.RichEmbed()
+  let embed5 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Check:618736570337591296> You have payed ${user.user.username} ${args[1]} coins`);
 
@@ -913,7 +913,7 @@ const ms = require("parse-ms");
     let money = await db.fetch(`money_${message.guild.id}_${user.id}`)
     let bank = await db.fetch(`bank_${message.guild.id}_${user.id}`)
 
-    let embedbank = new Discord.RichEmbed()
+    let embedbank = new MessageEmbed()
     .setColor('#FFFFFF')
     .setDescription("<:Cross:618736602901905418> You don't have any money to deposit")
 
@@ -921,14 +921,14 @@ const ms = require("parse-ms");
 
     db.add(`bank_${message.guild.id}_${user.id}`, money)
     db.subtract(`money_${message.guild.id}_${user.id}`, money)
-    let embed5 = new Discord.RichEmbed()
+    let embed5 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Check:618736570337591296> You have deposited all your coins into your bank`);
   message.channel.send(embed5)
   
   } else {
   
-  let embed2 = new Discord.RichEmbed()
+  let embed2 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Cross:618736602901905418> Specify an amount to deposit`);
   
@@ -936,14 +936,14 @@ const ms = require("parse-ms");
       return message.channel.send(embed2)
       .catch(err => console.log(err))
   }
-  let embed3 = new Discord.RichEmbed()
+  let embed3 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Cross:618736602901905418> You can't deposit negative money`);
 
   if (message.content.includes('-')) { 
       return message.channel.send(embed3)
   }
-  let embed4 = new Discord.RichEmbed()
+  let embed4 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Cross:618736602901905418> You don't have that much money`);
 
@@ -951,7 +951,7 @@ const ms = require("parse-ms");
       return message.channel.send(embed4)
   }
 
-  let embed5 = new Discord.RichEmbed()
+  let embed5 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Check:618736570337591296> You have deposited ${args[0]} coins into your bank`);
 
@@ -1005,7 +1005,7 @@ const ms = require("parse-ms");
     if (author !== null && timeout - (Date.now() - author) > 0) {
         let time = ms(timeout - (Date.now() - author));
     
-        let timeEmbed = new Discord.RichEmbed()
+        let timeEmbed = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Cross:618736602901905418> You have already worked recently\n\nTry again in ${time.minutes}m ${time.seconds}s `);
         message.channel.send(timeEmbed)
@@ -1015,7 +1015,7 @@ const ms = require("parse-ms");
 
         let result = Math.floor((Math.random() * replies.length));
         let amount = Math.floor(Math.random() * 80) + 1;
-        let embed1 = new Discord.RichEmbed()
+        let embed1 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Check:618736570337591296> You worked as a ${replies[result]} and earned ${amount} coins`);
         message.channel.send(embed1)
@@ -1035,7 +1035,7 @@ let user = message.author;
 
     let author = db.fetch(`money_${message.guild.id}_${user.id}`)
 
-    let Embed = new Discord.RichEmbed()
+    let Embed = new MessageEmbed()
     .setColor("#FFFFFF")
     .setDescription(`<:Cross:618736602901905418> You need 2000 coins to purchase Bronze VIP`);
 
@@ -1045,14 +1045,14 @@ let user = message.author;
         db.fetch(`bronze_${message.guild.id}_${user.id}`);
         db.set(`bronze_${message.guild.id}_${user.id}`, true)
 
-        let Embed2 = new Discord.RichEmbed()
+        let Embed2 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Check:618736570337591296> Purchased Bronze VIP For 3500 Coins`);
 
         db.subtract(`money_${message.guild.id}_${user.id}`, 3500)
         message.channel.send(Embed2)
     } else if(args[0] == 'nikes') {
-        let Embed2 = new Discord.RichEmbed()
+        let Embed2 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Cross:618736602901905418> You need 600 coins to purchase some Nikes`);
 
@@ -1061,14 +1061,14 @@ let user = message.author;
         db.fetch(`nikes_${message.guild.id}_${user.id}`)
         db.add(`nikes_${message.guild.id}_${user.id}`, 1)
 
-        let Embed3 = new Discord.RichEmbed()
+        let Embed3 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Check:618736570337591296> Purchased Fresh Nikes For 600 Coins`);
 
         db.subtract(`money_${message.guild.id}_${user.id}`, 600)
         message.channel.send(Embed3)
     } else if(args[0] == 'car') {
-        let Embed2 = new Discord.RichEmbed()
+        let Embed2 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Cross:618736602901905418> You need 800 coins to purchase a new car`);
 
@@ -1077,14 +1077,14 @@ let user = message.author;
         db.fetch(`car_${message.guild.id}_${user.id}`)
         db.add(`car_${message.guild.id}_${user.id}`, 1)
 
-        let Embed3 = new Discord.RichEmbed()
+        let Embed3 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Check:618736570337591296> Purchased a New Car For 800 Coins`);
 
         db.subtract(`money_${message.guild.id}_${user.id}`, 800)
         message.channel.send(Embed3)
     } else if(args[0] == 'mansion') {
-        let Embed2 = new Discord.RichEmbed()
+        let Embed2 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Cross:618736602901905418> You need 1200 coins to purchase a Mansion`);
 
@@ -1093,14 +1093,14 @@ let user = message.author;
         db.fetch(`house_${message.guild.id}_${user.id}`)
         db.add(`house_${message.guild.id}_${user.id}`, 1)
 
-        let Embed3 = new Discord.RichEmbed()
+        let Embed3 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription(`<:Check:618736570337591296> Purchased a Mansion For 1200 Coins`);
 
         db.subtract(`money_${message.guild.id}_${user.id}`, 1200)
         message.channel.send(Embed3)
     } else {
-        let embed3 = new Discord.RichEmbed()
+        let embed3 = new MessageEmbed()
         .setColor("#FFFFFF")
         .setDescription('<:Cross:618736602901905418> Enter an item to buy')
         message.channel.send(embed3)
@@ -1110,7 +1110,7 @@ let user = message.author;
     if (command === "store" ) {
        
 
-       let embed = new Discord.RichEmbed()
+       let embed = new MessageEmbed()
     .setDescription("**VIP Ranks**\n\nBronze: 3500 Coins [m!buy bronze]\n\n**Lifestyle Items**\n\nFresh Nikes: 600 [m!buy nikes]\nCar: 800 [m!buy car]\nMansion: 1200 [m!buy mansion]")
     .setColor("#FFFFFF")
     message.channel.send(embed)
@@ -1119,22 +1119,22 @@ let user = message.author;
     if (command === "storeinfo" ) {
 if (args[0] == 'bronze') {
     
-      let embed = new Discord.RichEmbed()
+      let embed = new MessageEmbed()
       .setDescription("**Bronze Rank**\n\nBenefits: Chance to get more coins from robbing someone")
       .setColor("#FFFFFF")
       message.channel.send(embed)
     } else if(args[0] == 'nikes') {
-      let embed = new Discord.RichEmbed()
+      let embed = new MessageEmbed()
       .setDescription("**Fresh Nikes**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
       .setColor("#FFFFFF")
       message.channel.send(embed)
     } else if(args[0] == 'car') {
-      let embed = new Discord.RichEmbed()
+      let embed = new MessageEmbed()
       .setDescription("**Car**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
       .setColor("#FFFFFF")
       message.channel.send(embed)
   } else if(args[0] == 'mansion') {
-    let embed = new Discord.RichEmbed()
+    let embed = new MessageEmbed()
     .setDescription("**Mansion**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
     .setColor("#FFFFFF")
     message.channel.send(embed)
@@ -1155,28 +1155,28 @@ const ms = require("parse-ms");
     
     db.subtract(`bank_${message.guild.id}_${user.id}`, money)
     db.add(`money_${message.guild.id}_${user.id}`, money)
-    let embed5 = new Discord.RichEmbed()
+    let embed5 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Check:618736570337591296> You have withdrawn all your coins from your bank`);
   message.channel.send(embed5)
   
   } else {
 
-  let embed2 = new Discord.RichEmbed()
+  let embed2 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Cross:618736602901905418> Specify an amount to withdraw`);
   
   if (!args[0]) {
       return message.channel.send(embed2)
   }
-  let embed3 = new Discord.RichEmbed()
+  let embed3 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Cross:618736602901905418> You can't withdraw negative money`);
 
   if (message.content.includes('-')) { 
       return message.channel.send(embed3)
   }
-  let embed4 = new Discord.RichEmbed()
+  let embed4 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Cross:618736602901905418> You don't have that much money in the bank`);
 
@@ -1184,7 +1184,7 @@ const ms = require("parse-ms");
       return message.channel.send(embed4)
   }
 
-  let embed5 = new Discord.RichEmbed()
+  let embed5 = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Check:618736570337591296> You have withdrawn ${args[0]} coins from your bank`);
 
