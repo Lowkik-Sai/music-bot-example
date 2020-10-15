@@ -2582,7 +2582,7 @@ const member = message.guild.member(user);
 
 }
     if (command === "snipe" ) {
-       const msg = client.snipes.get(message.channel.id)
+       const msg = bot.snipes.get(message.channel.id)
     if(!msg) return message.channel.send("There are no deleted messages in this channel!")
     const embed = new MessageEmbed()
     .setAuthor(msg.author)
