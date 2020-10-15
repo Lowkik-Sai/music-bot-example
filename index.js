@@ -2582,16 +2582,18 @@ const member = message.guild.member(user);
 
 }
     if (command === "snipe" ) {
-       const message = bot.snipes.cache.get(message.channel.id)
-    if(!message) return message.channel.send("There are no deleted messages in this channel!")
-    const embed = new MessageEmbed()
-    .setAuthor(message.author)
-    .setDescription(message.content)
-    if(msg.image)embed.setImage(message.image)
-    
-    message.channel.send(embed)
-   
-    
+    const snipes = bot.snipes.get(message.channel.id) || [];
+    const msg = snipes[args[0] - 1 || 0];
+    if (!msg) return message.channel.send(`That is not a valid snipe...`);
+    const Embed = new MessageEmbed()
+      .setAuthor(
+        msg.author.tag,
+        msg.author.displayAvatarURL({ dynamic: true, size: 256 })
+      )
+      .setDescription(msg.content)
+      .setFooter(`Date: ${msg.date} | ${args[0] || 1}/${snipes.length}`);
+    if (msg.attachment) Embed.setImage(msg.attachment);
+    message.channel.send(Embed);
   }
     if (command === "mute" ) {
       let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
