@@ -3,6 +3,7 @@ const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
 const db = require("quick.db");
 const ms = require("ms");
+const Discord = require("discord.js");
 require("dotenv").config();
 require("./server.js");
 
@@ -137,7 +138,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if (command === "meme" ) {
         const randomPuppy = require('random-puppy');
-        const Discord = require('discord.js');
+        
 
         const subReddits = ["dankmemes", "meme", "memes"]
         const random = subReddits[Math.floor(Math.random() * subReddits.length)]
@@ -159,7 +160,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms.`);
     }
     if (command === "support" ) {
-        const Discord = require("discord.js");
+        
 
     let bicon = bot.user.displayAvatarURL;
     let embed = new MessageEmbed()
@@ -312,7 +313,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
      }
     if (command === "blacklist" ) {
-        const Discord = require("discord.js")
+        
   
     if (message.author.id != 654669770549100575) return message.reply("you do not have permission to use this command!")
     const user = message.mentions.users.first()
@@ -386,7 +387,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 }})
     }
     if (command === "warn" ) {
-        const Discord = require('discord.js');
+        
         
 
         if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send('You can\'t use that');
@@ -500,7 +501,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   let bank = await db.fetch(`bank_${message.guild.id}_${user.id}`)
   if (bank === null) bank = 0;
 
-  let moneyEmbed = new Discord.RichEmbed()
+  let moneyEmbed = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`**${user}'s Balance**\n\nPocket: ${bal}\nBank: ${bank}`);
   message.channel.send(moneyEmbed)
@@ -533,12 +534,12 @@ const ms = require("parse-ms");
   if (beg !== null && timeout - (Date.now() - beg) > 0) {
     let time = ms(timeout - (Date.now() - beg));
   
-    let timeEmbed = new Discord.RichEmbed()
+    let timeEmbed = new MessageEmbed()
     .setColor("#FFFFFF")
     .setDescription(`<:Cross:618736602901905418> You've already begged recently\n\nBeg again in ${time.minutes}m ${time.seconds}s `);
     message.channel.send(timeEmbed)
   } else {
-    let moneyEmbed = new Discord.RichEmbed()
+    let moneyEmbed = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Check:618736570337591296> You've begged and received ${amount} coins`);
   message.channel.send(moneyEmbed)
@@ -563,12 +564,12 @@ const ms = require("parse-ms");
   if (daily !== null && timeout - (Date.now() - daily) > 0) {
     let time = ms(timeout - (Date.now() - daily));
   
-    let timeEmbed = new Discord.RichEmbed()
+    let timeEmbed = new MessageEmbed()
     .setColor("#FFFFFF")
     .setDescription(`<:Cross:618736602901905418> You've already collected your daily reward\n\nCollect it again in ${time.hours}h ${time.minutes}m ${time.seconds}s `);
     message.channel.send(timeEmbed)
   } else {
-    let moneyEmbed = new Discord.RichEmbed()
+    let moneyEmbed = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`<:Check:618736570337591296> You've collected your daily reward of ${amount} coins`);
   message.channel.send(moneyEmbed)
@@ -600,7 +601,7 @@ let user = message.mentions.members.first() || message.author;
   let newhouse = await db.fetch(`house_${message.guild.id}_${user.id}`)
   if(newhouse === null) newhouse = '0'
 
-  let moneyEmbed = new Discord.RichEmbed()
+  let moneyEmbed = new MessageEmbed()
   .setColor("#FFFFFF")
   .setDescription(`**${user}'s Profile**\n\nPocket: ${money}\nBank: ${bank}\nVIP Rank: ${vip}\n\n**Inventory**\n\nNikes: ${shoes}\nCars: ${newcar}\nMansions: ${newhouse}`);
   message.channel.send(moneyEmbed)
@@ -618,7 +619,7 @@ let timeout = 600000;
 if (author !== null && timeout - (Date.now() - author) > 0) {
     let time = ms(timeout - (Date.now() - author));
 
-    let timeEmbed = new Discord.RichEmbed()
+    let timeEmbed = new MessageEmbed()
     .setColor("#FFFFFF")
     .setDescription(`<:Cross:618736602901905418> You have already robbed someone\n\nTry again in ${time.minutes}m ${time.seconds}s `);
     message.channel.send(timeEmbed)
@@ -787,7 +788,7 @@ let user = message.author;
 }
     if (command === "slots" ) {
 const slotItems = ["<:Grape:618765748940177421>", "<:Watermelon:618765904318038027>", "<:Orange:618765805596835880>", "<:Apple:618765871862513695>", "<:7_:618765717499805706>", "<:Strawberry:618765828929617930>", "<:Cherry:618765778094784513>"];
-const Discord = require('discord.js');
+
 
     let user = message.author;
     let moneydb = await db.fetch(`money_${message.guild.id}_${user.id}`)
@@ -993,7 +994,7 @@ const ms = require("parse-ms");
 }
     if (command === "work" ) {
        
-       const Discord = require('discord.js')
+       
        const ms = require("parse-ms");
 
     let user = message.author;
@@ -1107,7 +1108,7 @@ let user = message.author;
 
 }
     if (command === "store" ) {
-        const Discord = require('discord.js')
+       
 
        let embed = new Discord.RichEmbed()
     .setDescription("**VIP Ranks**\n\nBronze: 3500 Coins [m!buy bronze]\n\n**Lifestyle Items**\n\nFresh Nikes: 600 [m!buy nikes]\nCar: 800 [m!buy car]\nMansion: 1200 [m!buy mansion]")
@@ -1141,7 +1142,7 @@ if (args[0] == 'bronze') {
 
   }
     if (command === "withdraw" ) {
-const Discord = require("discord.js");
+
 const ms = require("parse-ms");
 
   let user = message.author;
@@ -1195,7 +1196,7 @@ const ms = require("parse-ms");
 
     if (command === "inventory" ) {
         
-        const Discord = require('discord.js');
+       
 
         let items = await db.fetch(message.author.id);
         if(items === null) items = "Nothing"
@@ -1283,7 +1284,7 @@ const embed = new MessageEmbed()
 }
     if (command === "color" ) {
         const canva = require('canvacord');
-        const Discord = require('discord.js')
+        
 
        let colorOfChoice = args.join(" ");
 
@@ -1300,7 +1301,7 @@ const embed = new MessageEmbed()
     }
     if (command === "changemymind" || command === "cmm" ) {
         const canva = require('canvacord');
-        const Discord = require('discord.js');
+        
         const { changemymind } = require('canvacord');
 
         let text = args.join(" ");
@@ -1360,7 +1361,7 @@ const embed = new MessageEmbed()
     if (command === "calculate" ) {
         const math = require('mathjs');
 
-        const Discord = require('discord.js');
+    
 
         if(!args[0]) return message.channel.send({embed: {
     color: 3066993,
@@ -1385,7 +1386,7 @@ const embed = new MessageEmbed()
 
     }
     if (command === "givemeajoke" || command === "joke" ) {
-        const Discord = require("discord.js");
+       
         let giveMeAJoke = require('give-me-a-joke');;
     giveMeAJoke.getRandomCNJoke(function(joke){
         message.channel.send({embed: {
@@ -1395,7 +1396,7 @@ const embed = new MessageEmbed()
     })
 }
     if (command === "addrole" || command === "ar") {
-       const Discord = require("discord.js");
+      
 //!addrole <@user> <Role>
   if(args[0] == "help"){
     let helpembxd = new MessageEmbed()
@@ -1444,7 +1445,7 @@ const embed = new MessageEmbed()
   
 }
     if (command === "removerole" || command === "rr" ) {
-        const Discord = require("discord.js");
+        
   if(args[0] == "help"){
     let helpembxd = new MessageEmbed()
     .setColor("#00ff00")
@@ -1493,7 +1494,7 @@ const embed = new MessageEmbed()
 
 }
     if (command === "answer" ) {
-    const Discord = require("discord.js");
+
     let Owner = message.author;
     if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
@@ -1565,7 +1566,7 @@ const embed = new MessageEmbed()
     
   }
     if (command === "contact" ) {
-        const Discord = require("discord.js");
+       
 
   if(args[0] == "help"){
     let helpembxd = new MessageEmbed()
@@ -1603,7 +1604,7 @@ const embed = new MessageEmbed()
 
     }
     if (command === "eval" ) {
-        const Discord = require("discord.js")
+        
         const Client = new Discord.Client
 
   let Owner = message.author;
@@ -1619,7 +1620,7 @@ ${eval(command)}
 
   }
     if (command === "morse" ) {
-       const Discord = require("discord.js");
+      
     let alpha = " ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split(""),
 				morse = "/,.-,-...,-.-.,-..,.,..-.,--.,....,..,.---,-.-,.-..,--,-.,---,.--.,--.-,.-.,...,-,..-,...-,.--,-..-,-.--,--..,.----,..---,...--,....-,.....,-....,--...,---..,----.,-----".split(","),
 				text = args.join(" ").toUpperCase();
@@ -1672,7 +1673,7 @@ const OFFSET = '!'.charCodeAt(0);
        const cheerio = require('cheerio');
        const got = require('got');
        const { stringify } = require('querystring');
-       const Discord = require("discord.js");
+      
 
     const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
@@ -1733,7 +1734,7 @@ const OFFSET = '!'.charCodeAt(0);
 
 }
     if (command === "level" || command === "lvl" ) {
-        const discord = require('discord.js')
+       
         const { getInfo } = require("./xp.js")
         const user = message.mentions.users.first() || message.author;
     
@@ -1847,7 +1848,7 @@ message.channel.send("Fetching Informtion for API").then(msg => {
   }
   }
     if (command === "imdb" ) {
-        const discord = require("discord.js");
+      
         const imdb = require("imdb-api");
 
     
@@ -1876,7 +1877,7 @@ message.channel.send("Fetching Informtion for API").then(msg => {
     
   }
     if (command === "rate" ) {
-       const Discord = require("discord.js")
+      
 
 let ratus = message.mentions.members.first();
 if(!ratus) return message.channel.send("Tag someone to rate them!");
@@ -1891,7 +1892,7 @@ if(ratus.user.id === message.author.id) {
 
 }
     if (command === "kill" ) {
-       const Discord = require("discord.js")
+      
 
 let killed = message.mentions.members.first();
 if(!killed) {
@@ -1915,7 +1916,7 @@ message.channel.send(emb)
 
 }
     if (command === "translate" ) {
-        const Discord = require('discord.js');
+      
 const translate = require('google-translate-api');
 //const Langs = ['afrikaans','albanian','amharic','arabic','armenian','azerbaijani','bangla','basque','belarusian','bengali','bosnian','bulgarian','burmese','catalan','cebuano','chichewa','chinese simplified','chinese traditional','corsican','croatian','czech','danish','dutch','english','esperanto','estonian','filipino','finnish','french','frisian','galician','georgian','german','greek','gujarati','haitian creole','hausa','hawaiian','hebrew','hindi','hmong','hungarian','icelandic','igbo','indonesian','irish','italian','japanese','javanese','kannada','kazakh','khmer','korean','kurdish (kurmanji)','kyrgyz','lao','latin','latvian','lithuanian','luxembourgish','macedonian','malagasy','malay','malayalam','maltese','maori','marathi','mongolian','myanmar (burmese)','nepali','norwegian','nyanja','pashto','persian','polish','portugese','punjabi','romanian','russian','samoan','scottish gaelic','serbian','sesotho','shona','sindhi','sinhala','slovak','slovenian','somali','spanish','sundanese','swahili','swedish','tajik','tamil','telugu','thai','turkish','ukrainian','urdu','uzbek','vietnamese','welsh','xhosa','yiddish','yoruba','zulu'];
   
@@ -2014,7 +2015,7 @@ const translate = require('google-translate-api');
 }
     if (command === "covid" ) { 
         const fetch = require('node-fetch');
-        const Discord = require('discord.js');
+       
 
         let countries = args.join(" ");
 
