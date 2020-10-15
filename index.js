@@ -544,6 +544,22 @@ bot.on("message", async (message) => { // eslint-disable-line
 }})
         }
     }
+    if (command === "addmoney" || command === "am" ) {
+        let ownerID = '654669770549100575'
+  if(message.author.id !== ownerID) return;
+
+  let user = message.mentions.members.first() || message.author;
+
+    if (isNaN(args[1])) return;
+    db.add(`money_${message.guild.id}_${user.id}`, args[1])
+    let bal = await db.fetch(`money_${message.guild.id}_${user.id}`)
+
+    let moneyEmbed = new Discord.RichEmbed()
+    .setColor("#FFFFFF")
+    .setDescription(`<:Check:618736570337591296> added ${args[1]} coins\n\nNew Balance: ${bal}`);
+    message.channel.send(moneyEmbed)
+
+}
     if (command === "work" ) {
        
        const ms = require('parse-ms');
