@@ -658,28 +658,79 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (command === "leaderboard" || command === "lb" ) {
 
         
-        const Discord = require('discord.js');
+const embed = new MessageEmbed()
+    .setDescription(`**Input a Leaderboard Option**\n\nCoin Leaderboard: m!leaderboard coins\nFresh Nikes Leaderboard: m!leaderboard nikes\nCar Leaderboard: m!leaderboard car\nMansion Leaderboard: m!leaderboard mansion`)
+    .setColor("#FFFFFF")
 
-        let bal = db.fetch(`money_${message.guild.id}`, { sort: '.data' })
-        if(bal === null) money = 0
-        console.log(bal)
 
-        let content = "";
+  if(!args[0]) return message.channel.send(embed)
 
-        for (let i = 0; i < bal.length; i++){
-            let user = client.users.cache.get(money[i].ID.split('_')[2]).username
+    if (args[0] == 'coins') {
+    let money = db.startsWith(`money_${message.guild.id}`, { sort: '.data'})
+    let content = "";
 
-            content += `${i+1}. ${user} - ${money[i].data} \n`;
+    for (let i = 0; i < money.length; i++) {
+        let user = bot.users.get(money[i].ID.split('_')[2]).username
 
-            const embed = new MessageEmbed()
-            .setTitle(`${message.guild.name}'s Leaderboard`)
-            .setDescription(`${content}`)
-            .setColor("RANDOM")
-            .setTimestamp()
+      
 
-            message.channel.send(embed);
-        }
+        content += `${i+1}. ${user} ~ ${money[i].data}\n`
+    
+      }
+
+    const embed = new MessageEmbed()
+    .setDescription(`**${message.guild.name}'s Coin Leaderboard**\n\n${content}`)
+    .setColor("#FFFFFF")
+
+    message.channel.send(embed)
+  } else if(args[0] == 'nikes') {
+    let nike = db.startsWith(`nikes_${message.guild.id}`, { sort: '.data'})
+    let content = "";
+
+    for (let i = 0; i < nike.length; i++) {
+        let user = bot.users.get(nike[i].ID.split('_')[2]).username
+
+        content += `${i+1}. ${user} ~ ${nike[i].data}\n`
     }
+
+    const embed = new MessageEmbed()
+    .setDescription(`**${message.guild.name}'s Fresh Nikes Leaderboard**\n\n${content}`)
+    .setColor("#FFFFFF")
+
+    message.channel.send(embed)
+  } else if(args[0] == 'car') {
+    let cars = db.startsWith(`car_${message.guild.id}`, { sort: '.data'})
+    let content = "";
+
+    for (let i = 0; i < cars.length; i++) {
+        let user = bot.users.get(cars[i].ID.split('_')[2]).username
+
+        content += `${i+1}. ${user} ~ ${cars[i].data}\n`
+    }
+
+    const embed = new MessageEmbed()
+    .setDescription(`**${message.guild.name}'s Car Leaderboard**\n\n${content}`)
+    .setColor("#FFFFFF")
+
+    message.channel.send(embed)
+  } else if(args[0] == 'mansion') {
+    let mansions = db.startsWith(`house_${message.guild.id}`, { sort: '.data'})
+    let content = "";
+
+    for (let i = 0; i < mansions.length; i++) {
+        let user = bot.users.get(mansions[i].ID.split('_')[2]).username
+
+        content += `${i+1}. ${user} ~ ${mansions[i].data}\n`
+    }
+
+    const embed = new MessageEmbed()
+    .setDescription(`**${message.guild.name}'s Mansion Leaderboard**\n\n${content}`)
+    .setColor("#FFFFFF")
+
+    message.channel.send(embed)
+  }
+
+}
     if (command === "color" ) {
         const canva = require('canvacord');
         const Discord = require('discord.js')
