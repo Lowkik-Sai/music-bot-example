@@ -1217,7 +1217,7 @@ const embed = new MessageEmbed()
   if(!args[0]) return message.channel.send(embed)
 
     if (args[0] == 'coins') {
-    let money = db.all(`money_${message.guild.id}`, { sort: '.data'})
+    let money = db.fetch(`money_${message.guild.id}`, { sort: '.data'})
     let content = "";
 
     for (let i = 0; i < money.length; i++) {
@@ -1235,7 +1235,7 @@ const embed = new MessageEmbed()
 
     message.channel.send(embed)
   } else if(args[0] == 'nikes') {
-    let nike = db.all(`nikes_${message.guild.id}`, { sort: '.data'})
+    let nike = db.fetch(`nikes_${message.guild.id}`, { sort: '.data'})
     let content = "";
 
     for (let i = 0; i < nike.length; i++) {
@@ -1250,7 +1250,7 @@ const embed = new MessageEmbed()
 
     message.channel.send(embed)
   } else if(args[0] == 'car') {
-    let cars = db.all(`car_${message.guild.id}`, { sort: '.data'})
+    let cars = db.fetch(`car_${message.guild.id}`, { sort: '.data'})
     let content = "";
 
     for (let i = 0; i < cars.length; i++) {
@@ -1265,7 +1265,7 @@ const embed = new MessageEmbed()
 
     message.channel.send(embed)
   } else if(args[0] == 'mansion') {
-    let mansions = db.all(`house_${message.guild.id}`, { sort: '.data'})
+    let mansions = db.fetch(`house_${message.guild.id}`, { sort: '.data'})
     let content = "";
 
     for (let i = 0; i < mansions.length; i++) {
