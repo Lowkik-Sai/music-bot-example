@@ -490,18 +490,21 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if (command === "bal" ) {
         
-        const Discord = require('discord.js');
+        
+  let user = message.mentions.members.first() || message.author;
 
-        let user = message.mentions.users.first() || message.author;
+  let bal = db.fetch(`money_${message.guild.id}_${user.id}`)
 
-        let bal = await db.fetch(`money_${message.guild.id}_${user.id}`);
-        if(bal === null) bal = 0;
+  if (bal === null) bal = 0;
 
-        message.channel.send({embed: {
-  color: 3447003,
-  description:`${user} currently has ${bal} coins!`
-}});
-    }
+  let bank = await db.fetch(`bank_${message.guild.id}_${user.id}`)
+  if (bank === null) bank = 0;
+
+  let moneyEmbed = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`**${user}'s Balance**\n\nPocket: ${bal}\nBank: ${bank}`);
+  message.channel.send(moneyEmbed)
+}
     if (command === "hastebin" ) {
         const hastebin = require('hastebin-gen');
 
@@ -517,33 +520,166 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         }).catch(console.error);
 }        
+    if (command === "beg" ) {
+const ms = require("parse-ms");
+
+  let user = message.author;
+
+  let timeout = 180000;
+  let amount = 5;
+
+  let beg = await db.fetch(`beg_${message.guild.id}_${user.id}`);
+
+  if (beg !== null && timeout - (Date.now() - beg) > 0) {
+    let time = ms(timeout - (Date.now() - beg));
+  
+    let timeEmbed = new Discord.RichEmbed()
+    .setColor("#FFFFFF")
+    .setDescription(`<:Cross:618736602901905418> You've already begged recently\n\nBeg again in ${time.minutes}m ${time.seconds}s `);
+    message.channel.send(timeEmbed)
+  } else {
+    let moneyEmbed = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`<:Check:618736570337591296> You've begged and received ${amount} coins`);
+  message.channel.send(moneyEmbed)
+  db.add(`money_${message.guild.id}_${user.id}`, amount)
+  db.set(`beg_${message.guild.id}_${user.id}`, Date.now())
+
+
+  }
+}
+
     if (command === "daily" ) {
        
        const ms = require('parse-ms');
 
-        let user = message.author;
-        let timeout = 86400000;
-        let amount = 100;
+          let user = message.author;
 
-        let daily = await db.fetch(`daily_${message.guild.id}_${user.id}`);
+  let timeout = 86400000;
+  let amount = 100;
 
-        if(daily !== null && timeout - (Date.now() - daily) > 0){
-            let time = ms(timeout - (Date.now() - daily));
+  let daily = await db.fetch(`daily_${message.guild.id}_${user.id}`);
 
-            return message.channel.send({embed: {
-    color: 3066993,
-    description:`You've already collected your daily award. Come back in ${time.days}d, ${time.hours}h, ${time.minutes}m, and ${time.seconds}s`
-}})
-        } else {
-            db.add(`money_${message.guild.id}_${user.id}`, amount);
-            db.set(`daily_${message.guild.id}_${user.id}`, Date.now());
+  if (daily !== null && timeout - (Date.now() - daily) > 0) {
+    let time = ms(timeout - (Date.now() - daily));
+  
+    let timeEmbed = new Discord.RichEmbed()
+    .setColor("#FFFFFF")
+    .setDescription(`<:Cross:618736602901905418> You've already collected your daily reward\n\nCollect it again in ${time.hours}h ${time.minutes}m ${time.seconds}s `);
+    message.channel.send(timeEmbed)
+  } else {
+    let moneyEmbed = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`<:Check:618736570337591296> You've collected your daily reward of ${amount} coins`);
+  message.channel.send(moneyEmbed)
+  db.add(`money_${message.guild.id}_${user.id}`, amount)
+  db.set(`daily_${message.guild.id}_${user.id}`, Date.now())
 
-            message.channel.send({embed: {
-    color: 3066993,
-    description:`Successfully added ${amount} coins to your account`
-}})
-        }
-    }
+
+  }
+}
+    if (command === "pay" ) {
+const ms = require("parse-ms");
+  let user = message.mentions.members.first() 
+
+  let member = db.fetch(`money_${message.guild.id}_${message.author.id}`)
+
+  let embed1 = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`<:Cross:618736602901905418> Mention someone to pay`);
+
+  if (!user) {
+      return message.channel.send(embed1)
+  }
+  let embed2 = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`<:Cross:618736602901905418> Specify an amount to pay`);
+  
+  if (!args[1]) {
+      return message.channel.send(embed2)
+  }
+  let embed3 = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`<:Cross:618736602901905418> You can't pay someone negative money`);
+
+  if (message.content.includes('-')) { 
+      return message.channel.send(embed3)
+  }
+  let embed4 = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`<:Cross:618736602901905418> You don't have that much money`);
+
+  if (member < args[1]) {
+      return message.channel.send(embed4)
+  }
+
+  let embed5 = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`<:Check:618736570337591296> You have payed ${user.user.username} ${args[1]} coins`);
+
+  message.channel.send(embed5)
+  db.add(`money_${message.guild.id}_${user.id}`, args[1])
+  db.subtract(`money_${message.guild.id}_${message.author.id}`, args[1])
+
+}
+    if (command === "deposit" ) {
+const ms = require("parse-ms");
+  let user = message.author;
+
+  let member = db.fetch(`money_${message.guild.id}_${user.id}`)
+  let member2 = db.fetch(`bank_${message.guild.id}_${user.id}`)
+
+  if (args[0] == 'all') {
+    let money = await db.fetch(`money_${message.guild.id}_${user.id}`)
+    let bank = await db.fetch(`bank_${message.guild.id}_${user.id}`)
+
+    let embedbank = new Discord.RichEmbed()
+    .setColor('#FFFFFF')
+    .setDescription("<:Cross:618736602901905418> You don't have any money to deposit")
+
+    if(money === 0) return message.channel.send(embedbank)
+
+    db.add(`bank_${message.guild.id}_${user.id}`, money)
+    db.subtract(`money_${message.guild.id}_${user.id}`, money)
+    let embed5 = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`<:Check:618736570337591296> You have deposited all your coins into your bank`);
+  message.channel.send(embed5)
+  
+  } else {
+  
+  let embed2 = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`<:Cross:618736602901905418> Specify an amount to deposit`);
+  
+  if (!args[0]) {
+      return message.channel.send(embed2)
+      .catch(err => console.log(err))
+  }
+  let embed3 = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`<:Cross:618736602901905418> You can't deposit negative money`);
+
+  if (message.content.includes('-')) { 
+      return message.channel.send(embed3)
+  }
+  let embed4 = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`<:Cross:618736602901905418> You don't have that much money`);
+
+  if (member < args[0]) {
+      return message.channel.send(embed4)
+  }
+
+  let embed5 = new Discord.RichEmbed()
+  .setColor("#FFFFFF")
+  .setDescription(`<:Check:618736570337591296> You have deposited ${args[0]} coins into your bank`);
+
+  message.channel.send(embed5)
+  db.add(`bank_${message.guild.id}_${user.id}`, args[0])
+  db.subtract(`money_${message.guild.id}_${user.id}`, args[0])
+  }
+}
     if (command === "addmoney" || command === "am" ) {
         let ownerID = '654669770549100575'
   if(message.author.id !== ownerID) return;
@@ -607,32 +743,82 @@ bot.on("message", async (message) => { // eslint-disable-line
   description:"Proper Usage : +buy <store item>"
 }})
        
-       const Discord = require('discord.js');
+let user = message.author;
 
-        let purchase = args.join(" ");
-        if(!purchase) return message.channel.send('Please provide an item to buy')
-        let items = await db.fetch(message.author.id, { items: [] });
-        let amount = await db.fetch(`money_${message.guild.id}_${message.author.id}`)
+    let author = db.fetch(`money_${message.guild.id}_${user.id}`)
 
-        if(purchase === 'car' || purchase === 'Car'){
-            if(amount < 500) return message.channel.send('You do not have enough money to buy this item. Please try another one');
-            db.subtract(`money_${message.guild.id}_${message.author.id}`, 500);
-            db.push(message.author.id, "Car");
-            message.channel.send({embed: {
-    color: 3066993,
-    description:'Successfully bought one car'
-}})
-        }
-        if(purchase === 'watch' || purchase === 'Watch'){
-            if(amount < 250) return message.channel.send('You do not have enough money to buy this item. Please try another one');
-            db.subtract(`money_${message.guild.id}_${message.author.id}`, 250);
-            db.push(message.author.id, "Watch");
-            message.channel.send({embed: {
-   color: 3066993,
-   description:'Successfully bought one car'
-}})
-        }
+    let Embed = new Discord.RichEmbed()
+    .setColor("#FFFFFF")
+    .setDescription(`<:Cross:618736602901905418> You need 2000 coins to purchase Bronze VIP`);
+
+    if (args[0] == 'bronze') {
+        if (author < 3500) return message.channel.send(Embed)
+        
+        db.fetch(`bronze_${message.guild.id}_${user.id}`);
+        db.set(`bronze_${message.guild.id}_${user.id}`, true)
+
+        let Embed2 = new Discord.RichEmbed()
+        .setColor("#FFFFFF")
+        .setDescription(`<:Check:618736570337591296> Purchased Bronze VIP For 3500 Coins`);
+
+        db.subtract(`money_${message.guild.id}_${user.id}`, 3500)
+        message.channel.send(Embed2)
+    } else if(args[0] == 'nikes') {
+        let Embed2 = new Discord.RichEmbed()
+        .setColor("#FFFFFF")
+        .setDescription(`<:Cross:618736602901905418> You need 600 coins to purchase some Nikes`);
+
+        if (author < 600) return message.channel.send(Embed2)
+       
+        db.fetch(`nikes_${message.guild.id}_${user.id}`)
+        db.add(`nikes_${message.guild.id}_${user.id}`, 1)
+
+        let Embed3 = new Discord.RichEmbed()
+        .setColor("#FFFFFF")
+        .setDescription(`<:Check:618736570337591296> Purchased Fresh Nikes For 600 Coins`);
+
+        db.subtract(`money_${message.guild.id}_${user.id}`, 600)
+        message.channel.send(Embed3)
+    } else if(args[0] == 'car') {
+        let Embed2 = new Discord.RichEmbed()
+        .setColor("#FFFFFF")
+        .setDescription(`<:Cross:618736602901905418> You need 800 coins to purchase a new car`);
+
+        if (author < 800) return message.channel.send(Embed2)
+       
+        db.fetch(`car_${message.guild.id}_${user.id}`)
+        db.add(`car_${message.guild.id}_${user.id}`, 1)
+
+        let Embed3 = new Discord.RichEmbed()
+        .setColor("#FFFFFF")
+        .setDescription(`<:Check:618736570337591296> Purchased a New Car For 800 Coins`);
+
+        db.subtract(`money_${message.guild.id}_${user.id}`, 800)
+        message.channel.send(Embed3)
+    } else if(args[0] == 'mansion') {
+        let Embed2 = new Discord.RichEmbed()
+        .setColor("#FFFFFF")
+        .setDescription(`<:Cross:618736602901905418> You need 1200 coins to purchase a Mansion`);
+
+        if (author < 1200) return message.channel.send(Embed2)
+       
+        db.fetch(`house_${message.guild.id}_${user.id}`)
+        db.add(`house_${message.guild.id}_${user.id}`, 1)
+
+        let Embed3 = new Discord.RichEmbed()
+        .setColor("#FFFFFF")
+        .setDescription(`<:Check:618736570337591296> Purchased a Mansion For 1200 Coins`);
+
+        db.subtract(`money_${message.guild.id}_${user.id}`, 1200)
+        message.channel.send(Embed3)
+    } else {
+        let embed3 = new Discord.RichEmbed()
+        .setColor("#FFFFFF")
+        .setDescription('<:Cross:618736602901905418> Enter an item to buy')
+        message.channel.send(embed3)
     }
+
+}
     if (command === "store" ) {
        const Discord = require('discord.js');
 
