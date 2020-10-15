@@ -2581,30 +2581,6 @@ const member = message.guild.member(user);
     message.channel.send(serverembed);    
 
 }
-    if (command === "snipe" ) {
-bot.snipes = function(){
-   get(ChannelId){
-       return this[ChannelId];
-   }
-   set(message){
-      this[message.channel.id] = message;
-   }
-}
-bot.on('messageDelete',function(message){
-   bot.snipes.set(message); 
-}
-    const msg = snipes[args[0] - 1 || 0];
-    if (!msg) return message.channel.send(`That is not a valid snipe...`);
-    const Embed = new MessageEmbed()
-      .setAuthor(
-        msg.author.tag,
-        msg.author.displayAvatarURL({ dynamic: true, size: 256 })
-      )
-      .setDescription(msg.content)
-      .setFooter(`Date: ${msg.date} | ${args[0] || 1}/${snipes.length}`);
-    if (msg.attachment) Embed.setImage(msg.attachment);
-    message.channel.send(Embed);
-  }
     if (command === "mute" ) {
       let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
   if(!tomute) return message.reply("Couldn't find user.");
