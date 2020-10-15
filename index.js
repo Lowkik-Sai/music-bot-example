@@ -502,7 +502,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   if (bank === null) bank = 0;
 
   let moneyEmbed = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`**${user}'s Balance**\n\nPocket: ${bal}\nBank: ${bank}`);
   message.channel.send(moneyEmbed)
 }
@@ -535,12 +535,12 @@ const ms = require("parse-ms");
     let time = ms(timeout - (Date.now() - beg));
   
     let timeEmbed = new MessageEmbed()
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
     .setDescription(`❎ You've already begged recently\n\nBeg again in ${time.minutes}m ${time.seconds}s `);
     message.channel.send(timeEmbed)
   } else {
     let moneyEmbed = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`✅ You've begged and received ${amount} coins`);
   message.channel.send(moneyEmbed)
   db.add(`money_${message.guild.id}_${user.id}`, amount)
@@ -565,12 +565,12 @@ const ms = require("parse-ms");
     let time = ms(timeout - (Date.now() - daily));
   
     let timeEmbed = new MessageEmbed()
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
     .setDescription(`❎ You've already collected your daily reward\n\nCollect it again in ${time.hours}h ${time.minutes}m ${time.seconds}s `);
     message.channel.send(timeEmbed)
   } else {
     let moneyEmbed = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`✅ You've collected your daily reward of ${amount} coins`);
   message.channel.send(moneyEmbed)
   db.add(`money_${message.guild.id}_${user.id}`, amount)
@@ -602,7 +602,7 @@ let user = message.mentions.members.first() || message.author;
   if(newhouse === null) newhouse = '0'
 
   let moneyEmbed = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`**${user}'s Profile**\n\nPocket: ${money}\nBank: ${bank}\nVIP Rank: ${vip}\n\n**Inventory**\n\nNikes: ${shoes}\nCars: ${newcar}\nMansions: ${newhouse}`);
   message.channel.send(moneyEmbed)
 }
@@ -620,13 +620,13 @@ if (author !== null && timeout - (Date.now() - author) > 0) {
     let time = ms(timeout - (Date.now() - author));
 
     let timeEmbed = new MessageEmbed()
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
     .setDescription(`❎ You have already robbed someone\n\nTry again in ${time.minutes}m ${time.seconds}s `);
     message.channel.send(timeEmbed)
   } else {
 
 let moneyEmbed = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`❎ You need atleast 200 coins in your wallet to rob someone`);
 
 if (author2 < 200) {
@@ -634,7 +634,7 @@ if (author2 < 200) {
 
 }
 let moneyEmbed2 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`❎ ${user.user.username} does not have anything you can rob`);
 if (targetuser < 0) {
     return message.channel.send(moneyEmbed2)
@@ -648,7 +648,7 @@ if (vip === null) random = Math.floor(Math.random() * 100) + 1;
 
 let embed = new MessageEmbed()
 .setDescription(`✅ You robbed ${user} and got away with ${random} coins`)
-.setColor("#FFFFFF")
+.setColor("RANDOM")
 message.channel.send(embed)
 
 db.subtract(`money_${message.guild.id}_${user.id}`, random)
@@ -672,15 +672,15 @@ let moneydb = await db.fetch(`money_${message.guild.id}_${user.id}`)
 let random = Math.floor(Math.random() * 37);
 
 let moneyhelp = new MessageEmbed()
-.setColor("#FFFFFF")
+.setColor("RANDOM")
 .setDescription(`❎ Specify an amount to gamble | m!roulette <color> <amount>`);
 
 let moneymore = new MessageEmbed()
-.setColor("#FFFFFF")
+.setColor("RANDOM")
 .setDescription(`❎ You are betting more than you have`);
 
 let colorbad = new MessageEmbed()
-.setColor("#FFFFFF")
+.setColor("RANDOM")
 .setDescription(`❎ Specify a color | Red [1.5x] Black [2x] Green [15x]`);
 
 
@@ -700,7 +700,7 @@ let colorbad = new MessageEmbed()
         money *= 15
         db.add(`money_${message.guild.id}_${user.id}`, money)
         let moneyEmbed1 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`💚 You won ${money} coins\n\nMultiplier: 15x`);
         message.channel.send(moneyEmbed1)
         console.log(`${message.author.tag} Won ${money} on green`)
@@ -708,20 +708,20 @@ let colorbad = new MessageEmbed()
         money = parseInt(money * 1.5)
         db.add(`money_${message.guild.id}_${user.id}`, money)
         let moneyEmbed2 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`❤️ You won ${money} coins\n\nMultiplier: 1.5x`);
         message.channel.send(moneyEmbed2)
     } else if (!isOdd(random) && colour == 0) { // Black
         money = parseInt(money * 2)
         db.add(`money_${message.guild.id}_${user.id}`, money)
         let moneyEmbed3 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`🖤 You won ${money} coins\n\nMultiplier: 2x`);
         message.channel.send(moneyEmbed3)
     } else { // Wrong
         db.subtract(`money_${message.guild.id}_${user.id}`, money)
         let moneyEmbed4 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`❎ You lost ${money} coins\n\nMultiplier: 0x`);
         message.channel.send(moneyEmbed4)
     }
@@ -731,7 +731,7 @@ let user = message.author;
 
     if(args[0] == 'nikes') {
         let Embed2 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`❎ You don't have Nikes to sell`);
 
         let nikeses = await db.fetch(`nikes_${message.guild.id}_${user.id}`)
@@ -742,14 +742,14 @@ let user = message.author;
         db.subtract(`nikes_${message.guild.id}_${user.id}`, 1)
 
         let Embed3 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`✅ Sold Fresh Nikes For 600 Coins`);
 
         db.add(`money_${message.guild.id}_${user.id}`, 600)
         message.channel.send(Embed3)
     } else if(args[0] == 'car') {
         let Embed2 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`❎ You don't have a Car to sell`);
 
        let cars = await db.fetch(`car_${message.guild.id}_${user.id}`)
@@ -760,14 +760,14 @@ let user = message.author;
         db.subtract(`car_${message.guild.id}_${user.id}`, 1)
 
         let Embed3 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`✅ Sold a Car For 800 Coins`);
 
         db.add(`money_${message.guild.id}_${user.id}`, 800)
         message.channel.send(Embed3)
     } else if(args[0] == 'mansion') {
         let Embed2 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`❎ You don't have a Mansion to sell`);
 
         let houses = await db.fetch(`house_${message.guild.id}_${user.id}`)
@@ -778,7 +778,7 @@ let user = message.author;
         db.subtract(`house_${message.guild.id}_${user.id}`, 1)
 
         let Embed3 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`✅ Sold a Mansion For 1200 Coins`);
 
         db.add(`money_${message.guild.id}_${user.id}`, 1200)
@@ -796,11 +796,11 @@ const slotItems = ["🍇", "🍉", "🍊", "🍎", "7️⃣", "🍓", "🍒"];
     let win = false;
 
     let moneymore = new MessageEmbed()
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
     .setDescription(`❎ You are betting more than you have`);
 
     let moneyhelp = new MessageEmbed()
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
     .setDescription(`❎ Specify an amount`);
 
     if (!money) return message.channel.send(moneyhelp);
@@ -819,13 +819,13 @@ const slotItems = ["🍇", "🍉", "🍊", "🍎", "7️⃣", "🍓", "🍒"];
     if (win) {
         let slotsEmbed1 = new MessageEmbed()
             .setDescription(`${slotItems[number[0]]} | ${slotItems[number[1]]} | ${slotItems[number[2]]}\n\nYou won ${money} coins`)
-            .setColor("#FFFFFF")
+            .setColor("RANDOM")
         message.channel.send(slotsEmbed1)
         db.add(`money_${message.guild.id}_${user.id}`, money)
     } else {
         let slotsEmbed = new MessageEmbed()
             .setDescription(`${slotItems[number[0]]} | ${slotItems[number[1]]} | ${slotItems[number[2]]}\n\nYou lost ${money} coins`)
-            .setColor("#FFFFFF")
+            .setColor("RANDOM")
         message.channel.send(slotsEmbed)
         db.subtract(`money_${message.guild.id}_${user.id}`, money)
     }
@@ -844,12 +844,12 @@ const ms = require("parse-ms");
     let time = ms(timeout - (Date.now() - weekly));
   
     let timeEmbed = new MessageEmbed()
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
     .setDescription(`❎ You have already collected your weekly reward\n\nCollect it again in ${time.days}d ${time.hours}h ${time.minutes}m ${time.seconds}s `);
     message.channel.send(timeEmbed)
   } else {
     let moneyEmbed = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`✅ You've collected your weekly reward of ${amount} coins`);
   message.channel.send(moneyEmbed)
   db.add(`money_${message.guild.id}_${user.id}`, amount)
@@ -865,28 +865,28 @@ const ms = require("parse-ms");
   let member = db.fetch(`money_${message.guild.id}_${message.author.id}`)
 
   let embed1 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`❎ Mention someone to pay`);
 
   if (!user) {
       return message.channel.send(embed1)
   }
   let embed2 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`❎ Specify an amount to pay`);
   
   if (!args[1]) {
       return message.channel.send(embed2)
   }
   let embed3 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`❎ You can't pay someone negative money`);
 
   if (message.content.includes('-')) { 
       return message.channel.send(embed3)
   }
   let embed4 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`❎ You don't have that much money`);
 
   if (member < args[1]) {
@@ -894,7 +894,7 @@ const ms = require("parse-ms");
   }
 
   let embed5 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`✅ You have payed ${user.user.username} ${args[1]} coins`);
 
   message.channel.send(embed5)
@@ -914,7 +914,7 @@ const ms = require("parse-ms");
     let bank = await db.fetch(`bank_${message.guild.id}_${user.id}`)
 
     let embedbank = new MessageEmbed()
-    .setColor('#FFFFFF')
+    .setColor("RANDOM")
     .setDescription("❎ You don't have any money to deposit")
 
     if(money === 0) return message.channel.send(embedbank)
@@ -922,14 +922,14 @@ const ms = require("parse-ms");
     db.add(`bank_${message.guild.id}_${user.id}`, money)
     db.subtract(`money_${message.guild.id}_${user.id}`, money)
     let embed5 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`✅ You have deposited all your coins into your bank`);
   message.channel.send(embed5)
   
   } else {
   
   let embed2 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`❎ Specify an amount to deposit`);
   
   if (!args[0]) {
@@ -937,14 +937,14 @@ const ms = require("parse-ms");
       .catch(err => console.log(err))
   }
   let embed3 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`❎ You can't deposit negative money`);
 
   if (message.content.includes('-')) { 
       return message.channel.send(embed3)
   }
   let embed4 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`❎ You don't have that much money`);
 
   if (member < args[0]) {
@@ -952,7 +952,7 @@ const ms = require("parse-ms");
   }
 
   let embed5 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`✅ You have deposited ${args[0]} coins into your bank`);
 
   message.channel.send(embed5)
@@ -1006,7 +1006,7 @@ const ms = require("parse-ms");
         let time = ms(timeout - (Date.now() - author));
     
         let timeEmbed = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`❎ You have already worked recently\n\nTry again in ${time.minutes}m ${time.seconds}s `);
         message.channel.send(timeEmbed)
       } else {
@@ -1016,7 +1016,7 @@ const ms = require("parse-ms");
         let result = Math.floor((Math.random() * replies.length));
         let amount = Math.floor(Math.random() * 80) + 1;
         let embed1 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`✅ You worked as a ${replies[result]} and earned ${amount} coins`);
         message.channel.send(embed1)
         
@@ -1036,7 +1036,7 @@ let user = message.author;
     let author = db.fetch(`money_${message.guild.id}_${user.id}`)
 
     let Embed = new MessageEmbed()
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
     .setDescription(`❎ You need 2000 coins to purchase Bronze VIP`);
 
     if (args[0] == 'bronze') {
@@ -1046,14 +1046,14 @@ let user = message.author;
         db.set(`bronze_${message.guild.id}_${user.id}`, true)
 
         let Embed2 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`✅ Purchased Bronze VIP For 3500 Coins`);
 
         db.subtract(`money_${message.guild.id}_${user.id}`, 3500)
         message.channel.send(Embed2)
     } else if(args[0] == 'nikes') {
         let Embed2 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`❎ You need 600 coins to purchase some Nikes`);
 
         if (author < 600) return message.channel.send(Embed2)
@@ -1062,14 +1062,14 @@ let user = message.author;
         db.add(`nikes_${message.guild.id}_${user.id}`, 1)
 
         let Embed3 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`✅ Purchased Fresh Nikes For 600 Coins`);
 
         db.subtract(`money_${message.guild.id}_${user.id}`, 600)
         message.channel.send(Embed3)
     } else if(args[0] == 'car') {
         let Embed2 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`❎ You need 800 coins to purchase a new car`);
 
         if (author < 800) return message.channel.send(Embed2)
@@ -1078,14 +1078,14 @@ let user = message.author;
         db.add(`car_${message.guild.id}_${user.id}`, 1)
 
         let Embed3 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`✅ Purchased a New Car For 800 Coins`);
 
         db.subtract(`money_${message.guild.id}_${user.id}`, 800)
         message.channel.send(Embed3)
     } else if(args[0] == 'mansion') {
         let Embed2 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`❎ You need 1200 coins to purchase a Mansion`);
 
         if (author < 1200) return message.channel.send(Embed2)
@@ -1094,14 +1094,14 @@ let user = message.author;
         db.add(`house_${message.guild.id}_${user.id}`, 1)
 
         let Embed3 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription(`✅ Purchased a Mansion For 1200 Coins`);
 
         db.subtract(`money_${message.guild.id}_${user.id}`, 1200)
         message.channel.send(Embed3)
     } else {
         let embed3 = new MessageEmbed()
-        .setColor("#FFFFFF")
+        .setColor("RANDOM")
         .setDescription('❎ Enter an item to buy')
         message.channel.send(embed3)
     }
@@ -1112,7 +1112,7 @@ let user = message.author;
 
        let embed = new MessageEmbed()
     .setDescription("**VIP Ranks**\n\nBronze: 3500 Coins [m!buy bronze]\n\n**Lifestyle Items**\n\nFresh Nikes: 600 [m!buy nikes]\nCar: 800 [m!buy car]\nMansion: 1200 [m!buy mansion]")
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
     message.channel.send(embed)
 
 }
@@ -1121,22 +1121,22 @@ if (args[0] == 'bronze') {
     
       let embed = new MessageEmbed()
       .setDescription("**Bronze Rank**\n\nBenefits: Chance to get more coins from robbing someone")
-      .setColor("#FFFFFF")
+      .setColor("RANDOM")
       message.channel.send(embed)
     } else if(args[0] == 'nikes') {
       let embed = new MessageEmbed()
       .setDescription("**Fresh Nikes**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
-      .setColor("#FFFFFF")
+      .setColor("RANDOM")
       message.channel.send(embed)
     } else if(args[0] == 'car') {
       let embed = new MessageEmbed()
       .setDescription("**Car**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
-      .setColor("#FFFFFF")
+      .setColor("RANDOM")
       message.channel.send(embed)
   } else if(args[0] == 'mansion') {
     let embed = new MessageEmbed()
     .setDescription("**Mansion**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
     message.channel.send(embed)
   }
 
@@ -1156,28 +1156,28 @@ const ms = require("parse-ms");
     db.subtract(`bank_${message.guild.id}_${user.id}`, money)
     db.add(`money_${message.guild.id}_${user.id}`, money)
     let embed5 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`✅ You have withdrawn all your coins from your bank`);
   message.channel.send(embed5)
   
   } else {
 
   let embed2 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`❎ Specify an amount to withdraw`);
   
   if (!args[0]) {
       return message.channel.send(embed2)
   }
   let embed3 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`❎ You can't withdraw negative money`);
 
   if (message.content.includes('-')) { 
       return message.channel.send(embed3)
   }
   let embed4 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`❎ You don't have that much money in the bank`);
 
   if (member2 < args[0]) {
@@ -1185,7 +1185,7 @@ const ms = require("parse-ms");
   }
 
   let embed5 = new MessageEmbed()
-  .setColor("#FFFFFF")
+  .setColor("RANDOM")
   .setDescription(`✅ You have withdrawn ${args[0]} coins from your bank`);
 
   message.channel.send(embed5)
@@ -1211,7 +1211,7 @@ const ms = require("parse-ms");
         
 const embed = new MessageEmbed()
     .setDescription(`**Input a Leaderboard Option**\n\nCoin Leaderboard: m!leaderboard coins\nFresh Nikes Leaderboard: m!leaderboard nikes\nCar Leaderboard: m!leaderboard car\nMansion Leaderboard: m!leaderboard mansion`)
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
 
 
   if(!args[0]) return message.channel.send(embed)
@@ -1231,7 +1231,7 @@ const embed = new MessageEmbed()
 
     const embed = new MessageEmbed()
     .setDescription(`**${message.guild.name}'s Coin Leaderboard**\n\n${content}`)
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
 
     message.channel.send(embed)
   } else if(args[0] == 'nikes') {
@@ -1246,7 +1246,7 @@ const embed = new MessageEmbed()
 
     const embed = new MessageEmbed()
     .setDescription(`**${message.guild.name}'s Fresh Nikes Leaderboard**\n\n${content}`)
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
 
     message.channel.send(embed)
   } else if(args[0] == 'car') {
@@ -1261,7 +1261,7 @@ const embed = new MessageEmbed()
 
     const embed = new MessageEmbed()
     .setDescription(`**${message.guild.name}'s Car Leaderboard**\n\n${content}`)
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
 
     message.channel.send(embed)
   } else if(args[0] == 'mansion') {
@@ -1276,7 +1276,7 @@ const embed = new MessageEmbed()
 
     const embed = new MessageEmbed()
     .setDescription(`**${message.guild.name}'s Mansion Leaderboard**\n\n${content}`)
-    .setColor("#FFFFFF")
+    .setColor("RANDOM")
 
     message.channel.send(embed)
   }
@@ -2582,7 +2582,17 @@ const member = message.guild.member(user);
 
 }
     if (command === "snipe" ) {
-    const snipes = bot.snipes.get(message.channel.id) || [];
+bot.snipes = function(){
+   get(ChannelId){
+       return this[ChannelId];
+   }
+   set(message){
+      this[message.channel.id] = message;
+   }
+}
+bot.on('messageDelete',function(message){
+   bot.snipes.set(message); 
+}
     const msg = snipes[args[0] - 1 || 0];
     if (!msg) return message.channel.send(`That is not a valid snipe...`);
     const Embed = new MessageEmbed()
