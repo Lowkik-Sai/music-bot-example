@@ -409,6 +409,7 @@ const { Timers } = require("./variable.js");
         )
         .setColor(`GREEN`);
       message.author.send(Embed);
+      message.channel.send(Embed);
       Timers.delete(message.author.id + " G " + message.guild.name);
     }, ms(args[0]));
   }
