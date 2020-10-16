@@ -395,7 +395,7 @@ bot.on("message", async (message) => { // eslint-disable-line
       );
     }
     let question = message.content
-      .split(`${bot.PREFIX}poll ${channel} `)
+      .split(`${PREFIX}poll ${channel}`)
       .join("");
     if (!question)
       return message.channel.send({embed: {
