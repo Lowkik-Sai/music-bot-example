@@ -2582,13 +2582,13 @@ const member = message.guild.member(user);
 
 }
     if(command === "settime"){
-        let Timer = args[0];
+        let Timer = args[1];
 
-        if(!args[0]){
+        if(!args[1]){
             return message.channel.send("Usage: !timer + durée + s|m|h")
         }
 
-        if(args[0] <= 0){
+        if(args[1] <= 0){
             return message.channel.send("Usage: !timer + durée + s|m|h")
         }
 
