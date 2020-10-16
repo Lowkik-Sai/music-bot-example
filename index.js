@@ -2867,6 +2867,40 @@ const member = message.guild.member(user);
     message.channel.send(serverembed);    
 
 }
+    if(command === "oldest" || command === "oldacc" ) {
+      const { formatDate } = require("./functions.js");
+    let mem = message.guild.members.cache
+      .filter((m) => !m.user.bot)
+      .sort((a, b) => a.user.createdAt - b.user.createdAt)
+      .first();
+    const Embed = new MessageEmbed()
+      .setTitle(`The oldest member in ${message.guild.name}`)
+      .setColor(`RANDOM`)
+      .setFooter(`Date format: MM/DD/YYYY`)
+      .setDescription(
+        `${mem.user.tag} is the oldest user in ${
+          message.guild.name
+        }! Account creation date: ${formatDate(mem.user.createdAt)}`
+      );
+    message.channel.send(Embed);
+  }
+  if (command === "youngest" || command === "youngacc" ) {
+     const { formatDate } = require("./functions.js");
+    let mem = message.guild.members.cache
+      .filter((m) => !m.user.bot)
+      .sort((a, b) => b.user.createdAt - a.user.createdAt)
+      .first();
+    const Embed = new MessageEmbed()
+      .setTitle(`The youngest member in ${message.guild.name}`)
+      .setColor(`RANDOM`)
+      .setFooter(`Date format: MM/DD/YYYY`)
+      .setDescription(
+        `${mem.user.tag} is the youngest user in ${
+          message.guild.name
+        }! Account creation date: ${formatDate(mem.user.createdAt)}`
+      );
+    message.channel.send(Embed);
+  }
     if(command === "emoji" ) {
     let Emojis = "";
     let EmojisAnimated = "";
