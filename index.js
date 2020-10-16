@@ -2581,6 +2581,96 @@ const member = message.guild.member(user);
     message.channel.send(serverembed);    
 
 }
+    if(command === "emoji" ) {
+    let Emojis = "";
+    let EmojisAnimated = "";
+    let EmojiCount = 0;
+    let Animated = 0;
+    let OverallEmojis = 0;
+    function Emoji(id) {
+      return bot.emojis.cache.get(id).toString();
+    }
+    message.guild.emojis.cache.forEach((emoji) => {
+      OverallEmojis++;
+      if (emoji.animated) {
+        Animated++;
+        EmojisAnimated += Emoji(emoji.id);
+      } else {
+        EmojiCount++;
+        Emojis += Emoji(emoji.id);
+      }
+    });
+    let Embed = new MessageEmbed()
+      .setTitle(`Emojis in ${message.guild.name}.`)
+      .setDescription(
+        `**Animated [${Animated}]**:\n${EmojisAnimated}\n\n**Standard [${EmojiCount}]**:\n${Emojis}\n\n**Over all emojis [${OverallEmojis}]**`
+      )
+      .setColor(`RANDOM`);
+    message.channel.send(Embed);
+  }
+    if(command === "role" ) {
+if (!message.member.permissions.has("ADMINISTRATOR"))
+      return message.channel.send(
+        `You do not have admin, ${message.author.username}`
+      );
+    if (args[0].toLowerCase() == "create") {
+      let rName = message.content.split(`${bot.prefix}role create `).join("");
+      let rColor;
+      args.forEach((arg) => {
+        if (arg.startsWith("#")) {
+          rColor = arg;
+        }
+      });
+      if (!rName) {
+        return message.channel.send(
+          `You did not specify a name for your role!`
+        );
+      }
+      if (!rColor) {
+        return message.channel.send(
+          `You did not specify a color for your role!`
+        );
+      }
+      if (rColor >= 16777215)
+        return message.channel.send(
+          `That hex color range was too big! Keep it between 0 and 16777215`
+        );
+      if (rColor <= 0)
+        return message.channel.send(
+          `That hex color range was too small! Keep it between 0 and 16777215`
+        );
+      rName = rName.replace(`${rColor}`, ``);
+      let rNew = await message.guild.roles.create({
+        data: {
+          name: rName,
+          color: rColor,
+        },
+      });
+      const Embed = new MessageEmbed()
+        .setTitle(`New role!`)
+        .setDescription(
+          `${message.author.username} has created the role "${rName}"\nIts Hex Color Code: ${rColor}\nIts ID: ${rNew.id}`
+        )
+        .setColor(rColor);
+      message.channel.send(Embed);
+    } else if (args[0].toLowerCase() == "delete") {
+      let roleDelete =
+        message.guild.roles.cache.get(args[1]) ||
+        message.guild.roles.cache.find((r) => r.name == args[1]);
+      if (!roleDelete)
+        return message.channel.send(
+          `You did not specify the name or id of the role you wish to delete!`
+        );
+      roleDelete.delete();
+      const Embed1 = new MessageEmbed()
+        .setTitle(`Deleted role!`)
+        .setColor(roleDelete.color)
+        .setDescription(
+          `${message.author.username} has deleted the role "${roleDelete.name}"\nIts ID: ${roleDelete.id}\nIts Hex Color Code: ${roleDelete.color}`
+        );
+      message.channel.send(Embed1);
+    }
+  }
     if(command === "settime"){
         let Timer = args[1];
 
@@ -2616,7 +2706,7 @@ const { Timers } = require("./variable.js");
         }
       }
     }
-    if (isNaN(args[1][1])) {
+    if (isNaN(args[0][1])) {
       return message.channel.send({embed: {
   color: 3066993,
   description:`That is not a number!`
