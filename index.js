@@ -117,9 +117,9 @@ bot.on("guildMemberAdd", member => {
 
   let wembed = new MessageEmbed() //define embed
   .setAuthor(member.user.username, member.user.avatarURL())
-  .setColor("#ff2050")
+  .setColor("RANDOM")
   .setThumbnail(member.user.avatarURL())
-  .setDescription(`We are very happy to have you in our server`);
+  .setDescription(`We are very happy to have you in our server! \n Make sure you read <#758701472614580275> \n Enjoy by playing Among Us with your freinds \n\n Thanks You!🙂`);
   
   bot.channels.cache.get(chx).send(wembed) //get channel and send embed
 });
@@ -274,7 +274,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     
     db.set(`welchannel_${message.guild.id}`, channel.id) //set id in var
     
-    message.channel.send(`Welcome Channel is seted as ${channel}`) //send success message
+    message.channel.send(`Welcome Channel is setted as ${channel}`) //send success message
   }
     if(command == "unsetwelcomechannel"){
         db.delete(`welcomechannel_${message.guild.id}`)
