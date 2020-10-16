@@ -99,6 +99,15 @@ bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully
 bot.on("shardDisconnect", (event, id) => console.log(`[SHARD] Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect...`));
 bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnecting...`));
 
+// prevent force disconnect affecting to guild queue
+bot.on("voiceStateUpdate", (mold, mnew) => {
+	if( !mold.channelID) return;
+	if( !mnew.channelID && bot.user.id == mold.id ) {
+		 const serverQueue = queue.get(mold.guild.id);
+		 if(serverQueue)  queue.delete(mold.guild.id);
+	} ;
+});
+
 bot.on("guildMemberAdd", member => {
     let chx = db.get(`welchannel_${member.guild.id}`); //defining var
   
