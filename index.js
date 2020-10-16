@@ -135,7 +135,7 @@ let font = await jimp.loadFont(jimp.FONT_SANS_32_BLACK) //We declare a 32px font
   welcome.print(font64, 265, 195, `There are now ${member.guild.memberCount} users`)
   welcome.composite(avatar, 40, 55).write('Welcome2.png') //Put the avatar on the image and create the Welcome2.png bot
   try{
-  member.guild.channels.get(wChan).send(``, { files: ["Welcome2.png"] }) //Send the image to the channel
+  member.guild.channels.cache.get(wChan).send(``, { files: ["Welcome2.png"] }) //Send the image to the channel
   }catch(e){
 	  // dont do anything if error occurs
 	  // if this occurs bot probably can't send images or messages
