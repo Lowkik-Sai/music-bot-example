@@ -441,6 +441,10 @@ let Str = message.content.slice(PREFIX.length + 2 + 1);
           .setDescription(Str)
           .setColor(`BLUE`)
       );
+    message.channel.send({embed: {
+   color: 3066993,
+   description :"Successfully Advertised!!!"
+}});
   }
     if (command === "embed" ) {
      const sayMessage = args.join(" ")
