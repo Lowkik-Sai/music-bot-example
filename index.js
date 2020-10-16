@@ -2583,7 +2583,7 @@ const member = message.guild.member(user);
 }
     if (command === "timer" ) {
 const { MessageEmbed } = require("discord.js");
-const { Timers } = require("./variable");
+const { Timers } = require("./variable.js");
     if (!args[0]) {
       return message.channel.send(
         `You did not specify the amount of time you wish to set a timer for!`
