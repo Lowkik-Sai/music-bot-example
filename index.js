@@ -335,8 +335,6 @@ bot.on("message", async (message) => { // eslint-disable-line
   color: 3066993,
   description:"Can't mute them!"
 }});
-  let muterole = message.guild.roles.cache.find(role => role.name === "muted");
-  //start of create role
   if(!muterole){
     try{
       muterole = await message.guild.roles.create({
@@ -345,11 +343,13 @@ bot.on("message", async (message) => { // eslint-disable-line
         permissions:[]
       })
       message.guild.channels.cache.forEach(async (channel, id) => {
-        await channel.overwritePermissions(muterole, {
-          SEND_MESSAGES: false,
-          ADD_REACTIONS: false
-        });
-      });
+       await channel.overwritePermissions([
+  {
+     id: muterole.id,
+     deny: ['SEND_MESSAGES', 'ADD_REACTIONS'],
+  },
+]);
+});
     }catch(e){
       console.log(e.stack);
     }
