@@ -406,8 +406,7 @@ if (!args[0])
         `You did not specify the time in seconds you wish to set this channel's slow mode too!`
       );
     if (isNaN(args[0])) return message.channel.send(`That is not a number!`);
-    let reason = args[1]
-    );
+    let reason = args[1];
     if (!reason) {
       reason == "No reason provided!";
     }
