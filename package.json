@@ -58,7 +58,7 @@
     "discord-paginationembed": "^2.1.0",
     "ms": "^2.1.2",
     "parse-ms": "^2.1.0",
-    "ytdl-core": "^3.3.0"
+    "ytdl-core": "^3.4.0"
   },
   "optionalDependencies": {
     "@discordjs/uws": "^11.149.1"
