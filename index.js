@@ -2585,21 +2585,26 @@ const member = message.guild.member(user);
 const { MessageEmbed } = require("discord.js");
 const { Timers } = require("./variable.js");
     if (!args[1]) {
-      return message.channel.send(
-        `You did not specify the amount of time you wish to set a timer for!`
-      );
+      return message.channel.send({embed: {
+   color: 3066993,
+   description:`You did not specify the amount of time you wish to set a timer for!`
+      }});
     }
     if (!args[1].endsWith("d")) {
       if (!args[1].endsWith("h")) {
         if (!args[1].endsWith("m")) {
-          return message.channel.send(
-            `You did not use the proper format for the the time!`
-          );
+          return message.channel.send({embed: {
+    color: 3066993,
+    description:`You did not use the proper format for the the time!`
+          }});
         }
       }
     }
     if (isNaN(args[1][1])) {
-      return message.channel.send(`That is not a number!`);
+      return message.channel.send({embed: {
+  color: 3066993,
+  description:`That is not a number!`
+}});
     }
     Timers.set(message.author.id + " G " + message.guild.name, {
       Guild: message.guild.name,
@@ -2609,11 +2614,12 @@ const { Timers } = require("./variable.js");
       },
       Time: ms(args[1]),
     });
-    message.channel.send(
-      `${message.author.tag} you have set a timer for ${args[1]} (${ms(
+    message.channel.send({embed: {
+  color: 3066993,
+  description:`${message.author.tag} you have set a timer for ${args[1]} (${ms(
         args[1]
       )}MS)`
-    );
+    }});
     setTimeout(() => {
       let Embed = new MessageEmbed()
         .setTitle(`Timer finished in guild ${message.guild.name}..`)
