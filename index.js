@@ -411,6 +411,20 @@ bot.on("message", async (message) => { // eslint-disable-line
     await msg.react("👍");
     await msg.react("👎");
   }
+    if (command === "advertise" || command === "ad" ) {
+let Str = message.content.slice(bot.PREFIX.length + 2 + 1);
+    if (!args[0])
+      return message.channel.send(`You did not specify your advert!`);
+    bot.channels.cache
+      .get("726260677412388934")
+      .send(
+        new MessageEmbed()
+          .setThumbnail(message.author.displayAvatarURL())
+          .setTitle(`New advertisement from ${message.author.tag}!`)
+          .setDescription(Str)
+          .setColor(`BLUE`)
+      );
+  }
     if (command === "embed" ) {
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
