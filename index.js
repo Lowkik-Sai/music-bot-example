@@ -458,11 +458,12 @@ const { Timers } = require("./variable.js");
     }});
     setTimeout(() => {
       let Embed = new MessageEmbed()
-        .setTitle(`Timer finished in guild ${message.guild.name}..`)
+        .setTitle(`Timer finished`)
         .setDescription(
           `Your timer for ${args[0]} (${ms(args[0])}MS) has finished!`
         )
-        .setColor(`GREEN`);
+        .setFooter(`${message.author.tag} `)
+        .setColor("RANDOM");
       message.author.send(Embed);
       message.channel.send(Embed);
       Timers.delete(message.author.id + " G " + message.guild.name);
