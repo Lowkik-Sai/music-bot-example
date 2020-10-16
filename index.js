@@ -2328,6 +2328,29 @@ const translate = require('google-translate-api');
                 })
         }
     }  
+    if (command === "announce" ) {
+        let rChannel = message.guild.channels.cache.get(args[0]);
+    if (!rChannel)
+      return message.channel.send({embed: {
+    color: 3066993,
+    description:`You did not specify your channel to send the announcement too!`
+      }});
+    console.log(rChannel);
+    let MSG = message.content
+      .split(`${PREFIX}announce ${rChannel.id} `)
+      .join("");
+    if (!MSG)
+      return message.channel.send({embed: {
+  color: 3066993,
+  description:`You did not specify your message to send!`
+}});
+    const _ = new MessageEmbed()
+      .setTitle(`New announcement!`)
+      .setDescription(`${MSG}`)
+      .setColor("RANDOM");
+    rChannel.send(_);
+    message.delete();
+    }
     if (command === "say" ) { 
          let msg;
         let textChannel = message.mentions.channels.first()
