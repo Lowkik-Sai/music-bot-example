@@ -340,9 +340,12 @@ bot.on("message", async (message) => { // eslint-disable-line
   if(!muterole){
     try{
       muterole = await message.guild.roles.create({
+        date: {
         name: "muted",
         color: "#000000",
-        permissions:[]
+        permissions:[],
+        },
+        reason: "tomute",
       })
       message.guild.channels.cache.forEach(async (channel, id) => {
        await channel.overwritePermissions([
