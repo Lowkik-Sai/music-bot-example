@@ -185,7 +185,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if(command === "allcommands" || command === "ac" ) {
     const acEmbed = new MessageEmbed()
          .setTitle("Commands List")
-         .setDescription(`invite \n meme \n ping \n support \n help \n args-info \n role create or delete \n mute \n announce \n oldestmember \n youngestmember \n poll \n advertise \n embed \n slowmode \n timer \n ascii \n finduser \n Blacklist \n deletewarns \n warn \n warnings \n bal \n hastebin \n beg \n daily \n profile \n rob \n roulette \n sell \n slots \n weekly \n pay \n deposit \n addmoney \n remove money \n work \n buy \n store \n store info \n withdraw \n inventory \n leaderboard \n colour \n changemy mind \n beautify \n calculate \n give me ajoke \n add role \n remove role \n answer \n clap \n suggest \n contact \n eval \n morse \n reverse \n flip \n google \n level \n pokemon \n add command \n delete command \n imdb \n rate \n kill \n translate \n covid stats \n say \n purge \n channel invite \n stats \n uptime \n leave \n setbotnick \n avatar \n carona virus \n covid checking \n serverinfo \n userinfo \n roles \n check perms \n botinfo \n emoji \n settimerinseconds \n unmute \n kick \n ban play \n search \n queue \n stop \n skip \n volume \n skip \n pause \n loop \n nowplaying \n resume`)
+         .setDescription(`invite \n meme \n ping \n report \n support \n help \n args-info \n role create or delete \n mute \n announce \n oldestmember \n youngestmember \n poll \n advertise \n embed \n slowmode \n timer \n ascii \n finduser \n Blacklist \n deletewarns \n warn \n warnings \n bal \n hastebin \n beg \n daily \n profile \n rob \n roulette \n sell \n slots \n weekly \n pay \n deposit \n addmoney \n remove money \n work \n buy \n store \n store info \n withdraw \n inventory \n leaderboard \n colour \n changemy mind \n beautify \n calculate \n give me ajoke \n add role \n remove role \n answer \n clap \n suggest \n contact \n eval \n morse \n reverse \n flip \n google \n level \n pokemon \n add command \n delete command \n imdb \n rate \n kill \n translate \n covid stats \n say \n purge \n channel invite \n stats \n uptime \n leave \n setbotnick \n avatar \n carona virus \n covid checking \n serverinfo \n userinfo \n roles \n check perms \n botinfo \n emoji \n settimerinseconds \n unmute \n kick \n ban play \n search \n queue \n stop \n skip \n volume \n skip \n pause \n loop \n nowplaying \n resume`)
          .setColor("RANDOM")
          .setTimestamp();
     message.channel.send(acEmbed)
@@ -1797,6 +1797,48 @@ const embed = new MessageEmbed()
     message.channel.send(args.map(randomizeCase).join(':clap:'));
 
     }
+    if (command === "report" ) {
+    let User = message.mentions.users.first() || null;
+
+    if (User == null) {
+      return message.channel.send(`You did not mention a user!`);
+    } else {
+      let Reason = message.content.slice(PREFIX.length + 22 + 7) || null;
+      if (Reason == null) {
+        return message.channel.send(
+          `You did not specify a reason for the report!`
+        );
+      }
+      let Avatar = User.displayAvatarURL();
+      let Channel = message.guild.channels.cache.find(
+        (ch) => ch.name === "reports"
+      );
+      if (!Channel)
+        return message.channel.send(
+          `There is no channel in this guild which is called \`reports\``
+        );
+      let Embed = new MessageEmbed()
+        .setTitle(`New report!`)
+        .setDescription(
+          `The moderator \`${message.author.tag}\` has reported the user \`${User.tag}\`! `
+        )
+        .setColor(`RED`)
+        .setThumbnail(Avatar)
+        .addFields(
+          { name: "Reporter ID", value: `${message.author.id}`, inline: true },
+          { name: "Reporter Tag", value: `${message.author.tag}`, inline: true },
+          { name: "Reported ID", value: `${User.id}`, inline: true },
+          { name: "Reported Tag", value: `${User.tag}`, inline: true },
+          { name: "Reason", value: `\`${Reason.slice(1)}\``, inline: true },
+          {
+            name: "Date (M/D/Y)",
+            value: `${new Intl.DateTimeFormat("en-US").format(Date.now())}`,
+            inline: true,
+          }
+        );
+      Channel.send(Embed);
+    }
+  }
     if (command === "suggest" ) {
        if(!args.length) {
       return message.channel.send("Please Give the Suggestion")
