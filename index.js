@@ -268,7 +268,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         `You do not have admin, ${message.author.username}`
       );
     if (args[0].toLowerCase() == "create") {
-      let rName = message.content.split(`${bot.PREFIX}role create `).join("");
+      let rName = args[1];
       let rColor;
       args.forEach((arg) => {
         if (arg.startsWith("#")) {
@@ -2738,7 +2738,7 @@ const member = message.guild.member(user);
       .setColor(`RANDOM`);
     message.channel.send(Embed);
   }
-    if(command === "settime"){
+    if(command === "settimerinseconds"){
         let Timer = args[1];
 
         if(!args[1]){
