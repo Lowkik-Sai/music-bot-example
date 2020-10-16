@@ -2823,6 +2823,13 @@ const member = message.guild.member(user);
     message.channel.send(serverembed);    
 
 }
+    if(command === "allcommands" || command === "ac" ) {
+    const ac = new MessageEmbed ()
+         .setTitle(Commands List)
+         .setDescription(invite \n meme \n ping \n support \n help \n args-info \n role create or delete \n mute \n poll \n advertise \n embed \n slowmode \n timer \n ascii \n finduser \n Blacklist \n deletewarns \n warn \n warnings \n bal \n hastebin \n beg \n daily \n profile \n rob \n roulette \n sell \n slots \n weekly \n pay \n deposit \n addmoney \n remove money \n work \n buy \n store \n store info \n withdraw \n inventory \n leaderboard \n colour \n changemy mind \n beautify \n calculate \n give me ajoke \n add role \n remove role \n answer \n clap \n suggest \n contact \n eval \n morse \n reverse \n flip \n google \n level \n pokemon \n add command \n delete command \n imdb \n rate \n kill \n translate \n covid stats \n say \n purge \n channel invite \n stats \n uptime \n leave \n setbotnick \n avatar \n carona virus \n covid checking \n serverinfo \n userinfo \n roles \n check perms \n botinfo \n emoji \n settimerinseconds \n unmute \n kick \n ban play \n search \n queue \n stop \n skip \n volume \n skip \n pause \n loop \n nowplaying \n resume)
+         .setTimestamp()
+    message.channel.send(ac)
+    }
     if(command === "emoji" ) {
     let Emojis = "";
     let EmojisAnimated = "";
