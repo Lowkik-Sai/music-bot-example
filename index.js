@@ -2581,6 +2581,22 @@ const member = message.guild.member(user);
     message.channel.send(serverembed);    
 
 }
+    if(command === "settime"){
+        let Timer = args[0];
+
+        if(!args[0]){
+            return message.channel.send("Usage: !timer + durée + s|m|h")
+        }
+
+        if(args[0] <= 0){
+            return message.channel.send("Usage: !timer + durée + s|m|h")
+        }
+
+        message.channel.send("Timer lancé pour:"+ ms(ms(Timer), {long: true}))
+        setTimeout(function(){
+            message.channel.send(message.author.toString()+ `Timer fini, il à durer: ${ms(ms(Timer), {long: true})}`)
+        }, ms(Timer));
+    }
     if (command === "timer" ) {
 const { MessageEmbed } = require("discord.js");
 const { Timers } = require("./variable.js");
