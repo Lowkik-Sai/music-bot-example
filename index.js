@@ -380,6 +380,37 @@ bot.on("message", async (message) => { // eslint-disable-line
 }});
   }, ms(mutetime));
 }
+    if (command === "poll" ) {
+    if (!message.member.permissions.has("ADMINISTRATOR"))
+      return message.channel.send({embed: {
+    color: 3066993,
+    description:`You do not have admin, ${message.author.username}`
+      }});
+    const channel =
+      message.mentions.channels.first() ||
+      message.guild.channels.cache.get(args[0]);
+    if (!channel) {
+      return message.channel.send(
+        `You did not mention / give the id of your channel!`
+      );
+    }
+    let question = message.content
+      .split(`${bot.PREFIX}poll ${channel} `)
+      .join("");
+    if (!question)
+      return message.channel.send({embed: {
+   color: 3066993,
+   description:`You did not specify your question!`
+}});
+    const Embed = new MessageEmbed()
+      .setTitle(`New poll!`)
+      .setDescription(`${question}`)
+      .setFooter(`${message.author.username} created this poll.`)
+      .setColor(`RANDOM`);
+    let msg = await bot.channels.cache.get(channel.id).send(Embed);
+    await msg.react("👍");
+    await msg.react("👎");
+  }
     if (command === "embed" ) {
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
