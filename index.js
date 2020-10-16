@@ -2705,7 +2705,7 @@ if (!args[0])
     );
   }
     if (command === "timer" ) {
-const { MessageEmbed } = require("discord.js");
+
 const { Timers } = require("./variable.js");
     if (!args[1]) {
       return message.channel.send({embed: {
