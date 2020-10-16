@@ -412,7 +412,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     await msg.react("👎");
   }
     if (command === "advertise" || command === "ad" ) {
-let Str = message.content.slice(bot.PREFIX.length + 2 + 1);
+let Str = message.content.slice(PREFIX.length + 2 + 1);
     if (!args[0])
       return message.channel.send(`You did not specify your advert!`);
     bot.channels.cache
@@ -2235,7 +2235,7 @@ const translate = require('google-translate-api');
 
       let transArg = args[0].toLowerCase();
     
-      args = args.join(' ').slice(prefix.length);
+      args = args.join(' ').slice(PREFIX.length);
       let translation;
 
       if (!Langs.includes(transArg)) return message.channel.send(`Invalid language ${message.author}! (maybe check for typos?)\nYou can see all languages with \`${prefix}translators language\`.`);
