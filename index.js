@@ -285,19 +285,6 @@ bot.on("message", async (message) => { // eslint-disable-line
     if(command == "unsetautorole"){
         db.delete(`autorole_${message.guild.id}`)
     }
-    if(command == "setwelcomechannel"){
-        let channel = message.mentions.channels.first() //mentioned channel
-
-    if(!channel) { //if channel is not mentioned
-      return message.channel.send("Please Mention the channel first")
-    }
-
-    //Now we gonna use quick.db
-
-    db.set(`welchannel_${message.guild.id}`, channel.id) //set id in var
-
-    message.channel.send(`Welcome Channel is setted as ${channel}`) //send success message
-  }
     if(command == "unsetwelcomechannel"){
         db.delete(`welcomechannel_${message.guild.id}`)
     }
@@ -468,6 +455,28 @@ let Str = message.content.slice(PREFIX.length + 2 + 1);
    description :"Successfully Advertised!!!"
 }});
   }
+    if(command == "setwelcomechannel"){
+        let permission = message.member.hasPermission("ADMINISTRATOR");
+
+if(!permission) return message.channel.send("You are missing the permission `ADMINISTRATOR`")
+
+ let cArgs = args[0]
+ 
+ if(isNaN(cArgs)) return message.channel.send("You must specify a valid id for the welcome channel!")
+	 
+ try{
+	 bot.guilds.get(message.guild.id).channels.get(cArgs).send("Welcome channel set!")
+	 
+ db.set(`${message.guild.id}`, cArgs)
+ 
+ message.channel.send("You have successfully set the welcome channel to <#" + cArgs + ">")
+return;
+ }catch(e){
+	return message.channel.send("Error: missing permissions or channel doesn't exist")
+ }
+ 
+ 
+}
     if (command === "embed" ) {
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
