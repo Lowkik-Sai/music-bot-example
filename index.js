@@ -457,7 +457,7 @@ let Str = message.content.slice(PREFIX.length + 2 + 1);
   }
     if(command == "setwelcomechannel"){
         let channel = message.mentions.channels.first() //mentioned channel
-    
+        let cArgs = message.mentions.channels.first()
     if(!channel) { //if channel is not mentioned
       return message.channel.send("Please Mention the channel first")
     }
