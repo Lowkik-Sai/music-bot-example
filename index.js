@@ -262,6 +262,69 @@ bot.on("message", async (message) => { // eslint-disable-line
     if(command == "unsetwelcomechannel"){
         db.delete(`welcomechannel_${message.guild.id}`)
     }
+    if(command === "role" ) {
+    if (!message.member.permissions.has("ADMINISTRATOR"))
+      return message.channel.send(
+        `You do not have admin, ${message.author.username}`
+      );
+    if (args[0].toLowerCase() == "create") {
+      let rName = message.content.split(`${bot.PREFIX}role create `).join("");
+      let rColor;
+      args.forEach((arg) => {
+        if (arg.startsWith("#")) {
+          rColor = arg;
+        }
+      });
+      if (!rName) {
+        return message.channel.send(
+          `You did not specify a name for your role!`
+        );
+      }
+      if (!rColor) {
+        return message.channel.send(
+          `You did not specify a color for your role!`
+        );
+      }
+      if (rColor >= 16777215)
+        return message.channel.send(
+          `That hex color range was too big! Keep it between 0 and 16777215`
+        );
+      if (rColor <= 0)
+        return message.channel.send(
+          `That hex color range was too small! Keep it between 0 and 16777215`
+        );
+      rName = rName.replace(`${rColor}`, ``);
+      let rNew = await message.guild.roles.create({
+        data: {
+          name: rName,
+          color: rColor,
+        },
+      });
+      const Embed = new MessageEmbed()
+        .setTitle(`New role!`)
+        .setDescription(
+          `${message.author.username} has created the role "${rName}"\nIts Hex Color Code: ${rColor}\nIts ID: ${rNew.id}`
+        )
+        .setColor(rColor);
+      message.channel.send(Embed);
+    } else if (args[0].toLowerCase() == "delete") {
+      let roleDelete =
+        message.guild.roles.cache.get(args[1]) ||
+        message.guild.roles.cache.find((r) => r.name == args[1]);
+      if (!roleDelete)
+        return message.channel.send(
+          `You did not specify the name or id of the role you wish to delete!`
+        );
+      roleDelete.delete();
+      const Embed1 = new MessageEmbed()
+        .setTitle(`Deleted role!`)
+        .setColor(roleDelete.color)
+        .setDescription(
+          `${message.author.username} has deleted the role "${roleDelete.name}"\nIts ID: ${roleDelete.id}\nIts Hex Color Code: ${roleDelete.color}`
+        );
+      message.channel.send(Embed1);
+    }
+  }
     if (command === "embed" ) {
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
@@ -282,6 +345,73 @@ bot.on("message", async (message) => { // eslint-disable-line
   message.channel.send(emb)
 
     }
+    if (command === "slowmode" ) {
+if (!args[0])
+      return message.channel.send(
+        `You did not specify the time in seconds you wish to set this channel's slow mode too!`
+      );
+    if (isNaN(args[0])) return message.channel.send(`That is not a number!`);
+    let reason = message.content.slice(
+      bot.PREFIX.length + 9 + args[0].length + 1
+    );
+    if (!reason) {
+      reason == "No reason provided!";
+    }
+    message.channel.setRateLimitPerUser(args[0], reason);
+    message.channel.send(
+      `Set the slowmode of this channel too **${args[0]}** with the reason: **${reason}**`
+    );
+  }
+    if (command === "timer" ) {
+
+const { Timers } = require("./variable.js");
+    if (!args[0]) {
+      return message.channel.send({embed: {
+   color: 3066993,
+   description:`You did not specify the amount of time you wish to set a timer for!`
+      }});
+    }
+    if (!args[0].endsWith("d")) {
+      if (!args[0].endsWith("h")) {
+        if (!args[0].endsWith("m")) {
+          return message.channel.send({embed: {
+    color: 3066993,
+    description:`You did not use the proper format for the the time!`
+          }});
+        }
+      }
+    }
+    if (isNaN(args[0][0])) {
+      return message.channel.send({embed: {
+  color: 3066993,
+  description:`That is not a number!`
+}});
+    }
+    Timers.set(message.author.id + " G " + message.guild.name, {
+      Guild: message.guild.name,
+      Author: {
+        Tag: message.author.tag,
+        ID: message.author.id,
+      },
+      Time: ms(args[0]),
+    });
+    message.channel.send({embed: {
+  color: 3066993,
+  description:`${message.author.tag} you have set a timer for ${args[0]} (${ms(
+        args[0]
+      )}MS)`
+    }});
+    setTimeout(() => {
+      let Embed = new MessageEmbed()
+        .setTitle(`Timer finished in guild ${message.guild.name}..`)
+        .setDescription(
+          `Your timer for ${args[0]} (${ms(args[0])}MS) has finished!`
+        )
+        .setColor(`GREEN`);
+      message.author.send(Embed);
+      Timers.delete(message.author.id + " G " + message.guild.name);
+    }, ms(args[0]));
+  }
     if (command === "ascii" ) {
         const figlet = require('figlet');
         if(!args[0]) return message.channel.send({embed: {
@@ -2608,69 +2738,6 @@ const member = message.guild.member(user);
       .setColor(`RANDOM`);
     message.channel.send(Embed);
   }
-    if(command === "role" ) {
-if (!message.member.permissions.has("ADMINISTRATOR"))
-      return message.channel.send(
-        `You do not have admin, ${message.author.username}`
-      );
-    if (args[0].toLowerCase() == "create") {
-      let rName = message.content.split(`${bot.prefix}role create `).join("");
-      let rColor;
-      args.forEach((arg) => {
-        if (arg.startsWith("#")) {
-          rColor = arg;
-        }
-      });
-      if (!rName) {
-        return message.channel.send(
-          `You did not specify a name for your role!`
-        );
-      }
-      if (!rColor) {
-        return message.channel.send(
-          `You did not specify a color for your role!`
-        );
-      }
-      if (rColor >= 16777215)
-        return message.channel.send(
-          `That hex color range was too big! Keep it between 0 and 16777215`
-        );
-      if (rColor <= 0)
-        return message.channel.send(
-          `That hex color range was too small! Keep it between 0 and 16777215`
-        );
-      rName = rName.replace(`${rColor}`, ``);
-      let rNew = await message.guild.roles.create({
-        data: {
-          name: rName,
-          color: rColor,
-        },
-      });
-      const Embed = new MessageEmbed()
-        .setTitle(`New role!`)
-        .setDescription(
-          `${message.author.username} has created the role "${rName}"\nIts Hex Color Code: ${rColor}\nIts ID: ${rNew.id}`
-        )
-        .setColor(rColor);
-      message.channel.send(Embed);
-    } else if (args[0].toLowerCase() == "delete") {
-      let roleDelete =
-        message.guild.roles.cache.get(args[1]) ||
-        message.guild.roles.cache.find((r) => r.name == args[1]);
-      if (!roleDelete)
-        return message.channel.send(
-          `You did not specify the name or id of the role you wish to delete!`
-        );
-      roleDelete.delete();
-      const Embed1 = new MessageEmbed()
-        .setTitle(`Deleted role!`)
-        .setColor(roleDelete.color)
-        .setDescription(
-          `${message.author.username} has deleted the role "${roleDelete.name}"\nIts ID: ${roleDelete.id}\nIts Hex Color Code: ${roleDelete.color}`
-        );
-      message.channel.send(Embed1);
-    }
-  }
     if(command === "settime"){
         let Timer = args[1];
 
@@ -2687,73 +2754,6 @@ if (!message.member.permissions.has("ADMINISTRATOR"))
             message.channel.send(message.author.toString()+ `Timer fini, il à durer: ${ms(ms(Timer), {long: true})}`)
         }, ms(Timer));
     }
-    if (command === "slowmode" ) {
-if (!args[0])
-      return message.channel.send(
-        `You did not specify the time in seconds you wish to set this channel's slow mode too!`
-      );
-    if (isNaN(args[0])) return message.channel.send(`That is not a number!`);
-    let reason = message.content.slice(
-      bot.prefix.length + 9 + args[0].length + 1
-    );
-    if (!reason) {
-      reason == "No reason provided!";
-    }
-    message.channel.setRateLimitPerUser(args[0], reason);
-    message.channel.send(
-      `Set the slowmode of this channel too **${args[0]}** with the reason: **${reason}**`
-    );
-  }
-    if (command === "timer" ) {
-
-const { Timers } = require("./variable.js");
-    if (!args[1]) {
-      return message.channel.send({embed: {
-   color: 3066993,
-   description:`You did not specify the amount of time you wish to set a timer for!`
-      }});
-    }
-    if (!args[1].endsWith("d")) {
-      if (!args[1].endsWith("h")) {
-        if (!args[1].endsWith("m")) {
-          return message.channel.send({embed: {
-    color: 3066993,
-    description:`You did not use the proper format for the the time!`
-          }});
-        }
-      }
-    }
-    if (isNaN(args[0][1])) {
-      return message.channel.send({embed: {
-  color: 3066993,
-  description:`That is not a number!`
-}});
-    }
-    Timers.set(message.author.id + " G " + message.guild.name, {
-      Guild: message.guild.name,
-      Author: {
-        Tag: message.author.tag,
-        ID: message.author.id,
-      },
-      Time: ms(args[1]),
-    });
-    message.channel.send({embed: {
-  color: 3066993,
-  description:`${message.author.tag} you have set a timer for ${args[1]} (${ms(
-        args[1]
-      )}MS)`
-    }});
-    setTimeout(() => {
-      let Embed = new MessageEmbed()
-        .setTitle(`Timer finished in guild ${message.guild.name}..`)
-        .setDescription(
-          `Your timer for ${args[1]} (${ms(args[1])}MS) has finished!`
-        )
-        .setColor(`GREEN`);
-      message.author.send(Embed);
-      Timers.delete(message.author.id + " G " + message.guild.name);
-    }, ms(args[1]));
-  }
     if (command === "mute" ) {
       let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
   if(!tomute) return message.reply("Couldn't find user.");
