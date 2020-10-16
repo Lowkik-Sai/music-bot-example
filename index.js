@@ -340,7 +340,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   if(!muterole){
     try{
       muterole = await message.guild.roles.create({
-        date: {
+        data: {
         name: "muted",
         color: "#000000",
         permissions:[],
