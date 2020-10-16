@@ -327,14 +327,10 @@ bot.on("message", async (message) => { // eslint-disable-line
   }
     if (command === "mute" ) {
       let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
-  if(!tomute) return message.reply({embed: {
-  color: 3066993,
-  description:"Couldn't find user."
-}});
-  if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply({embed: {
-  color: 3066993,
-  description:"Can't mute them!"
-}});
+  if(!tomute) return message.reply("Couldn't find user.");
+  if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply("Can't mute them!");
+  let muterole = message.guild.roles.cache.find(role => role.name === "muted");
+  //start of create role
   if(!muterole){
     try{
       muterole = await message.guild.roles.create({
@@ -356,23 +352,14 @@ bot.on("message", async (message) => { // eslint-disable-line
   }
   //end of create role
   let mutetime = args[1];
-  if(!mutetime) return message.reply({embed: {
-   color: 3066993,
-   description:"You didn't specify a time!"
-}});
+  if(!mutetime) return message.reply("You didn't specify a time!");
 
   await(tomute.roles.add(muterole.id));
-  message.reply({embed: {
-  color: 3066993,
-  description:`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}`
-}});
+  message.reply(`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}`);
 
   setTimeout(function(){
     tomute.roles.remove(muterole.id);
-    message.channel.send({embed: {
-   color: 306693,
-   description:`<@${tomute.id}> has been unmuted!`
-}});
+    message.channel.send(`<@${tomute.id}> has been unmuted!`);
   }, ms(mutetime));
 }
     if (command === "embed" ) {
