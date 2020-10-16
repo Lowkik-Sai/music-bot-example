@@ -3,6 +3,8 @@ const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
 const db = require("quick.db");
 const ms = require("ms");
+const fs = require("fs");
+var jimp = require('jimp');
 const Discord = require("discord.js");
 require("dotenv").config();
 require("./server.js");
@@ -108,20 +110,40 @@ bot.on("voiceStateUpdate", (mold, mnew) => {
 	} ;
 });
 
-bot.on("guildMemberAdd", member => {
-    let chx = db.get(`welchannel_${member.guild.id}`); //defining var
-  
-  if(chx === null) { //check if var have value or not
-    return;
-  }
+bot.on('guildMemberAdd', async member => {
+	
+	let wChan = db.fetch(`${member.guild.id}`)
+	
+	if(wChan == null) return;
+	
+	if(!wChan) return;
+	
+let font = await jimp.loadFont(jimp.FONT_SANS_32_BLACK) //We declare a 32px font
+  let font64 = await jimp.loadFont(jimp.FONT_SANS_64_WHITE) //We declare a 64px font
+  let bfont64 = await jimp.loadFont(jimp.FONT_SANS_64_BLACK)
+  let mask = await jimp.read('https://i.imgur.com/552kzaW.png') //We load a mask for the avatar, so we can make it a circle instead of a shape
+  let welcome = await jimp.read('http://rovettidesign.com/wp-content/uploads/2011/07/clouds2.jpg') //We load the base image
 
-  let wembed = new MessageEmbed() //define embed
-  .setAuthor(member.user.username, member.user.avatarURL())
-  .setColor("RANDOM")
-  .setThumbnail(member.user.avatarURL())
-  .setDescription(`We are very happy to have you in our server! \n\n <a:slamarrow:747023444205633536> Welcome to Among Us Official India \n\n <a:slamarrow:747023444205633536> Make sure you read <#758701472614580275> \n\n <a:slamarrow:747023444205633536> Enjoy by playing Among Us with your freinds \n\n Thank You!🙂`);
-  
-  bot.channels.cache.get(chx).send(wembed) //get channel and send embed
+  jimp.read(member.user.displayAvatarURL).then(avatar => { //We take the user's avatar
+    avatar.resize(200, 200) //Resize it
+    mask.resize(200, 200) //Resize the mask
+    avatar.mask(mask) //Make the avatar circle
+    welcome.resize(1000, 300)
+	
+  welcome.print(font64, 265, 55, `Welcome ${member.user.username}`) //We print the new user's name with the 64px font
+  welcome.print(bfont64, 265, 125, `To ${member.guild.name}`)
+  welcome.print(font64, 265, 195, `There are now ${member.guild.memberCount} users`)
+  welcome.composite(avatar, 40, 55).write('Welcome2.png') //Put the avatar on the image and create the Welcome2.png bot
+  try{
+  member.guild.channels.get(wChan).send(``, { files: ["Welcome2.png"] }) //Send the image to the channel
+  }catch(e){
+	  // dont do anything if error occurs
+	  // if this occurs bot probably can't send images or messages
+  }
+  })
+
+	
+	
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
