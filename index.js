@@ -330,7 +330,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   if(!tomute) return message.reply({embed: {
   color: 3066993,
   description:"Couldn't find user."
-}{);
+}});
   if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply({embed: {
   color: 3066993,
   description:"Can't mute them!"
