@@ -119,7 +119,7 @@ bot.on("guildMemberAdd", member => {
   .setAuthor(member.user.username, member.user.avatarURL())
   .setColor("RANDOM")
   .setThumbnail(member.user.avatarURL())
-  .setDescription(`We are very happy to have you in our server! \n\n <a:point:747023444205633536> Welcome to Among Us Official India \n\n <a:point:747023444205633536> Make sure you read <#758701472614580275> \n\n <a:point:747023444205633536> Enjoy by playing Among Us with your freinds \n\n Thank You!🙂`);
+  .setDescription(`We are very happy to have you in our server! \n\n <a:slamarrow:747023444205633536> Welcome to Among Us Official India \n\n <a:slamarrow:747023444205633536> Make sure you read <#758701472614580275> \n\n <a:slamarrow:747023444205633536> Enjoy by playing Among Us with your freinds \n\n Thank You!🙂`);
   
   bot.channels.cache.get(chx).send(wembed) //get channel and send embed
 });
