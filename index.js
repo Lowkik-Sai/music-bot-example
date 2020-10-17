@@ -80,15 +80,19 @@ bot.on('message', message => {
             if(message.content < 1) return message.reply(`The number cannot be negative! Try again`).then(sent => sent.delete(10000));
             if(message.content == number) {
                 var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
-                bot.channels.cache.find(channel=>channel.id=="763233532797124649").overwritePermissions(everyone, {
-                    VIEW_CHANNEL: true,
-                    SEND_MESSAGES: false
-                });
+                bot.channels.cache.find(channel=>channel.id=="763233532797124649").overwritePermissions([
+  {
+     id: everyone,
+     deny: ['SEND_MESSAGES', 'ADD_REACTIONS'],
+  },
+]);
                 function unlock() {
-                    bot.channels.cache.find(channel=>channel.id=="763233532797124649").overwritePermissions(everyone, {
-                        VIEW_CHANNEL: true,
-                        SEND_MESSAGES: true
-                    });
+                    bot.channels.cache.find(channel=>channel.id=="763233532797124649").overwritePermissions([
+  {
+     id: everyone,
+     deny: ['SEND_MESSAGES', 'ADD_REACTIONS'],
+  },
+]);
 		    number = Math.floor(Math.random()* Math.floor(limit));
                 }
 		message.channel.send(`<@${message.author.id}> found the correct number! It was ${number}. The channel will be unlocked in 1 minute.`);
@@ -2238,7 +2242,7 @@ message.channel.send("Fetching Informtion for API").then(msg => {
       return message.channel.send("Please give the name of movie or series")
     }
     
-    const imob = new imdb.Client({apiKey: "5e36f0db"}) //You need to paste you imdb api
+    const imob = new imdb.bot({apiKey: "5e36f0db"}) //You need to paste you imdb api
     
     let movie = await imob.get({'name': args.join(" ")})
     
@@ -3179,7 +3183,7 @@ const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHA
 	if (!message.guild.me.permissions.has(botPerms)) {
 		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
-if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
+if (!message.channel.permissionsFor(bot.user).has('MANAGE_ROLES')) {
 			return message.channel.send('Please make sure I have the `MANAGE_ROLES` permissions in this channel and retry.');
 		}
 
