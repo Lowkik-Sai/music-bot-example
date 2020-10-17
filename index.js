@@ -32,23 +32,23 @@ bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 bot.on('message', (message) => {
     var mes = message.content.split(" ");
     if(message.content == '+pick') {
-        message.reply('Picking a random number between 1 and 100');
-        num = Math.floor((Math.random() * 100) + 1);
+        message.reply('Picking a random number between 1 and 10');
+        num = Math.floor((Math.random() * 10) + 1);
         guesses = 0;
     }
     if(mes[0] == '+guess') {
         if (num == 0)
         {
-            message.reply('Picking a random number between 1 and 100');
-            num = Math.floor((Math.random() * 100) + 1);
+            message.reply('Picking a random number between 1 and 10');
+            num = Math.floor((Math.random() * 10) + 1);
             guesses = 0;
         }
         else if(mes[1] == num)
         {
             guesses++;
             message.reply('You got it! Only took ' + guesses + ' tries.');
-            message.reply('Picking a random number between 1 and 100');
-            num = Math.floor((Math.random() * 100) + 1);
+            message.reply('Picking a random number between 1 and 10');
+            num = Math.floor((Math.random() * 10) + 1);
             guesses = 0;
         }
         else if(mes[1] < num)
