@@ -3190,7 +3190,7 @@ if (!message.channel.parent) {
 			return message.channel.send('This channel is not placed under a category.');
 		}
 
-		if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
+		if (!message.channel.permissionsFor(bot.user).has('MANAGE_ROLES')) {
 			return message.channel.send('Please make sure i have the permissions MANAGE_ROLES in this channel and retry.');
 		}
 
