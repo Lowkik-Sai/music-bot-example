@@ -36,7 +36,7 @@ bot.on('message', (message) => {
         num = Math.floor((Math.random() * 10) + 1);
         guesses = 0;
     }
-    if(mes[0] == '+guess') {
+    if(mes[0] == '') {
         if (num == 0)
         {
             message.reply('Picking a random number between 1 and 10');
