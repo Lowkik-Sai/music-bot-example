@@ -100,12 +100,12 @@ bot.on('message', async message => {
    description:`The limit has been successfully changed to ${newLim} !`
 }});
     }
-        if(message.content.startsWith("+channelID")) {
+        if(message.content.startsWith("+channelid")) {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
         const args = message.content.slice(1).trim().split(/ +/g);
         const newchannelID = args.slice(1).join(" ");
         if(!newchannelID) return message.reply(`You didn't specified a new limit.`);
-        channelID = newLim;
+        channelID = newchannelID;
         message.reply({embed: {
    color: 3066993,
    description:`The channel has been successfully set to <#${newchannelID}> !Make Sure that channel is Existed in this server!`
