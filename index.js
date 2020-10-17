@@ -3030,6 +3030,12 @@ const member = message.guild.member(user);
   }
     if (command === "modeveryone" ) {
         const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+        const flags = [
+	'SEND_MESSAGES',
+	'VIEW_CHANNEL',
+];
+
+        const permissions = new Permissions(flags);
 
 	if (!message.guild.me.permissions.has(botPerms)) {
 		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
@@ -3043,6 +3049,12 @@ const member = message.guild.member(user);
     }
     if(command === "unmodeveryone" ) {
        const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+       const flags = [
+	'SEND_MESSAGES',
+	'VIEW_CHANNEL',
+];
+
+        const permissions = new Permissions(flags);
 
 	if (!message.guild.me.permissions.has(botPerms)) {
 		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
