@@ -108,7 +108,7 @@ bot.on('message', async message => {
         channelID = newchannelID;
         message.reply({embed: {
    color: 3066993,
-   description:`The channel has been successfully set to <#${newchannelID}> !Make Sure that channel is Existed in this server!`
+   description:`The channel has been successfully set to <#${newchannelID}>!\nMake Sure that channel is Existed in this server!`
 }});
     }
     if(message.author.bot) return;
@@ -126,7 +126,7 @@ bot.on('message', async message => {
 ]);
 		message.channel.send({embed: {
    color: 3066993,
-   description:`<@${message.author.id}> found the correct number! It was ${number}. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
+   description:`<@${message.author.id}> found the correct number! \n It was ${number}. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
 }});
                 await message.react('🎉');
             }
