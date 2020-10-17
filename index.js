@@ -3120,7 +3120,7 @@ if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
 				deny: ['VIEW_CHANNEL'],
 			},
 			{
-				id: client.user.id,
+				id: bot.user.id,
 				allow: ['VIEW_CHANNEL'],
 			},
 			{
@@ -3148,7 +3148,7 @@ message.guild.channels.create('private', {
 					allow: ['VIEW_CHANNEL'],
 				},
 				{
-					id: client.user.id,
+					id: bot.user.id,
 					allow: ['VIEW_CHANNEL'],
 				},
 			],
