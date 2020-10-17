@@ -112,6 +112,8 @@ bot.on("voiceStateUpdate", (mold, mnew) => {
 
 
 bot.on("guildMemberAdd", (member) => { //usage of welcome event
+  if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
+
   let chx = db.get(`welchannel_${member.guild.id}`); //defining var
   
   if(chx === null) { //check if var have value or not
@@ -244,6 +246,7 @@ await Embeds.build();
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
+    if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
 
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
@@ -3023,6 +3026,7 @@ const member = message.guild.member(user);
     user.send(`You are now unmuted from **${message.guild.name}**`)
 
   }
+    if (command === "
     if(command === "kick") {
     if (!message.guild) return;
     // Assuming we mention someone in the message, this will return the user
