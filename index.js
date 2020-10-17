@@ -118,7 +118,7 @@ bot.on("guildMemberAdd", (member) => { //usage of welcome event
     return;
   }
 
-  let wembed = new discord.MessageEmbed() //define embed
+  let wembed = new MessageEmbed() //define embed
   .setAuthor(member.user.username, member.user.avatarURL())
   .setColor("RANDOM")
   .setThumbnail(member.user.avatarURL())
@@ -188,7 +188,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if(command === "allcommands" || command === "ac" ) {
     const acEmbed = new MessageEmbed()
          .setTitle("Commands List")
-         .setDescription(`invite \n meme \n ping \n report \n support \n help \n args-info \n role create or delete \n mute \n announce \n oldestmember \n youngestmember \n poll \n advertise \n embed \n slowmode \n timer \n ascii \n finduser \n Blacklist \n deletewarns \n warn \n warnings \n bal \n hastebin \n beg \n daily \n profile \n rob \n roulette \n sell \n slots \n weekly \n pay \n deposit \n addmoney \n remove money \n work \n buy \n store \n store info \n withdraw \n inventory \n leaderboard \n colour \n changemy mind \n beautify \n calculate \n give me ajoke \n add role \n remove role \n answer \n clap \n suggest \n contact \n eval \n morse \n reverse \n flip \n google \n level \n pokemon \n add command \n delete command \n imdb \n rate \n kill \n translate \n covid stats \n say \n purge \n channel invite \n stats \n uptime \n leave \n setbotnick \n avatar \n carona virus \n covid checking \n serverinfo \n userinfo \n roles \n check perms \n botinfo \n emoji \n settimerinseconds \n unmute \n kick \n ban \n play \n search \n queue \n stop \n skip \n volume \n skip \n pause \n loop \n nowplaying \n resume`)
+         .setDescription(`invite \n meme \n ping \n report \n support \n help \n args-info \n role create or delete \n mute \n announce \n oldestmember \n youngestmember \n poll \n advertise \n embed \n slowmode \n timer \n ascii \n finduser \n Blacklist \n deletewarns \n warn \n warnings \n bal \n hastebin \n beg \n daily \n profile \n rob \n roulette \n sell \n slots \n weekly \n pay \n deposit \n addmoney \n remove money \n work \n buy \n store \n store info \n withdraw \n inventory \n leaderboard \n colour \n changemy mind \n beautify \n calculate \n give me ajoke \n add role \n remove role \n answer \n clap \n suggest \n contact \n eval \n morse \n reverse \n flip \n google \n level \n pokemon \n add command \n delete command \n imdb \n rate \n kill \n translate \n covid stats \n say \n purge \n channel invite \n stats \n uptime \n leave \n setbotnick \n avatar \n carona virus \n covid checking \n serverinfo \n userinfo \n roles \n check perms \n botinfo \n emoji \n settimerinseconds \n unmute \n kick \n ban \n play \n search \n queue \n stop \n skip \n volume \n skip \n pause \n loop \n nowplaying \n resume \n mod-everyone \n unmod-everyone \n create-mod \n check-mod \n can-kick \n make-private \n create-private \n un-private \n my-permissions \n  lock-permissions \n role-permissions `)
          .setColor("RANDOM")
          .setTimestamp();
     message.channel.send(acEmbed)
@@ -3551,6 +3551,123 @@ function play(guild, song) {
         }
     });
 }
+
+bot.on('message', message => {
+	if (message.author.bot || !message.content.startsWith('PREFIX')) return;
+	if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return;
+
+	const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+
+	if (!message.guild.me.permissions.has(botPerms)) {
+		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
+	}
+
+	if (message.content === '+mod-everyone') {
+		const everyonePerms = new Permissions(message.guild.defaultRole.permissions);
+		const newPerms = everyonePerms.add(['MANAGE_MESSAGES', 'KICK_MEMBERS']);
+
+		message.guild.defaultRole.setPermissions(newPerms.bitfield)
+			.then(() => message.channel.send('Added mod permissions to `@everyone`.'))
+			.catch(console.error);
+	} else if (message.content === '+unmod-everyone') {
+		const everyonePerms = new Permissions(message.guild.defaultRole.permissions);
+		const newPerms = everyonePerms.remove(['MANAGE_MESSAGES', 'KICK_MEMBERS']);
+
+		message.guild.defaultRole.setPermissions(newPerms.bitfield)
+			.then(() => message.channel.send('Removed mod permissions from `@everyone`.'))
+			.catch(console.error);
+	} else if (message.content === '+create-mod') {
+		if (message.guild.roles.some(role => role.name === 'Mod')) {
+			return message.channel.send('A role with the name "Mod" already exists on this server.');
+		}
+
+		message.guild.createRole({ name: 'Mod', permissions: ['MANAGE_MESSAGES', 'KICK_MEMBERS'] })
+			.then(() => message.channel.send('Created Mod role.'))
+			.catch(console.error);
+	} else if (message.content === '+check-mod') {
+		if (message.member.roles.some(role => role.name === 'Mod')) {
+			return message.channel.send('You do have a role called Mod.');
+		}
+
+		message.channel.send('You don\'t have a role called Mod.');
+	} else if (message.content === '+can-kick') {
+		if (message.member.hasPermission('KICK_MEMBERS')) {
+			return message.channel.send('You can kick members.');
+		}
+
+		message.channel.send('You cannot kick members.');
+	} else if (message.content === '+make-private') {
+		if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
+			return message.channel.send('Please make sure I have the `MANAGE_ROLES` permissions in this channel and retry.');
+		}
+
+		message.channel.replacePermissionOverwrites({
+			overwrites: [
+				{
+					id: message.guild.id,
+					deny: ['VIEW_CHANNEL'],
+				},
+				{
+					id: bot.user.id,
+					allow: ['VIEW_CHANNEL'],
+				},
+				{
+					id: message.author.id,
+					allow: ['VIEW_CHANNEL'],
+				},
+			],
+		})
+			.then(() => message.channel.send(`Made channel \`${message.channel.name}\` private.`))
+			.catch(console.error);
+	} else if (message.content === '+create-private') {
+		message.guild.createChannel('private', 'text', [
+			{
+				id: message.guild.id,
+				deny: ['VIEW_CHANNEL'],
+			},
+			{
+				id: message.author.id,
+				allow: ['VIEW_CHANNEL'],
+			},
+			{
+				id: client.user.id,
+				allow: ['VIEW_CHANNEL'],
+			},
+		])
+			.then(() => message.channel.send('Created a private channel.'))
+			.catch(console.error);
+	} else if (message.content === '+un-private') {
+		if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
+			return message.channel.send('Please make sure i have the permissions MANAGE_ROLES in this channel and retry.');
+		}
+
+		message.channel.permissionOverwrites.get(message.guild.id).delete()
+			.then(() => message.channel.send(`Made channel ${message.channel.name} public.`))
+			.catch(console.error);
+	} else if (message.content === '+my-permissions') {
+		const finalPermissions = message.channel.permissionsFor(message.member);
+
+		message.channel.send(util.inspect(finalPermissions.serialize()), { code: 'js' });
+	} else if (message.content === '+lock-permissions') {
+		if (!message.channel.parent) {
+			return message.channel.send('This channel is not placed under a category.');
+		}
+
+		if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
+			return message.channel.send('Please make sure i have the permissions MANAGE_ROLES in this channel and retry.');
+		}
+
+		message.channel.lockPermissions()
+			.then(() => {
+				message.channel.send(`Synchronized overwrites of \`${message.channel.name}\` with \`${message.channel.parent.name}\`.`);
+			})
+			.catch(console.error);
+	} else if (message.content === '+role-permissions') {
+		const roleFinalPermissions = message.channel.permissionsFor(message.member.highestRole);
+
+		message.channel.send(util.inspect(roleFinalPermissions.serialize()), { code: 'js' });
+	}
+});
 
 bot.login(process.env.BOT_TOKEN);
 
