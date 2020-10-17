@@ -82,14 +82,14 @@ bot.on('message', message => {
                 var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
                 bot.channels.cache.find(channel=>channel.id=="763233532797124649").overwritePermissions([
   {
-     id: everyone,
+     id: message.guild.id,
      deny: ['SEND_MESSAGES'],
   },
 ]);
                 function unlock() {
                     bot.channels.cache.find(channel=>channel.id=="763233532797124649").overwritePermissions([
   {
-     id: everyone.id,
+     id: message.guild.id,
      allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
