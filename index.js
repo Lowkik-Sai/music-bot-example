@@ -36,14 +36,14 @@ bot.on('message', (message) => {
         num = Math.floor((Math.random() * 10) + 1);
         guesses = 0;
     }
-    if(mes[0] == '') {
+    if(mes[0] == num) {
         if (num == 0)
         {
             message.reply('Picking a random number between 1 and 10');
             num = Math.floor((Math.random() * 10) + 1);
             guesses = 0;
         }
-        else if(mes[1] == num)
+        else if(mes[0] == num)
         {
             guesses++;
             message.reply('You got it! Only took ' + guesses + ' tries.');
@@ -51,12 +51,12 @@ bot.on('message', (message) => {
             num = Math.floor((Math.random() * 10) + 1);
             guesses = 0;
         }
-        else if(mes[1] < num)
+        else if(mes[0] < num)
         {
             message.reply(mes[1] + ' is too low');
             guesses++;
         }
-        else if(mes[1] > num)
+        else if(mes[0] > num)
         {
             message.reply(mes[1] + ' is too high');
             guesses++;
