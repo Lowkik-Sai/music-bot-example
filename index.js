@@ -158,25 +158,6 @@ bot.on("voiceStateUpdate", (mold, mnew) => {
 	} ;
 });
 
-
-bot.on("guildMemberAdd", (member) => { //usage of welcome event
-  if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
-
-  let chx = db.get(`welchannel_${member.guild.id}`); //defining var
-  
-  if(chx === null) { //check if var have value or not
-    return;
-  }
-
-  let wembed = new MessageEmbed() //define embed
-  .setAuthor(member.user.username, member.user.avatarURL())
-  .setColor("RANDOM")
-  .setThumbnail(member.user.avatarURL())
-  .setDescription(`We are very happy to have you in our server! \n\n ➡️Make Sure You Read Our Rules and Regulations! \n ➡️Be Friendly and Enjoy here by Staying \n\n 🙂Thanks for joining our server!🙂`);
-  
-  bot.channels.cache.get(chx).send(wembed) //get channel and send embed
-});
-
 bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
