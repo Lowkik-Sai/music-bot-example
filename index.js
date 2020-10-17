@@ -44,18 +44,39 @@ bot.on('message', async message => {
         	process.exit(0);
         }, 1000);
     }
-    if(message.content == "+viewnumb") {
+    if(message.content == "+viewnumber") {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
-        message.reply(`The current number is ${number}`);
+        message.author.send({embed: {
+   color: 3066993,
+   description:`The current number is ${number}`
+}});
+        message.reply({embed: {
+   color: 3066993,
+   description`The current number is ${number}`
+}});
     }
-    if(message.content == "+viewlim") {
+    if(message.content == "+viewlimit") {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
-        message.reply(`The current limit is ${limit}`);
+        message.author.send({embed: {
+   color: 3066993,
+   description:`The current limit is ${limit}`
+}});
+        message.reply({embed: {
+   color: 3066993,
+   description:`The current limit is ${limit}`
+}});
     }
     if(message.content == "+reroll") {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
         number = Math.floor(Math.random()* Math.floor(limit));
-        message.author.send(`The new number is ${number}`);
+        message.author.send({embed: {
+   color: 3066993,
+   description:`The new number is ${number}`
+}});
+        message.reply({embed: {
+   color: 3066993,
+   description:`The new number is ${number}`
+}});
     }
     if(message.content.startsWith("+number")) {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
@@ -63,7 +84,10 @@ bot.on('message', async message => {
         const newNumb = args.slice(1).join(" ");
         if(!newNumb) return message.reply(`You didn't specified a new number.`);
         number = newNumb;
-        message.reply(`The number has been successfully changed to ${newNumb}!`);
+        message.reply({embed: {
+   color: 3066993,
+   description:`The number has been successfully changed to ${newNumb}!`
+}});
     }
 	if(message.content.startsWith("+limit")) {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
@@ -71,7 +95,10 @@ bot.on('message', async message => {
         const newLim = args.slice(1).join(" ");
         if(!newLim) return message.reply(`You didn't specified a new limit.`);
         limit = newLim;
-        message.reply(`The limit has been successfully changed to ${newLim} !`);
+        message.reply({embed: {
+   color: 3066993,
+   description:`The limit has been successfully changed to ${newLim} !`
+}});
     }
     if(message.author.bot) return;
     if(message.channel.id === channelID) {
@@ -95,7 +122,10 @@ bot.on('message', async message => {
 ]);
 		    number = Math.floor(Math.random()* Math.floor(limit));
                 }
-		message.channel.send(`<@${message.author.id}> found the correct number! It was ${number}. The channel will be unlocked in 1 minute.`);
+		message.channel.send({embed: {
+   color: 3066993,
+   description:`<@${message.author.id}> found the correct number! It was ${number}. The channel will be automatically unlocked in 1 minute.`
+}});
                 await message.react('🎉');
                 setTimeout(unlock, 60000);
             }
