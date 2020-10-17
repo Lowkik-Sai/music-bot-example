@@ -111,27 +111,20 @@ bot.on("voiceStateUpdate", (mold, mnew) => {
 });
 
 
-bot.on("guildMemberAdd",async member => {
-
-  let  channel  =  bot.channels.cache.get("763233532797124649")
-  let  font  =  await jimp.loadFont(jimp.FONT_SANS_32_BLACK)
-  let  mask  =  await jimp.read('mascara.png')
-  let  bottom  =  await jimp.read('fundo.png')
+bot.on("guildMemberAdd", (member) => { //usage of welcome event
+  let chx = db.get(`welchannel_${member.guild.id}`); //defining var
   
-  jimp . read ( member . user . displayAvatarURL ) . then ( avatar  =>  {
-  avatar . resize ( 130 ,  130 )
-  mask . resize ( 130 ,  130 )
-  avatar . mask ( mask )
+  if(chx === null) { //check if var have value or not
+    return;
+  }
 
-  background.print(font,170,175,member.user.username)
-  background.composite( avatar,40,90 ).write('bemvindo.png')
-  channel.send (`` , { files : [ "bemvindo.png" ] })
+  let wembed = new discord.MessageEmbed() //define embed
+  .setAuthor(member.user.username, member.user.avatarURL())
+  .setColor("RANDOM")
+  .setThumbnail(member.user.avatarURL())
+  .setDescription(`We are very happy to have you in our server! \n\n ➡️Make Sure You Read Our Rules and Regulations! \n ➡️Be Friendly and Enjoy here by Staying \n\n 🙂Thanks for joining our server!🙂`);
   
-  console.log('Image sent to Discord')
-  })
-  .catch(err => {
-  console.log('error avatar')
-  })
+  bot.channels.cache.get(chx).send(wembed) //get channel and send embed
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
@@ -273,6 +266,19 @@ bot.on("message", async (message) => { // eslint-disable-line
     if(command == "unsetautorole"){
         db.delete(`autorole_${message.guild.id}`)
     }
+    if(command == "setwelcomechannel"){
+        let channel = message.mentions.channels.first() //mentioned channel
+    
+    if(!channel) { //if channel is not mentioned
+      return message.channel.send("Please Mention the channel first")
+    }
+    
+    //Now we gonna use quick.db
+    
+    db.set(`welchannel_${message.guild.id}`, channel.id) //set id in var
+    
+    message.channel.send(`Welcome Channel is seted as ${channel}`) //send success message
+  }
     if(command == "unsetwelcomechannel"){
         db.delete(`welcomechannel_${message.guild.id}`)
     }
@@ -443,28 +449,6 @@ let Str = message.content.slice(PREFIX.length + 2 + 1);
    description :"Successfully Advertised!!!"
 }});
   }
-    if(command == "setwelcomechannel"){
-        let permission = message.member.hasPermission("ADMINISTRATOR");
-
-if(!permission) return message.channel.send("You are missing the permission `ADMINISTRATOR`")
-
- let cArgs = args[0]
- 
- if(isNaN(cArgs)) return message.channel.send("You must specify a valid id for the welcome channel!")
-	 
- try{
-	 bot.guilds.get(message.guild.id).channels.get(cArgs).send("Welcome channel set!")
-	 
- db.set(`${message.guild.id}`, cArgs)
- 
- message.channel.send("You have successfully set the welcome channel to <#" + cArgs + ">")
-return;
- }catch(e){
-	return message.channel.send("Error: missing permissions or channel doesn't exist")
- }
- 
- 
-}
     if (command === "embed" ) {
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
