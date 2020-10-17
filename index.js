@@ -72,6 +72,12 @@ bot.on('guildMemberAdd', async(member) => {
 	channel.send(`Welcome to the server, ${member}!`, attachment);
 });
 
+bot.on('message', async message => {
+	if (message.content === '+join') {
+		bot.emit('guildMemberAdd', message.member || await message.guild.fetchMember(message.author));
+	}
+});
+
 bot.on('guildCreate', async guild => {
 	const fetchedLogs = await guild.fetchAuditLogs({
 		limit: 1,
