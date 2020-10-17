@@ -113,7 +113,7 @@ bot.on("voiceStateUpdate", (mold, mnew) => {
 
 bot.on("guildMemberAdd",async member => {
 
-  let  channel  =  bot.channels.get("763233532797124649")
+  let  channel  =  bot.channels.cache.get("763233532797124649")
   let  font  =  await jimp.loadFont(jimp.FONT_SANS_32_BLACK)
   let  mask  =  await jimp.read('mascara.png')
   let  bottom  =  await jimp.read('fundo.png')
