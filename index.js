@@ -52,7 +52,7 @@ bot.on('message', async message => {
 }});
         message.reply({embed: {
    color: 3066993,
-   description`The current number is ${number}`
+   description:`The current number is ${number}`
 }});
     }
     if(message.content == "+viewlimit") {
