@@ -83,14 +83,14 @@ bot.on('message', message => {
                 bot.channels.cache.find(channel=>channel.id=="763233532797124649").overwritePermissions([
   {
      id: everyone,
-     deny: ['SEND_MESSAGES', 'ADD_REACTIONS'],
+     deny: ['SEND_MESSAGES'],
   },
 ]);
                 function unlock() {
                     bot.channels.cache.find(channel=>channel.id=="763233532797124649").overwritePermissions([
   {
-     id: everyone,
-     deny: ['SEND_MESSAGES', 'ADD_REACTIONS'],
+     id: everyone.id,
+     allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
 		    number = Math.floor(Math.random()* Math.floor(limit));
