@@ -6,6 +6,7 @@ const ytdl = require("ytdl-core");
 const db = require("quick.db");
 const ms = require("ms");
 const fs = require("fs");
+const Canvas = require('canvas');
 var jimp = require('jimp');
 const Discord = require("discord.js");
 require("dotenv").config();
@@ -18,7 +19,6 @@ const bot = new Client({
 const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
-const Canvas = require('canvas');
 const applyText = (canvas, text) => {
 	const ctx = canvas.getContext('2d');
 	let fontSize = 70;
