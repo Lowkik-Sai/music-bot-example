@@ -124,21 +124,11 @@ bot.on('message', async message => {
      deny: ['SEND_MESSAGES'],
   },
 ]);
-                function unlock() {
-                    bot.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
-  {
-     id: message.guild.id,
-     allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
-  },
-]);
-		    number = Math.floor(Math.random()* Math.floor(limit));
-                }
 		message.channel.send({embed: {
    color: 3066993,
-   description:`<@${message.author.id}> found the correct number! It was ${number}. The channel will be automatically unlocked in 1 minute.`
+   description:`<@${message.author.id}> found the correct number! It was ${number}. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
 }});
                 await message.react('🎉');
-                setTimeout(unlock, 60000);
             }
         } else return
     }
