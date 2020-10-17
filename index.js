@@ -36,9 +36,9 @@ let number = Math.floor(Math.random()* Math.floor(limit)); // You can custom it 
 let ownerID = '654669770549100575';
 let channelID = '763233532797124649';
 
-bot.on('message', message => {
+bot.on('message', async message => {
     if(message.content == "+restart") {
-        if(!message.author.id == ownerID) return message.reply(`You don't have the permission to run this command.`);
+        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
         message.react('✅');
         setTimeout(function() {
         	process.exit(0);
@@ -96,6 +96,7 @@ bot.on('message', message => {
 		    number = Math.floor(Math.random()* Math.floor(limit));
                 }
 		message.channel.send(`<@${message.author.id}> found the correct number! It was ${number}. The channel will be unlocked in 1 minute.`);
+                await message.react('🎉');
                 setTimeout(unlock, 60000);
             }
         } else return
