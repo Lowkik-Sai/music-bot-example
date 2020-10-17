@@ -112,37 +112,39 @@ bot.on("voiceStateUpdate", (mold, mnew) => {
 
 
 bot.on('guildMemberAdd', async member => {
-    
-    let wChan = db.fetch(`${member.guild.id}`)
-
+	
+	let wChan = db.fetch(`${member.guild.id}`)
+	
 	if(wChan == null) return;
-
+	
 	if(!wChan) return;
-    
-let font = await jimp.loadFont(jimp.FONT_SANS_64_BLACK) //We declare a 32px font
-  let font64 = await jimp.loadFont(jimp.FONT_SANS_64_WHITE)//We declare a 64px font
-  let font64b = await jimp.loadFont(jimp.FONT_SANS_64_WHITE)
+	
+let font = await jimp.loadFont(jimp.FONT_SANS_32_BLACK) //We declare a 32px font
+  let font64 = await jimp.loadFont(jimp.FONT_SANS_64_WHITE) //We declare a 64px font
   let bfont64 = await jimp.loadFont(jimp.FONT_SANS_64_BLACK)
   let mask = await jimp.read('https://i.imgur.com/552kzaW.png') //We load a mask for the avatar, so we can make it a circle instead of a shape
   let welcome = await jimp.read('http://rovettidesign.com/wp-content/uploads/2011/07/clouds2.jpg') //We load the base image
+
   jimp.read(member.user.displayAvatarURL).then(avatar => { //We take the user's avatar
     avatar.resize(200, 200) //Resize it
     mask.resize(200, 200) //Resize the mask
     avatar.mask(mask) //Make the avatar circle
     welcome.resize(1000, 300)
-    
-  welcome.print(font64, 265, 35, `Bienvenido ${member.user.username} a`) //We print the new user's name with the 64px font
-  welcome.print(bfont64, 265, 105, ` ${member.guild.name}`)
-  welcome.print(font64, 265, 175, `Gracias a ti ya somos `)
-  welcome.print(font64b, 265, 230, `${member.guild.memberCount} usuarios`)
-  welcome.composite(avatar, 40, 45).write('Welcome2.png') //Put the avatar on the image and create the Welcome2.png bot
-    try{
+	
+  welcome.print(font64, 265, 55, `Welcome ${member.user.username}`) //We print the new user's name with the 64px font
+  welcome.print(bfont64, 265, 125, `To ${member.guild.name}`)
+  welcome.print(font64, 265, 195, `There are now ${member.guild.memberCount} users`)
+  welcome.composite(avatar, 40, 55).write('Welcome2.png') //Put the avatar on the image and create the Welcome2.png bot
+  try{
   member.guild.channels.get(wChan).send(``, { files: ["Welcome2.png"] }) //Send the image to the channel
   }catch(e){
-      // dont do anything if error occurs
-      // if this occurs bot probably can't send images or messages
+	  // dont do anything if error occurs
+	  // if this occurs bot probably can't send images or messages
   }
   })
+
+	
+	
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
@@ -455,21 +457,27 @@ let Str = message.content.slice(PREFIX.length + 2 + 1);
 }});
   }
     if(command == "setwelcomechannel"){
-        let channel = message.mentions.channels.first() //mentioned channel
-        let cArgs = message.mentions.channels.first()
-    if(!channel) { //if channel is not mentioned
-      return message.channel.send("Please Mention the channel first")
-    }
-    
-    //Now we gonna use quick.db
-    db.set(`${message.guild.id}`, cArgs)
-    db.set(`welchannel_${message.guild.id}`, channel.id) //set id in var
-    
-    message.channel.send(`Welcome Channel is setted as ${channel}`) //send success message
-  }
-    if(command == "unsetwelcomechannel"){
-        db.delete(`welcomechannel_${message.guild.id}`)
-    }
+        let permission = message.member.hasPermission("ADMINISTRATOR");
+
+if(!permission) return message.channel.send("You are missing the permission `ADMINISTRATOR`")
+
+ let cArgs = args[0]
+ 
+ if(isNaN(cArgs)) return message.channel.send("You must specify a valid id for the welcome channel!")
+	 
+ try{
+	 bot.guilds.get(message.guild.id).channels.get(cArgs).send("Welcome channel set!")
+	 
+ db.set(`${message.guild.id}`, cArgs)
+ 
+ message.channel.send("You have successfully set the welcome channel to <#" + cArgs + ">")
+return;
+ }catch(e){
+	return message.channel.send("Error: missing permissions or channel doesn't exist")
+ }
+ 
+ 
+}
     if (command === "embed" ) {
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
