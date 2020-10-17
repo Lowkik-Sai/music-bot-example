@@ -38,7 +38,7 @@ bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 },10000);
 
 
-bot.on('guildMemberAdd', async member => {
+bot.on('guildMemberAdd', async(bot, message, member) => {
 	const channel = member.guild.channels.cache.find(ch => ch.name === 'general');
 	if (!channel) return;
 
@@ -72,7 +72,7 @@ bot.on('guildMemberAdd', async member => {
 	channel.send(`Welcome to the server, ${member}!`, attachment);
 });
 
-bot.on('message', async message => {
+bot.on('message', async(bot, message) => {
 	if (message.content === '!join') {
 		bot.emit('guildMemberAdd', message.member || await message.guild.fetchMember(message.author));
 	}
