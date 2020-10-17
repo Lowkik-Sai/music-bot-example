@@ -39,7 +39,7 @@ bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 
 
 bot.on('guildMemberAdd', async member => {
-	const channel = member.guild.channels.find(ch => ch.name === 'general');
+	const channel = member.guild.channels.cache.find(ch => ch.name === 'general');
 	if (!channel) return;
 
 	const canvas = Canvas.createCanvas(700, 250);
