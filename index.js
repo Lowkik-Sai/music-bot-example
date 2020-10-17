@@ -85,7 +85,7 @@ bot.on('message', message => {
                     SEND_MESSAGES: false
                 });
                 function unlock() {
-                    bot.channels.find("id", channelID).overwritePermissions(everyone, {
+                    bot.channels.cache.find("id", channelID).overwritePermissions(everyone, {
                         VIEW_CHANNEL: true,
                         SEND_MESSAGES: true
                     });
