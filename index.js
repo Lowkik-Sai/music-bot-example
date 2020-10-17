@@ -33,9 +33,8 @@ bot.on("ready", () => {
 
 let limit = 2000; // You can change it through /limit command
 let number = Math.floor(Math.random()* Math.floor(limit)); // You can custom it through /number command and reroll it through /reroll
-let ownerID = 'put your own user ID here';
-let channelID = 'put the channel ID where you want the game';
-let token = `put your bot's token here`
+let ownerID = '654669770549100575';
+let channelID = '763233532797124649';
 
 bot.on('message', message => {
     if(message.content == "/restart") {
