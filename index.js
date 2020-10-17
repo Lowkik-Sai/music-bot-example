@@ -80,7 +80,7 @@ bot.on('message', message => {
             if(message.content < 1) return message.reply(`The number cannot be negative! Try again`).then(sent => sent.delete(10000));
             if(message.content == number) {
                 var everyone =  message.guild.roles.cache.find(e => e.name === '@everyone');
-                bot.channels.find("id", channelID).overwritePermissions(everyone, {
+                bot.channels.cache.find("id", channelID).overwritePermissions(everyone, {
                     VIEW_CHANNEL: true,
                     SEND_MESSAGES: false
                 });
