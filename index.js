@@ -80,12 +80,12 @@ bot.on('message', message => {
             if(message.content < 1) return message.reply(`The number cannot be negative! Try again`).then(sent => sent.delete(10000));
             if(message.content == number) {
                 var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
-                bot.channels.cache.find(c => c.id === channelID).overwritePermissions(everyone, {
+                bot.channels.cache.find(channel=>channel.id=="763233532797124649").overwritePermissions(everyone, {
                     VIEW_CHANNEL: true,
                     SEND_MESSAGES: false
                 });
                 function unlock() {
-                    bot.channels.cache.find(c => c.id === channelID).overwritePermissions(everyone, {
+                    bot.channels.cache.find(channel=>channel.id=="763233532797124649").overwritePermissions(everyone, {
                         VIEW_CHANNEL: true,
                         SEND_MESSAGES: true
                     });
