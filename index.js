@@ -37,27 +37,27 @@ let ownerID = '654669770549100575';
 let channelID = '763233532797124649';
 
 bot.on('message', message => {
-    if(message.content == "/restart") {
+    if(message.content == "+restart") {
         if(!message.author.id == ownerID) return message.reply(`You don't have the permission to run this command.`);
         message.react('✅');
         setTimeout(function() {
         	process.exit(0);
         }, 1000);
     }
-    if(message.content == "/viewnumb") {
+    if(message.content == "+viewnumb") {
         if(!message.author.id == ownerID) return message.reply(`You don't have the permission to run this command.`);
         message.reply(`The current number is ${number}`);
     }
-    if(message.content == "/viewlim") {
+    if(message.content == "+viewlim") {
         if(!message.author.id == ownerID) return message.reply(`You don't have the permission to run this command.`);
         message.reply(`The current limit is ${limit}`);
     }
-    if(message.content == "/reroll") {
+    if(message.content == "+reroll") {
         if(!message.author.id == ownerID) return message.reply(`You don't have the permission to run this command.`);
         number = Math.floor(Math.random()* Math.floor(limit));
         message.author.send(`The new number is ${number}`);
     }
-    if(message.content.startsWith("/number")) {
+    if(message.content.startsWith("+number")) {
         if(!message.author.id == ownerID) return message.reply(`You don't have the permission to run this command.`);
         const args = message.content.slice(1).trim().split(/ +/g);
         const newNumb = args.slice(1).join(" ");
@@ -65,7 +65,7 @@ bot.on('message', message => {
         number = newNumb;
         message.reply(`The number has been successfully changed to ${newNumb}!`);
     }
-	if(message.content.startsWith("/limit")) {
+	if(message.content.startsWith("+limit")) {
         if(!message.author.id == ownerID) return message.reply(`You don't have the permission to run this command.`);
         const args = message.content.slice(1).trim().split(/ +/g);
         const newLim = args.slice(1).join(" ");
@@ -79,7 +79,7 @@ bot.on('message', message => {
             if(message.content > limit) return message.reply(`The number is between 1 and ${limit}! Try again`).then(sent => sent.delete(10000));
             if(message.content < 1) return message.reply(`The number cannot be negative! Try again`).then(sent => sent.delete(10000));
             if(message.content == number) {
-                var everyone =  message.guild.roles.find("name", "@everyone");
+                var everyone =  message.guild.roles.cache.find("name", "@everyone");
                 bot.channels.find("id", channelID).overwritePermissions(everyone, {
                     VIEW_CHANNEL: true,
                     SEND_MESSAGES: false
