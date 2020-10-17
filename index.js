@@ -3162,7 +3162,7 @@ const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHA
 	if (!message.guild.me.permissions.has(botPerms)) {
 		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
-if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
+if (!message.channel.permissionsFor(bot.user).has('MANAGE_ROLES')) {
 			return message.channel.send('Please make sure i have the permissions MANAGE_ROLES in this channel and retry.');
 		}
 
