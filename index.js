@@ -115,8 +115,6 @@ bot.on("voiceStateUpdate", (mold, mnew) => {
 });
 
 bot.on("guildMemberAdd", (member) => { //usage of welcome event
-  if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
-
   let chx = db.get(`welchannel_${member.guild.id}`); //defining var
   
   if(chx === null) { //check if var have value or not
