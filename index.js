@@ -12,7 +12,6 @@ const Discord = require("discord.js");
 require("dotenv").config();
 require("./server.js");
 
-bot.config = require('./config.json');
 const bot = new Client({
     disableMentions: "everyone"
 });
@@ -20,6 +19,7 @@ const bot = new Client({
 const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
+bot.config = require('./config.json');
 
 setInterval(function(){
 let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
