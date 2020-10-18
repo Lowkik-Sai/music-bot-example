@@ -129,6 +129,7 @@ bot.on('message', async message => {
    description:`<@${message.author.id}> found the correct number! \n It was ${number}. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
 }});
                 await message.react('🎉');
+                db.add(`money_${message.guild.id}_${message.author.id}`, 100)
             }
         } else return
     }
