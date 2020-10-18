@@ -521,7 +521,7 @@ notAtPos (nap) > Only keeps all numbers without a specific number at the chosen 
 		}
 		else if (type === 'smallerthan' || type === 'st') {
 			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${PREFIX}hint help)`);
-			bot.toTry = client.toTry.filter(value => value <= number);
+			bot.toTry = bot.toTry.filter(value => value <= number);
 			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers bigger than ${number}.`);
 		}
 		else if (type === 'isodd' || type === 'io') {
