@@ -472,7 +472,7 @@ isOdd (io) > Keeps all odd numbers.
 hasMultiple (hm) > Keeps all numbers with multiple occurrences of the chosen number.
 notHasMultiple (nhm) > Removes all numbers with multiple occurrences of the chosen number.
 atPos (ap) > Only keeps all numbers with a specific number at the chosen position.
-		   > Usage : ${config.prefix}hint atPos [position] [number]
+		   > Usage : ${PREFIX}hint atPos [position] [number]
 notAtPos (nap) > Only keeps all numbers without a specific number at the chosen position.
 =====================================================================
 `);
