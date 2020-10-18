@@ -582,7 +582,7 @@ const logger = require('./logger.js');
 			bot.toTry = [...Array(range + 1).keys()]; bot.toTry.shift();
 		}
 
-		try messages.last(bot, message.channel);
+		try messages.fetch(bot, message.channel);
 		startWatching(bot, message);
 
 		logger.info(`Starting a new guessing session in ${bot.watchingChannel.name} ! ${bot.toTry.length} guesses to go !`);
