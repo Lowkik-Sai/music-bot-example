@@ -492,7 +492,7 @@ const logger = require('./logger.js');
 
 			// Removes every values that were used in the saved session.
 			const toResume = JSON.parse(readFileSync('./toTry.json'));
-			client.toTry = bot.toTry.filter(value => toResume.includes(value));
+			bot.toTry = bot.toTry.filter(value => toResume.includes(value));
 			return logger.info(`Successfully removed the previously tried values. ${bot.toTry.length} numbers left !`);
 		}
 		catch (e) { return logger.error('An error occurred : ' + e); }
