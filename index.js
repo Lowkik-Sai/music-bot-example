@@ -124,6 +124,7 @@ bot.on('message', async message => {
      deny: ['SEND_MESSAGES'],
   },
 ]);
+                number = Math.floor(Math.random()* Math.floor(limit));
 		message.channel.send({embed: {
    color: 3066993,
    description:`<@${message.author.id}> found the correct number! \n It was ${number}. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
