@@ -456,7 +456,113 @@ let Str = message.content.slice(PREFIX.length + 2 + 1);
    description :"Successfully Advertised!!!"
 }});
   }
-    if (command === "start" ) {
+    if (command === "pausegtn" ) {
+const { saveAttempts, startGuessing } = require('./functions.js');
+const logger = require('./logger.js');
+
+		if (!bot.toTry) return logger.error('You need to start a session before using the pause command.');
+
+		if (bot.toTryLoop) {
+			clearTimeout(bot.toTryLoop); delete bot.toTryLoop; saveAttempts(bot);
+			return logger.info('Successfully paused the guesses. Use the pause (or resume) command again to resume.');
+		}
+		else { startGuessing(bot); return logger.info('Successfully resumed the guesses. Use the pause command again time to pause.'); }
+	}
+    if (command === "resumegtn" ) {
+const { startGuessing, startWatching, tryLastMessages } = require('./functions.js');
+const { existsSync, readFileSync } = require('fs');
+const logger = require('./logger.js');
+
+		try {
+			if (!existsSync('./toTry.json')) return logger.error('Could not find anything to resume.');
+			if (!bot.toTry) {
+				const range = !isNaN(parseInt(bot.config.defaultRange)) ? bot.config.defaultRange : 1000000;
+				bot.toTry = [...Array(range + 1).keys()]; bot.toTry.shift();
+				bot.watchingChannel = message.channel;
+
+				setTimeout(() => {
+					startGuessing(bot);
+					startWatching(bot, message);
+					tryLastMessages(bot, message.channel);
+				}, 2500);
+			}
+			if (!bot.toTryLoop) {
+				startGuessing(bot);
+			}
+
+			// Removes every values that were used in the saved session.
+			const toResume = JSON.parse(readFileSync('./toTry.json'));
+			client.toTry = bot.toTry.filter(value => toResume.includes(value));
+			return logger.info(`Successfully removed the previously tried values. ${bot.toTry.length} numbers left !`);
+		}
+		catch (e) { return logger.error('An error occurred : ' + e); }
+
+	}
+    if (command === "savegtn" ) {
+const { saveAttempts } = require('./functions.js');
+const logger = require('./logger.js');
+
+		if (!bot.toTry) return logger.error('You need to start a session before using the save command.');
+		return saveAttempts(bot, true);
+	}
+    if (command === "statsgtn" ) {
+const chalk = require('chalk');
+
+		const uptime = bot.watchingSince ? (+new Date() - bot.watchingSince) : 0;
+		const totalAtt = bot.attempts ? bot.attempts.bot + bot.attempts.users : 0;
+		return console.log(`${chalk.gray('==================================')}
+${chalk.cyan('= Guessing bot =')}
+Guessing for  : ${chalk.yellow((uptime / 1000 / 60).toFixed(2))} min
+Numbers tried : 
+${chalk.cyanBright('- Bot   :')} ${chalk.yellow(bot.attempts ? bot.attempts.bot : 0)}
+${chalk.cyanBright('- Users :')} ${chalk.yellow(bot.attempts ? bot.attempts.users : 0)}
+${chalk.cyanBright('- Total :')} ${chalk.yellow(totalAtt)} | ~${chalk.yellow((totalAtt / (uptime / 1000)).toFixed(2))}/s
+Numbers left : ${chalk.yellow(bot.toTry ? bot.toTry.length : '0')}
+Prob. next try correct : ${chalk.yellow(bot.toTry ? ((1 / bot.toTry.length) * 100).toFixed(4) : '0.0000')}%
+${chalk.gray('==================================')}`);
+	}
+    if (command === "watchgtn" ) {
+const { startWatching, stopGuessing, tryLastMessages } = require('./functions.js');
+const logger = require('./logger.js');
+
+		if (bot.isWatching && !bot.toTryLoop) return logger.error(`Could not start watching for guesses in ${message.guild.name}. It seems that the bot is already watching somewhere else.`);
+
+		if (!bot.toTry) {
+			// Sets the game's range
+			let range = bot.config.defaultRange;
+			if (args[0]) {
+				const newRange = parseInt(args[0]);
+				if (!isNaN(newRange) && newRange >= 2 && newRange <= 1000000) range = newRange;
+				else logger.error('The input range seems to be incorrect. Switching to default one.');
+			}
+
+			// Array of all possible numbers in given range
+			bot.toTry = [...Array(range + 1).keys()]; bot.toTry.shift();
+		}
+		else {
+			const bckp = bot.toTry;
+			stopGuessing(bot);
+			bot.toTry = bckp;
+			logger.info('Switching from guessing to watching...');
+		}
+		startWatching(bot, message);
+		tryLastMessages(bot, message.channel);
+
+		return logger.info(`Started a new watching session in ${bot.watchingChannel.name} ! ${bot.toTry.length} numbers left.`);
+
+	}
+    if (command === "stopgtn" ) {
+const { saveAttempts, stopGuessing, stopWatching } = require('./functions.js');
+const logger = require('./logger.js');
+
+		if (!bot.toTry) return logger.error('Could not stop : The bot is not trying to find any answers yet !');
+
+		if (bot.config.saveBeforeStop) saveAttempts(bot, true);
+		stopGuessing(bot);
+		stopWatching(bot);
+		return logger.info('Successfully stopped the guessing bot.');
+	}
+    if (command === "startgtn" ) {
 const { startGuessing, startWatching, tryLastMessages } = require('./functions.js');
 const logger = require('./logger.js');
 
