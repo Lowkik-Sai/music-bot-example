@@ -129,7 +129,7 @@ bot.on('message', async message => {
    description:`<@${message.author.id}> found the correct number! \n It was ${number}. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
 }});
                 await message.react('🎉');
-                db.add(`money_${message.guild.id}_${message.author.id}`, 100)
+                db.add(`realmoney_${message.guild.id}_${message.author.id}`, 50)
             }
         } else return
     }
@@ -875,12 +875,16 @@ const { Timers } = require("./variable.js");
 
   if (bal === null) bal = 0;
 
+  let realmoney = db.fetch(`realmoney_${message.guild.id}_${user.id}`)
+
+  if (realmoney === null) realmoney = 0;
+
   let bank = await db.fetch(`bank_${message.guild.id}_${user.id}`)
   if (bank === null) bank = 0;
 
   let moneyEmbed = new MessageEmbed()
   .setColor("RANDOM")
-  .setDescription(`**${user}'s Balance**\n\nPocket: ${bal}\nBank: ${bank}`);
+  .setDescription(`**${user}'s Balance**\n\nPocket: ${bal}\nBank: ${bank}\nReal Money: ${realmoney}`);
   message.channel.send(moneyEmbed)
 }
     if (command === "hastebin" ) {
