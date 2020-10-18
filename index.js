@@ -31,109 +31,6 @@ bot.on("ready", () => {
     console.log("GuessTheNumber is Ready!");
 });
 
-let limit = 2000; // You can change it through /limit command
-let number = Math.floor(Math.random()* Math.floor(limit)); // You can custom it through /number command and reroll it through /reroll
-let ownerID = '654669770549100575';
-let channelID = '763233532797124649';
-
-bot.on('message', async message => {
-    if(message.content == "+restart") {
-        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
-        message.react('✅');
-        setTimeout(function() {
-        	process.exit(0);
-        }, 1000);
-    }
-    if(message.content == "+viewnumber") {
-        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
-        message.author.send({embed: {
-   color: 3066993,
-   description:`The current number is ${number}`
-}});
-        message.reply({embed: {
-   color: 3066993,
-   description:`The current number is ${number}`
-}});
-    }
-    if(message.content == "+viewlimit") {
-        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
-        message.author.send({embed: {
-   color: 3066993,
-   description:`The current limit is ${limit}`
-}});
-        message.reply({embed: {
-   color: 3066993,
-   description:`The current limit is ${limit}`
-}});
-    }
-    if(message.content == "+reroll") {
-        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
-        number = Math.floor(Math.random()* Math.floor(limit));
-        message.author.send({embed: {
-   color: 3066993,
-   description:`The new number is ${number}`
-}});
-        message.reply({embed: {
-   color: 3066993,
-   description:`The new number is ${number}`
-}});
-    }
-    if(message.content.startsWith("+number")) {
-        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
-        const args = message.content.slice(1).trim().split(/ +/g);
-        const newNumb = args.slice(1).join(" ");
-        if(!newNumb) return message.reply(`You didn't specified a new number.`);
-        number = newNumb;
-        message.reply({embed: {
-   color: 3066993,
-   description:`The number has been successfully changed to ${newNumb}!`
-}});
-    }
-	if(message.content.startsWith("+limit")) {
-        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
-        const args = message.content.slice(1).trim().split(/ +/g);
-        const newLim = args.slice(1).join(" ");
-        if(!newLim) return message.reply(`You didn't specified a new limit.`);
-        limit = newLim;
-        message.reply({embed: {
-   color: 3066993,
-   description:`The limit has been successfully changed to ${newLim} !`
-}});
-    }
-        if(message.content.startsWith("+channelid")) {
-        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
-        const args = message.content.slice(1).trim().split(/ +/g);
-        const newchannelID = args.slice(1).join(" ");
-        if(!newchannelID) return message.reply(`You didn't specified a new limit.`);
-        channelID = newchannelID;
-        message.reply({embed: {
-   color: 3066993,
-   description:`The channel has been successfully set to <#${newchannelID}>!\nMake Sure that channel is Existed in this server!`
-}});
-    }
-    if(message.author.bot) return;
-    if(message.channel.id === channelID) {
-        if(!message.content.isNaN) {
-            if(message.content > limit) return message.reply(`The number is between 1 and ${limit}! Try again`).then(sent => sent.delete(10000));
-            if(message.content < 1) return message.reply(`The number cannot be negative! Try again`).then(sent => sent.delete(10000));
-            if(message.content == number) {
-                var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
-                bot.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
-  {
-     id: message.guild.id,
-     deny: ['SEND_MESSAGES'],
-  },
-]);
-		message.channel.send({embed: {
-   color: 3066993,
-   description:`<@${message.author.id}> found the correct number! \n It was ${number}. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
-}});
-                await message.react('🎉');
-            }
-        } else return
-    }
-});
-
 bot.on('guildCreate', async guild => {
 	const fetchedLogs = await guild.fetchAuditLogs({
 		limit: 1,
@@ -559,6 +456,83 @@ let Str = message.content.slice(PREFIX.length + 2 + 1);
    description :"Successfully Advertised!!!"
 }});
   }
+    if (command === "hint" ) {
+const logger = require('./logger');
+
+		if (args[0] === 'help' || args[0] === '-h' || args[0] === '--help') {
+			return console.log(`=====================================================================
+=  Hint command help  =
+Usage   : ${PREFIX}hint [type] [number]
+Example : ${PREFIX}hint biggerThan 1000
+= All available types =
+smallerThan (st) > Only keeps all numbers inferior to the chosen number.
+biggerThan (bt) > Only keeps all numbers superior to the chosen number.
+isEven (ie) > Keeps all even numbers.
+isOdd (io) > Keeps all odd numbers.
+hasMultiple (hm) > Keeps all numbers with multiple occurrences of the chosen number.
+notHasMultiple (nhm) > Removes all numbers with multiple occurrences of the chosen number.
+atPos (ap) > Only keeps all numbers with a specific number at the chosen position.
+		   > Usage : ${config.prefix}hint atPos [position] [number]
+notAtPos (nap) > Only keeps all numbers without a specific number at the chosen position.
+=====================================================================
+`);
+		}
+		if (!client.toTry) return logger.error('You need to start a session before using the hint command.');
+
+		if (!args[0]) return logger.error(`You need to choose a type of hint ! (see ${config.prefix}hint help)`);
+		const type = args[0].toLowerCase();
+		const number = parseInt(args[1]);
+
+		const oldLength = client.toTry.length;
+
+		if (type === 'biggerthan' || type === 'bt') {
+			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${config.prefix}hint help)`);
+			client.toTry = client.toTry.filter(value => value >= number);
+			return logger.info(`Removed ${oldLength - client.toTry.length} numbers smaller than ${number}.`);
+		}
+		else if (type === 'smallerthan' || type === 'st') {
+			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${config.prefix}hint help)`);
+			client.toTry = client.toTry.filter(value => value <= number);
+			return logger.info(`Removed ${oldLength - client.toTry.length} numbers bigger than ${number}.`);
+		}
+		else if (type === 'isodd' || type === 'io') {
+			client.toTry = client.toTry.filter(value => value % 2 !== 0);
+			return logger.info(`Removed ${oldLength - client.toTry.length} even numbers.`);
+		}
+		else if (type === 'iseven' || type === 'ie') {
+			client.toTry = client.toTry.filter(value => value % 2 === 0);
+			return logger.info(`Removed ${oldLength - client.toTry.length} odd numbers.`);
+		}
+		else if (type === 'hasmultiple' || type === 'hm') {
+			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${config.prefix}hint help)`);
+			client.toTry = client.toTry.filter(value => [...String(value).matchAll(new RegExp(number, 'gi'))].map(a => a[0]).length > 1);
+			return logger.info(`Removed ${oldLength - client.toTry.length} numbers without multiple "${number}".`);
+		}
+		else if (type === 'nothasmultiple' || type === 'nhm') {
+			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${config.prefix}hint help)`);
+
+			client.toTry = client.toTry.filter(value => [...String(value).matchAll(new RegExp(number, 'gi'))].map(a => a[0]).length === 1);
+
+			return logger.info(`Removed ${oldLength - client.toTry.length} numbers with multiple "${number}".`);
+		}
+		else if (type === 'atpos' || type === 'ap') {
+			const position = number; const numb = parseInt(args[2]);
+			if (isNaN(position)) return logger.error(`You need to choose a valid valid position ! (see ${config.prefix}hint help)`);
+			if (isNaN(numb)) return logger.error(`You need to choose a valid valid number ! (see ${config.prefix}hint help)`);
+
+			client.toTry = client.toTry.filter(value => String(value)[position - 1] == numb);
+			return logger.info(`Removed ${oldLength - client.toTry.length} numbers without a "${numb}" on pos ${position}.`);
+		}
+		else if (type === 'notatpos' || type === 'nap') {
+			const position = number; const numb = parseInt(args[2]);
+			if (isNaN(position)) return logger.error(`You need to choose a valid valid position ! (see ${config.prefix}hint help)`);
+			if (isNaN(numb)) return logger.error(`You need to choose a valid valid number ! (see ${config.prefix}hint help)`);
+
+			client.toTry = client.toTry.filter(value => String(value)[position - 1] != numb);
+			return logger.info(`Removed ${oldLength - client.toTry.length} numbers with a "${numb}" on pos ${position}.`);
+		}
+		else { return logger.error(`Could not find hint type : "${type}".`); }
+	}
     if (command === "embed" ) {
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
