@@ -456,8 +456,37 @@ let Str = message.content.slice(PREFIX.length + 2 + 1);
    description :"Successfully Advertised!!!"
 }});
   }
+    if (command === "start" ) {
+const { startGuessing, startWatching, tryLastMessages } = require('./functions.js');
+const logger = require('./logger.js');
+
+		if (bot.toTryLoop) return logger.error(`Could not start guessing in ${message.guild.name}. It seems that the bot is already trying to guess the number somewhere else.`);
+
+		if (!bot.toTry || bot.toTry.length === 0) {
+			// Sets the game's range
+			let range = bot.config.defaultRange;
+			if (args[0]) {
+				const newRange = parseInt(args[0]);
+				if (!isNaN(newRange) && newRange >= 2 && newRange <= 1000000) range = newRange;
+				else logger.error('The input range seems to be incorrect. Switching to default one.');
+			}
+
+			// Array of all possible numbers in given range
+			bot.toTry = [...Array(range + 1).keys()]; bot.toTry.shift();
+		}
+
+		tryLastMessages(bot, message.channel);
+		startWatching(bot, message);
+
+		logger.info(`Starting a new guessing session in ${bot.watchingChannel.name} ! ${bot.toTry.length} guesses to go !`);
+
+		startGuessing(bot);
+
+		message.channel.startTyping();
+		return;
+	}
     if (command === "hint" ) {
-const logger = require('./logger');
+const logger = require('./logger.js');
 
 		if (args[0] === 'help' || args[0] === '-h' || args[0] === '--help') {
 			return console.log(`=====================================================================
@@ -477,59 +506,59 @@ notAtPos (nap) > Only keeps all numbers without a specific number at the chosen 
 =====================================================================
 `);
 		}
-		if (!client.toTry) return logger.error('You need to start a session before using the hint command.');
+		if (!bot.toTry) return logger.error('You need to start a session before using the hint command.');
 
-		if (!args[0]) return logger.error(`You need to choose a type of hint ! (see ${config.prefix}hint help)`);
+		if (!args[0]) return logger.error(`You need to choose a type of hint ! (see ${PREFIX}hint help)`);
 		const type = args[0].toLowerCase();
 		const number = parseInt(args[1]);
 
-		const oldLength = client.toTry.length;
+		const oldLength = bot.toTry.length;
 
 		if (type === 'biggerthan' || type === 'bt') {
-			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${config.prefix}hint help)`);
-			client.toTry = client.toTry.filter(value => value >= number);
-			return logger.info(`Removed ${oldLength - client.toTry.length} numbers smaller than ${number}.`);
+			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${PREFIX}hint help)`);
+			bot.toTry = bot.toTry.filter(value => value >= number);
+			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers smaller than ${number}.`);
 		}
 		else if (type === 'smallerthan' || type === 'st') {
-			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${config.prefix}hint help)`);
-			client.toTry = client.toTry.filter(value => value <= number);
-			return logger.info(`Removed ${oldLength - client.toTry.length} numbers bigger than ${number}.`);
+			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${PREFIX}hint help)`);
+			bot.toTry = client.toTry.filter(value => value <= number);
+			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers bigger than ${number}.`);
 		}
 		else if (type === 'isodd' || type === 'io') {
-			client.toTry = client.toTry.filter(value => value % 2 !== 0);
-			return logger.info(`Removed ${oldLength - client.toTry.length} even numbers.`);
+			bot.toTry = bot.toTry.filter(value => value % 2 !== 0);
+			return logger.info(`Removed ${oldLength - bot.toTry.length} even numbers.`);
 		}
 		else if (type === 'iseven' || type === 'ie') {
-			client.toTry = client.toTry.filter(value => value % 2 === 0);
-			return logger.info(`Removed ${oldLength - client.toTry.length} odd numbers.`);
+			bot.toTry = bot.toTry.filter(value => value % 2 === 0);
+			return logger.info(`Removed ${oldLength - bot.toTry.length} odd numbers.`);
 		}
 		else if (type === 'hasmultiple' || type === 'hm') {
 			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${config.prefix}hint help)`);
-			client.toTry = client.toTry.filter(value => [...String(value).matchAll(new RegExp(number, 'gi'))].map(a => a[0]).length > 1);
-			return logger.info(`Removed ${oldLength - client.toTry.length} numbers without multiple "${number}".`);
+			bot.toTry = bot.toTry.filter(value => [...String(value).matchAll(new RegExp(number, 'gi'))].map(a => a[0]).length > 1);
+			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers without multiple "${number}".`);
 		}
 		else if (type === 'nothasmultiple' || type === 'nhm') {
 			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${config.prefix}hint help)`);
 
-			client.toTry = client.toTry.filter(value => [...String(value).matchAll(new RegExp(number, 'gi'))].map(a => a[0]).length === 1);
+			bot.toTry = bot.toTry.filter(value => [...String(value).matchAll(new RegExp(number, 'gi'))].map(a => a[0]).length === 1);
 
-			return logger.info(`Removed ${oldLength - client.toTry.length} numbers with multiple "${number}".`);
+			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers with multiple "${number}".`);
 		}
 		else if (type === 'atpos' || type === 'ap') {
 			const position = number; const numb = parseInt(args[2]);
-			if (isNaN(position)) return logger.error(`You need to choose a valid valid position ! (see ${config.prefix}hint help)`);
-			if (isNaN(numb)) return logger.error(`You need to choose a valid valid number ! (see ${config.prefix}hint help)`);
+			if (isNaN(position)) return logger.error(`You need to choose a valid valid position ! (see ${PREFIX}hint help)`);
+			if (isNaN(numb)) return logger.error(`You need to choose a valid valid number ! (see ${PREFIX}hint help)`);
 
-			client.toTry = client.toTry.filter(value => String(value)[position - 1] == numb);
-			return logger.info(`Removed ${oldLength - client.toTry.length} numbers without a "${numb}" on pos ${position}.`);
+			bot.toTry = bot.toTry.filter(value => String(value)[position - 1] == numb);
+			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers without a "${numb}" on pos ${position}.`);
 		}
 		else if (type === 'notatpos' || type === 'nap') {
 			const position = number; const numb = parseInt(args[2]);
-			if (isNaN(position)) return logger.error(`You need to choose a valid valid position ! (see ${config.prefix}hint help)`);
-			if (isNaN(numb)) return logger.error(`You need to choose a valid valid number ! (see ${config.prefix}hint help)`);
+			if (isNaN(position)) return logger.error(`You need to choose a valid valid position ! (see ${PREFIX}hint help)`);
+			if (isNaN(numb)) return logger.error(`You need to choose a valid valid number ! (see ${PREFIX}hint help)`);
 
-			client.toTry = client.toTry.filter(value => String(value)[position - 1] != numb);
-			return logger.info(`Removed ${oldLength - client.toTry.length} numbers with a "${numb}" on pos ${position}.`);
+			bot.toTry = bot.toTry.filter(value => String(value)[position - 1] != numb);
+			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers with a "${numb}" on pos ${position}.`);
 		}
 		else { return logger.error(`Could not find hint type : "${type}".`); }
 	}
