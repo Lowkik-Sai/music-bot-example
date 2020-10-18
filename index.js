@@ -12,6 +12,7 @@ const Discord = require("discord.js");
 require("dotenv").config();
 require("./server.js");
 
+bot.config = require('./config.json');
 const bot = new Client({
     disableMentions: "everyone"
 });
