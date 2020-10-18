@@ -3026,7 +3026,7 @@ const member = message.guild.member(user);
 
 }
     if(command === "oldest" || command === "oldacc" ) {
-      const { formatDate } = require("./functions.js");
+      const { formatDate } = require("./function.js");
     let mem = message.guild.members.cache
       .filter((m) => !m.user.bot)
       .sort((a, b) => a.user.createdAt - b.user.createdAt)
@@ -3043,7 +3043,7 @@ const member = message.guild.member(user);
     message.channel.send(Embed);
   }
   if (command === "youngest" || command === "youngacc" ) {
-     const { formatDate } = require("./functions.js");
+     const { formatDate } = require("./function.js");
     let mem = message.guild.members.cache
       .filter((m) => !m.user.bot)
       .sort((a, b) => b.user.createdAt - a.user.createdAt)
