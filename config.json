@@ -2,9 +2,9 @@
 	"autoSave": true,
 	"autoStart": true,
 	"botID": "758889056649216041",
-	"debugMode": false,
+	"debugMode": true,
 	"defaultRange": 10000,
 	"guessInterval": 1500,
 	"guessIntMaxTimeout": 1000,
-	"saveBeforeStop": true,
+	"saveBeforeStop": true
 }
