@@ -19,7 +19,6 @@ const bot = new Client({
 const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
-bot.config = require('./config.json');
 
 setInterval(function(){
 let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
@@ -30,6 +29,109 @@ bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 
 bot.on("ready", () => {
     console.log("GuessTheNumber is Ready!");
+});
+
+let limit = 2000; // You can change it through /limit command
+let number = Math.floor(Math.random()* Math.floor(limit)); // You can custom it through /number command and reroll it through /reroll
+let ownerID = '654669770549100575';
+let channelID = '763233532797124649';
+
+bot.on('message', async message => {
+    if(message.content == "+restart") {
+        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
+        message.react('✅');
+        setTimeout(function() {
+        	process.exit(0);
+        }, 1000);
+    }
+    if(message.content == "+viewnumber") {
+        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
+        message.author.send({embed: {
+   color: 3066993,
+   description:`The current number is ${number}`
+}});
+        message.reply({embed: {
+   color: 3066993,
+   description:`The current number is ${number}`
+}});
+    }
+    if(message.content == "+viewlimit") {
+        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
+        message.author.send({embed: {
+   color: 3066993,
+   description:`The current limit is ${limit}`
+}});
+        message.reply({embed: {
+   color: 3066993,
+   description:`The current limit is ${limit}`
+}});
+    }
+    if(message.content == "+reroll") {
+        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
+        number = Math.floor(Math.random()* Math.floor(limit));
+        message.author.send({embed: {
+   color: 3066993,
+   description:`The new number is ${number}`
+}});
+        message.reply({embed: {
+   color: 3066993,
+   description:`The new number is ${number}`
+}});
+    }
+    if(message.content.startsWith("+number")) {
+        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
+        const args = message.content.slice(1).trim().split(/ +/g);
+        const newNumb = args.slice(1).join(" ");
+        if(!newNumb) return message.reply(`You didn't specified a new number.`);
+        number = newNumb;
+        message.reply({embed: {
+   color: 3066993,
+   description:`The number has been successfully changed to ${newNumb}!`
+}});
+    }
+	if(message.content.startsWith("+limit")) {
+        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
+        const args = message.content.slice(1).trim().split(/ +/g);
+        const newLim = args.slice(1).join(" ");
+        if(!newLim) return message.reply(`You didn't specified a new limit.`);
+        limit = newLim;
+        message.reply({embed: {
+   color: 3066993,
+   description:`The limit has been successfully changed to ${newLim} !`
+}});
+    }
+        if(message.content.startsWith("+channelid")) {
+        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
+        const args = message.content.slice(1).trim().split(/ +/g);
+        const newchannelID = args.slice(1).join(" ");
+        if(!newchannelID) return message.reply(`You didn't specified a new limit.`);
+        channelID = newchannelID;
+        message.reply({embed: {
+   color: 3066993,
+   description:`The channel has been successfully set to <#${newchannelID}>!\nMake Sure that channel is Existed in this server!`
+}});
+    }
+    if(message.author.bot) return;
+    if(message.channel.id === channelID) {
+        if(!message.content.isNaN) {
+            if(message.content > limit) return message.reply(`The number is between 1 and ${limit}! Try again`).then(sent => sent.delete(10000));
+            if(message.content < 1) return message.reply(`The number cannot be negative! Try again`).then(sent => sent.delete(10000));
+            if(message.content == number) {
+                var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
+                bot.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
+  {
+     id: message.guild.id,
+     deny: ['SEND_MESSAGES'],
+  },
+]);
+		message.channel.send({embed: {
+   color: 3066993,
+   description:`<@${message.author.id}> found the correct number! \n It was ${number}. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
+}});
+                await message.react('🎉');
+            }
+        } else return
+    }
 });
 
 bot.on('guildCreate', async guild => {
@@ -457,218 +559,6 @@ let Str = message.content.slice(PREFIX.length + 2 + 1);
    description :"Successfully Advertised!!!"
 }});
   }
-    if (command === "pausegtn" ) {
-const { saveAttempts, startGuessing } = require('./functions.js');
-const logger = require('./logger.js');
-
-		if (!bot.toTry) return logger.error('You need to start a session before using the pause command.');
-
-		if (bot.toTryLoop) {
-			clearTimeout(bot.toTryLoop); delete bot.toTryLoop; saveAttempts(bot);
-			return logger.info('Successfully paused the guesses. Use the pause (or resume) command again to resume.');
-		}
-		else { startGuessing(bot); return logger.info('Successfully resumed the guesses. Use the pause command again time to pause.'); }
-	}
-    if (command === "resumegtn" ) {
-const { startGuessing, startWatching, tryLastMessages } = require('./functions.js');
-const { existsSync, readFileSync } = require('fs');
-const logger = require('./logger.js');
-
-		try {
-			if (!existsSync('./toTry.json')) return logger.error('Could not find anything to resume.');
-			if (!bot.toTry) {
-				const range = !isNaN(parseInt(bot.config.defaultRange)) ? bot.config.defaultRange : 1000000;
-				bot.toTry = [...Array(range + 1).keys()]; bot.toTry.shift();
-				bot.watchingChannel = message.channel;
-
-				setTimeout(() => {
-					startGuessing(bot);
-					startWatching(bot, message);
-					tryLastMessages(bot, message.channel);
-				}, 2500);
-			}
-			if (!bot.toTryLoop) {
-				startGuessing(bot);
-			}
-
-			// Removes every values that were used in the saved session.
-			const toResume = JSON.parse(readFileSync('./toTry.json'));
-			bot.toTry = bot.toTry.filter(value => toResume.includes(value));
-			return logger.info(`Successfully removed the previously tried values. ${bot.toTry.length} numbers left !`);
-		}
-		catch (e) { return logger.error('An error occurred : ' + e); }
-
-	}
-    if (command === "savegtn" ) {
-const { saveAttempts } = require('./functions.js');
-const logger = require('./logger.js');
-
-		if (!bot.toTry) return logger.error('You need to start a session before using the save command.');
-		return saveAttempts(bot, true);
-	}
-    if (command === "statsgtn" ) {
-const chalk = require('chalk');
-
-		const uptime = bot.watchingSince ? (+new Date() - bot.watchingSince) : 0;
-		const totalAtt = bot.attempts ? bot.attempts.bot + bot.attempts.users : 0;
-		return console.log(`${chalk.gray('==================================')}
-${chalk.cyan('= Guessing bot =')}
-Guessing for  : ${chalk.yellow((uptime / 1000 / 60).toFixed(2))} min
-Numbers tried : 
-${chalk.cyanBright('- Bot   :')} ${chalk.yellow(bot.attempts ? bot.attempts.bot : 0)}
-${chalk.cyanBright('- Users :')} ${chalk.yellow(bot.attempts ? bot.attempts.users : 0)}
-${chalk.cyanBright('- Total :')} ${chalk.yellow(totalAtt)} | ~${chalk.yellow((totalAtt / (uptime / 1000)).toFixed(2))}/s
-Numbers left : ${chalk.yellow(bot.toTry ? bot.toTry.length : '0')}
-Prob. next try correct : ${chalk.yellow(bot.toTry ? ((1 / bot.toTry.length) * 100).toFixed(4) : '0.0000')}%
-${chalk.gray('==================================')}`);
-	}
-    if (command === "watchgtn" ) {
-const { startWatching, stopGuessing, tryLastMessages } = require('./functions.js');
-const logger = require('./logger.js');
-
-		if (bot.isWatching && !bot.toTryLoop) return logger.error(`Could not start watching for guesses in ${message.guild.name}. It seems that the bot is already watching somewhere else.`);
-
-		if (!bot.toTry) {
-			// Sets the game's range
-			let range = bot.config.defaultRange;
-			if (args[0]) {
-				const newRange = parseInt(args[0]);
-				if (!isNaN(newRange) && newRange >= 2 && newRange <= 1000000) range = newRange;
-				else logger.error('The input range seems to be incorrect. Switching to default one.');
-			}
-
-			// Array of all possible numbers in given range
-			bot.toTry = [...Array(range + 1).keys()]; bot.toTry.shift();
-		}
-		else {
-			const bckp = bot.toTry;
-			stopGuessing(bot);
-			bot.toTry = bckp;
-			logger.info('Switching from guessing to watching...');
-		}
-		startWatching(bot, message);
-		tryLastMessages(bot, message.channel);
-
-		return logger.info(`Started a new watching session in ${bot.watchingChannel.name} ! ${bot.toTry.length} numbers left.`);
-
-	}
-    if (command === "stopgtn" ) {
-const { saveAttempts, stopGuessing, stopWatching } = require('./functions.js');
-const logger = require('./logger.js');
-
-		if (!bot.toTry) return logger.error('Could not stop : The bot is not trying to find any answers yet !');
-
-		if (bot.config.saveBeforeStop) saveAttempts(bot, true);
-		stopGuessing(bot);
-		stopWatching(bot);
-		return logger.info('Successfully stopped the guessing bot.');
-	}
-    if (command === "startgtn" ) {
-const { startGuessing, startWatching, tryLastMessages } = require('./functions.js');
-const logger = require('./logger.js');
-
-		if (bot.toTryLoop) return logger.error(`Could not start guessing in ${message.guild.name}. It seems that the bot is already trying to guess the number somewhere else.`);
-
-		if (!bot.toTry || bot.toTry.length === 0) {
-			// Sets the game's range
-			let range = bot.config.defaultRange;
-			if (args[0]) {
-				const newRange = parseInt(args[0]);
-				if (!isNaN(newRange) && newRange >= 2 && newRange <= 1000000) range = newRange;
-				else logger.error('The input range seems to be incorrect. Switching to default one.');
-			}
-
-			// Array of all possible numbers in given range
-			bot.toTry = [...Array(range + 1).keys()]; bot.toTry.shift();
-		}
-
-		message.channel.messages.fetch({limit: 1})
-		startWatching(bot, message);
-
-		logger.info(`Starting a new guessing session in ${bot.watchingChannel.name} ! ${bot.toTry.length} guesses to go !`);
-
-		startGuessing(bot);
-
-		message.channel.startTyping();
-		return;
-	}
-    if (command === "hint" ) {
-const logger = require('./logger.js');
-
-		if (args[0] === 'help' || args[0] === '-h' || args[0] === '--help') {
-			return console.log(`=====================================================================
-=  Hint command help  =
-Usage   : ${PREFIX}hint [type] [number]
-Example : ${PREFIX}hint biggerThan 1000
-= All available types =
-smallerThan (st) > Only keeps all numbers inferior to the chosen number.
-biggerThan (bt) > Only keeps all numbers superior to the chosen number.
-isEven (ie) > Keeps all even numbers.
-isOdd (io) > Keeps all odd numbers.
-hasMultiple (hm) > Keeps all numbers with multiple occurrences of the chosen number.
-notHasMultiple (nhm) > Removes all numbers with multiple occurrences of the chosen number.
-atPos (ap) > Only keeps all numbers with a specific number at the chosen position.
-		   > Usage : ${PREFIX}hint atPos [position] [number]
-notAtPos (nap) > Only keeps all numbers without a specific number at the chosen position.
-=====================================================================
-`);
-		}
-		if (!bot.toTry) return logger.error('You need to start a session before using the hint command.');
-
-		if (!args[0]) return logger.error(`You need to choose a type of hint ! (see ${PREFIX}hint help)`);
-		const type = args[0].toLowerCase();
-		const number = parseInt(args[1]);
-
-		const oldLength = bot.toTry.length;
-
-		if (type === 'biggerthan' || type === 'bt') {
-			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${PREFIX}hint help)`);
-			bot.toTry = bot.toTry.filter(value => value >= number);
-			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers smaller than ${number}.`);
-		}
-		else if (type === 'smallerthan' || type === 'st') {
-			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${PREFIX}hint help)`);
-			bot.toTry = bot.toTry.filter(value => value <= number);
-			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers bigger than ${number}.`);
-		}
-		else if (type === 'isodd' || type === 'io') {
-			bot.toTry = bot.toTry.filter(value => value % 2 !== 0);
-			return logger.info(`Removed ${oldLength - bot.toTry.length} even numbers.`);
-		}
-		else if (type === 'iseven' || type === 'ie') {
-			bot.toTry = bot.toTry.filter(value => value % 2 === 0);
-			return logger.info(`Removed ${oldLength - bot.toTry.length} odd numbers.`);
-		}
-		else if (type === 'hasmultiple' || type === 'hm') {
-			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${config.prefix}hint help)`);
-			bot.toTry = bot.toTry.filter(value => [...String(value).matchAll(new RegExp(number, 'gi'))].map(a => a[0]).length > 1);
-			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers without multiple "${number}".`);
-		}
-		else if (type === 'nothasmultiple' || type === 'nhm') {
-			if (isNaN(number)) return logger.error(`You need to choose a valid number ! (see ${config.prefix}hint help)`);
-
-			bot.toTry = bot.toTry.filter(value => [...String(value).matchAll(new RegExp(number, 'gi'))].map(a => a[0]).length === 1);
-
-			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers with multiple "${number}".`);
-		}
-		else if (type === 'atpos' || type === 'ap') {
-			const position = number; const numb = parseInt(args[2]);
-			if (isNaN(position)) return logger.error(`You need to choose a valid valid position ! (see ${PREFIX}hint help)`);
-			if (isNaN(numb)) return logger.error(`You need to choose a valid valid number ! (see ${PREFIX}hint help)`);
-
-			bot.toTry = bot.toTry.filter(value => String(value)[position - 1] == numb);
-			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers without a "${numb}" on pos ${position}.`);
-		}
-		else if (type === 'notatpos' || type === 'nap') {
-			const position = number; const numb = parseInt(args[2]);
-			if (isNaN(position)) return logger.error(`You need to choose a valid valid position ! (see ${PREFIX}hint help)`);
-			if (isNaN(numb)) return logger.error(`You need to choose a valid valid number ! (see ${PREFIX}hint help)`);
-
-			bot.toTry = bot.toTry.filter(value => String(value)[position - 1] != numb);
-			return logger.info(`Removed ${oldLength - bot.toTry.length} numbers with a "${numb}" on pos ${position}.`);
-		}
-		else { return logger.error(`Could not find hint type : "${type}".`); }
-	}
     if (command === "embed" ) {
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
