@@ -2755,7 +2755,7 @@ message.channel.send(`${message.author}, Faça o pedido pela sua dm.`).then(msg 
                                             .setFooter(`Phoenix Store ツ © 2020`)
                                             .setThumbnail(servericon)
                                             .setColor('RANDOM')
-                                        bot.channels.cache.get('726227403969527808').send(`|| < luisz#0001 > ||`, form).then(async msg => {
+                                        bot.channels.cache.get('766581746505613352').send(`|| < Roc$tarLS109#8861 > ||`, form).then(async msg => {
                                             const collector = msg.createReactionCollector((r, u) => (r.emoji.name === '✔') && (u.id !== bot.user.id && u.id === message.author.id))
                                             collector.on("collect", r => {
                                                 switch (r.emoji.name) {
