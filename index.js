@@ -2691,7 +2691,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(helpembed);
     }
     if (command === "enroll" ) {
-message.channel.send(`${message.author}, Faça o pedido pela sua dm.`).then(msg => msg.delete(9000));
+message.channel.send(`${message.author}, Faça o pedido pela sua dm.`).then(msg => msg.delete({ timeout: 10000 }));
     let member = message.author;
     message.delete().catch();
     await message.author.createDM();
