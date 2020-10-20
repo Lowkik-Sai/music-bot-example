@@ -2701,7 +2701,8 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
     message.author.send(embed)
    
  
-   
+   if (content.towerCase() !== ok) return message.reply("Type OK,or else Dont reply!")
+ 
     var tazer = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
     tazer.on('collect', r => {
         let nome = r.content;
