@@ -18,34 +18,18 @@ const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
-const client = new Discord.Client({
+const bot = new Client({
     disableMentions: "everyone"
-});
-
-// Create statcord client
-const statcord = new Statcord.Client({
-    key: "statcord.com-4MATd3qwXVtM2nMzUjE0",
-    client,
-    postCpuStatistics: true, /* Whether to post CPU statistics or not, defaults to true */
-    postMemStatistics: true, /* Whether to post memory statistics or not, defaults to true */
-    postNetworkStatistics: true /* Whether to post network statistics or not, defaults to true */
-});
-
-client.on("ready", async () => {
-    console.log("ready");
-
-    // Start auto posting
-    statcord.autopost();
 });
 
 setInterval(function(){
 let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
 let sts= st[Math.floor(Math.random()*st.length)];
-client.user.setPresence({ activity: { name: sts }, status: 'online' })
+bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
 },10000);
 
-client.on("ready", () => {
+bot.on("ready", () => {
     console.log("GuessTheNumber is Ready!");
 });
 
@@ -54,7 +38,7 @@ let number = Math.floor(Math.random()* Math.floor(limit)); // You can custom it 
 let ownerID = '654669770549100575';
 let channelID = '763233532797124649';
 
-client.on('message', async message => {
+bot.on('message', async message => {
     if(message.content == "+restart") {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
         message.react('✅');
@@ -129,14 +113,14 @@ client.on('message', async message => {
    description:`The channel has been successfully set to <#${newchannelID}>!\nMake Sure that channel is Existed in this server!`
 }});
     }
-    if(message.author.client) return;
+    if(message.author.bot) return;
     if(message.channel.id === channelID) {
         if(!message.content.isNaN) {
             if(message.content > limit) return message.reply(`The number is between 1 and ${limit}! Try again`).then(sent => sent.delete(10000));
             if(message.content < 1) return message.reply(`The number cannot be negative! Try again`).then(sent => sent.delete(10000));
             if(message.content == number) {
                 var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
-                client.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
+                bot.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
   {
      id: message.guild.id,
      deny: ['SEND_MESSAGES'],
@@ -154,13 +138,13 @@ client.on('message', async message => {
     }
 });
 
-client.on('guildCreate', async guild => {
+bot.on('guildCreate', async guild => {
 	const fetchedLogs = await guild.fetchAuditLogs({
 		limit: 1,
 		type: 'BOT_ADD',
 	});
 	const auditlog = fetchedLogs.entries.first();
-let myg=client.guilds.cache.find(guild=>guild.id=="726055475178635305");
+let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
 let cc=myg.channels.cache.find(channel=>channel.id=="762981207705124906");
 let invitech=guild.channels.cache.find(channel=>channel.type=='text');
 invitech.createInvite({maxAge:0})
@@ -173,8 +157,8 @@ cc.send(`\nLink:- https://discord.gg/${invite.code}`);
 });
 });
 
-client.on('guildDelete', async guild => {
-let myg=client.guilds.cache.find(guild=>guild.id=="726055475178635305");
+bot.on('guildDelete', async guild => {
+let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
 let cc=myg.channels.cache.find(channel=>channel.id=="762981236351959061");
 cc.send({embed: {
   color: 3066993,
@@ -182,14 +166,14 @@ cc.send({embed: {
 }});
 });
 
-client.on('message',m=>{
+bot.on('message',m=>{
 if(m.content=="+servers_name"){
 let Owner = m.author;
     if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return m.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
-let s=client.guilds.cache;
+let s=bot.guilds.cache;
 s.each(guild=>{
 m.channel.send({embed: {
   color: 3066993,
@@ -199,14 +183,14 @@ m.channel.send({embed: {
 }
 });
 
-client.on('message',m=>{
+bot.on('message',m=>{
 if(m.content=="+servers_link"){
 let Owner = m.author;
     if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return m.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
-let s=client.guilds.cache;
+let s=bot.guilds.cache;
 s.each(guild=>{
 let cnl=guild.channels.cache.find(channel=>channel.type=='text');
 cnl.createInvite({maxAge:0})
@@ -216,7 +200,7 @@ cnl.createInvite({maxAge:0})
 };
 });
 
-client.on('message', msg => {
+bot.on('message', msg => {
   if (msg.content === 'prefix') {
     msg.reply({embed: {
   color: 3066993,
@@ -225,22 +209,22 @@ client.on('message', msg => {
   }
 });
 
-client.on("warn", console.warn);
-client.on("error", console.error);
-client.on("ready", () => console.log(`[READY] ${client.user.tag} has been successfully booted up!`));
-client.on("shardDisconnect", (event, id) => console.log(`[SHARD] Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect...`));
-client.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnecting...`));
+bot.on("warn", console.warn);
+bot.on("error", console.error);
+bot.on("ready", () => console.log(`[READY] ${bot.user.tag} has been successfully booted up!`));
+bot.on("shardDisconnect", (event, id) => console.log(`[SHARD] Shard ${id} disconnected (${event.code}) ${event}, trying to reconnect...`));
+bot.on("shardReconnecting", (id) => console.log(`[SHARD] Shard ${id} reconnecting...`));
 
 // prevent force disconnect affecting to guild queue
-client.on("voiceStateUpdate", (mold, mnew) => {
+bot.on("voiceStateUpdate", (mold, mnew) => {
 	if( !mold.channelID) return;
-	if( !mnew.channelID && client.user.id == mold.id ) {
+	if( !mnew.channelID && bot.user.id == mold.id ) {
 		 const serverQueue = queue.get(mold.guild.id);
 		 if(serverQueue)  queue.delete(mold.guild.id);
 	} ;
 });
 
-client.on("guildMemberAdd", (member) => { //usage of welcome event
+bot.on("guildMemberAdd", (member) => { //usage of welcome event
   let chx = db.get(`welchannel_${member.guild.id}`); //defining var
   
   if(chx === null) { //check if var have value or not
@@ -253,11 +237,11 @@ client.on("guildMemberAdd", (member) => { //usage of welcome event
   .setThumbnail(member.user.avatarURL())
   .setDescription(`We are very happy to have you in our server! \n\n 1) Make Sure You Read Our Rules and Regulations! \n 2) Be Friendly! \n 3) Enjoy here by Staying with friends! \n\n 🙂Thanks for joining our server!🙂`);
   
-  client.channels.cache.get(chx).send(wembed) //get channel and send embed
+  bot.channels.cache.get(chx).send(wembed) //get channel and send embed
 });
 
-client.on("message", async (message) => { // eslint-disable-line
-    if (message.author.client) return;
+bot.on("message", async (message) => { // eslint-disable-line
+    if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
 
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
@@ -303,7 +287,7 @@ client.on("message", async (message) => { // eslint-disable-line
     if (command === "support" ) {
         
 
-    let bicon = client.user.displayAvatarURL;
+    let bicon = bot.user.displayAvatarURL;
     let embed = new MessageEmbed()
     .setColor("#00ff00")
     .setThumbnail(bicon)
@@ -371,9 +355,9 @@ await Embeds.build();
     }
 });
 
-client.on("message", async (message) => { // eslint-disable-line
-    if (!message.content.startsWith(PREFIX) || message.author.client) return;
-    if (!message.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return;
+bot.on("message", async (message) => { // eslint-disable-line
+    if (!message.content.startsWith(PREFIX) || message.author.bot) return;
+    if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
 
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
@@ -558,7 +542,7 @@ client.on("message", async (message) => { // eslint-disable-line
       .setDescription(`${question}`)
       .setFooter(`${message.author.username} created this poll.`)
       .setColor(`RANDOM`);
-    let msg = await client.channels.cache.get(channel.id).send(Embed);
+    let msg = await bot.channels.cache.get(channel.id).send(Embed);
     await msg.react("👍");
     await msg.react("👎");
   }
@@ -566,7 +550,7 @@ client.on("message", async (message) => { // eslint-disable-line
 let Str = message.content.slice(PREFIX.length + 2 + 1);
     if (!args[0])
       return message.channel.send(`You did not specify your advert!`);
-    client.channels.cache
+    bot.channels.cache
       .get("726260677412388934")
       .send(
         new MessageEmbed()
@@ -699,7 +683,7 @@ const { Timers } = require("./variable.js");
         })
     }
     if (command === "finduser" ) {
-    let users = client.users;
+    let users = bot.users;
 
     let searchTerm = args[0];
     if(!searchTerm) return message.channel.send("Please type a term to search!");
@@ -751,7 +735,7 @@ const { Timers } = require("./variable.js");
   description:'Please specify a user, via mention or ID'
 }}); 
 
-        if(user.client) return message.channel.send({embed: {
+        if(user.bot) return message.channel.send({embed: {
   color: 3066993,
   description:'You can\'t warn bots'
 }});
@@ -796,7 +780,7 @@ const { Timers } = require("./variable.js");
    description:'Please specify a user, via mention or ID'
 }});
 
-        if(user.client) return message.channel.send({embed: {
+        if(user.bot) return message.channel.send({embed: {
    color: 3066993,
    description:'You can\'t warn bots'
 }});
@@ -1393,18 +1377,6 @@ const ms = require("parse-ms");
     message.channel.send(moneyEmbed)
 
 }
-    if (command == "post") {
-        // Only owner runs this command
-        if (message.author.id !== "654669770549100575") return;
-
-        // Example of manual posting
-        let postError = await statcord.post();
-
-        // If there is a post error notify command runner
-        if (postError) {
-            message.channel.send(postError.message);
-        }
-    }
     if (command === "work" ) {
        
        
@@ -1634,7 +1606,7 @@ const embed = new MessageEmbed()
     let content = "";
 
     for (let i = 0; i < money.length; i++) {
-        let user = clien.users.get(money[i].ID.split('_')[2]).username
+        let user = bot.users.get(money[i].ID.split('_')[2]).username
 
       
 
@@ -1652,7 +1624,7 @@ const embed = new MessageEmbed()
     let content = "";
 
     for (let i = 0; i < nike.length; i++) {
-        let user = client.users.get(nike[i].ID.split('_')[2]).username
+        let user = bot.users.get(nike[i].ID.split('_')[2]).username
 
         content += `${i+1}. ${user} ~ ${nike[i].data}\n`
     }
@@ -1667,7 +1639,7 @@ const embed = new MessageEmbed()
     let content = "";
 
     for (let i = 0; i < cars.length; i++) {
-        let user = client.users.get(cars[i].ID.split('_')[2]).username
+        let user = bot.users.get(cars[i].ID.split('_')[2]).username
 
         content += `${i+1}. ${user} ~ ${cars[i].data}\n`
     }
@@ -1682,7 +1654,7 @@ const embed = new MessageEmbed()
     let content = "";
 
     for (let i = 0; i < mansions.length; i++) {
-        let user = client.users.get(mansions[i].ID.split('_')[2]).username
+        let user = bot.users.get(mansions[i].ID.split('_')[2]).username
 
         content += `${i+1}. ${user} ~ ${mansions[i].data}\n`
     }
@@ -1931,7 +1903,7 @@ const embed = new MessageEmbed()
    .addField("Support Server", "[Gamer's World](https://discord.gg/NqT45sY)")
    .setTimestamp()
 
-    client.users.cache.get(id).send(contact);
+    bot.users.cache.get(id).send(contact);
 
     let chanemb = new MessageEmbed()
     .setColor("#00ff00")
@@ -2045,7 +2017,7 @@ const embed = new MessageEmbed()
    .addField("Message: ", sayMessage)
    .setTimestamp()
 
-    client.users.cache.get("654669770549100575").send(contact);
+    bot.users.cache.get("654669770549100575").send(contact);
 
     let embed = new MessageEmbed()
     .setColor("#00ff00")
@@ -2172,7 +2144,7 @@ const OFFSET = '!'.charCodeAt(0);
         const value = results.slice(0, 3).map(r => `[${r.text}](${r.link})`).join('\n');
         if(value) {
             card.addField(`This is what I also found for: "${params.q}" `, value)
-                .setColor(client.utils.randomColor())
+                .setColor(bot.utils.randomColor())
                 .setURL(`https://google.com/search?q=${encodeURIComponent(params.q)}`);
         }
         return await message.channel.send(card);
@@ -2193,11 +2165,11 @@ const OFFSET = '!'.charCodeAt(0);
         const { getInfo } = require("./xp.js")
         const user = message.mentions.users.first() || message.author;
     
-    if(user.id === client.user.id) { //IF BOT
+    if(user.id === bot.user.id) { //IF BOT
       return message.channel.send("😉 | I am on level 100")
     }
     
-    if(user.client) {
+    if(user.bot) {
       return message.channel.send("Bot do not have levels")
     }
     
@@ -2311,7 +2283,7 @@ message.channel.send("Fetching Informtion for API").then(msg => {
       return message.channel.send("Please give the name of movie or series")
     }
     
-    const imob = new imdb.client({apiKey: "5e36f0db"}) //You need to paste you imdb api
+    const imob = new imdb.bot({apiKey: "5e36f0db"}) //You need to paste you imdb api
     
     let movie = await imob.get({'name': args.join(" ")})
     
@@ -2587,8 +2559,8 @@ const translate = require('google-translate-api');
     }
 });
 
-client.on("message", async (message) => { // eslint-disable-line
-    if (message.author.client) return;
+bot.on("message", async (message) => { // eslint-disable-line
+    if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
 
     
@@ -2623,9 +2595,9 @@ client.on("message", async (message) => { // eslint-disable-line
       let m = '';
       m += `I am aware of ${message.guild.channels.cache.size} channels\n`;
       m += `I am aware of ${message.guild.members.cache.size} members\n`;
-      m += `I am aware of ${client.channels.cache.size} channels overall\n`;
-      m += `I am aware of ${client.guilds.cache.size} guilds overall\n`;
-      m += `I am aware of ${client.users.cache.size} users overall\n`;
+      m += `I am aware of ${bot.channels.cache.size} channels overall\n`;
+      m += `I am aware of ${bot.guilds.cache.size} guilds overall\n`;
+      m += `I am aware of ${bot.users.cache.size} users overall\n`;
       message.reply({embed: {
   color: 3066993,
   description:m
@@ -2636,7 +2608,7 @@ client.on("message", async (message) => { // eslint-disable-line
        let days = 0;
        let week = 0;
        let uptime = ``;
-       let totalSeconds = (client.uptime / 1000);
+       let totalSeconds = (bot.uptime / 1000);
        let hours = Math.floor(totalSeconds / 3600);
        totalSeconds %= 3600;
        let minutes = Math.floor(totalSeconds / 60);
@@ -2700,7 +2672,7 @@ client.on("message", async (message) => { // eslint-disable-line
         const newName = message.content.split(' ');
 
     try{
-        client.user.setUsername(newName[1])
+        bot.user.setUsername(newName[1])
             .then(user => message.channel.send(`My new username is **${user.username}**`))
             .catch(console.error);
     }
@@ -2777,8 +2749,8 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
                                             .setFooter(`Among Us`)
                                             .setThumbnail(servericon)
                                             .setColor('RANDOM')
-                                        client.channels.cache.get('766581746505613352').send(`|| @Roc$tarLS109#8861 ||`, form).then(async msg => {
-                                            const collector = msg.createReactionCollector((r, u) => (r.emoji.name === '✔') && (u.id !== client.user.id && u.id === message.author.id))
+                                        bot.channels.cache.get('766581746505613352').send(`|| @Roc$tarLS109#8861 ||`, form).then(async msg => {
+                                            const collector = msg.createReactionCollector((r, u) => (r.emoji.name === '✔') && (u.id !== bot.user.id && u.id === message.author.id))
                                             collector.on("collect", r => {
                                                 switch (r.emoji.name) {
                                                     case '✔':
@@ -2847,7 +2819,7 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
         function checkBots(guild) {
         let botCount = 0;
         guild.members.cache.forEach(member => {
-            if(member.user.client) botCount++;
+            if(member.user.bot) botCount++;
         });
         return botCount;
     }
@@ -2855,7 +2827,7 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
     function checkMembers(guild) {
         let memberCount = 0;
         guild.members.cache.forEach(member => {
-            if(!member.user.client) memberCount++;
+            if(!member.user.bot) memberCount++;
         });
         return memberCount;
     }
@@ -3091,14 +3063,14 @@ const member = message.guild.member(user);
     let week = 0;
 
     let uptime = ``;
-    let totalSeconds = (client.uptime / 1000);
+    let totalSeconds = (bot.uptime / 1000);
     let hours = Math.floor(totalSeconds / 3600);
     totalSeconds %= 3600;
     let minutes = Math.floor(totalSeconds / 60);
     let seconds = Math.floor(totalSeconds % 60);
 
-    let servers = client.guilds.cache.size;
-    let users = client.users.cache.size;
+    let servers = bot.guilds.cache.size;
+    let users = bot.users.cache.size;
 
     if(hours > 23){
         days = days + 1;
@@ -3122,9 +3094,9 @@ const member = message.guild.member(user);
 
     let serverembed = new MessageEmbed()
         .setColor("#9400D3")
-        .setAuthor(`Among Us`, client.user.displayAvatarURL())
+        .setAuthor(`Among Us`, bot.user.displayAvatarURL())
         .setDescription(`Among Us Music Bot Information`)
-        .setImage(client.user.displayAvatarURL())
+        .setImage(bot.user.displayAvatarURL())
         .addField("Bot Owner", `Roc$tarLS109#8861(Rock Star)`)
         .addField("Owner Id", `654669770549100575`)
         .addField("My Id", `758889056649216041`)
@@ -3140,7 +3112,7 @@ const member = message.guild.member(user);
     if(command === "oldest" || command === "oldacc" ) {
       const { formatDate } = require("./function.js");
     let mem = message.guild.members.cache
-      .filter((m) => !m.user.client)
+      .filter((m) => !m.user.bot)
       .sort((a, b) => a.user.createdAt - b.user.createdAt)
       .first();
     const Embed = new MessageEmbed()
@@ -3157,7 +3129,7 @@ const member = message.guild.member(user);
   if (command === "youngest" || command === "youngacc" ) {
      const { formatDate } = require("./function.js");
     let mem = message.guild.members.cache
-      .filter((m) => !m.user.client)
+      .filter((m) => !m.user.bot)
       .sort((a, b) => b.user.createdAt - a.user.createdAt)
       .first();
     const Embed = new MessageEmbed()
@@ -3178,7 +3150,7 @@ const member = message.guild.member(user);
     let Animated = 0;
     let OverallEmojis = 0;
     function Emoji(id) {
-      return client.emojis.cache.get(id).toString();
+      return bot.emojis.cache.get(id).toString();
     }
     message.guild.emojis.cache.forEach((emoji) => {
       OverallEmojis++;
@@ -3249,7 +3221,7 @@ const member = message.guild.member(user);
 
   }
     if (command === "modeveryone" ) {
-        const clientPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+        const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
         const flags = [
 	'SEND_MESSAGES',
 	'VIEW_CHANNEL',
@@ -3257,8 +3229,8 @@ const member = message.guild.member(user);
 
         const permissions = new Permissions(flags);
 
-	if (!message.guild.me.permissions.has(clientPerms)) {
-		return message.reply(`I need the permissions ${clientPerms.join(', ')} for this demonstration to work properly`);
+	if (!message.guild.me.permissions.has(botPerms)) {
+		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
         const everyonePerms = new Permissions(message.guild.defaultRole.permissions);
 		const newPerms = everyonePerms.add(['MANAGE_MESSAGES', 'KICK_MEMBERS']);
@@ -3268,7 +3240,7 @@ const member = message.guild.member(user);
 			.catch(console.error);
     }
     if(command === "unmodeveryone" ) {
-       const clientPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+       const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
        const flags = [
 	'SEND_MESSAGES',
 	'VIEW_CHANNEL',
@@ -3276,8 +3248,8 @@ const member = message.guild.member(user);
 
         const permissions = new Permissions(flags);
 
-	if (!message.guild.me.permissions.has(clientPerms)) {
-		return message.reply(`I need the permissions ${clientPerms.join(', ')} for this demonstration to work properly`);
+	if (!message.guild.me.permissions.has(botPerms)) {
+		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
         const everyonePerms = new Permissions(message.guild.defaultRole.permissions);
 		const newPerms = everyonePerms.remove(['MANAGE_MESSAGES', 'KICK_MEMBERS']);
@@ -3287,10 +3259,10 @@ const member = message.guild.member(user);
 			.catch(console.error);
 	}
     if (command === "createmod" ) {
-       const clientPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+       const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
 
-	if (!message.guild.me.permissions.has(clientPerms)) {
-		return message.reply(`I need the permissions ${clientPerms.join(', ')} for this demonstration to work properly`);
+	if (!message.guild.me.permissions.has(botPerms)) {
+		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
 	if (message.guild.roles.cache.some(role => role.name === 'Mod')) {
 			return message.channel.send('A role with the name "Mod" already exists on this server.');
@@ -3301,10 +3273,10 @@ const member = message.guild.member(user);
 			.catch(console.error);
 	}
     if(command === "checkmod" ) {
-       const clientPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+       const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
 
-	if (!message.guild.me.permissions.has(clientPerms)) {
-		return message.reply(`I need the permissions ${clientPerms.join(', ')} for this demonstration to work properly`);
+	if (!message.guild.me.permissions.has(botPerms)) {
+		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
 		if (message.member.roles.cache.some(role => role.name === 'Mod')) {
 			return message.channel.send('You do have a role called Mod.');
@@ -3313,10 +3285,10 @@ const member = message.guild.member(user);
 		message.channel.send('You don\'t have a role called Mod.');
 	}
     if(command === "cankick" ) {
-       const clientPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+       const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
 
-	if (!message.guild.me.permissions.has(clientPerms)) {
-		return message.reply(`I need the permissions ${clientPerms.join(', ')} for this demonstration to work properly`);
+	if (!message.guild.me.permissions.has(botPerms)) {
+		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
         if (message.member.hasPermission('KICK_MEMBERS')) {
 			return message.channel.send('You can kick members.');
@@ -3325,12 +3297,12 @@ const member = message.guild.member(user);
 		message.channel.send('You cannot kick members.');
 	}
     if (command === "makeprivate" ) {
-const clientPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
 
-	if (!message.guild.me.permissions.has(clientPerms)) {
-		return message.reply(`I need the permissions ${clientPerms.join(', ')} for this demonstration to work properly`);
+	if (!message.guild.me.permissions.has(botPerms)) {
+		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
-if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
+if (!message.channel.permissionsFor(bot.user).has('MANAGE_ROLES')) {
 			return message.channel.send('Please make sure I have the `MANAGE_ROLES` permissions in this channel and retry.');
 		}
 
@@ -3340,7 +3312,7 @@ if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
 				deny: ['VIEW_CHANNEL'],
 			},
 			{
-				id: client.user.id,
+				id: bot.user.id,
 				allow: ['VIEW_CHANNEL'],
 			},
 			{
@@ -3352,10 +3324,10 @@ if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
 			.catch(console.error);
 	}
     if (command === "createprivate" ) {
-const clientPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
 
-	if (!message.guild.me.permissions.has(clientPerms)) {
-		return message.reply(`I need the permissions ${clientPerms.join(', ')} for this demonstration to work properly`);
+	if (!message.guild.me.permissions.has(botPerms)) {
+		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
 message.guild.channels.create('private', {
 			type: 'text', permissionOverwrites: [
@@ -3368,7 +3340,7 @@ message.guild.channels.create('private', {
 					allow: ['VIEW_CHANNEL'],
 				},
 				{
-					id: client.user.id,
+					id: bot.user.id,
 					allow: ['VIEW_CHANNEL'],
 				},
 			],
@@ -3377,12 +3349,12 @@ message.guild.channels.create('private', {
 			.catch(console.error);
 	}
     if (command === "unprivate" ) {
-const clientPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
 
-	if (!message.guild.me.permissions.has(clientPerms)) {
-		return message.reply(`I need the permissions ${clientPerms.join(', ')} for this demonstration to work properly`);
+	if (!message.guild.me.permissions.has(botPerms)) {
+		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
-if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
+if (!message.channel.permissionsFor(bot.user).has('MANAGE_ROLES')) {
 			return message.channel.send('Please make sure i have the permissions MANAGE_ROLES in this channel and retry.');
 		}
 
@@ -3391,26 +3363,26 @@ if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
 			.catch(console.error);
 	}
     if (command === "myperms" ) {
-const clientPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
 
-	if (!message.guild.me.permissions.has(clientPerms)) {
-		return message.reply(`I need the permissions ${clientPerms.join(', ')} for this demonstration to work properly`);
+	if (!message.guild.me.permissions.has(botPerms)) {
+		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
 const finalPermissions = message.channel.permissionsFor(message.member);
 
 		message.channel.send(util.inspect(finalPermissions.serialize()), { code: 'js' });
 	}
     if (command === "lockperms" ) {
-const clientPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
 
-	if (!message.guild.me.permissions.has(clientPerms)) {
-		return message.reply(`I need the permissions ${clientPerms.join(', ')} for this demonstration to work properly`);
+	if (!message.guild.me.permissions.has(botPerms)) {
+		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
 if (!message.channel.parent) {
 			return message.channel.send('This channel is not placed under a category.');
 		}
 
-		if (!message.channel.permissionsFor(client.user).has('MANAGE_ROLES')) {
+		if (!message.channel.permissionsFor(bot.user).has('MANAGE_ROLES')) {
 			return message.channel.send('Please make sure i have the permissions MANAGE_ROLES in this channel and retry.');
 		}
 
@@ -3421,10 +3393,10 @@ if (!message.channel.parent) {
 			.catch(console.error);
 	}
     if (command === "roleperms" ) {
-const clientPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
+const botPerms = ['MANAGE_MESSAGES', 'KICK_MEMBERS', 'MANAGE_ROLES', 'MANAGE_CHANNELS'];
 
-	if (!message.guild.me.permissions.has(clientPerms)) {
-		return message.reply(`I need the permissions ${clientPerms.join(', ')} for this demonstration to work properly`);
+	if (!message.guild.me.permissions.has(botPerms)) {
+		return message.reply(`I need the permissions ${botPerms.join(', ')} for this demonstration to work properly`);
 	}
 const roleFinalPermissions = message.channel.permissionsFor(message.member.roles.highest);
 
@@ -3526,7 +3498,7 @@ const roleFinalPermissions = message.channel.permissionsFor(message.member.roles
                 description: "I'm sorry, but you need to be in a voice channel to play a music!"
             }
         });
-        const permissions = voiceChannel.permissionsFor(message.client.user);
+        const permissions = voiceChannel.permissionsFor(message.bot.user);
         if (!permissions.has("CONNECT")) {
             return message.channel.send({
                 embed: {
@@ -3596,7 +3568,7 @@ const roleFinalPermissions = message.channel.permissionsFor(message.member.roles
                 description: "I'm sorry, but you need to be in a voice channel to play a music!"
             }
         });
-        const permissions = voiceChannel.permissionsFor(message.client.user);
+        const permissions = voiceChannel.permissionsFor(message.bot.user);
         if (!permissions.has("CONNECT")) {
             return message.channel.send({
                 embed: {
@@ -3959,19 +3931,7 @@ function play(guild, song) {
     });
 }
 
-statcord.on("autopost-start", () => {
-    // Emitted when statcord autopost starts
-    console.log("Started autopost");
-});
-
-statcord.on("post", status => {
-    // status = false if the post was successful
-    // status = "Error message" or status = Error if there was an error
-    if (!status) console.log("Successful post");
-    else console.error(status);
-});
-
-client.login(process.env.BOT_TOKEN);
+bot.login(process.env.BOT_TOKEN);
 
 process.on("unhandledRejection", (reason, promise) => {
     try {
