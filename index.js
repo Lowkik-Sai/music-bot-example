@@ -73,6 +73,7 @@ statcord.on("post", status => {
     if (!status) console.log("Successful post");
     else console.error(status);
 });
+client.login(process.env.BOT_TOKEN);
 
 const bot = new Client({
     disableMentions: "everyone"
