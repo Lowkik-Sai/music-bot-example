@@ -23,7 +23,7 @@ const queue = new Map();
 const Statcord = require("statcord.js");
 
 // Create statcord client
-const statcord = new Statcord.Client({
+const statcord = new Statcord.bot({
     bot,
     key: "statcord.com-4MATd3qwXVtM2nMzUjE0",
     postCpuStatistics: true, /* Whether to post memory statistics or not, defaults to true */
