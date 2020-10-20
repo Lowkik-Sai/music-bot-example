@@ -2757,6 +2757,7 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
                                     }
                                     if (r.content.toLowerCase() != "confirm" && r.content.toLowerCase () != "cancel") {
                                         message.author.send({embed: { description: "Wrong Input,Do if from first to submit again!"} })
+                                    }
                                 })
                             })
                         })
