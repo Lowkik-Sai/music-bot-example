@@ -18,7 +18,7 @@ const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
-const bot = new Discord.Client({
+const bot = new Client({
     disableMentions: "everyone"
 });
 
@@ -26,9 +26,9 @@ const bot = new Discord.Client({
 const statcord = new Statcord.Client({
     key: "statcord.com-4MATd3qwXVtM2nMzUjE0",
     bot,
-    postCpuStatistics: true, /* Whether to post CPU statistics or not, defaults to true */
-    postMemStatistics: true, /* Whether to post memory statistics or not, defaults to true */
-    postNetworkStatistics: true /* Whether to post network statistics or not, defaults to true */
+    postCpuStatistics: false, /* Whether to post CPU statistics or not, defaults to true */
+    postMemStatistics: false, /* Whether to post memory statistics or not, defaults to true */
+    postNetworkStatistics: false /* Whether to post network statistics or not, defaults to true */
 });
 
 
