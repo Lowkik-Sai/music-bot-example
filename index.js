@@ -4,6 +4,7 @@ const util = require('util');
 const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
 const db = require("quick.db");
+const Statcord = require("statcord.js");
 const ms = require("ms");
 const fs = require("fs");
 const Canvas = require('canvas');
@@ -17,66 +18,25 @@ const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
-const Statcord = require("statcord.js");
-const client = new Discord.Client();
+const bot = new Discord.Client({
+    disableMentions: "everyone"
+});
+
 // Create statcord client
-const statcord = new Statcord.Client({
-    client,
+const statcord = new Statcord.bot({
+    bot,
     key: "statcord.com-4MATd3qwXVtM2nMzUjE0",
     postCpuStatistics: true, /* Whether to post memory statistics or not, defaults to true */
     postMemStatistics: true, /* Whether to post memory statistics or not, defaults to true */
     postNetworkStatistics: true, /* Whether to post memory statistics or not, defaults to true */
 });
 
-// Client prefix
-const prefix = "+";
 
-client.on("ready", async () => {
+bot.on("ready", async () => {
     console.log("ready");
 
     // Start auto posting
     statcord.autopost();
-});
-
-client.on("message", async (message) => {
-    if (message.author.bot) return;
-    if (message.channel.type !== "text") return;
-
-    if (!message.content.startsWith(prefix)) return;
-
-    let command = message.content.split(" ")[0].toLowerCase().substr(prefix.length);
-
-    // Post command
-    statcord.postCommand(command, message.author.id);
-
-    if (command == "say") {
-        message.channel.send("say");
-    } else if (command == "help") {
-        message.channel.send("help");
-    } else if (command == "post") {
-        // Only owner runs this command
-        if (message.author.id !== "654669770549100575") return;
-
-        // Example of manual posting
-        statcord.post();
-    }
-});
-
-statcord.on("autopost-start", () => {
-    // Emitted when statcord autopost starts
-    console.log("Started autopost");
-});
-
-statcord.on("post", status => {
-    // status = false if the post was successful
-    // status = "Error message" or status = Error if there was an error
-    if (!status) console.log("Successful post");
-    else console.error(status);
-});
-client.login(process.env.BOT_TOKEN);
-
-const bot = new Client({
-    disableMentions: "everyone"
 });
 
 setInterval(function(){
@@ -301,14 +261,15 @@ bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
     if (!message.content.startsWith(PREFIX)) return;
 
-    
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
     const searchString = args.slice(1).join(" ");
     const url = args[1] ? args[1].replace(/<(.+)>/g, "$1") : "";
       
     let command = message.content.toLowerCase().split(" ")[0];
     command = command.slice(PREFIX.length);
-
+    
+    statcord.postCommand(command, message.author.id);
+   
     if (command === "invite" || command === "inv") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
@@ -419,6 +380,8 @@ bot.on("message", async (message) => { // eslint-disable-line
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
     // the rest of your code
+    statcord.postCommand(command, message.author.id);
+
     if (command === 'args-info') {
 	if (!args.length) {
 		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
@@ -1433,6 +1396,13 @@ const ms = require("parse-ms");
     message.channel.send(moneyEmbed)
 
 }
+    if (command == "post") {
+        // Only owner runs this command
+        if (message.author.id !== "654669770549100575") return;
+
+        // Example of manual posting
+        statcord.post();
+    }
     if (command === "work" ) {
        
        
@@ -2628,6 +2598,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     let command = message.content.toLowerCase().split(" ")[0];
     command = command.slice(PREFIX.length);
     
+    statcord.postCommand(command, message.author.id);
     if (command === "channelinvite" || command === "ci") {
        const setChannelID = message.content.split(' ');
 
@@ -3986,6 +3957,18 @@ function play(guild, song) {
         }
     });
 }
+
+statcord.on("autopost-start", () => {
+    // Emitted when statcord autopost starts
+    console.log("Started autopost");
+});
+
+statcord.on("post", status => {
+    // status = false if the post was successful
+    // status = "Error message" or status = Error if there was an error
+    if (!status) console.log("Successful post");
+    else console.error(status);
+});
 
 bot.login(process.env.BOT_TOKEN);
 
