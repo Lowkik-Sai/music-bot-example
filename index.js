@@ -2699,6 +2699,10 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
     message.delete().catch();
     await message.author.createDM();
  
+    let embed = new Discord.MessageEmbed()
+        .setDescription(`▫| Digite Ok pra continuar`)
+    message.author.send(embed)
+   
     var tazer = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
     tazer.on('collect', r => {
         let nome = r.content;
