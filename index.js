@@ -2760,7 +2760,7 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
                                         message.author.send({ embed: { description: "Cancelled your submission!" } });
                                     }
                                     if (r.content.toLowerCase() != "confirm" && r.content.toLowerCase () != "cancel") {
-                                        message.author.send({embed: { description: "Wrong Input,Do if from first to submit again!"} })
+                                        message.author.send({embed: { description: " Wrong Input,\n Cancelled this entry!\n To Participate again start from first step!"} })
                                     }
                                 })
                             })
