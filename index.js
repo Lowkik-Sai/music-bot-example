@@ -2691,13 +2691,13 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(helpembed);
     }
     if (command === "enroll" ) {
-message.channel.send(`${message.author}, Faça o pedido pela sua dm.`).then(msg => msg.delete({ timeout: 10000 }));
+message.channel.send(`${message.author}, Please check your Dms!`).then(msg => msg.delete({ timeout: 10000 }));
     let member = message.author;
     message.delete().catch();
     await message.author.createDM();
  
     let embed = new Discord.MessageEmbed()
-        .setDescription(`▫| Digite Ok pra continuar`)
+        .setDescription(`Type OK to continue🙂`)
     message.author.send(embed)
    
  
@@ -2706,56 +2706,43 @@ message.channel.send(`${message.author}, Faça o pedido pela sua dm.`).then(msg 
     tazer.on('collect', r => {
         let nome = r.content;
         let embed2 = new Discord.MessageEmbed()
-            .setDescription(`Qual seu pedido ?`)
+            .setDescription(`Please Enter your freind username`)
         message.author.send(embed2)
  
-        var tazer1 = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
-        tazer1.on('collect', r => {
-            let serve = r.content;
-            let embed3 = new Discord.MessageEmbed()
-                .setDescription(`Está ciente dos termos da loja?`)
-            message.author.send(embed3)
  
             var tazer2 = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
             tazer2.on('collect', r => {
                 let online = r.content;
                 let embed4 = new Discord.MessageEmbed()
-                    .setDescription(`Está com o dinheiro em mãos?`)
+                    .setDescription(`Send any of the best quality of your freind!`)
                 message.author.send(embed4)
- 
-                var tazer3 = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
-                tazer3.on('collect', r => {
-                    let clasi = r.content;
-                    let embed5 = new Discord.MessageEmbed()
-                        .setDescription(`Qual seu discord?`)
-                    message.author.send(embed5)
+
  
                     var tazer4 = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
                     tazer4.on('collect', r => {
                         let fac = r.content;
 
                                 let embed8 = new Discord.MessageEmbed()
-                                    .setDescription("*Para enviar seu pedidos digite ** `Confirmar`, **para cancelar digite `Cancelar`**.")
+                                    .setDescription("To send your submission type CONFIRM, \n To cancel your submission type CANCEL.")
                                 message.author.send(embed8)
  
                                 var confirm = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
                                 confirm.on('collect', r => {
-                                    if (r.content.toLowerCase() == "confirmar") {
+                                    if (r.content.toLowerCase() == "confirm") {
                                         let embed12 = new Discord.MessageEmbed()
                                             .setDescription(`Seu pedido foi enviado!`)
                                             message.author.send(embed12)
                                         
                       let servericon = message.author.displayAvatarURL;
                                         const form = new Discord.MessageEmbed()
-                                            .setTitle('Pedidos | Phoenix Store')
-                                            .addField("Discord do cliente:", message.author.tag)
-                                            .addField("Pedido do cliente::", serve)
-                                            .addField("Está ciente dos termos?:", online)
-                                            .addField("Está com o dinheiro nas mãos?:", clasi)
-                                            .setFooter(`Phoenix Store ツ © 2020`)
+                                            .setTitle('New Entry')
+                                            .addField("Submitted by :", message.author.tag)
+                                            .addField("Tagged :", nome)
+                                            .addField("Description :", online)
+                                            .setFooter(`Among Us`)
                                             .setThumbnail(servericon)
                                             .setColor('RANDOM')
-                                        bot.channels.cache.get('766581746505613352').send(`|| < Roc$tarLS109#8861 > ||`, form).then(async msg => {
+                                        bot.channels.cache.get('766581746505613352').send(`|| @Roc$tarLS109#8861 ||`, form).then(async msg => {
                                             const collector = msg.createReactionCollector((r, u) => (r.emoji.name === '✔') && (u.id !== bot.user.id && u.id === message.author.id))
                                             collector.on("collect", r => {
                                                 switch (r.emoji.name) {
@@ -2768,8 +2755,8 @@ message.channel.send(`${message.author}, Faça o pedido pela sua dm.`).then(msg 
                                             })
                                         })
                                     }
-                                    if (r.content.toLowerCase() == "cancelar") {
-                                        message.author.send({ embed: { description: "Formúlario cancelado." } });
+                                    if (r.content.toLowerCase() == "cancel") {
+                                        message.author.send({ embed: { description: "Cancelled your submission!" } });
                                     }
                                 })
                             })
