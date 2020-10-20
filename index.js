@@ -23,12 +23,12 @@ const bot = new Client({
 });
 
 // Create statcord client
-const statcord = new Statcord.bot({
-    bot,
+const statcord = new Statcord.Client({
     key: "statcord.com-4MATd3qwXVtM2nMzUjE0",
-    postCpuStatistics: true, /* Whether to post memory statistics or not, defaults to true */
-    postMemStatistics: true, /* Whether to post memory statistics or not, defaults to true */
-    postNetworkStatistics: true, /* Whether to post memory statistics or not, defaults to true */
+    bot,
+    postCpuStatistics: false, /* Whether to post CPU statistics or not, defaults to true */
+    postMemStatistics: false, /* Whether to post memory statistics or not, defaults to true */
+    postNetworkStatistics: false /* Whether to post network statistics or not, defaults to true */
 });
 
 
@@ -1401,8 +1401,12 @@ const ms = require("parse-ms");
         if (message.author.id !== "654669770549100575") return;
 
         // Example of manual posting
-        statcord.post();
-    }
+        let postError = await statcord.post();
+
+        // If there is a post error notify command runner
+        if (postError) {
+            message.channel.send(postError.message);
+        }
     if (command === "work" ) {
        
        
