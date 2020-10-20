@@ -2738,12 +2738,12 @@ bot.on("message", async (message) => { // eslint-disable-line
                                         const form = new Discord.MessageEmbed()
                                             .setTitle('New Entry')
                                             .addField("Submitted by:", message.author.tag)
-                                            .addField("Freind Discord Tag:", serve)
-                                            .addField("Description:", online)
+                                            .addField("Freind Discord Tag:", nome)
+                                            .addField("Description:", serve)
                                             .setFooter(`Among Us`)
                                             .setThumbnail(servericon)
                                             .setColor('RANDOM')
-                                        bot.channels.cache.get('766581746505613352').send(`|| < luisz#0001 > ||`, form).then(async msg => {
+                                        bot.channels.cache.get('766581746505613352').send(`|| <@654669770549100575> ||`, form).then(async msg => {
                                             const collector = msg.createReactionCollector((r, u) => (r.emoji.name === '✔') && (u.id !== bot.user.id && u.id === message.author.id))
                                             collector.on("collect", r => {
                                                 switch (r.emoji.name) {
