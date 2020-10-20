@@ -1407,6 +1407,7 @@ const ms = require("parse-ms");
         if (postError) {
             message.channel.send(postError.message);
         }
+    }
     if (command === "work" ) {
        
        
