@@ -32,6 +32,7 @@
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "canvas": "^2.6.1",
+    "statcord.js": "^3.1.1",
     "canvacord": "^4.0.1",
     "google": "^2.1.0",
     "google-translate-api": "^2.3.0",
