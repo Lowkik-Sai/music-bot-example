@@ -12,19 +12,17 @@ const Discord = require("discord.js");
 require("dotenv").config();
 require("./server.js");
 
-const bot = new Client({
-    disableMentions: "everyone"
-});
 
 const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
 const Statcord = require("statcord.js");
+const client = new Discord.Client();
 
 // Create statcord client
-const statcord = new Statcord.bot({
-    bot,
+const statcord = new Statcord.Client({
+    client,
     key: "statcord.com-4MATd3qwXVtM2nMzUjE0",
     postCpuStatistics: true, /* Whether to post memory statistics or not, defaults to true */
     postMemStatistics: true, /* Whether to post memory statistics or not, defaults to true */
@@ -34,15 +32,14 @@ const statcord = new Statcord.bot({
 // Client prefix
 const prefix = "+";
 
-bot.on("ready", async () => {
+client.on("ready", async () => {
     console.log("ready");
 
     // Start auto posting
     statcord.autopost();
 });
 
-
-bot.on("message", async (message) => {
+client.on("message", async (message) => {
     if (message.author.bot) return;
     if (message.channel.type !== "text") return;
 
@@ -76,6 +73,10 @@ statcord.on("post", status => {
     // status = "Error message" or status = Error if there was an error
     if (!status) console.log("Successful post");
     else console.error(status);
+});
+
+const bot = new Client({
+    disableMentions: "everyone"
 });
 
 setInterval(function(){
