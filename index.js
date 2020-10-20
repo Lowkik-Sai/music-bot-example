@@ -26,22 +26,9 @@ const client = new Discord.Client({
 const statcord = new Statcord.Client({
     key: "statcord.com-4MATd3qwXVtM2nMzUjE0",
     client,
-    postCpuStatistics: false, /* Whether to post CPU statistics or not, defaults to true */
-    postMemStatistics: false, /* Whether to post memory statistics or not, defaults to true */
-    postNetworkStatistics: false /* Whether to post network statistics or not, defaults to true */
-});
-/* Register custom fields handlers (these are optional, you are not required to use this function)
- * These functions are automatically run when posting
-*/
-
-// Handler for custom value 1
-statcord.registerCustomFieldHandler(1, async (client) => {
-    // Get and return your data as a string
-});
-
-// Handler for custom value 2
-statcord.registerCustomFieldHandler(2, async (client) => {
-    // Get and return your data as a string
+    postCpuStatistics: true, /* Whether to post CPU statistics or not, defaults to true */
+    postMemStatistics: true, /* Whether to post memory statistics or not, defaults to true */
+    postNetworkStatistics: true /* Whether to post network statistics or not, defaults to true */
 });
 
 client.on("ready", async () => {
