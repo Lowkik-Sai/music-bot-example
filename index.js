@@ -2760,7 +2760,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                                         message.author.send({ embed: { description: "Successfully cancelled!" } });
                                     }
                                    if (r.content.toLowerCase() != "confirm" && r.content.toLowerCase() != "cancel") {
-                                       message.author.send({ embed: { description: " Wrong Input,\n Cancelled your entry , \n To Participate again start from first step! } });
+                                       message.author.send({ embed: { description: " Wrong Input,\n Cancelled your entry , \n To Participate again start from first step!" } });
                                     }
                                 })
                             })
