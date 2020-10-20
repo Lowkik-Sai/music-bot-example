@@ -2693,6 +2693,49 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         message.channel.send(helpembed);
     }
+    if (command === "apply" ) {
+
+const questions = [                    // ------------------------------------
+  "What's your IGN?",                  //
+  "How old are you?",                  // Define the questions you'd like the
+  "What time zone do you reside in?",  // application to have in this array.
+  "Do you have Schematica?"            //
+];                                     // ------------------------------------
+
+const applying = [];
+    try {
+      console.log(`${message.author.tag} began applying.`);
+
+      applying.push(message.author.id);
+      await message.channel.send(":pencil: **Application started!** Type `#cancel` to exit.");
+
+      for (let i = 0, cancel = false; i < questions.length && cancel === false; i++) {
+        await message.channel.send(questions[i]);
+        await message.channel.awaitMessages(m => m.author.id === message.author.id, { max: 1, time: 300000, errors: ["time"] })
+          .then(collected => {
+            if (collected.first().content.toLowerCase() === "#cancel") {
+              await message.channel.send(":x: **Application cancelled.**");
+              applying.splice(applying.indexOf(message.author.id), 1);
+              cancel = true;
+
+              console.log(`${message.author.tag} cancelled their application.`);
+            }
+          }).catch(() => {
+            await message.channel.send(":hourglass: **Application timed out.**");
+            applying.splice(applying.indexOf(message.author.id), 1);
+            cancel = true;
+
+            console.log(`${message.author.tag} let their application time out.`);
+          });
+      }
+
+      await message.channel.send(":thumbsup: **You're all done!**");
+
+      console.log(`${message.author.tag} finished applying.`);
+    } catch(err) {
+      console.error(err);
+    }
+  }
     if (command === "enroll" ) {
     message.channel.send(`${message.author}, Entry started in your Dm(s)!`).then(msg => msg.delete(10000));
     let member = message.author;
