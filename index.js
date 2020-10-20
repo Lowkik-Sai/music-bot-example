@@ -2730,7 +2730,7 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
                                 confirm.on('collect', r => {
                                     if (r.content.toLowerCase() == "confirm") {
                                         let embed12 = new Discord.MessageEmbed()
-                                            .setDescription(`Seu pedido foi enviado!`)
+                                            .setDescription(`Successfully submitted!`)
                                             message.author.send(embed12)
                                         
                       let servericon = message.author.displayAvatarURL;
@@ -2762,8 +2762,6 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
                             })
                         })
                     })
-                })
-            })
         }
     if (command === "caronavirus" || command === "cv") {
               message.reply({embed: {
