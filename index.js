@@ -2733,9 +2733,9 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
                       let servericon = message.author.displayAvatarURL;
                                         const form = new Discord.MessageEmbed()
                                             .setTitle('New Entry')
-                                            .addField("Submitted by::", message.author.tag)
-                                            .addField("Tagged: :", nome)
-                                            .addField("Description: :", online)
+                                            .addField("Submitted by:", message.author.tag)
+                                            .addField("Tagged:", nome)
+                                            .addField("Description:", online)
                                             .setFooter(`Among Us`)
                                             .setThumbnail(servericon)
                                             .setColor('RANDOM')
@@ -2755,6 +2755,8 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
                                     if (r.content.toLowerCase() == "cancel") {
                                         message.author.send({ embed: { description: "Cancelled your submission!" } });
                                     }
+                                    if (r.content.toLowerCase() != "confirm" && r.content.toLowerCase () != "cancel") {
+                                        message.author.send({embed: { description: "Wrong Input,Do if from first to submit again!"} })
                                 })
                             })
                         })
