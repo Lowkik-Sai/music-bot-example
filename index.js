@@ -2694,37 +2694,37 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.channel.send(helpembed);
     }
     if (command === "enroll" ) {
-message.channel.send(`${message.author}, Please check your Dms!`).then(msg => msg.delete({ timeout: 10000 }));
+    message.channel.send(`${message.author}, Entry started in your Dm(s)!`).then(msg => msg.delete(10000));
     let member = message.author;
     message.delete().catch();
     await message.author.createDM();
  
     let embed = new Discord.MessageEmbed()
-        .setDescription(`Starting...Type OK 🤪`)
+        .setDescription(`Starting....Type OK to continue🤪`)
     message.author.send(embed)
+   
+ 
    
     var tazer = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
     tazer.on('collect', r => {
         let nome = r.content;
         let embed2 = new Discord.MessageEmbed()
-            .setDescription(`Please Enter your freind username`)
+            .setDescription(`Send your freind discord name and tag`)
         message.author.send(embed2)
  
- 
-            var tazer2 = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
-            tazer2.on('collect', r => {
-                let online = r.content;
-                let embed4 = new Discord.MessageEmbed()
-                    .setDescription(`Send any of the best quality of your freind!`)
-                message.author.send(embed4)
+        var tazer1 = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
+        tazer1.on('collect', r => {
+            let serve = r.content;
+            let embed3 = new Discord.MessageEmbed()
+                .setDescription(`Describe about your freind`)
+            message.author.send(embed3)
 
- 
                     var tazer4 = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
                     tazer4.on('collect', r => {
                         let fac = r.content;
 
                                 let embed8 = new Discord.MessageEmbed()
-                                    .setDescription("To send your submission type CONFIRM, \n To cancel your submission type CANCEL.")
+                                    .setDescription("To send your submission type CONFIRM,\nTo cancel your submission type CANCEL ")
                                 message.author.send(embed8)
  
                                 var confirm = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
@@ -2738,12 +2738,12 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
                                         const form = new Discord.MessageEmbed()
                                             .setTitle('New Entry')
                                             .addField("Submitted by:", message.author.tag)
-                                            .addField("Tagged:", nome)
+                                            .addField("Freind Discord Tag:", serve)
                                             .addField("Description:", online)
                                             .setFooter(`Among Us`)
                                             .setThumbnail(servericon)
                                             .setColor('RANDOM')
-                                        bot.channels.cache.get('766581746505613352').send(`|| @Roc$tarLS109#8861 ||`, form).then(async msg => {
+                                        bot.channels.cache.get('766581746505613352').send(`|| < luisz#0001 > ||`, form).then(async msg => {
                                             const collector = msg.createReactionCollector((r, u) => (r.emoji.name === '✔') && (u.id !== bot.user.id && u.id === message.author.id))
                                             collector.on("collect", r => {
                                                 switch (r.emoji.name) {
@@ -2757,15 +2757,17 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
                                         })
                                     }
                                     if (r.content.toLowerCase() == "cancel") {
-                                        message.author.send({ embed: { description: "Cancelled your submission!" } });
+                                        message.author.send({ embed: { description: "Successfully cancelled!" } });
                                     }
-                                    if (r.content.toLowerCase() != "confirm" && r.content.toLowerCase () != "cancel") {
-                                        message.author.send({embed: { description: " Wrong Input,\n Cancelled this entry!\n To Participate again start from first step!"} })
+                                   if (r.content.toLowerCase() != "confirm" && r.content.toLowerCase() != "cancel) {
+                                       message.author.send({ embed: { description: " Wrong Input,\n Cancelled your entry , \n To Participate again start from first step! } });
                                     }
                                 })
                             })
                         })
-                     })
+                    })
+                })
+            })
         }
     if (command === "caronavirus" || command === "cv") {
               message.reply({embed: {
