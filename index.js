@@ -20,6 +20,60 @@ const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
+const Statcord = require("statcord.js");
+
+const statcord = new Statcord.bot({
+    bot,
+    key: "statcord.com-4MATd3qwXVtM2nMzUjE0",
+    postCpuStatistics: true, /* Whether to post memory statistics or not, defaults to true */
+    postMemStatistics: true, /* Whether to post memory statistics or not, defaults to true */
+    postNetworkStatistics: true, /* Whether to post memory statistics or not, defaults to true */
+});
+
+bot.on("ready", async () => {
+    console.log("StatCord is Ready!");
+
+    // Start auto posting
+    statcord.autopost();
+});
+
+
+bot.on("message", async (message) => {
+    if (message.author.bot) return;
+    if (message.channel.type !== "text") return;
+
+    if (!message.content.startsWith((PREFIX)) return;
+
+    let command = message.content.split(" ")[0].toLowerCase().substr(PREFIX.length);
+
+    // Post command
+    statcord.postCommand(command, message.author.id);
+
+    if (command == "say") {
+        message.channel.send("say");
+    } else if (command == "help") {
+        message.channel.send("help");
+    } else if (command == "post") {
+        // Only owner runs this command
+        if (message.author.id !== "654669770549100575") return;
+
+        // Example of manual posting
+        statcord.post();
+    }
+});
+
+statcord.on("autopost-start", () => {
+    // Emitted when statcord autopost starts
+    console.log("Started autopost");
+});
+
+statcord.on("post", status => {
+    // status = false if the post was successful
+    // status = "Error message" or status = Error if there was an error
+    if (!status) console.log("Successful post");
+    else console.error(status);
+});
+
 setInterval(function(){
 let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
 let sts= st[Math.floor(Math.random()*st.length)];
