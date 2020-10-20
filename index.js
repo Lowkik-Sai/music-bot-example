@@ -18,14 +18,14 @@ const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
-const bot = new Client({
+const client = new Discord.Client({
     disableMentions: "everyone"
 });
 
 // Create statcord client
 const statcord = new Statcord.Client({
     key: "statcord.com-4MATd3qwXVtM2nMzUjE0",
-    bot,
+    client,
     postCpuStatistics: false, /* Whether to post CPU statistics or not, defaults to true */
     postMemStatistics: false, /* Whether to post memory statistics or not, defaults to true */
     postNetworkStatistics: false /* Whether to post network statistics or not, defaults to true */
@@ -44,7 +44,7 @@ statcord.registerCustomFieldHandler(2, async (client) => {
     // Get and return your data as a string
 });
 
-bot.on("ready", async () => {
+client.on("ready", async () => {
     console.log("ready");
 
     // Start auto posting
@@ -54,11 +54,11 @@ bot.on("ready", async () => {
 setInterval(function(){
 let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
 let sts= st[Math.floor(Math.random()*st.length)];
-bot.user.setPresence({ activity: { name: sts }, status: 'online' })
+client.user.setPresence({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
 },10000);
 
-bot.on("ready", () => {
+client.on("ready", () => {
     console.log("GuessTheNumber is Ready!");
 });
 
@@ -67,7 +67,7 @@ let number = Math.floor(Math.random()* Math.floor(limit)); // You can custom it 
 let ownerID = '654669770549100575';
 let channelID = '763233532797124649';
 
-bot.on('message', async message => {
+client.on('message', async message => {
     if(message.content == "+restart") {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
         message.react('✅');
@@ -142,14 +142,14 @@ bot.on('message', async message => {
    description:`The channel has been successfully set to <#${newchannelID}>!\nMake Sure that channel is Existed in this server!`
 }});
     }
-    if(message.author.bot) return;
+    if(message.author.client) return;
     if(message.channel.id === channelID) {
         if(!message.content.isNaN) {
             if(message.content > limit) return message.reply(`The number is between 1 and ${limit}! Try again`).then(sent => sent.delete(10000));
             if(message.content < 1) return message.reply(`The number cannot be negative! Try again`).then(sent => sent.delete(10000));
             if(message.content == number) {
                 var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
-                bot.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
+                client.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
   {
      id: message.guild.id,
      deny: ['SEND_MESSAGES'],
@@ -167,13 +167,13 @@ bot.on('message', async message => {
     }
 });
 
-bot.on('guildCreate', async guild => {
+client.on('guildCreate', async guild => {
 	const fetchedLogs = await guild.fetchAuditLogs({
 		limit: 1,
 		type: 'BOT_ADD',
 	});
 	const auditlog = fetchedLogs.entries.first();
-let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
+let myg=client.guilds.cache.find(guild=>guild.id=="726055475178635305");
 let cc=myg.channels.cache.find(channel=>channel.id=="762981207705124906");
 let invitech=guild.channels.cache.find(channel=>channel.type=='text');
 invitech.createInvite({maxAge:0})
@@ -186,8 +186,8 @@ cc.send(`\nLink:- https://discord.gg/${invite.code}`);
 });
 });
 
-bot.on('guildDelete', async guild => {
-let myg=bot.guilds.cache.find(guild=>guild.id=="726055475178635305");
+client.on('guildDelete', async guild => {
+let myg=client.guilds.cache.find(guild=>guild.id=="726055475178635305");
 let cc=myg.channels.cache.find(channel=>channel.id=="762981236351959061");
 cc.send({embed: {
   color: 3066993,
@@ -195,14 +195,14 @@ cc.send({embed: {
 }});
 });
 
-bot.on('message',m=>{
+client.on('message',m=>{
 if(m.content=="+servers_name"){
 let Owner = m.author;
     if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return m.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
-let s=bot.guilds.cache;
+let s=client.guilds.cache;
 s.each(guild=>{
 m.channel.send({embed: {
   color: 3066993,
@@ -212,14 +212,14 @@ m.channel.send({embed: {
 }
 });
 
-bot.on('message',m=>{
+client.on('message',m=>{
 if(m.content=="+servers_link"){
 let Owner = m.author;
     if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return m.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
-let s=bot.guilds.cache;
+let s=client.guilds.cache;
 s.each(guild=>{
 let cnl=guild.channels.cache.find(channel=>channel.type=='text');
 cnl.createInvite({maxAge:0})
@@ -229,7 +229,7 @@ cnl.createInvite({maxAge:0})
 };
 });
 
-bot.on('message', msg => {
+client.on('message', msg => {
   if (msg.content === 'prefix') {
     msg.reply({embed: {
   color: 3066993,
