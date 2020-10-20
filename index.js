@@ -30,7 +30,19 @@ const statcord = new Statcord.Client({
     postMemStatistics: false, /* Whether to post memory statistics or not, defaults to true */
     postNetworkStatistics: false /* Whether to post network statistics or not, defaults to true */
 });
+/* Register custom fields handlers (these are optional, you are not required to use this function)
+ * These functions are automatically run when posting
+*/
 
+// Handler for custom value 1
+statcord.registerCustomFieldHandler(1, async (client) => {
+    // Get and return your data as a string
+});
+
+// Handler for custom value 2
+statcord.registerCustomFieldHandler(2, async (client) => {
+    // Get and return your data as a string
+});
 
 bot.on("ready", async () => {
     console.log("ready");
