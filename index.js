@@ -2700,7 +2700,7 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
     await message.author.createDM();
  
     let embed = new Discord.MessageEmbed()
-        .setDescription(`▫| Digite Ok pra continuar`)
+        .setDescription(`Starting...Type OK 🤪`)
     message.author.send(embed)
    
     var tazer = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
