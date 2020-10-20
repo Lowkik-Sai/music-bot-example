@@ -40,9 +40,7 @@ bot.on("ready", async () => {
 
 bot.on("message", async (message) => {
     if (message.author.bot) return;
-    if (message.channel.type !== "text") return;
-
-    if (!message.content.startsWith((PREFIX)) return;
+    if (!message.content.startsWith(PREFIX)) return;
 
     let command = message.content.split(" ")[0].toLowerCase().substr(PREFIX.length);
 
