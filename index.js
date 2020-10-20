@@ -2696,6 +2696,9 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
     message.delete().catch();
     await message.author.createDM();
  
+    var tazer1 = message.author.dmChannel.createMessageCollector(a => a.author.id == message.author.id, { time: 10000 * 50, max: 1 });
+    tazer1.on('collect', r => {
+    let msg = r.content;
     let embed = new Discord.MessageEmbed()
         .setDescription(`Type OK to continue🙂`)
     message.author.send(embed)
