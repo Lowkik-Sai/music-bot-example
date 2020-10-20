@@ -18,7 +18,7 @@ const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
-const bot = new Discord.Client({
+const bot = new Client({
     disableMentions: "everyone"
 });
 
