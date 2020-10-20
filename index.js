@@ -280,8 +280,7 @@ client.on("message", async (message) => { // eslint-disable-line
     let command = message.content.toLowerCase().split(" ")[0];
     command = command.slice(PREFIX.length);
     
-    statcord.postCommand(command, message.author.id);
-   
+    
     if (command === "invite" || command === "inv") {
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
@@ -392,8 +391,7 @@ client.on("message", async (message) => { // eslint-disable-line
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
     // the rest of your code
-    statcord.postCommand(command, message.author.id);
-
+    
     if (command === 'args-info') {
 	if (!args.length) {
 		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
@@ -2615,7 +2613,6 @@ client.on("message", async (message) => { // eslint-disable-line
     let command = message.content.toLowerCase().split(" ")[0];
     command = command.slice(PREFIX.length);
     
-    statcord.postCommand(command, message.author.id);
     if (command === "channelinvite" || command === "ci") {
        const setChannelID = message.content.split(' ');
 
