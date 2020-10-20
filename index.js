@@ -22,7 +22,8 @@ const queue = new Map();
 
 const Statcord = require("statcord.js");
 
-const statcord = new Statcord.bot({
+// Create statcord client
+const statcord = new Statcord.Client({
     bot,
     key: "statcord.com-4MATd3qwXVtM2nMzUjE0",
     postCpuStatistics: true, /* Whether to post memory statistics or not, defaults to true */
@@ -30,8 +31,11 @@ const statcord = new Statcord.bot({
     postNetworkStatistics: true, /* Whether to post memory statistics or not, defaults to true */
 });
 
+// Client prefix
+const prefix = "+";
+
 bot.on("ready", async () => {
-    console.log("StatCord is Ready!");
+    console.log("ready");
 
     // Start auto posting
     statcord.autopost();
@@ -40,9 +44,11 @@ bot.on("ready", async () => {
 
 bot.on("message", async (message) => {
     if (message.author.bot) return;
-    if (!message.content.startsWith(PREFIX)) return;
+    if (message.channel.type !== "text") return;
 
-    let command = message.content.split(" ")[0].toLowerCase().substr(PREFIX.length);
+    if (!message.content.startsWith(prefix)) return;
+
+    let command = message.content.split(" ")[0].toLowerCase().substr(prefix.length);
 
     // Post command
     statcord.postCommand(command, message.author.id);
