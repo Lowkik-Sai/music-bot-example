@@ -2766,8 +2766,6 @@ bot.on("message", async (message) => { // eslint-disable-line
                             })
                         })
                     })
-                })
-            })
         }
     if (command === "caronavirus" || command === "cv") {
               message.reply({embed: {
