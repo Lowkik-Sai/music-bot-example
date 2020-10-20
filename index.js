@@ -2758,6 +2758,7 @@ message.channel.send(`${message.author}, Please check your Dms!`).then(msg => ms
                                 })
                             })
                         })
+                     })
         }
     if (command === "caronavirus" || command === "cv") {
               message.reply({embed: {
