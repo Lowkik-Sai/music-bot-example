@@ -18,7 +18,6 @@ const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 
 const Statcord = require("statcord.js");
-const client = new Discord.Client();
 
 // Create statcord client
 const statcord = new Statcord.Client({
