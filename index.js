@@ -2226,7 +2226,7 @@ ${eval(command)}
     if (command === "roll" ) {
 var rndInt = getRandomInt(20) + 1;
         console.log(rndInt);
-        msg.reply(" you rolled **" + rndInt + "**")
+        message.reply(" you rolled **" + rndInt + "**")
     }
     if (command === "flip" ) {
         const mapping = '¡"#$%⅋,)(*+\'-˙/0ƖᄅƐㄣϛ9ㄥ86:;<=>?@∀qƆpƎℲפHIſʞ˥WNOԀQɹS┴∩ΛMX⅄Z[/]^_`ɐqɔpǝɟƃɥᴉɾʞlɯuodbɹsʇnʌʍxʎz{|}~';
