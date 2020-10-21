@@ -362,7 +362,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setColor('RED');
 
         //Sending Embed
-        const guild = bot.guilds.get(guildID);
+        const guild = bot.guilds.cache.get(guildID);
         await guild.channels.find(channel => channel.name === 'applications').send(embed);
     }
     if (command === "help" || command === "cmd") {
