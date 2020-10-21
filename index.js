@@ -3452,7 +3452,7 @@ if (!message.channel.permissionsFor(bot.user).has('MANAGE_ROLES')) {
 				allow: ['VIEW_CHANNEL'],
 			},
 		])
-			.then(() => message.channel.send(`Made channel \`${message.channel.name}\` private.`))
+			.then(() => message.channel.send(`Made channel ${message.channel.name} private.`))
 			.catch(console.error);
 	}
     if (command === "createprivate" ) {
@@ -3490,7 +3490,7 @@ if (!message.channel.permissionsFor(bot.user).has('MANAGE_ROLES')) {
 			return message.channel.send('Please make sure i have the permissions MANAGE_ROLES in this channel and retry.');
 		}
 
-		message.channel.permissionOverwrites.get(message.guild.id)
+		message.channel.permissionOverwrites.get(message.guild.id).delete({ timeout: 5000, reason: 'It had to be done.' });
 			.then(() => message.channel.send(`Made channel ${message.channel.name} public.`))
 			.catch(console.error);
 	}
