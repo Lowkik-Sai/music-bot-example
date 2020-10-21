@@ -363,7 +363,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         //Sending Embed
         const guild = bot.guilds.cache.get(guildID);
-        await guild.channels.find(channel => channel.name === 'applications').send(embed);
+        await guild.channels.cache.find(channel => channel.name === 'applications').send(embed);
     }
     if (command === "help" || command === "cmd") {
         const PaginationEmbed = require('discord-paginationembed');
