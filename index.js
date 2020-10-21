@@ -353,7 +353,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         const location = (answer.map(answers => answers.content).join());
 
         //Embed
-        const embed = new Discord.RichEmbed()
+        const embed = new MessageEmbed()
         .setAuthor(message.author.tag, message.author.avatarURL)
         .addField('Age', age)
         .addField('Name', name)
@@ -3456,7 +3456,7 @@ if (!message.channel.permissionsFor(bot.user).has('MANAGE_ROLES')) {
 			return message.channel.send('Please make sure i have the permissions MANAGE_ROLES in this channel and retry.');
 		}
 
-		message.channel.permissionOverwrites.get(message.guild.id).delete()
+		message.channel.permissionOverwrites.get(message.guild.id)
 			.then(() => message.channel.send(`Made channel ${message.channel.name} public.`))
 			.catch(console.error);
 	}
