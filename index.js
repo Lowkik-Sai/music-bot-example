@@ -1429,8 +1429,8 @@ const ms = require("parse-ms");
         if (GambleBet == Compare){
             var Win = Math.floor(Math.random() * 3000);
             db.add(`money_${message.guild.id}_${message.author.id}`, Win)
-            if (Win < bet)return message.channel.send(`Congradulations ${message.author}! You just won **$${Win}** but, you still lost **$${bet-Win}**. :face_with_monocle:`);
-            if (Win == bet)return message.channel.send(`Congradulations ${message.author}! You got your **$${bet}** back! :dollar:`);
+            if (Win < bet)return message.channel.send(`Congratulations ${message.author}! You just won **$${Win}** but, you still lost **$${bet-Win}**. :face_with_monocle:`);
+            if (Win == bet)return message.channel.send(`Congratulations ${message.author}! You got your **$${bet}** back! :dollar:`);
             message.channel.send(`Congratulations ${message.author}! You just won **$${Win}**! :money_with_wings:`);
         }else{
             let NewBal = db.fetch(`money_${message.author.id}`); if (NewBal == null)NewBal = "0";
