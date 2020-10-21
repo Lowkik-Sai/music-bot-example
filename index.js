@@ -3452,7 +3452,7 @@ if (!message.channel.permissionsFor(bot.user).has('MANAGE_ROLES')) {
 				allow: ['VIEW_CHANNEL'],
 			},
 		])
-			.then(() => message.channel.send(`Made channel ${message.channel.name} private!`))
+			.then(() => message.channel.send(`Made channel \`${message.channel.name}\` private!`))
 			.catch(console.error);
 	}
     if (command === "createprivate" ) {
