@@ -3491,7 +3491,7 @@ if (!message.channel.permissionsFor(bot.user).has('MANAGE_ROLES')) {
 		}
 
 		message.channel.permissionOverwrites.get(message.guild.id).delete({ timeout: 5000, reason: 'It had to be done.' });
-			.then(() => message.channel.send(`Made channel ${message.channel.name} public.`))
+			.then(() => message.channel.send(`Made channel ${message.channel.name} public!`))
 			.catch(console.error);
 	}
     if (command === "myperms" ) {
