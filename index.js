@@ -339,17 +339,17 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         //First Question
         await message.author.send('How old are you?');
-        let answer = await message.channel.awaitMessages(answer => answer.author.id != client.user.id,  {max: 1});
+        let answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const age = (answer.map(answers => answers.content).join());
 
         //Second Question
         await message.author.send('Whats your name?');
-        answer = await message.channel.awaitMessages(answer => answer.author.id != client.user.id,  {max: 1});
+        answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const name = (answer.map(answers => answers.content).join());
 
         //Third Question
         await message.author.send('Where do you live?');
-        answer = await message.channel.awaitMessages(answer => answer.author.id != client.user.id,  {max: 1});
+        answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const location = (answer.map(answers => answers.content).join());
 
         //Embed
@@ -362,7 +362,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setColor('RED');
 
         //Sending Embed
-        const guild = client.guilds.get(guildID);
+        const guild = bot.guilds.get(guildID);
         await guild.channels.find(channel => channel.name === 'applications').send(embed);
     }
     if (command === "help" || command === "cmd") {
