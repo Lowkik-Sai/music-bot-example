@@ -1405,8 +1405,8 @@ const ms = require("parse-ms");
         }
         let bet = args.slice(0).join(' ');
         let Extra = args.slice(1).join(' ');
-        let bal = db.fetch(`money_${message.author.id}`); if (bal == null)bal = "0";
-
+        let bal = db.fetch(`money_${message.guild.id}_${user.id}`)
+        if (bal === null) bal = 0;
 		if (!bet){
 			message.reply("How much money do you want to bet?");
 			return;
@@ -1422,7 +1422,7 @@ const ms = require("parse-ms");
 			message.delete({timeout: 10000});
 		});
         if (bet < 10)return message.channel.send(`I'm sorry ${message.author}, you have to bet **10coins** or more to use this command!`);
-        if (bet > bal)return message.channel.send(`I'm sorry ${message.author}, You don't have enough money to make a $**${bet}** bet. You only have $**{bal}**coins!`);
+        if (bet > bal)return message.channel.send(`I'm sorry ${message.author}, You don't have enough money to make a $**${bet}** bet. You only have **{bal}**!`);
         db.subtract(`money_${message.author.id}`, bet);
         var GambleBet = Math.floor(Math.random() * 25);
         var Compare = Math.floor(Math.random() * 25);
