@@ -22,6 +22,11 @@ const bot = new Client({
     disableMentions: "everyone"
 });
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+}
+
+
 setInterval(function(){
 let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
 let sts= st[Math.floor(Math.random()*st.length)];
