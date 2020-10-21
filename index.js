@@ -1405,7 +1405,7 @@ const ms = require("parse-ms");
         }
         let bet = args.slice(0).join(' ');
         let Extra = args.slice(1).join(' ');
-        let bal = db.get(`money_${message.author.id}`); if (bal == null)bal = "0";
+        let bal = db.fetch(`money_${message.author.id}`); if (bal == null)bal = "0";
 
 		if (!bet){
 			message.reply("How much money do you want to bet?");
@@ -1418,11 +1418,11 @@ const ms = require("parse-ms");
             return;
         }
         if (Extra)return message.reply("Incorect command usage/arguments! Example: -gamble 1500");
-        if (!bet) return message.reply(':warning: You must bet atleast $1000 to use this command!').then(message => {
+        if (!bet) return message.reply(':warning: You must bet atleast 10coins to use this command!').then(message => {
 			message.delete({timeout: 10000});
 		});
-        if (bet < 10)return message.channel.send(`I'm sorry ${message.author}, you have to bet **$1000** or more to use this command!`);
-        if (bet > bal)return message.channel.send(`I'm sorry ${message.author}, You don't have enough money to make a $**${bet}** bet. You only have $**${bal}**!`);
+        if (bet < 10)return message.channel.send(`I'm sorry ${message.author}, you have to bet **10coins** or more to use this command!`);
+        if (bet > bal)return message.channel.send(`I'm sorry ${message.author}, You don't have enough money to make a $**${bet}** bet. You only have $**{bal}**coins!`);
         db.subtract(`money_${message.author.id}`, bet);
         var GambleBet = Math.floor(Math.random() * 25);
         var Compare = Math.floor(Math.random() * 25);
@@ -1433,7 +1433,7 @@ const ms = require("parse-ms");
             if (Win == bet)return message.channel.send(`Congradulations ${message.author}! You got your **$${bet}** back! :dollar:`);
             message.channel.send(`Congratulations ${message.author}! You just won **$${Win}**! :money_with_wings:`);
         }else{
-            let NewBal = db.get(`money_${message.author.id}`); if (NewBal == null)NewBal = "0";
+            let NewBal = db.fetch(`money_${message.author.id}`); if (NewBal == null)NewBal = "0";
             if (NewBal > 1000){
                 message.reply(`Better luck next time. Why not try again? You still have **$${NewBal}**!`);
             }else{
