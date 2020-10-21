@@ -1423,19 +1423,19 @@ const ms = require("parse-ms");
 		});
         if (bet < 10)return message.channel.send(`I'm sorry ${message.author}, you have to bet **10coins** or more to use this command!`);
         if (bet > bal)return message.channel.send(`I'm sorry ${message.author}, You don't have enough money to make a **${bet}** bet. You only have **{bal}**!`);
-        db.subtract(`money_${message.author.id}`, bet);
+        db.subtract(`money_${message.guild.id}_${message.author.id}`, bet);
         var GambleBet = Math.floor(Math.random() * 25);
         var Compare = Math.floor(Math.random() * 25);
         if (GambleBet == Compare){
             var Win = Math.floor(Math.random() * 3000);
-            db.add(`money_${message.author.id}`, Win)
+            db.add(`money_${message.guild.id}_${message.author.id}`, Win)
             if (Win < bet)return message.channel.send(`Congradulations ${message.author}! You just won **$${Win}** but, you still lost **$${bet-Win}**. :face_with_monocle:`);
             if (Win == bet)return message.channel.send(`Congradulations ${message.author}! You got your **$${bet}** back! :dollar:`);
             message.channel.send(`Congratulations ${message.author}! You just won **$${Win}**! :money_with_wings:`);
         }else{
             let NewBal = db.fetch(`money_${message.author.id}`); if (NewBal == null)NewBal = "0";
             if (NewBal > 1000){
-                message.reply(`Better luck next time. Why not try again? You still have **$${NewBal}**!`);
+                message.reply(`Better luck next time. Why not try again? You still have **${NewBal}**!`);
             }else{
                 message.reply("You lost. Better luck next time!");
             }
