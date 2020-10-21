@@ -1403,9 +1403,8 @@ const ms = require("parse-ms");
             message.reply(DMMessage);
             return;
         }
-        let words = args.split(' ');
-        let bet = words.slice(0).join(' ');
-        let Extra = words.slice(1).join(' ');
+        let bet = args.slice(0).join(' ');
+        let Extra = args.slice(1).join(' ');
         let bal = db.get(`money_${message.author.id}`); if (bal == null)bal = "0";
 
 		if (!bet){
