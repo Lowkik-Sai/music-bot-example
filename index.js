@@ -352,6 +352,10 @@ bot.on("message", async (message) => { // eslint-disable-line
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const location = (answer.map(answers => answers.content).join());
 
+        await message.author.send({embed: {
+  color: 3066993,
+  description: "Successfully Applied!"
+}});
         //Embed
         const embed = new MessageEmbed()
         .setAuthor(message.author.tag, message.author.avatarURL)
