@@ -2227,11 +2227,28 @@ ${eval(command)}
 var rndInt = getRandomInt(20) + 1;
         console.log(rndInt);
         message.channel.send(" You've rolled **" + rndInt + "**");
-const number = ["11" ,"18"]; // You can custom it through /number command and reroll it through /reroll
+let number = "11";
+let number1 = "20";// You can custom it through /number command and reroll it through /reroll
 let ownerID = '654669770549100575';
 let channelID = '763233532797124649';
         if(message.channel.id === channelID) {
         if(rndInt == number) {
+                var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
+                bot.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
+  {
+     id: message.guild.id,
+     deny: ['SEND_MESSAGES'],
+  },
+]);
+                
+		message.channel.send({embed: {
+   color: 3066993,
+   description:`<@${message.author.id}> rolled a number 11. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
+}});
+                await message.react('🎉');
+                db.add(`realmoney_${message.guild.id}_${message.author.id}`, 50)
+            }
+        if(rndInt == number1) {
                 var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
                 bot.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
   {
