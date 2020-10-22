@@ -2227,7 +2227,7 @@ ${eval(command)}
 var rndInt = getRandomInt(20) + 1;
         console.log(rndInt);
         message.channel.send(" You've rolled **" + rndInt + "**");
-let number = ["11" ,"18"]; // You can custom it through /number command and reroll it through /reroll
+const number = ["11" ,"18"]; // You can custom it through /number command and reroll it through /reroll
 let ownerID = '654669770549100575';
 let channelID = '763233532797124649';
         if(message.channel.id === channelID) {
