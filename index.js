@@ -2224,10 +2224,12 @@ ${eval(command)}
 
 }
     if (command === "roll" ) {
-let channelID = '763233532797124649';let number = 11,
 var rndInt = getRandomInt(20) + 1;
         console.log(rndInt);
-        message.channel.send(" You've rolled **" + rndInt + "**")
+        message.channel.send(" You've rolled **" + rndInt + "**");
+let number = '11'; // You can custom it through /number command and reroll it through /reroll
+let ownerID = '654669770549100575';
+let channelID = '763233532797124649';
         if(message.channel.id === channelID) {
         if(rndInt == number) {
                 var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
