@@ -2224,8 +2224,7 @@ ${eval(command)}
 
 }
     if (command === "roll" ) {
-let channelID = '763233532797124649',
-let number = 11,
+let channelID = '763233532797124649';let number = 11,
 var rndInt = getRandomInt(20) + 1;
         console.log(rndInt);
         message.channel.send(" You've rolled **" + rndInt + "**")
