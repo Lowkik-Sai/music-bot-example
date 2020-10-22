@@ -2226,7 +2226,7 @@ ${eval(command)}
     if (command === "roll" ) {
 var rndInt = getRandomInt(20) + 1;
         console.log(rndInt);
-        message.channel.send(" `<@${message.author.id}>,You've rolled **" + rndInt + "**");
+        message.channel.send(`<@${message.author.id}>,You've rolled **` + rndInt + "**");
 let number = "11";
 let number1 = "20";// You can custom it through /number command and reroll it through /reroll
 let ownerID = '654669770549100575';
