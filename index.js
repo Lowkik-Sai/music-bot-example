@@ -2224,9 +2224,29 @@ ${eval(command)}
 
 }
     if (command === "roll" ) {
+let channelID = '763233532797124649',
+let number = 11,
 var rndInt = getRandomInt(20) + 1;
         console.log(rndInt);
-        message.reply(" you rolled **" + rndInt + "**")
+        message.channel.send(" You've rolled **" + rndInt + "**")
+        if(message.channel.id === channelID) {
+        if(rndInt == number) {
+                var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
+                bot.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
+  {
+     id: message.guild.id,
+     deny: ['SEND_MESSAGES'],
+  },
+]);
+                
+		message.channel.send({embed: {
+   color: 3066993,
+   description:`<@${message.author.id}> rolled a number 11. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
+}});
+                await message.react('🎉');
+                db.add(`realmoney_${message.guild.id}_${message.author.id}`, 50)
+            }
+        } else return
     }
     if (command === "flip" ) {
         const mapping = '¡"#$%⅋,)(*+\'-˙/0ƖᄅƐㄣϛ9ㄥ86:;<=>?@∀qƆpƎℲפHIſʞ˥WNOԀQɹS┴∩ΛMX⅄Z[/]^_`ɐqɔpǝɟƃɥᴉɾʞlɯuodbɹsʇnʌʍxʎz{|}~';
