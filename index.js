@@ -445,6 +445,37 @@ bot.on("message", async (message) => { // eslint-disable-line
 
 	message.channel.send(`First argument: ${args[0]}`);
     }
+    if (command == "flipbattle")
+    {
+        if (args.length != 2)
+            return message.reply('Usage: !battle <@user> <your prediction (heads/tails)>');
+        if (!message.mentions.users.size)
+            return message.reply('You have to tag a user in order to battle them');
+        if (args[1] != 'heads' && args[1] != 'tails')
+            return message.reply('The second argument must be your prediction, either "heads" or "tails"');
+
+        const taggedUser = message.mentions.users.first();
+        const userGuess = args[1];
+        
+        var timeleft = 3;
+        var downloadTimer = setInterval(function(){
+            msg.channel.send(timeleft + '...');
+            timeleft -= 1;  
+            if(timeleft <= 0){
+                clearInterval(downloadTimer);
+
+                if (FlipCoin() == 0)
+                    flipResult = 'heads';
+                else
+                    flipResult = 'tails';
+    
+                if (userGuess == flipResult)
+                    return message.channel.send(`Winner: <@${msg.author.id}>, Coin: ${flipResult.toUpperCase()}`);
+                else
+                    return message.channel.send(`Winner: <@${taggedUser.id}>, Coin: ${flipResult.toUpperCase()}`);
+            }
+        }, 1000);
+    }
     if(command == "setautorole"){
         let roleName = args.slice(0).join(" ");
         let role = message.guild.roles.cache.find(role => role.name == roleName)
@@ -3674,37 +3705,6 @@ const roleFinalPermissions = message.channel.permissionsFor(message.member.roles
       message.reply("You didn't mention the user to ban!");
     }
   }
-    if (command == "flipbattle")
-    {
-        if (args.length != 2)
-            return message.reply('Usage: !battle <@user> <your prediction (heads/tails)>');
-        if (!message.mentions.users.size)
-            return message.reply('You have to tag a user in order to battle them');
-        if (args[1] != 'heads' && args[1] != 'tails')
-            return message.reply('The second argument must be your prediction, either "heads" or "tails"');
-
-        const taggedUser = message.mentions.users.first();
-        const userGuess = args[1];
-        
-        var timeleft = 3;
-        var downloadTimer = setInterval(function(){
-            msg.channel.send(timeleft + '...');
-            timeleft -= 1;  
-            if(timeleft <= 0){
-                clearInterval(downloadTimer);
-
-                if (FlipCoin() == 0)
-                    flipResult = 'heads';
-                else
-                    flipResult = 'tails';
-    
-                if (userGuess == flipResult)
-                    return message.channel.send(`Winner: <@${msg.author.id}>, Coin: ${flipResult.toUpperCase()}`);
-                else
-                    return message.channel.send(`Winner: <@${taggedUser.id}>, Coin: ${flipResult.toUpperCase()}`);
-            }
-        }, 1000);
-    }
     if (command === "play" || command === "p") {
         const voiceChannel = message.member.voice.channel;
         if (!voiceChannel) return message.channel.send({
