@@ -470,7 +470,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                     flipResult = 'tails';
     
                 if (userGuess == flipResult)
-                    return message.channel.send(`Winner: <@${msg.author.id}>, Coin: ${flipResult.toUpperCase()}`);
+                    return message.channel.send(`Winner: <@${message.author.id}>, Coin: ${flipResult.toUpperCase()}`);
                 else
                     return message.channel.send(`Winner: <@${taggedUser.id}>, Coin: ${flipResult.toUpperCase()}`);
             }
