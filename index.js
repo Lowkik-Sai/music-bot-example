@@ -459,7 +459,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         
         var timeleft = 3;
         var downloadTimer = setInterval(function(){
-            msg.channel.send(timeleft + '...');
+            message.channel.send(timeleft + '...');
             timeleft -= 1;  
             if(timeleft <= 0){
                 clearInterval(downloadTimer);
