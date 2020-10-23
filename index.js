@@ -26,6 +26,10 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
+function FlipCoin()
+{
+    return Math.floor(Math.random() * 100) % 2;
+}
 
 setInterval(function(){
 let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
@@ -3670,6 +3674,37 @@ const roleFinalPermissions = message.channel.permissionsFor(message.member.roles
       message.reply("You didn't mention the user to ban!");
     }
   }
+    if (command == "flipbattle")
+    {
+        if (args.length != 2)
+            return msg.reply('Usage: !battle <@user> <your prediction (heads/tails)>');
+        if (!msg.mentions.users.size)
+            return msg.reply('You have to tag a user in order to battle them');
+        if (args[1] != 'heads' && args[1] != 'tails')
+            return msg.reply('The second argument must be your prediction, either "heads" or "tails"');
+
+        const taggedUser = msg.mentions.users.first();
+        const userGuess = args[1];
+        
+        var timeleft = 3;
+        var downloadTimer = setInterval(function(){
+            msg.channel.send(timeleft + '...');
+            timeleft -= 1;  
+            if(timeleft <= 0){
+                clearInterval(downloadTimer);
+
+                if (FlipCoin() == 0)
+                    flipResult = 'heads';
+                else
+                    flipResult = 'tails';
+    
+                if (userGuess == flipResult)
+                    return msg.channel.send(`Winner: <@${msg.author.id}>, Coin: ${flipResult.toUpperCase()}`);
+                else
+                    return msg.channel.send(`Winner: <@${taggedUser.id}>, Coin: ${flipResult.toUpperCase()}`);
+            }
+        }, 1000);
+    }
     if (command === "play" || command === "p") {
         const voiceChannel = message.member.voice.channel;
         if (!voiceChannel) return message.channel.send({
