@@ -3677,13 +3677,13 @@ const roleFinalPermissions = message.channel.permissionsFor(message.member.roles
     if (command == "flipbattle")
     {
         if (args.length != 2)
-            return msg.reply('Usage: !battle <@user> <your prediction (heads/tails)>');
-        if (!msg.mentions.users.size)
-            return msg.reply('You have to tag a user in order to battle them');
+            return message.reply('Usage: !battle <@user> <your prediction (heads/tails)>');
+        if (!message.mentions.users.size)
+            return message.reply('You have to tag a user in order to battle them');
         if (args[1] != 'heads' && args[1] != 'tails')
-            return msg.reply('The second argument must be your prediction, either "heads" or "tails"');
+            return message.reply('The second argument must be your prediction, either "heads" or "tails"');
 
-        const taggedUser = msg.mentions.users.first();
+        const taggedUser = message.mentions.users.first();
         const userGuess = args[1];
         
         var timeleft = 3;
@@ -3699,9 +3699,9 @@ const roleFinalPermissions = message.channel.permissionsFor(message.member.roles
                     flipResult = 'tails';
     
                 if (userGuess == flipResult)
-                    return msg.channel.send(`Winner: <@${msg.author.id}>, Coin: ${flipResult.toUpperCase()}`);
+                    return message.channel.send(`Winner: <@${msg.author.id}>, Coin: ${flipResult.toUpperCase()}`);
                 else
-                    return msg.channel.send(`Winner: <@${taggedUser.id}>, Coin: ${flipResult.toUpperCase()}`);
+                    return message.channel.send(`Winner: <@${taggedUser.id}>, Coin: ${flipResult.toUpperCase()}`);
             }
         }, 1000);
     }
