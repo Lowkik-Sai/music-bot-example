@@ -42,7 +42,7 @@ bot.on("ready", () => {
     console.log("GuessTheNumber is Ready!");
 });
 
-let limit = 2000; // You can change it through /limit command
+let limit = 20000; // You can change it through /limit command
 let number = Math.floor(Math.random()* Math.floor(limit)); // You can custom it through /number command and reroll it through /reroll
 let ownerID = '654669770549100575';
 let channelID = '769473798978142210';
