@@ -22,9 +22,9 @@ const bot = new Client({
     disableMentions: "everyone"
 });
 
-let point = bot.guilds.cache.get("608289298537775127").emojis.cache.find(emoji => emoji.name === "point")
-let verified = bot.guilds.cache.get("608289298537775127").emojis.cache.find(emoji => emoji.name === "Verified")
-let xd = bot.guilds.cache.get("608289298537775127").emojis.cache.find(emoji => emoji.name === "xd")
+let point = bot.guilds.cache.get("608289298537775127").emoji.cache.find(emoji => emoji.name === "point")
+let verified = bot.guilds.cache.get("608289298537775127").emoji.cache.find(emoji => emoji.name === "Verified")
+let xd = bot.guilds.cache.get("608289298537775127").emoji.cache.find(emoji => emoji.name === "xd")
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
