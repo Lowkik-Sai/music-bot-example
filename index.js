@@ -233,41 +233,20 @@ bot.on("voiceStateUpdate", (mold, mnew) => {
 	} ;
 });
 
-bot.on('guildMemberAdd', async member => {
-    const channel = member.guild.channels.cache.find(ch => ch.name === 'general');
-    if (!channel) return;
+bot.on("guildMemberAdd", (member) => { //usage of welcome event
+  let chx = db.get(`welchannel_${member.guild.id}`); //defining var
+  
+  if(chx === null) { //check if var have value or not
+    return;
+  }
 
-    const canvas = Canvas.createCanvas(700, 250);
-    const ctx = canvas.getContext('2d');
-
-    const background = await Canvas.loadImage('./Screenshot_2020-10-17-12-05-18-65.jpg');
-    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-    ctx.strokeStyle = '#74037b';
-    ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-    // Slightly smaller text placed above the member's display name
-    ctx.font = '28px sans-serif';
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText('Welcome to the server,', canvas.width / 2.5, canvas.height / 3.5);
-
-    // Add an exclamation point here and below
-    ctx.font = applyText(canvas, `${member.displayName}!`);
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText(`${member.displayName}!`, canvas.width / 2.5, canvas.height / 1.8);
-
-    ctx.beginPath();
-    ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
-    ctx.closePath();
-    ctx.clip();
-
-    const { body: buffer } = await snekfetch.get(member.user.displayAvatarURL);
-    const avatar = await Canvas.loadImage(buffer);
-    ctx.drawImage(avatar, 25, 25, 200, 200);
-
-    const attachment = new Discord.Attachment(canvas.toBuffer(), 'Duanism.png');
-
-    channel.send(`Welcome to the server, ${member}!`, attachment);
+  let wembed = new MessageEmbed() //define embed
+  .setAuthor(member.user.username, member.user.avatarURL())
+  .setColor("RANDOM")
+  .setThumbnail(member.user.avatarURL())
+  .setDescription(`We are very happy to have you in our server! \n\n 1) Make Sure You Read Our Rules and Regulations! \n 2) Be Friendly! \n 3) Enjoy here by Staying with friends! \n\n 🙂Thanks for joining our server!🙂`);
+  
+  bot.channels.cache.get(chx).send(wembed) //get channel and send embed
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
