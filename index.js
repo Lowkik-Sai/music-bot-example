@@ -22,6 +22,10 @@ const bot = new Client({
     disableMentions: "everyone"
 });
 
+let point = bot.guilds.get("608289298537775127").emojis.find(emoji => emoji.name === "point")
+let verified = bot.guilds.get("608289298537775127").emojis.find(emoji => emoji.name === "Verified")
+let xd = bot.guilds.get("608289298537775127").emojis.find(emoji => emoji.name === "xd")
+
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
@@ -253,7 +257,7 @@ bot.on("guildMemberAdd", (member) => { //usage of welcome event
   .setAuthor(member.user.username, member.user.avatarURL())
   .setColor("RANDOM")
   .setThumbnail(member.user.avatarURL())
-  .setDescription(`We are very happy to have you in our server! \n\n 1) Make Sure You Read Our Rules and Regulations! \n 2) Be Friendly! \n 3) Enjoy here by Staying with friends! \n\n 🙂Thanks for joining our server!🙂`);
+  .setDescription(`${xd}We are very happy to have you in our server!${xd} \n\n ${point}1) Make Sure You Read Our Rules and Regulations! \n ${point}2) Be Friendly! \n ${point}3) Enjoy here by Staying with friends! \n\n 🙂Thanks for joining our server!🙂`);
   
   bot.channels.cache.get(chx).send(wembed) //get channel and send embed
 });
