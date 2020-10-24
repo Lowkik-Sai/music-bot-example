@@ -45,7 +45,7 @@ bot.on("ready", () => {
 let limit = 2000; // You can change it through /limit command
 let number = Math.floor(Math.random()* Math.floor(limit)); // You can custom it through /number command and reroll it through /reroll
 let ownerID = '654669770549100575';
-let channelID = '763233532797124649';
+let channelID = '769473798978142210';
 
 bot.on('message', async message => {
     if(message.content == "+restart") {
@@ -54,6 +54,16 @@ bot.on('message', async message => {
         setTimeout(function() {
         	process.exit(0);
         }, 1000);
+    }
+    if(message.content == "+contestinfo" ) {
+	 const helpembed = new MessageEmbed()
+            .setColor("RANDOM")
+            .setAuthor("Invite Link", message.author.displayAvatarURL())
+            .setDescription("Hello everyone! Welcome to Guess The Number! Contest Are you feeling lucky today? Well you better be, because this contest will need all your lucky stars to align! \n\n Details: \n - One number in the range of 0 to 20k(+contestinfo for an accurate number) will be the correct number, and whoever guesses this number correctly will be the winner! \n - Just keep guessing the number here and <@758889056649216041> will take care of the rest! \n - Use +contestinfo for more details (Will only work in <#769473798978142210> \n\n Rules: \n - Do not spam anything apart from your guesses. \n - Use only the <#769473798978142210>: channel to make your gueses.")
+            .setTimestamp()
+            .setFooter("Among Us");
+        message.author.send(helpembed);
+	if(message.channel.id === channelID) return message.reply(helpembed);
     }
     if(message.content == "+viewnumber") {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
