@@ -135,13 +135,13 @@ bot.on('message', async message => {
      deny: ['SEND_MESSAGES'],
   },
 ]);
-                number = Math.floor(Math.random()* Math.floor(limit));
 		message.channel.send({embed: {
    color: 3066993,
    description:`<@${message.author.id}> found the correct number! \n It was ${number}. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
 }});
                 await message.react('🎉');
-                db.add(`realmoney_${message.guild.id}_${message.author.id}`, 50)
+                db.add(`realmoney_${message.guild.id}_${message.author.id}`, 50);
+		number = Math.floor(Math.random()* Math.floor(limit));
             }
         } else return
     }
