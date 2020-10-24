@@ -127,7 +127,6 @@ bot.on('message', async message => {
         if(!message.content.isNaN) {
             if(message.content > limit) return message.reply(`The number is between 1 and ${limit}! Try again`).then(sent => sent.delete(10000));
             if(message.content < 1) return message.reply(`The number cannot be negative! Try again`).then(sent => sent.delete(10000));
-            if(message.content.toLowerCase() == /[a-zA-Z]/) return message.reply("Send only numbers!").then(sent => sent.delete(10000));
             if(message.content == number) {
                 var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
                 bot.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
