@@ -158,7 +158,7 @@ bot.on('message', async message => {
    description:`<@${message.author.id}> found the correct number! \n It was ${number}. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
 }});
                 await message.react('🎉');
-                db.set(`winner_${message.author.id}`) 
+                db.set(`winner_${message.author.id}`, message.author.id) 
                 db.add(`realmoney_${message.guild.id}_${message.author.id}`, 50);
 		number = Math.floor(Math.random()* Math.floor(limit));
             }
