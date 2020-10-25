@@ -120,6 +120,15 @@ bot.on('message', async message => {
    description:`The limit has been successfully changed to ${newLim} !`
 }});
     }
+        if(message.content.startsWith("+winnersgtn")) {
+        if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
+        let winner = db.fetch(`winner_${message.guild.id}_${message.author.id}`)
+        if (winner === null) bal = No One Wins;
+      let winnerEmbed = new MessageEmbed()
+  .setColor("RANDOM")
+  .setDescription(`Winner of this GTN contest is <@${winner}>`);
+  message.channel.send(winnerEmbed)
+     }
         if(message.content.startsWith("+channelid")) {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
         const args = message.content.slice(1).trim().split(/ +/g);
@@ -149,6 +158,7 @@ bot.on('message', async message => {
    description:`<@${message.author.id}> found the correct number! \n It was ${number}. \n More entries Have been stopped till furthur announcements, \n Thanks for participating.❣️`
 }});
                 await message.react('🎉');
+                db.set(`winner_${message.guild.id}_${message.author.id}`) 
                 db.add(`realmoney_${message.guild.id}_${message.author.id}`, 50);
 		number = Math.floor(Math.random()* Math.floor(limit));
             }
