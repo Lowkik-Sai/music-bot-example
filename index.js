@@ -123,7 +123,7 @@ bot.on('message', async message => {
         if(message.content.startsWith("+winnersgtn")) {
         if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
         let winner = db.fetch(`winner_${message.guild.id}_${message.author.id}`)
-        if (winner === null) bal = No One Wins;
+        if (winner === null) winner = No One Wins;
       let winnerEmbed = new MessageEmbed()
   .setColor("RANDOM")
   .setDescription(`Winner of this GTN contest is <@${winner}>`);
