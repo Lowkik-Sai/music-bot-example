@@ -2019,6 +2019,26 @@ const embed = new MessageEmbed()
 }})
     })
 }
+    if (command === "roleall" ) {
+        if (!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send(` **You're missing MANAGE_ROLES permission!** `)
+   
+        var userz = message.guild.members.array();
+        const roletogive = args.join(" ")
+        
+        let subscriberRole = bot.guilds.get(message.guild.id).roles.find(r => r.name == roletogive);
+        if (!subscriberRole) return message.channel.send(`${red} **I can not find the role: ` + roletogive + `** `);
+
+      
+            
+                userz.forEach(u => {
+                    u.addRole(subscriberRole)
+                })
+                message.channel.send(`**I have given the role ` + roletogive + ` to all members.**`)
+            
+      
+
+        
+    }
     if (command === "addrole" || command === "ar") {
       
 //!addrole <@user> <Role>
