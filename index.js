@@ -551,6 +551,42 @@ bot.on("message", async (message) => { // eslint-disable-line
       message.channel.send(Embed1);
     }
   }
+    if (command === "antiraid" ) {
+   if (!message.member.permissions.has("MANAGE_CHANNELS")) return message.channel.send(` **Sorry, you do not have permission to perform the antiraid command.**`);
+  if (!message.guild.member(bot.user).hasPermission('MANAGE_CHANNELS')) return message.reply(`**Sorry, i dont have the perms to do this cmd i need MANAGE_CHANNELS.**`)
+  if (!bot.lockit) bot.lockit = [];
+  const time = args.join(' ');
+  const validUnlocks = ['release', 'unlock', 'stop', 'off'];
+  if (!time) return message.reply(` **You must set a duration for the lockdown in either hours, minutes or seconds!**`);
+
+  if (validUnlocks.includes(time)) {
+    message.channel.overwritePermissions(message.guild.id, {
+      SEND_MESSAGES: true
+    }).then(() => {
+      message.channel.send(` **Lockdown lifted.**`);
+      clearTimeout(bot.lockit[message.channel.id]);
+      delete bot.lockit[message.channel.id];
+    }).catch(error => {
+      console.log(error);
+    });
+  } else {
+    message.channel.overwritePermissions(message.guild.id, {
+      SEND_MESSAGES: false
+    }).then(() => {
+      message.channel.send(` **Channel locked down for ${ms(ms(time), { long:true })}.**`).then(() => {
+
+        bot.lockit[message.channel.id] = setTimeout(() => {
+          message.channel.overwritePermissions(message.guild.id, {
+            SEND_MESSAGES: true
+          }).then(message.channel.send(`**Lockdown lifted.**`))
+          delete bot.lockit[message.channel.id];
+        }, ms(time));
+      }).catch(error => {
+        console.log(error);
+      });
+    });
+  }
+}
     if (command === "mute" ) {
       let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
   if(!tomute) return message.reply({embed: {
