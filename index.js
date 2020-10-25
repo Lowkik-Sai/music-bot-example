@@ -575,9 +575,9 @@ bot.on("message", async (message) => { // eslint-disable-line
   if (!bot.lockit) bot.lockit = [];
   const time = args.join(' ');
   const validUnlocks = ['release', 'unlock', 'stop', 'off'];
-  if (!time) return message.reply(`{embed: {
+  if (!time) return message.reply({embed: {
    color: 3066993,
-   description: **You must set a duration for the lockdown in either hours, minutes or seconds!**`
+   description: `**You must set a duration for the lockdown in either hours, minutes or seconds!**`
 }});
 
   if (validUnlocks.includes(time)) {
@@ -587,9 +587,9 @@ bot.on("message", async (message) => { // eslint-disable-line
      allow: ['SEND_MESSAGES'],
   },
 ]).then(() => {
-      message.channel.send(`{embed: {
+      message.channel.send({embed: {
   color: 3066993
-  description: **Automatically,Unlocked Successfully.**`
+  description: `**Automatically,Unlocked Successfully.**`
 }});
       clearTimeout(bot.lockit[message.channel.id]);
       delete bot.lockit[message.channel.id];
@@ -603,9 +603,9 @@ bot.on("message", async (message) => { // eslint-disable-line
      deny: ['SEND_MESSAGES'],
   },
 ]).then(() => {
-      message.channel.send(`{embed: {
+      message.channel.send({embed: {
   color: 3066993,
-  description: **Channel locked down for ${ms(ms(time), { long:true })}.**`
+  description: `**Channel locked down for ${ms(ms(time), { long:true })}.**`
 }}).then(() => {
 
         bot.lockit[message.channel.id] = setTimeout(() => {
@@ -614,9 +614,9 @@ bot.on("message", async (message) => { // eslint-disable-line
      id: message.guild.id,
      allow: ['SEND_MESSAGES'],
   },
-]).then(message.channel.send(`{embed: {
+]).then(message.channel.send({embed: {
    color: 3066993,
-   description:**Automatically,Unlocked Successfully**`
+   description: `**Automatically,Unlocked Successfully**`
 }}))
           delete bot.lockit[message.channel.id];
         }, ms(time));
