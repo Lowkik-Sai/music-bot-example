@@ -2019,6 +2019,19 @@ const embed = new MessageEmbed()
 }})
     })
 }
+    if (command === "messages" ) {
+    let member = message.mentions.members.first() || message.member;
+  const gMessage = new db.table('MESSAGES')
+  let guild = await db.fetch(`guildMessages_${member.guild.id}_${member.id}`);
+
+  let gembed = new MessageEmbed()
+  .setDescription(`**${member.user.username}#${member.user.discriminator}**, in this moment you have **${guild} messages** on this server.`)
+  .setColor("RANDOM")
+  .setAuthor(message.guild.name, message.author.displayAvatarURL)
+  
+  message.channel.send(gembed);
+  
+}
     if (command === "roleall" ) {
         if (!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send(` **You're missing MANAGE_ROLES permission!** `)
    
