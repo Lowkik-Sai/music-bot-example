@@ -2985,7 +2985,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   
   user.setNickname(nickname);
   
-  const embed = new Discord.RichEmbed()
+  const embed = new MessageEmbed()
   .setTitle("Nickname succesfully given.")
   .setColor("RANDOM")
   .setDescription(`Succesfully changed the nickname of ${user}.`)
