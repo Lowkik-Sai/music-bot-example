@@ -578,9 +578,12 @@ bot.on("message", async (message) => { // eslint-disable-line
   if (!time) return message.reply(` **You must set a duration for the lockdown in either hours, minutes or seconds!**`);
 
   if (validUnlocks.includes(time)) {
-    message.channel.overwritePermissions(message.guild.id, {
-      SEND_MESSAGES: true
-    }).then(() => {
+    message.channel.overwritePermissions([
+  {
+     id: message.guild.id,
+     allow: ['SEND_MESSAGES'],
+  },
+]).then(() => {
       message.channel.send(` **Lockdown lifted.**`);
       clearTimeout(bot.lockit[message.channel.id]);
       delete bot.lockit[message.channel.id];
@@ -588,15 +591,21 @@ bot.on("message", async (message) => { // eslint-disable-line
       console.log(error);
     });
   } else {
-    message.channel.overwritePermissions(message.guild.id, {
-      SEND_MESSAGES: false
-    }).then(() => {
+    message.channel.overwritePermissions([
+  {
+     id: message.guild.id,
+     deny: ['SEND_MESSAGES'],
+  },
+]).then(() => {
       message.channel.send(` **Channel locked down for ${ms(ms(time), { long:true })}.**`).then(() => {
 
         bot.lockit[message.channel.id] = setTimeout(() => {
-          message.channel.overwritePermissions(message.guild.id, {
-            SEND_MESSAGES: true
-          }).then(message.channel.send(`**Lockdown lifted.**`))
+          message.channel.overwritePermissions([
+  {
+     id: message.guild.id,
+     allow: ['SEND_MESSAGES'],
+  },
+]).then(message.channel.send(`**Lockdown lifted.**`))
           delete bot.lockit[message.channel.id];
         }, ms(time));
       }).catch(error => {
