@@ -569,13 +569,16 @@ bot.on("message", async (message) => { // eslint-disable-line
       message.channel.send(Embed1);
     }
   }
-    if (command === "antiraid" ) {
+    if (command === "lock" ) {
    if (!message.member.permissions.has("MANAGE_CHANNELS")) return message.channel.send(` **Sorry, you do not have permission to perform the antiraid command.**`);
   if (!message.guild.member(bot.user).hasPermission('MANAGE_CHANNELS')) return message.reply(`**Sorry, i dont have the perms to do this cmd i need MANAGE_CHANNELS.**`)
   if (!bot.lockit) bot.lockit = [];
   const time = args.join(' ');
   const validUnlocks = ['release', 'unlock', 'stop', 'off'];
-  if (!time) return message.reply(` **You must set a duration for the lockdown in either hours, minutes or seconds!**`);
+  if (!time) return message.reply(`{embed: {
+   color: 3066993,
+   description: **You must set a duration for the lockdown in either hours, minutes or seconds!**`
+}});
 
   if (validUnlocks.includes(time)) {
     message.channel.overwritePermissions([
@@ -584,7 +587,10 @@ bot.on("message", async (message) => { // eslint-disable-line
      allow: ['SEND_MESSAGES'],
   },
 ]).then(() => {
-      message.channel.send(` **Lockdown lifted.**`);
+      message.channel.send(`{embed: {
+  color: 3066993
+  description: **Automatically,Unlocked Successfully.**`
+}});
       clearTimeout(bot.lockit[message.channel.id]);
       delete bot.lockit[message.channel.id];
     }).catch(error => {
@@ -597,7 +603,10 @@ bot.on("message", async (message) => { // eslint-disable-line
      deny: ['SEND_MESSAGES'],
   },
 ]).then(() => {
-      message.channel.send(` **Channel locked down for ${ms(ms(time), { long:true })}.**`).then(() => {
+      message.channel.send(`{embed: {
+  color: 3066993,
+  description: **Channel locked down for ${ms(ms(time), { long:true })}.**`
+}}).then(() => {
 
         bot.lockit[message.channel.id] = setTimeout(() => {
           message.channel.overwritePermissions([
@@ -605,7 +614,10 @@ bot.on("message", async (message) => { // eslint-disable-line
      id: message.guild.id,
      allow: ['SEND_MESSAGES'],
   },
-]).then(message.channel.send(`**Lockdown lifted.**`))
+]).then(message.channel.send(`{embed: {
+   color: 3066993,
+   description:**Automatically,Unlocked Successfully**`
+}}))
           delete bot.lockit[message.channel.id];
         }, ms(time));
       }).catch(error => {
