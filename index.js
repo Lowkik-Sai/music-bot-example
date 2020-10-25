@@ -129,6 +129,14 @@ bot.on('message', async message => {
   .setDescription(`Winner of this GTN contest is <@${winner}>`);
   message.channel.send(winnerEmbed)
      }
+        if(message.content.startsWith("+resetwinnersgtn")) {
+        if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
+        db.delete(`winner_${message.author.id}`)
+        let winnerEmbed = new MessageEmbed()
+  .setColor("RANDOM")
+  .setDescription(`Successfully,Resetted GTN winner! \n Now you can unlock this channel and Start GTN again!`);
+  message.channel.send(winnerEmbed)
+     }
         if(message.content.startsWith("+channelid")) {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
         const args = message.content.slice(1).trim().split(/ +/g);
