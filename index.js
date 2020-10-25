@@ -588,8 +588,8 @@ bot.on("message", async (message) => { // eslint-disable-line
   },
 ]).then(() => {
       message.channel.send({embed: {
-  color: 3066993
-  description:"** Time's up for locked down!(Lockdown Lifted)**"
+  color: 3066993,
+  description:`** Time's up for locked down!(Lockdown Lifted)**`
 }});
       clearTimeout(bot.lockit[message.channel.id]);
       delete bot.lockit[message.channel.id];
@@ -616,7 +616,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   },
 ]).then(message.channel.send({embed: {
    color: 3066993,
-   description:"** Time's up for locked down!(Lockdown Lifted)**"
+   description:`** Time's up for locked down!(Lockdown Lifted)**`
 }}))
           delete bot.lockit[message.channel.id];
         }, ms(time));
