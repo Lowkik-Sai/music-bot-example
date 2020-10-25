@@ -2965,6 +2965,21 @@ bot.on("message", async (message) => { // eslint-disable-line
         .then(guild => console.log('Left guild', guild.name))
         .catch(console.error);
     }
+    if (command === "nick" ) {
+    if(!message.member.hasPermission("MANAGE_MEMBERS")) return message.channel.send(` **You don't have permissions!**`);
+  let user = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
+  let nickname = args.join(" ").slice(22);
+  
+  user.setNickname(nickname);
+  
+  const embed = new Discord.RichEmbed()
+  .setTitle("Nickname succesfully given.")
+  .setColor("RANDOM")
+  .setDescription(`Succesfully changed the nickname of ${user}.`)
+  .setFooter(`At: ${moment().format("dddd, MMMM Do YYYY, h:mm A", Date.now)}`);
+  
+  message.channel.send(embed).then(m => m.delete(5000));
+}
     if (command === "setbotnick") {
     let Owner = message.author;
     if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
