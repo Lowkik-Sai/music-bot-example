@@ -3787,7 +3787,6 @@ const member = args[0];
         }
 
     }
-}
     if(command === "ban") {
     if (!message.guild) return;
     // Assuming we mention someone in the message, this will return the user
