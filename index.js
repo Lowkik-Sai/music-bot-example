@@ -2984,7 +2984,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if(!message.member.hasPermission("MANAGE_MEMBERS")) return message.channel.send(` **You don't have permissions!**`);
   let user = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
   let nickname = message.content
-      .split(`${PREFIX}nick ${user}`)
+      .split(`${PREFIX}nick <@${user}>`)
       .join("");
   user.setNickname(nickname);
   
