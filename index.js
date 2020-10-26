@@ -2780,35 +2780,53 @@ const translate = require('google-translate-api');
   
 }   
      if (command === "unban" ){
- if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("You can't do that.")
+ if(!message.member.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send({embed: {
+   color: 3066993,
+   description: "You don't have permissions to do that!"
+}})
 
-    if(!args[0]) return message.channel.send("Give me a valid ID"); 
-    //This if() checks if we typed anything after "!unban"
+    if(!args[0]) return message.channel.send({embed: {
+  color: 3066993,
+  description: "Give me a valid ID"
+}}); 
+    //This if() checks if we typed anything after "+unban"
 
     let bannedMember;
     //This try...catch solves the problem with the await
     try{                                                            
         bannedMember = await bot.users.fetch(args[0])
     }catch(e){
-        if(!bannedMember) return message.channel.send("That's not a valid ID")
+        if(!bannedMember) return message.channel.send({embed: {
+   color: 3066993,
+   description: "That's not a valid ID"
+}})
     }
 
     //Check if the user is not banned
     try {
             await message.guild.fetchBan(args[0])
         } catch(e){
-            message.channel.send('This user is not banned.');
+            message.channel.send({embed: {
+   color: 3066993,
+   description: 'This user is not banned.'
+}});
             return;
         }
 
     let reason = args.slice(1).join(" ")
     if(!reason) reason = "..."
 
-    if(!message.guild.me.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send("I can't do that")
+    if(!message.guild.me.hasPermission(["BAN_MEMBERS", "ADMINISTRATOR"])) return message.channel.send({embed: {
+   color: 3066993,
+   description: "I don't have permissions to do that!"
+}})
     message.delete()
     try {
         message.guild.members.unban(bannedMember, {reason: reason})
-        message.channel.send(`${bannedMember.tag} was readmitted.`)
+        message.channel.send({embed: {
+  color: 3066993,
+  description: `${bannedMember.tag} was successfully unbanned.`
+}})
     } catch(e) {
         console.log(e.message)
     }
