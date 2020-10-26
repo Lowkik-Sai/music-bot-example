@@ -3225,9 +3225,9 @@ bot.on("message", async (message) => { // eslint-disable-line
       const embed = new MessageEmbed()
             .setAuthor("• Servername " + message.guild.name, message.guild.iconURL)
             .setColor("RANDOM")
-            .addField(`Members`, `${message.guild.memberCount - message.guild.members.filter(m=>m.user.bot).size}`, true)
+            .addField(`Members`, `${message.guild.memberCount - message.guild.members.cache.filter(m=>m.user.bot).size}`, true)
             .addField(`Online`, `${online}`, true)
-            .addField(`Bots`, message.guild.members.filter(m=>m.user.bot).size)
+            .addField(`Bots`, message.guild.members.cache.filter(m=>m.user.bot).size)
             .setTimestamp()
             .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL);
       message.channel.send({embed}) 
