@@ -7,6 +7,7 @@ const db = require("quick.db");
 const Statcord = require("statcord.js");
 const ms = require("ms");
 const fs = require("fs");
+const moment = require("moment");
 const Canvas = require('canvas');
 var jimp = require('jimp');
 const Discord = require("discord.js");
