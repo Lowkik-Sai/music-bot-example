@@ -2309,7 +2309,7 @@ const embed = new MessageEmbed()
     if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
-}})
+}});
    const embed = new MessageEmbed()
             .setTitle('Evaluating...')
         const msg = await message.channel.send(embed);
@@ -2342,7 +2342,6 @@ const embed = new MessageEmbed()
 
         }
     }
-}
     if (command === "morse" ) {
       
     let alpha = " ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split(""),
