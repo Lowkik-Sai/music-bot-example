@@ -2980,6 +2980,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         .catch(console.error);
     }
     if (command === "nick" ) {
+    message.delete();
     if(!message.member.hasPermission("MANAGE_MEMBERS")) return message.channel.send(` **You don't have permissions!**`);
   let user = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
   let nickname = message.content
