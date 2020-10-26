@@ -2305,20 +2305,40 @@ const embed = new MessageEmbed()
     }
     if (command === "eval" ) {
         
-        const Client = new Discord.Client
+        if (message.author.id !== '654669770549100575') return;
+        const embed = new MessageEmbed()
+            .setTitle('Evaluating...')
+        const msg = await message.channel.send(embed);
+        try {
+            const data = eval(args.join(' ').replace(/```/g, ''));
+            const embed = new MessageEmbed()
+                .setTitle('Output: ')
+                .setDescription(await data)
+            await msg.edit(embed)
+            await msg.react('✅')
+            await msg.react('❌')
+            const filter = (reaction, user) => (reaction.emoji.name === '❌' || reaction.emoji.name === '✅') && (user.id === message.author.id);
+            msg.awaitReactions(filter, { max: 1 })
+                .then((collected) => {
+                    collected.map((emoji) => {
+                        switch (emoji._emoji.name) {
+                            case '✅':
+                                msg.reactions.removeAll();
+                                break;
+                            case '❌':
+                                msg.delete()
+                                break;
+                        }
+                    })
+                })
+        } catch (e) {
+            const embed = new MessageEmbed()
+                .setTitle('An Error has occured')
+            return await msg.edit(embed);
 
-  let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
-    color: 3066993,
-    description:"Only the bot owner can use this command!"
-}})
-    const command = message.content.split(' ').slice(1).join(' ');
-    message.channel.send(
-`\`\`\`js
-${eval(command)}
-\`\`\``);
-
-  }
+        }
+    }
+}
     if (command === "morse" ) {
       
     let alpha = " ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split(""),
