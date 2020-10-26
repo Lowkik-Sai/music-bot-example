@@ -3144,6 +3144,19 @@ bot.on("message", async (message) => { // eslint-disable-line
              .setFooter("Stay Home,Stay Safe!", message.author.displayAvatarURL());
         message.channel.send(helpembed);
     }
+    if (command === "membercount" ) {
+        const role = message.guild.roles.cache.size;
+   const online = (message.guild.members.cache.filter(m => m.presence.status != 'offline').size - message.guild.members.cache.filter(m=>m.user.bot).size)
+      const embed = new Discord.RichEmbed()
+            .setAuthor("• Servername " + message.guild.name, message.guild.iconURL)
+            .setColor("RANDOM")
+            .addField(`Members`, `${message.guild.memberCount - message.guild.members.filter(m=>m.user.bot).size}`, true)
+            .addField(`Online`, `${online}`, true)
+            .addField(`Bots`, message.guild.members.filter(m=>m.user.bot).size)
+            .setTimestamp()
+            .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL);
+      message.channel.send({embed}) 
+}
     if (command === "serverinfo" || command === "si") {
         function checkBots(guild) {
         let botCount = 0;
