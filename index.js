@@ -2994,7 +2994,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   .setDescription(`Succesfully changed the nickname of ${user}.`)
   .setFooter(`At: ${moment().format("dddd, MMMM Do YYYY, h:mm A", Date.now)}`);
   
-  message.channel.send(embed).then(m => m.delete(5000));
+  message.channel.send(embed);
 }
     if (command === "setbotnick") {
     let Owner = message.author;
