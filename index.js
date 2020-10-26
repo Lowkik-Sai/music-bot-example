@@ -1906,9 +1906,8 @@ const ms = require("parse-ms");
 
         
 const embed = new MessageEmbed()
-    .setDescription(`**Input a Leaderboard Option**\n\nCoin Leaderboard: m!leaderboard coins\nFresh Nikes Leaderboard: m!leaderboard nikes\nCar Leaderboard: m!leaderboard car\nMansion Leaderboard: m!leaderboard mansion`)
+    .setDescription(`**Input a Leaderboard Option**\n\nCoin Leaderboard: +leaderboard coins\nFresh Nikes Leaderboard: +leaderboard nikes\nCar Leaderboard: +leaderboard car\nMansion Leaderboard: +leaderboard mansion`)
     .setColor("RANDOM")
-
 
   if(!args[0]) return message.channel.send(embed)
 
