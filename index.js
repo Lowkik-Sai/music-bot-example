@@ -2305,8 +2305,12 @@ const embed = new MessageEmbed()
     }
     if (command === "eval" ) {
         
-        if (message.author.id !== '654669770549100575') return;
-        const embed = new MessageEmbed()
+        let Owner = message.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
+   const embed = new MessageEmbed()
             .setTitle('Evaluating...')
         const msg = await message.channel.send(embed);
         try {
