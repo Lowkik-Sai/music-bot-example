@@ -39,9 +39,8 @@ bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
 },10000);
  
-bot.on("message", async message => {
-	if(message.content == "+betting") {
-	async (client, message, args) {
+bot.on("message", async (client, message, args)  => {
+	if(message.content == "+betting")
 
         let embed = new Discord.MessageEmbed();
         embed.setDescription("Is this going to be for a friend, giveaway, or are you playing alone? [giveaway/friend/alone]");
