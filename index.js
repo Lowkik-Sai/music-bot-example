@@ -41,10 +41,10 @@ bot.user.setPresence({ activity: { name: sts }, status: 'online' })
  
 bot.on("message", async (client, message, args)  => {
 	if(message.content == "+betting")
-
-        let embed = new Discord.MessageEmbed();
-        embed.setDescription("Is this going to be for a friend, giveaway, or are you playing alone? [giveaway/friend/alone]");
-        let typeQmsg = await message.channel.send({embed});
+        let typeQmsg = await message.channel.send({embed: {
+   color: 3066993,
+   description: "Is this going to be for a friend, giveaway, or are you playing alone? [giveaway/friend/alone]"
+}});
         let typeQresp = (await message.channel.awaitMessages((m) => m.author.id == message.author.id && /giveaway|friend|alone/gmi.test(m.content),{
             time: 20000,
             max: 1,
