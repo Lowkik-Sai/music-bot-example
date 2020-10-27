@@ -896,7 +896,7 @@ class Drawing {
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
   color: 3066993,
-  description:"Proper Usage : +embed <Title> <Description> <Field Header> <Field Description> <Image>"
+  description:"Proper Usage : +embed <Title> <Description> <Field Header> <Field Description> <ImageURL>"
 }})
  
 
