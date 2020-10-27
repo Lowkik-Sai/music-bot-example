@@ -305,8 +305,9 @@ const invites = {}
                 invitesBefore[inviter] = 0
             }
             if(invitesBefore[inviter] === invitesAfter[inviter] - 1){
-                const channel = guild.channels.cache.find(channel => channel.name === "general");
-                if(!channel) return;
+                 let myg=bot.guilds.cache.find(guild=>guild.id=="763233532369567765");
+                 let channel=myg.channels.cache.find(channel=>channel.id=="763233532797124649");
+                 if(!channel) return;
                 const count = invitesAfter[inviter]
                 channel.send(`Please welcome ${member} to the **${member.guild.name}** server! Please read the rules in the rules channel. \n Invited by **${inviter}** (${count} total invites)`)
                 invites[guild.id] = invitesAfter
