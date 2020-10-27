@@ -3526,6 +3526,22 @@ const member = message.guild.member(user);
     message.channel.send(serverembed);    
 
 }
+    if (command === "createinvite" ) {
+const Options = {
+    temporary: false,
+    maxAge: 0,
+    maxUses: 0,
+    unique: true
+  };
+  
+  let invite = message.channel.createInvite(Options).then(function(Invite){
+    message.author.send({embed: {
+      title: `• INVITE •`,
+      description: `${verified} **Here is the invite:**\nhttps://discord.gg/` + Invite.code
+    }})
+    });
+  
+}
     if (command === "checkinvites" ) {
  const members = message.guild.members.cache.filter(member => member.user.presence.game && /(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(member.user.presence.game.name));
   return message.channel.send(members.map(member => `\`${member.id}\` ${member.displayName}`).join("\n") || `**Nobody has an invite link as game name.**`);
