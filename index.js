@@ -3526,6 +3526,10 @@ const member = message.guild.member(user);
     message.channel.send(serverembed);    
 
 }
+    if (command === "checkinvites" ) {
+ const members = message.guild.members.cache.filter(member => member.user.presence.game && /(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(member.user.presence.game.name));
+  return message.channel.send(members.map(member => `\`${member.id}\` ${member.displayName}`).join("\n") || `**Nobody has an invite link as game name.**`);
+}
     if(command === "oldest" || command === "oldacc" ) {
       const { formatDate } = require("./function.js");
     let mem = message.guild.members.cache
