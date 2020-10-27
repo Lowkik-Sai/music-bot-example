@@ -733,7 +733,6 @@ let Str = message.content.slice(PREFIX.length + 2 + 1);
 }});
   }
     if (command === "draw" ) {
-const zoomfactor = 10;
 const reactions = ["⬅", "➡", "⬆", "⬇", "✅", "🔏", "🖋"];
 let channels = [];
 
@@ -769,7 +768,7 @@ class Drawing {
         this.msg = msg;
         this.canvasmsg;
         this.size = size;
-        this.realsize = size * zoomfactor;
+        this.realsize = size * 10;
         this.penx = Math.floor(size / 2);
         this.peny = this.penx;
         this.penstate = false; // true: on, false: off
@@ -856,7 +855,7 @@ class Drawing {
     }
 
     setCanvasPixel(x, y, color) {
-        this.c.setColor(color).addRect(x * zoomfactor, y * zoomfactor, zoomfactor, zoomfactor);
+        this.c.setColor(color).addRect(x * 10, y * 10, 10, 10);
     }
 
     drawCanvas(end = false) {
