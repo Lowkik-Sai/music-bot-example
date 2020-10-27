@@ -756,17 +756,17 @@ let channels = [];
         message.reply(`**Size must be between 5 and 50!**`);
         return;
     }
-    message.channel.send("Loading...").then((msg) => {
+    message.channel.send("Loading...").then((message) => {
         channels.push(message.channel.id);
-        const drawing = new Drawing(msg, size, args[1], args[2]);
+        const drawing = new Drawing(message, size, args[1], args[2]);
     });
 };
 
 
 class Drawing {
-    constructor(msg, size, fg, bg) {
-        this.msg = msg;
-        this.canvasmsg;
+    constructor(message, size, fg, bg) {
+        this.message = message;
+        this.canvasmessage;
         this.size = size;
         this.realsize = size * 10;
         this.penx = Math.floor(size / 2);
@@ -776,13 +776,13 @@ class Drawing {
         this.bcolor = bg || "rgb(255, 255, 255)";
 
         this.initPixels();
-        this.c = new Canvas(this.realsize, this.realsize).setColor(this.bcolor).addRect(0, 0, this.realsize, this.realsize);
+        this.c = Canvas.createCanvas(this.realsize, this.realsize).setColor(this.bcolor).addRect(0, 0, this.realsize, this.realsize);
         this.drawCanvas();
 
-        msg.edit("**Use the reactions to move the pen:\n✅ Stop Drawing | 🖋 Pen On | 🔏 Pen Off**");
+        message.edit("**Use the reactions to move the pen:\n✅ Stop Drawing | 🖋 Pen On | 🔏 Pen Off**");
         this.reactArrows(0);
-        this.collector = msg.createReactionCollector((reaction, user) => {
-            return user.id !== msg.client.user.id && reactions.includes(reaction.emoji.name);
+        this.collector = message.createReactionCollector((reaction, user) => {
+            return user.id !== message.bot.user.id && reactions.includes(reaction.emoji.name);
         });
         let self = this;
         this.collector.on("collect", (reaction) => {
@@ -793,16 +793,16 @@ class Drawing {
     stop(reason = "") {
         this.collector.stop();
         this.drawCanvas(true);
-        this.msg.edit(`**Thanks for drawing with us!**` + reason);
-        this.msg.clearReactions();
-        this.msg.client.clearTimeout(this.timeout);
-        channels = channels.filter(item => item !== this.msg.channel.id);
+        this.message.edit(`**Thanks for drawing with us!**` + reason);
+        this.message.clearReactions();
+        this.message.client.clearTimeout(this.timeout);
+        channels = channels.filter(item => item !== this.message.channel.id);
     }
 
     renewTimeout() {
         let self = this;
-        this.msg.client.clearTimeout(this.timeout);
-        this.timeout = this.msg.client.setTimeout(function() {
+        this.message.client.clearTimeout(this.timeout);
+        this.timeout = this.message.client.setTimeout(function() {
             self.stop("**\nEnd Reason: Timeout (2 minutes)**");
         }, 120000);
     }
@@ -835,11 +835,11 @@ class Drawing {
     togglePenstate() {
         this.penstate = !this.penstate;
         if (this.penstate) {
-            this.msg.reactions.find(val => val.emoji.name === reactions[5]).remove();
-            this.msg.react(reactions[6]);
+            this.message.reactions.find(val => val.emoji.name === reactions[5]).remove();
+            this.message.react(reactions[6]);
         } else {
-            this.msg.reactions.find(val => val.emoji.name === reactions[6]).remove();
-            this.msg.react(reactions[5]);
+            this.message.reactions.find(val => val.emoji.name === reactions[6]).remove();
+            this.message.react(reactions[5]);
         }
     }
 
@@ -873,19 +873,19 @@ class Drawing {
     }
 
     async sendCanvas() {
-        if (this.canvasmsg) this.canvasmsg.delete().catch(e => console.error(e));
-        this.msg.channel.send(`Canvas: ${this.size}px`, {
+        if (this.canvasmessage) this.canvasmessage.delete().catch(e => console.error(e));
+        this.message.channel.send(`Canvas: ${this.size}px`, {
             files: [
                 this.c.toBuffer()
             ]
-        }).then(msg => {
-            this.canvasmsg = msg;
+        }).then(message => {
+            this.canvasmessage = message;
         });
     }
 
     reactArrows(arrow) {
         if (arrow === 6) return;
-        this.msg.react(reactions[arrow]).then(_ => {
+        this.message.react(reactions[arrow]).then(_ => {
             this.reactArrows(arrow + 1);
         }).catch(
             e => console.error(`Reaction Error: ${e}`)
