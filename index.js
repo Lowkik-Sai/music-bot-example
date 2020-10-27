@@ -286,7 +286,7 @@ const invites = {}
 
     }
 
-    bot.guilds.forEach(async (guild) => {
+    bot.guilds.cache.forEach(async (guild) => {
         invites[guild.id] = await getInviteCounts(guild);
 
     })
