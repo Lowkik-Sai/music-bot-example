@@ -897,7 +897,7 @@ class Drawing {
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
   color: 3066993,
-  description:"Proper Usage : +embed <Title> <Description> <Field Header> <Field Description> <Footer>"
+  description:"Proper Usage : +embed <Title> <Description> <Field Header> <Field Description> <Image>"
 }})
  
 
@@ -905,9 +905,9 @@ class Drawing {
       .setTitle(args[0])
       .setColor("RANDOM")
       .setDescription(args[1])
-      .setFooter(args[4])
+      .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL)
       .addField(args[2] , args[3])
-      .setImage(args[5])
+      .setImage(args[4])
       .setTimestamp()
 
   message.channel.send(emb)
