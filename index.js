@@ -2019,42 +2019,19 @@ const embed = new MessageEmbed()
   if(!args[0]) return message.channel.send(embed)
 
     if (args[0] == 'coins') {
-let user = message.author;
+    let money = db.all().filter(data => data.ID.startsWith(`money`)).sort((a, b) => b.data - a.data)
+        money.length = 10;
+        let content = "";
+        for (var i in money) {
+          content += `**${money.indexOf(money[i])+1}.**     <@${money[i].ID.slice(25)}> - \`${money[i].data} €\`\n`;
+        }
+        
 
-const money = db
-  .all()
-  .filter((data) => data.ID.startsWith(`money`))
-  .sort((a, b) => b.data - a.data);
-const userBalance = await db.fetch(`money_${message.guild.id}_${user.id}`);
+    const embed = new MessageEmbed()
+    .setDescription(`**${message.guild.name}'s Coin Leaderboard**\n\n${content}`)
+    .setColor("RANDOM")
 
-money.length = 10;
-let finalLb = "";
-
-for (let i in money) {
-  if (money[i].data === null) money[i].data = 0;
-
-  let userData = bot.users.cache.get(money[i].ID.split("_")[1])
-    ? bot.users.cache.get(money[i].ID.split("_")[1]).tag
-    : "Unknown#0000";
-
-  finalLb += `__**${money.indexOf(money[i]) + 1}.**__ **${userData} » \`$${
-    money[i].data
-  }\`**\n`;
-}
-
-let embed = new MessageEmbed()
-  .setTitle(`**Money Leaderboard 💰**`)
-  .setDescription(
-            `
-            ${finalLb}
-            `
-  )
-  .setColor("#efcb83")
-  .setFooter(
-    `Your Money » $${userBalance} | Leaderboards are Global Statistics`
-  );
-
-message.channel.send(embed);
+    message.channel.send(embed)
   } else if(args[0] == 'nikes') {
     let nike = db.all().filter(data => data.ID.startsWith(nikes))
     let content = "";
