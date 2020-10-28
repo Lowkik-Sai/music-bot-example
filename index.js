@@ -951,10 +951,13 @@ class Drawing {
 
     }
     if (command === "slowmode" ) {
+       if (!message.member.permissions.has("MANAGE_CHANNELS")) return message.channel.send(` **Sorry, you do not have permission to perform the antiraid command.**`);
+       if (!message.guild.member(bot.user).hasPermission('MANAGE_CHANNELS')) return message.reply(`**Sorry, i dont have the perms to do this cmd i need MANAGE_CHANNELS.**`)
+ 
 const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
   color: 3066993,
-  description:"Proper Usage : +slowmode <number in seconds> <reason>"
+  description:"Proper Usage : +slowmode <number in seconds> <reason> / To cancel slowmode type +slowmode 0"
 }})
 
 if (!args[0])
@@ -966,14 +969,11 @@ if (!args[0])
    color: 3066993,
    description:`That is not a number!`
 }});
-    let reason = args[1];
-    if (!reason) {
-      reason == "No reason provided!";
-    }
+   
     message.channel.setRateLimitPerUser(args[0], reason);
     message.channel.send({embed: {
     color: 3066993,
-    description:`Set the slowmode of this channel too **${args[0]}** with the reason: **${reason}**`,
+    description:`Set the slowmode of this channel too **${args[0]}**sec by <@${message.author.id}>`,
     footer: "To Stop Slowmode Type +slowmode 0 finished"
 }});
   }
