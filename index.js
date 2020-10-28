@@ -1925,13 +1925,14 @@ let user = message.author;
 
 }
     if (command === "storeinfo" ) {
+       const sayMessage = args.join(" ")
      let infoembed = new MessageEmbed()
        .setTitle("Store Info")
        .setColor("RANDOM")
        .setDescription("1)Bronze \n2)Nikes \n3)Car \n4)Mansion")
        .setTimestamp()
        .setFooter(`Type +storeinfo <indexnumber> or +storeinfo <itemname>`, message.author.avatarURL)
-    message.channel.send(infoembed)
+    if(!sayMessage) return message.reply(infoembed)
 if (args[0] == 'bronze' || args[0] == '1') {
     
       let embed = new MessageEmbed()
