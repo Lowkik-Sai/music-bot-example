@@ -2070,7 +2070,7 @@ const sayMessage = args.join(" ")
         }
 
     const embed = new MessageEmbed()
-    .setDescription(`**${message.guild.name}'s Mansion Leaderboard**\n\n${content}`)
+    .setDescription(`**Mansion(s) Leaderboard**\n\n${content}`)
     .setColor("RANDOM")
 
     message.channel.send(embed)
