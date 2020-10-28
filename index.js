@@ -1954,8 +1954,6 @@ let user = message.author;
     .setColor("RANDOM")
     message.channel.send(embed)
   }
-
-  }
     if (command === "withdraw" ) {
 
 const ms = require("parse-ms");
