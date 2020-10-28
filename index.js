@@ -977,7 +977,8 @@ if (!args[0])
    color: 3066993,
    description:`That is not a number!`
 }});
-   
+   let reason = args[1];
+   if (!reason) { reason = "No Reason Provided!" }
     message.channel.setRateLimitPerUser(args[0], reason);
     message.channel.send({embed: {
     color: 3066993,
