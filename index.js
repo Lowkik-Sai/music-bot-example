@@ -2025,9 +2025,9 @@ let money = db.all().filter(data => data.ID.startsWith(`money_`)).sort((a, b) =>
     let content = "";
 
     for (let i = 0; i < money.length; i++) {
-        let user = bot.users.get(nike[i].ID.split('_')[2]).username
+        let user = bot.users.get(money[i].ID.split('_')[2]).username
 
-        content += `${i+1}. ${user} ~ ${nike[i].data}\n`
+        content += `${i+1}. ${user} ~ ${money[i].data}\n`
     }
 
     const embed = new MessageEmbed()
