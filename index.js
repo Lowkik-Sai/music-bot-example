@@ -1807,7 +1807,7 @@ let percents = ["3,51", "3,91", "4,00", "4,31", "4,72", "4,99"]
 }
     if (command === "inventory" ) {
         
-       
+        let user = message.author;
 
         let nikes = await db.fetch(`nikes_${message.guild.id}_${user.id}`)
         if(nikes === null) nikes = "Nothing"
