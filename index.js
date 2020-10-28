@@ -185,7 +185,7 @@ bot.on("ready", async () => {
   const dms = await user.createDM();
    const sendembed = new MessageEmbed()
     .setColor("RANDOM")
-    .setDescription("I'm Online)
+    .setDescription("I'm Online")
     .setTimestamp()
   dms.send(sendembed);
 
