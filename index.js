@@ -1932,7 +1932,7 @@ let user = message.author;
        .setTimestamp()
        .setFooter(`Type +storeinfo <indexnumber> or +storeinfo <itemname>`, message.author.avatarURL)
     message.channel.send(infoembed)
-    } else if (args[0] == 'bronze' || args[0] == '1') {
+if (args[0] == 'bronze' || args[0] == '1') {
     
       let embed = new MessageEmbed()
       .setDescription("**Bronze Rank**\n\nBenefits: Chance to get more coins from robbing someone")
@@ -1953,6 +1953,8 @@ let user = message.author;
     .setDescription("**Mansion**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
     .setColor("RANDOM")
     message.channel.send(embed)
+  }
+
   }
     if (command === "withdraw" ) {
 
