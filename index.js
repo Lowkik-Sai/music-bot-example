@@ -1805,6 +1805,30 @@ let percents = ["3,51", "3,91", "4,00", "4,31", "4,72", "4,99"]
         db.set(`work_${message.guild.id}_${user.id}`, Date.now())
     };
 }
+    if (command === "inventory" ) {
+        
+       
+
+        let nikes = await db.fetch(`nikes_${message.guild.id}_${user.id}`)
+        if(nikes === null) nikes = "Nothing"
+
+        let bronze = await db.fetch(`bronze_${message.guild.id}_${user.id}`)
+        if(bronze === null) bronze = "Nothing"
+
+        let car = await db.fetch(`car_${message.guild.id}_${user.id}`)
+        if(car === null) car = "Nothing"
+
+        let mansion = await db.fetch(`mansion_${message.guild.id}_${user.id}`)
+        if(mansion === null) mansion = "Nothing"
+
+        const Embed = new MessageEmbed()
+        .addField('Nike(s):', nikes)
+        .addField('Car(s):', car)
+        .addField('Mansion(s):', mansion)
+        .addField('Bronze(s):', bronze)
+
+        message.channel.send(Embed);
+    }
     if (command === "buy" ) {
         const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
@@ -1974,19 +1998,6 @@ const ms = require("parse-ms");
   db.add(`money_${message.guild.id}_${user.id}`, args[0])
   }
 }
-
-    if (command === "inventory" ) {
-        
-       
-
-        let items = await db.fetch(message.author.id);
-        if(items === null) items = "Nothing"
-
-        const Embed = new MessageEmbed()
-        .addField('Inventory', items)
-
-        message.channel.send(Embed);
-    }
     if (command === "leaderboard" || command === "lb" ) {
 
         
