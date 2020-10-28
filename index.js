@@ -183,8 +183,11 @@ bot.on("ready", async () => {
 
   // Create/access a DM thread between the bot account and the user
   const dms = await user.createDM();
-
-  dms.send("I'm Online");
+   const sendembed = new MessageEmbed()
+    .setColor("RANDOM")
+    .setDescription("I'm Online)
+    .setTimestamp()
+  dms.send(sendembed);
 
 });
 
