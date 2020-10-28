@@ -2022,9 +2022,12 @@ const embed = new MessageEmbed()
 
 let money = db.all().filter(data => data.ID.startsWith(`money_`)).sort((a, b) => b.data - a.data)
     money.length = 10;
-    var content = "";
-    for (var i in money) {
-        content += `🏅 ${money.indexOf(money[i]) + 1}. ${bot.users.cache.get(money[i].ID.split('_')[1]) ? bot.users.cache.get(money[i].ID.split('_')[1]).username} | Balance: ${money[i].data}\n`
+    let content = "";
+
+    for (let i = 0; i < money.length; i++) {
+        let user = bot.users.get(nike[i].ID.split('_')[2]).username
+
+        content += `${i+1}. ${user} ~ ${nike[i].data}\n`
     }
 
     const embed = new MessageEmbed()
