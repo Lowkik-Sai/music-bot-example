@@ -1822,10 +1822,13 @@ let percents = ["3,51", "3,91", "4,00", "4,31", "4,72", "4,99"]
         if(mansion === null) mansion = "Nothing"
 
         const Embed = new MessageEmbed()
+        .setTitle("Inventory")
+        .setColor("RANDOM")
         .addField('Nike(s):', nikes)
         .addField('Car(s):', car)
         .addField('Mansion(s):', mansion)
         .addField('Bronze(s):', bronze)
+        .setTimestamp()
 
         message.channel.send(Embed);
     }
