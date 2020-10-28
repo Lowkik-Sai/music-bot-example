@@ -2045,7 +2045,7 @@ for (let i in money) {
 let embed = new MessageEmbed()
   .setTitle(`**Money Leaderboard 💰**`)
   .setDescription(
-    stripIndents`
+            `
             ${finalLb}
             `
   )
