@@ -2023,12 +2023,12 @@ const embed = new MessageEmbed()
         money.length = 10;
         let content = "";
         for (var i in money) {
-          content += `**${money.indexOf(money[i])+1}.**     <@${money[i].ID.slice(25)}> - \`${money[i].data} €\`\n`;
+          content += `🏅**${money.indexOf(money[i])+1}.**     <@${money[i].ID.slice(25)}> - ${money[i].data} \n`;
         }
         
 
     const embed = new MessageEmbed()
-    .setDescription(`**${message.guild.name}'s Coin Leaderboard**\n\n${content}`)
+    .setDescription(`**💰Coins Leaderboard💰**\n\n${content}`)
     .setColor("RANDOM")
 
     message.channel.send(embed)
