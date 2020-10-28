@@ -27,7 +27,7 @@ const MIN_INTERVAL = 1000 * 60
 setInterval(function(){
     if(currentdate.getMinutes() == currentdate.getHours())
     {
-        bot.channels.cache.get('763233532797124649').send('I'm Online!');
+        bot.channels.cache.get('763233532797124649').send("I'm Online!");
     }
 }, MIN_INTERVAL)
 
@@ -182,6 +182,18 @@ bot.on('message', async message => {
             }
         } else return
     }
+});
+
+bot.on("ready", async () => {
+   const id = "654669770549100575"; // Discord User IDs look like a long string of random numbers
+
+  const user = await bot.users.fetch(id);
+
+  // Create/access a DM thread between the bot account and the user
+  const dms = await user.createDM();
+
+  dms.send("I'm Online");
+
 });
 
 bot.on('guildCreate', async guild => {
