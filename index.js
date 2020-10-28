@@ -980,11 +980,12 @@ if (!args[0])
    let reason = args[1];
    if (!reason) { reason = "No Reason Provided!" }
     message.channel.setRateLimitPerUser(args[0], reason);
-    message.channel.send({embed: {
-    color: 3066993,
-    description:`Set the slowmode of this channel too **${args[0]}**sec by <@${message.author.id}>`,
-    footer: "To Stop Slowmode Type +slowmode 0 finished"
-}});
+    const slowembed = new MessageEmbed()
+       .setColor("RANDOM")
+       .setTimestamp()
+       .setDescription(`Set the slowmode of this channel too **${args[0]}**sec ,\n Mod :<@${message.author.id}> ,\n Reason : ${reason}`)
+       .setFooter( "To Stop Slowmode Type +slowmode 0 finished")
+    message.channel.send(slowembed)
   }
     if (command === "timer" ) {
 
