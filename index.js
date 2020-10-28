@@ -2016,9 +2016,9 @@ const sayMessage = args.join(" ")
      let infoembed = new MessageEmbed()
        .setTitle("Leaderboard Command")
        .setColor("RANDOM")
-       .setDescription("1)Coins \n2)Nikes \n3)Car \n4)Mansion")
+       .setDescription("1)Coin \n2)Nike \n3)Car \n4)Mansion")
        .setTimestamp()
-       .setFooter(`Type +storeinfo <indexnumber> or +storeinfo <itemname>`, message.author.avatarURL)
+       .setFooter(`Type +lb <indexnumber> or +lb <name>`, message.author.avatarURL)
     if(!sayMessage) return message.reply(infoembed)
 
     if (args[0] == 'coins' || args[0] == '1') {
@@ -2048,7 +2048,7 @@ const sayMessage = args.join(" ")
     .setColor("RANDOM")
 
     message.channel.send(embed)
-  } else if(args[0] == 'car' || args[0] == '3') {
+  } else if(args[0] == 'cars' || args[0] == '3') {
     let car = db.all().filter(data => data.ID.startsWith(`car`)).sort((a, b) => b.data - a.data)
         car.length = 10;
         let content = "";
@@ -2061,7 +2061,7 @@ const sayMessage = args.join(" ")
     .setColor("RANDOM")
 
     message.channel.send(embed)
-  } else if(args[0] == 'mansion') {
+  } else if(args[0] == 'mansion' || args[0] == '4') {
     let house = db.all().filter(data => data.ID.startsWith(`house`)).sort((a, b) => b.data - a.data)
         house.length = 10;
         let content = "";
