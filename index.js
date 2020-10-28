@@ -2021,13 +2021,13 @@ const embed = new MessageEmbed()
     if (args[0] == 'coins') {
 let user = message.author;
 
-const coins = db
+const money = db
   .all()
   .filter((data) => data.ID.startsWith(`money`))
   .sort((a, b) => b.data - a.data);
 const userBalance = await db.fetch(`money_${message.guild.id}_${user.id}`);
 
-coins.length = 10;
+money.length = 10;
 let finalLb = "";
 
 for (let i in money) {
