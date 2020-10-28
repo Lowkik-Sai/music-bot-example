@@ -23,14 +23,6 @@ const bot = new Client({
     disableMentions: "everyone"
 });
 
-const MIN_INTERVAL = 1000 * 60
-setInterval(function(){
-    if(currentdate.getMinutes() == currentdate.getHours())
-    {
-        bot.channels.cache.get('763233532797124649').send("I'm Online!");
-    }
-}, MIN_INTERVAL)
-
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
@@ -995,7 +987,7 @@ if (!args[0])
     const slowembed = new MessageEmbed()
        .setColor("RANDOM")
        .setTimestamp()
-       .setDescription(`Set the slowmode of this channel too **${args[0]}**sec ,\n Mod :<@${message.author.id}> ,\n Reason : ${reason}`)
+       .setDescription(` Set the slowmode of this channel too **${args[0]}** sec ,\n Mod : <@${message.author.id}> ,\n Reason : ${reason}`)
        .setFooter( "To Stop Slowmode Type +slowmode 0 finished")
     message.channel.send(slowembed)
   }
