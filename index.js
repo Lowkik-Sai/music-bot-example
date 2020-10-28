@@ -1810,16 +1810,16 @@ let percents = ["3,51", "3,91", "4,00", "4,31", "4,72", "4,99"]
         let user = message.author;
 
         let nikes = await db.fetch(`nikes_${message.guild.id}_${user.id}`)
-        if(nikes === null) nikes = "Nothing"
+        if(nikes === null) nikes = "0"
 
         let bronze = await db.fetch(`bronze_${message.guild.id}_${user.id}`)
-        if(bronze === null) bronze = "Nothing"
+        if(bronze === null) bronze = "0"
 
         let car = await db.fetch(`car_${message.guild.id}_${user.id}`)
-        if(car === null) car = "Nothing"
+        if(car === null) car = "0"
 
         let mansion = await db.fetch(`mansion_${message.guild.id}_${user.id}`)
-        if(mansion === null) mansion = "Nothing"
+        if(mansion === null) mansion = "0"
 
         const Embed = new MessageEmbed()
         .setTitle("Inventory")
@@ -1925,23 +1925,32 @@ let user = message.author;
 
 }
     if (command === "storeinfo" ) {
-if (args[0] == 'bronze') {
+    let embed = new MessageEmbed()
+       .setTitle("Store Info")
+       .setColor("RANDOM")
+       .setDescription("1)Bronze \n2)Nikes \n3)Car \n4)Mansion)
+       .setTimestamp()
+       .setFooter(`Type +storeinfo <indexnumber> or +storeinfo <itemname>`, message.author.avatarURL)
+    message.channel.send(embed)
+    }
+    if (command === "storeinfo" ) {
+if (args[0] == 'bronze' || args[0] == '1') {
     
       let embed = new MessageEmbed()
       .setDescription("**Bronze Rank**\n\nBenefits: Chance to get more coins from robbing someone")
       .setColor("RANDOM")
       message.channel.send(embed)
-    } else if(args[0] == 'nikes') {
+    } else if(args[0] == 'nikes'  || args[0] == '2') {
       let embed = new MessageEmbed()
       .setDescription("**Fresh Nikes**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
       .setColor("RANDOM")
       message.channel.send(embed)
-    } else if(args[0] == 'car') {
+    } else if(args[0] == 'car'  || args[0] == '3') {
       let embed = new MessageEmbed()
       .setDescription("**Car**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
       .setColor("RANDOM")
       message.channel.send(embed)
-  } else if(args[0] == 'mansion') {
+  } else if(args[0] == 'mansion'  || args[0] == '4') {
     let embed = new MessageEmbed()
     .setDescription("**Mansion**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
     .setColor("RANDOM")
