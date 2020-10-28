@@ -2037,7 +2037,7 @@ for (let i in money) {
     ? bot.users.cache.get(money[i].ID.split("_")[1]).tag
     : "Unknown#0000";
 
-  finalLb += `__**${money.indexOf(coins[i]) + 1}.**__ **${userData} » \`$${
+  finalLb += `__**${money.indexOf(money[i]) + 1}.**__ **${userData} » \`$${
     money[i].data
   }\`**\n`;
 }
