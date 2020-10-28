@@ -2024,10 +2024,8 @@ let money = db.all().filter(data => data.ID.startsWith(`money_`)).sort((a, b) =>
     money.length = 10;
     let content = "";
 
-    for (let i = 0; i < money.length; i++) {
-        let user = bot.users.cache.get(money[i].ID.split('_')[2]).username
-
-        content += `🏅 ${money.indexOf(money[i]) + 1}. ${user} | Balance: ${money[i].data}${db.get(`guild.${message.guild.id}.currency`)}\n`
+    for (var i in money) {
+        content += `🏅 ${money.indexOf(money[i]) + 1}. ${bot.users.cache.get(money[i].ID.split('_')[1]) ? bot.users.cache.get(money[i].ID.split('_')[1]).username} | Balance: ${money[i].data}${db.get(`guild.${message.guild.id}.currency`)}\n`
     }
 
     const embed = new MessageEmbed()
