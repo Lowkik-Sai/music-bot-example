@@ -2025,7 +2025,7 @@ let money = db.all().filter(data => data.ID.startsWith(`money_`)).sort((a, b) =>
     let content = "";
 
     for (var i in money) {
-        content += `🏅 ${money.indexOf(money[i]) + 1}. ${bot.users.cache.get(money[i].ID.split('_')[1]) ? bot.users.cache.get(money[i].ID.split('_')[1]).username} | Balance: ${money[i].data}\n`
+        content += `🏅 ${money.indexOf(money[i]) + 1}. ${bot.users.cache.get(money[i].ID.split('_')[1]) ? bot.users.cache.get(money[i].ID.split('_')[1]).username : ""} | Balance: ${money[i].data}\n`
     }
 
     const embed = new MessageEmbed()
