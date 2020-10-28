@@ -2012,13 +2012,16 @@ const ms = require("parse-ms");
     if (command === "leaderboard" || command === "lb" ) {
 
         
-const embed = new MessageEmbed()
-    .setDescription(`**Input a Leaderboard Option**\n\nCoin Leaderboard: +leaderboard coins\nFresh Nikes Leaderboard: +leaderboard nikes\nCar Leaderboard: +leaderboard car\nMansion Leaderboard: +leaderboard mansion`)
-    .setColor("RANDOM")
+const sayMessage = args.join(" ")
+     let infoembed = new MessageEmbed()
+       .setTitle("Leaderboard Command")
+       .setColor("RANDOM")
+       .setDescription("1)Coins \n2)Nikes \n3)Car \n4)Mansion")
+       .setTimestamp()
+       .setFooter(`Type +storeinfo <indexnumber> or +storeinfo <itemname>`, message.author.avatarURL)
+    if(!sayMessage) return message.reply(infoembed)
 
-  if(!args[0]) return message.channel.send(embed)
-
-    if (args[0] == 'coins') {
+    if (args[0] == 'coins' || args[0] == '1') {
     let money = db.all().filter(data => data.ID.startsWith(`money`)).sort((a, b) => b.data - a.data)
         money.length = 10;
         let content = "";
@@ -2028,49 +2031,43 @@ const embed = new MessageEmbed()
         
 
     const embed = new MessageEmbed()
-    .setDescription(`**💰Coins Leaderboard💰**\n\n${content}`)
+    .setDescription(`**Coin(s) Leaderboard**\n\n${content}`)
     .setColor("RANDOM")
 
     message.channel.send(embed)
-  } else if(args[0] == 'nikes') {
-    let nike = db.all().filter(data => data.ID.startsWith(nikes))
-    let content = "";
-
-    for (let i = 0; i < nike.length; i++) {
-        let user = bot.users.get(nike[i].ID.split('_')[2]).username
-
-        content += `${i+1}. ${user} ~ ${nike[i].data}\n`
-    }
+  } else if(args[0] == 'nikes' || args[0] == '2') {
+    let nikes = db.all().filter(data => data.ID.startsWith(`nikes`)).sort((a, b) => b.data - a.data)
+        nikes.length = 10;
+        let content = "";
+        for (var i in nikes) {
+          content += `🏅**${nikes.indexOf(nikes[i])+1}.**     <@${nikes[i].ID.slice(25)}> - ${nikes[i].data} \n`;
+        }
 
     const embed = new MessageEmbed()
-    .setDescription(`**${message.guild.name}'s Fresh Nikes Leaderboard**\n\n${content}`)
+    .setDescription(`**Fresh Nike(s) Leaderboard**\n\n${content}`)
     .setColor("RANDOM")
 
     message.channel.send(embed)
-  } else if(args[0] == 'car') {
-    let cars = db.all().filter(data => data.ID.startsWith(car))
-    let content = "";
-
-    for (let i = 0; i < cars.length; i++) {
-        let user = bot.users.get(cars[i].ID.split('_')[2]).username
-
-        content += `${i+1}. ${user} ~ ${cars[i].data}\n`
-    }
+  } else if(args[0] == 'car' || args[0] == '3') {
+    let car = db.all().filter(data => data.ID.startsWith(`car`)).sort((a, b) => b.data - a.data)
+        car.length = 10;
+        let content = "";
+        for (var i in car) {
+          content += `🏅**${car.indexOf(car[i])+1}.**     <@${car[i].ID.slice(25)}> - ${car[i].data} \n`;
+        }
 
     const embed = new MessageEmbed()
-    .setDescription(`**${message.guild.name}'s Car Leaderboard**\n\n${content}`)
+    .setDescription(`**Car(s) Leaderboard**\n\n${content}`)
     .setColor("RANDOM")
 
     message.channel.send(embed)
   } else if(args[0] == 'mansion') {
-    let mansions = db.fetch(`house_${message.guild.id}`, { sort: '.data'})
-    let content = "";
-
-    for (let i = 0; i < mansions.length; i++) {
-        let user = bot.users.get(mansions[i].ID.split('_')[2]).username
-
-        content += `${i+1}. ${user} ~ ${mansions[i].data}\n`
-    }
+    let house = db.all().filter(data => data.ID.startsWith(`house`)).sort((a, b) => b.data - a.data)
+        house.length = 10;
+        let content = "";
+        for (var i in house) {
+          content += `🏅**${house.indexOf(house[i])+1}.**     <@${house[i].ID.slice(25)}> - ${house[i].data} \n`;
+        }
 
     const embed = new MessageEmbed()
     .setDescription(`**${message.guild.name}'s Mansion Leaderboard**\n\n${content}`)
