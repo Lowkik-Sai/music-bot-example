@@ -1928,7 +1928,7 @@ let user = message.author;
     let embed = new MessageEmbed()
        .setTitle("Store Info")
        .setColor("RANDOM")
-       .setDescription("1)Bronze \n2)Nikes \n3)Car \n4)Mansion)
+       .setDescription("1)Bronze \n2)Nikes \n3)Car \n4)Mansion")
        .setTimestamp()
        .setFooter(`Type +storeinfo <indexnumber> or +storeinfo <itemname>`, message.author.avatarURL)
     message.channel.send(embed)
