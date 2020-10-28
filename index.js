@@ -2019,17 +2019,13 @@ const embed = new MessageEmbed()
   if(!args[0]) return message.channel.send(embed)
 
     if (args[0] == 'coins') {
-    let money = db.all().filter(data => data.ID.startsWith(coins))
-    let content = "";
 
-    for (let i = 0; i < money.length; i++) {
-        let user = bot.users.get(money[i].ID.split('_')[2]).username
-
-      
-
-        content += `${i+1}. ${user} ~ ${money[i].data}\n`
-    
-      }
+let money = db.all().filter(data => data.ID.startsWith(`money_`)).sort((a, b) => b.data - a.data)
+    money.length = 10;
+    var content = "";
+    for (var i in money) {
+        content += `🏅 ${money.indexOf(money[i]) + 1}. ${bot.users.cache.get(money[i].ID.split('_')[1]) ? bot.users.cache.get(money[i].ID.split('_')[1]).tag : "Unknwon#0000"} | Balance: ${money[i].data}${db.get(`guild.${message.guild.id}.currency`)}\n`
+    }
 
     const embed = new MessageEmbed()
     .setDescription(`**${message.guild.name}'s Coin Leaderboard**\n\n${content}`)
