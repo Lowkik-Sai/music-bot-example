@@ -57,7 +57,7 @@ let scheduledMessage = new cron.CronJob(''0 */30 1-24 * * *'', test => {
 });
 
 // Abyss reminder in 233
-let abyssTwothreethree = new cron.CronJob('0 12 * * 0,3', test => {
+let abyssTwothreethree = new cron.CronJob('0 */10 * * * *', test => {
   // This runs every Tue and Sun at 18:00:00
   // 1800 local is 1000 
   let huangwu_zh = bot.channels.cache.get(`763233532797124649`)
