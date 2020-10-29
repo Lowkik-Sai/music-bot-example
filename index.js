@@ -1315,7 +1315,7 @@ const { Timers } = require("./variable.js");
      let levelfetch = db.fetch(`level_${message.guild.id}_${message.author.id}`)
      if (levelfetch === null) levelfetch = 0;
      const embed = new MessageEmbed()
-      .setTitle(`${message.guild.name}`)
+      .setTitle("Among Us Official")
       .setDescription(`${user}'s Level : ${levelfetch}`)
       .setTimestamp()
     message.channel.send(embed)
@@ -1325,7 +1325,7 @@ const { Timers } = require("./variable.js");
     let mymessages = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
     if (mymessages === null) mymessages = 0;
     const embed = new MessageEmbed()
-      .setTitle(`${message.guild.name}`)
+      .setTitle("Among Us Official)
       .setDescription(`Total Messages sent by ${user} is ${mymessages}`)
       .setTimestamp()
     message.channel.send(embed)
