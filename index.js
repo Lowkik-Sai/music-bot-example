@@ -52,7 +52,7 @@ let scheduledMessage = new cron.CronJob('0 */30 * * * *', test => {
   // This runs every Tue and Sun at 20:00:00
   // 2000 local is 1200 
   let abyss_channel = bot.channels.cache.get(`763233532797124649`)
-  abyss_channel.send("Abyss ending today!! " + '<@&719519030012018728>')
+  abyss_channel.send("Abyss ending today!! " + '<@&769942587666464819>')
   // pings Abyss Ping role
 });
 
