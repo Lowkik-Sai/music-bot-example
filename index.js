@@ -7,6 +7,7 @@ const db = require("quick.db");
 const Statcord = require("statcord.js");
 const ms = require("ms");
 const fs = require("fs");
+const fetch = require('node-fetch');
 const Message = require("discord.js");
 const moment = require("moment");
 const cron = require('cron');
@@ -16,7 +17,7 @@ const Discord = require("discord.js");
 require("dotenv").config();
 require("./server.js");
 
-
+const newsAPI = process.env.newsAPI;
 const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
@@ -2290,19 +2291,6 @@ const sayMessage = args.join(" ")
 }})
     })
 }
-    if (command === "messages" ) {
-    let member = message.mentions.members.first() || message.member;
-  const gMessage = new db.table('MESSAGES')
-  let guild = await db.fetch(`guildMessages_${member.guild.id}_${member.id}`);
-
-  let gembed = new MessageEmbed()
-  .setDescription(`**${member.user.username}#${member.user.discriminator}**, in this moment you have **${guild} messages** on this server.`)
-  .setColor("RANDOM")
-  .setAuthor(message.guild.name, message.author.displayAvatarURL)
-  
-  message.channel.send(gembed);
-  
-}
     if (command === "roleall" ) {
         if (!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send(` **You're missing MANAGE_ROLES permission!** `)
    
@@ -2769,37 +2757,6 @@ const OFFSET = '!'.charCodeAt(0);
     await message.channel.send(resultxD);
 
 }
-    if (command === "level" || command === "lvl" ) {
-       
-        const { getInfo } = require("./xp.js")
-        const user = message.mentions.users.first() || message.author;
-    
-    if(user.id === bot.user.id) { //IF BOT
-      return message.channel.send("😉 | I am on level 100")
-    }
-    
-    if(user.bot) {
-      return message.channel.send("Bot do not have levels")
-    }
-    
-    let xp = db.get(`xp_${user.id}_${message.guild.id}`) || 0;
-    
-    const {level, remxp, levelxp} = getInfo(xp);
-    if(xp === 0) return message.channel.send(`**${user.tag}** is out of the xp`)
-    
-    let embed = new MessageEmbed()
-    .setAuthor(user.username, message.guild.iconURL())
-    .setColor("#ff2050")
-    .setThumbnail(user.avatarURL())
-    .setDescription(`**LEVEL** - ${level}
-**XP** - ${remxp}/${levelxp}`)
-    
- message.channel.send(embed)   
-    
-    
-    
-    
-  }
     if (command === "pokemon" ) {
         const { get } = require("request-promise-native");
 
@@ -3144,8 +3101,39 @@ const translate = require('google-translate-api');
             }
         }
 	}
+    if (command === "usnews" ) {
+try {
+      const response = await fetch(
+        `https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=${newsAPI}`
+      );
+      const json = await response.json();
+      const articleArr = json.articles;
+      let processArticle = article => {
+        const embed = new MessageEmbed()
+          .setColor('#FF4F00')
+          .setTitle(article.title)
+          .setURL(article.url)
+          .setAuthor(article.author)
+          .setDescription(article.description)
+          .setThumbnail(article.urlToImage)
+          .setTimestamp(article.publishedAt)
+          .setFooter('powered by NewsAPI.org');
+        return embed;
+      };
+      async function processArray(array) {
+        for (const article of array) {
+          const msg = await processArticle(article);
+          message.say(msg);
+        }
+      }
+      await processArray(articleArr);
+    } catch (e) {
+      message.say('Something failed along the way');
+      return console.error(e);
+    }
+  }
+}
     if (command === "covid" ) { 
-        const fetch = require('node-fetch');
        
 
         let countries = args.join(" ");
