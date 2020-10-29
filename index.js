@@ -1,4 +1,4 @@
-const { Client, Util, MessageEmbed, GuildAuditLogs} = require("discord.js");
+const { Client, Util, MessageEmbed, GuildAuditLogs, MessageAttachment} = require("discord.js");
 const { Permissions } = require('discord.js');
 const util = require('util');
 const YouTube = require("simple-youtube-api");
@@ -7,7 +7,9 @@ const db = require("quick.db");
 const Statcord = require("statcord.js");
 const ms = require("ms");
 const fs = require("fs");
+const Message = require("discord.js");
 const moment = require("moment");
+const cron = require('cron');
 const Canvas = require('canvas-constructor');
 var jimp = require('jimp');
 const Discord = require("discord.js");
@@ -43,6 +45,40 @@ bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 bot.on("ready", () => {
     console.log("GuessTheNumber is Ready!");
 });
+
+// Abyss reminder in Sky
+//CRON_TZ="Asia/Singapore"
+let scheduledMessage = new cron.CronJob('* * * * * *', test => {
+  // This runs every Tue and Sun at 20:00:00
+  // 2000 local is 1200 
+  let abyss_channel = bot.channels.cache.get(`763233532797124649`)
+  abyss_channel.send("Abyss ending today!! " + '<@&719519030012018728>')
+  // pings Abyss Ping role
+});
+
+// Abyss reminder in 233
+let abyssTwothreethree = new cron.CronJob('0 12 * * 0,3', test => {
+  // This runs every Tue and Sun at 18:00:00
+  // 1800 local is 1000 
+  let huangwu_zh = bot.channels.cache.get(`763233532797124649`)
+  const attachment = new MessageAttachment("https://cdn.discordapp.com/attachments/672091622619480066/715150933297987604/image0.jpg");
+  huangwu_zh.send(attachment)
+});
+
+
+/* experimental
+let scheduledXdress = new cron.CronJob('* * * * *', test => {
+  // This runs every Tue and Sun at 20:00:00
+  // 2000 local is 1200 
+  let abyss_channel = client.channels.cache.get(`675356163432513536`)
+  abyss_channel.send("crossdress <@" + '471300810194681866' + ">")
+  // pings hibiki
+});
+scheduledXdress.start()
+*/
+
+scheduledMessage.start()
+abyssTwothreethree.start()
 
 let limit = 20000; // You can change it through /limit command
 let number = Math.floor(Math.random()* Math.floor(limit)); // You can custom it through /number command and reroll it through /reroll
