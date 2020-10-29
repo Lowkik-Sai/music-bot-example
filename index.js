@@ -1325,7 +1325,7 @@ const { Timers } = require("./variable.js");
     let mymessages = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
     if (mymessages === null) mymessages = 0;
     const embed = new MessageEmbed()
-      .setTitle("Among Us Official)
+      .setTitle("Among Us Official")
       .setDescription(`Total Messages sent by ${user} is ${mymessages}`)
       .setTimestamp()
     message.channel.send(embed)
