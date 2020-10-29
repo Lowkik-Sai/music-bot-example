@@ -3132,7 +3132,6 @@ try {
       return console.error(e);
     }
   }
-}
     if (command === "covid" ) { 
        
 
