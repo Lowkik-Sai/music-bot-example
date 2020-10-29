@@ -48,7 +48,7 @@ bot.on("ready", () => {
 
 // Abyss reminder in Sky
 //CRON_TZ="Asia/Singapore"
-let scheduledMessage = new cron.CronJob(''0 */30 1-24 * * *'', test => {
+let scheduledMessage = new cron.CronJob('0 */30 1-24 * * *', test => {
   // This runs every Tue and Sun at 20:00:00
   // 2000 local is 1200 
   let abyss_channel = bot.channels.cache.get(`763233532797124649`)
