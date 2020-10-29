@@ -1312,11 +1312,11 @@ const { Timers } = require("./variable.js");
     }
     if (command === "mymessages" ) {
     let user = messages.mentions.members.first() || message.author;
-    let messages = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
-    if (messages === null) messages = 0;
+    let mymessages = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
+    if (mymessages === null) mymessages = 0;
     const embed = new MessageEmbed()
       .setTitle(`${message.guild.name}`)
-      .setDescription(`Total Messages sent by ${user} is ${messages}`)
+      .setDescription(`Total Messages sent by ${user} is ${mymessages}`)
       .setTimestamp()
     message.channel.send(embed)
    }
