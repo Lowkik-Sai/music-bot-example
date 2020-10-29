@@ -1310,6 +1310,16 @@ const { Timers } = require("./variable.js");
    description:`**${user.username}** has *${warnings}* warning(s)`
 }});
     }
+    if (command === "mylevel" || command === "lvl" || command === "level" ) {
+     let user = messages.mentions.members.first() || message.author;
+     let levelfetch = db.fetch(`level_${message.guild.id}_${message.author.id}`)
+     if (levelfetch === null) levelfetch = 0;
+     const embed = new MessageEmbed()
+      .setTitle(`${message.guild.name}`)
+      .setDescription(`${user}'s Level : ${levelfetch}`)
+      .setTimestamp()
+    message.channel.send(embed)
+   }
     if (command === "mymessages" ) {
     let user = messages.mentions.members.first() || message.author;
     let mymessages = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
@@ -1423,6 +1433,9 @@ let user = message.mentions.members.first() || message.author;
   let messages = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
   if (messages === null) messages = 0;
 
+  let levelfetch = db.fetch(`level_${message.guild.id}_${message.author.id}`)
+  if (levelfetch === null) levelfetch = 0;
+
   let bank = await db.fetch(`bank_${message.guild.id}_${user.id}`)
   if (bank === null) bank = 0;
 
@@ -1441,7 +1454,7 @@ let user = message.mentions.members.first() || message.author;
 
   let moneyEmbed = new MessageEmbed()
   .setColor("RANDOM")
-  .setDescription(`**${user}'s Profile**\n\nPocket: ${money}\nBank: ${bank}\nVIP Rank: ${vip} \nTotal Messages sent in this server: ${messages}\n\n**Inventory**\n\nNikes: ${shoes}\nCars: ${newcar}\nMansions: ${newhouse}`);
+  .setDescription(`**${user}'s Profile**\n\nPocket: ${money}\nBank: ${bank}\nVIP Rank: ${vip} \nLevel: ${levelfetch} \nTotal Messages sent in this server: ${messages}\n\n**Inventory**\n\nNikes: ${shoes}\nCars: ${newcar}\nMansions: ${newhouse}`);
   message.channel.send(moneyEmbed)
 }
     if (command === "rob" ) {
