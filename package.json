@@ -27,8 +27,8 @@
     "node": "12.x"
   },
   "dependencies": {
-    "@discordjs/opus": "^0.3.2",
-    "discord.js": "^12.3.1",
+    "@discordjs/opus": "^0.3.3",
+    "discord.js": "^12.4.1",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "canvas-constructor": "^3.1.0",
@@ -66,7 +66,7 @@
     "discord-paginationembed": "^2.1.0",
     "ms": "^2.1.2",
     "parse-ms": "^2.1.0",
-    "ytdl-core": "^3.4.0"
+    "ytdl-core": "^4.0.0"
   },
   "optionalDependencies": {
     "@discordjs/uws": "^11.149.1"
