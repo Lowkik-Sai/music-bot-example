@@ -1434,7 +1434,7 @@ let user = message.mentions.members.first() || message.author;
   let messages = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
   if (messages === null) messages = 0;
 
-  let levelfetch = db.fetch(`level_${message.guild.id}_${message author.id}`)
+  let levelfetch = db.fetch(`level_${message.guild.id}_${message.author.id}`)
   if (levelfetch === null) levelfetch = 0;
 
   let bank = await db.fetch(`bank_${message.guild.id}_${user.id}`)
