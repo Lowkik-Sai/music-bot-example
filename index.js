@@ -229,7 +229,7 @@ bot.on("ready", async () => {
 });
 
 bot.on("message", async message => {
-  db.add(`messages_${message.guild.id}_$user.id}`, 1)
+  db.add(`messages_${message.guild.id}_${user.id}`, 1)
   let messagefetch = db.fetch(`messages_${message.guild.id}_${user.id}`)
 
   let messages;
