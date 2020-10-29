@@ -1311,7 +1311,7 @@ const { Timers } = require("./variable.js");
 }});
     }
     if (command === "mylevel" || command === "lvl" || command === "level" ) {
-     let user = messages.mentions.members.first() || message.author;
+     let user = message.mentions.members.first() || message.author;
      let levelfetch = db.fetch(`level_${message.guild.id}_${user.id}`)
      if (levelfetch === null) levelfetch = 0;
      const embed = new MessageEmbed()
@@ -1321,7 +1321,7 @@ const { Timers } = require("./variable.js");
     message.channel.send(embed)
    }
     if (command === "mymessages" ) {
-    let user = messages.mentions.members.first() || message.author;
+    let user = message.mentions.members.first() || message.author;
     let mymessages = db.fetch(`messages_${message.guild.id}_${user.id}`)
     if (mymessages === null) mymessages = 0;
     const embed = new MessageEmbed()
@@ -1430,10 +1430,10 @@ let user = message.mentions.members.first() || message.author;
   let money = await db.fetch(`money_${message.guild.id}_${user.id}`)
   if (money === null) money = 0;
 
-  let messages = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
+  let messages = db.fetch(`messages_${message.guild.id}_${user.id}`)
   if (messages === null) messages = 0;
 
-  let levelfetch = db.fetch(`level_${message.guild.id}_${message.author.id}`)
+  let levelfetch = db.fetch(`level_${message.guild.id}_${user.id}`)
   if (levelfetch === null) levelfetch = 0;
 
   let bank = await db.fetch(`bank_${message.guild.id}_${user.id}`)
