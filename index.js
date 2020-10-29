@@ -227,6 +227,27 @@ bot.on("ready", async () => {
 
 });
 
+bot.on("message", async message => {
+  db.add(`messages_${message.guild.id}_${message.author.id}`, 1)
+  let messagefetch = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
+
+  let messages;
+  if (messagefetch == 25) messages = 25; //Level 1
+  else if (messagefetch == 65) messages = 65; // Level 2
+  else if (messagefetch == 115) messages = 115; // Level 3
+  else if (messagefetch == 200) messages = 200; // Level 4
+  else if (messagefetch == 300) messages = 300; // Level 5
+
+  if (!isNaN(messages)) {
+    db.add(`level_${message.guild.id}_${message.author.id}`, 1)
+    let levelfetch = db.fetch(`level_${message.guild.id}_${message.author.id}`)
+
+    let levelembed = new Discord.MessageEmbed()
+      .setDescription(`${message.author}, You have leveled up to level ${levelfetch}`)
+    message.channel.send(levelembed)
+  }
+})
+
 bot.on('guildCreate', async guild => {
 	const fetchedLogs = await guild.fetchAuditLogs({
 		limit: 1,
@@ -1289,6 +1310,16 @@ const { Timers } = require("./variable.js");
    description:`**${user.username}** has *${warnings}* warning(s)`
 }});
     }
+    if (command === "mymessages" ) {
+    let user = messages.mentions.members.first() || message.author;
+    let messages = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
+    if (messages === null) messages = 0;
+    const embed = new MessageEmbed()
+      .setTitle(`${message.guild.name}`)
+      .setDescription(`Total Messages sent by ${user} is ${messages}`)
+      .setTimestamp()
+    message.channel.send(embed)
+   }
     if (command === "bal" ) {
         
         
@@ -1389,6 +1420,9 @@ let user = message.mentions.members.first() || message.author;
   let money = await db.fetch(`money_${message.guild.id}_${user.id}`)
   if (money === null) money = 0;
 
+  let messages = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
+  if (messages === null) messages = 0;
+
   let bank = await db.fetch(`bank_${message.guild.id}_${user.id}`)
   if (bank === null) bank = 0;
 
@@ -1407,7 +1441,7 @@ let user = message.mentions.members.first() || message.author;
 
   let moneyEmbed = new MessageEmbed()
   .setColor("RANDOM")
-  .setDescription(`**${user}'s Profile**\n\nPocket: ${money}\nBank: ${bank}\nVIP Rank: ${vip}\n\n**Inventory**\n\nNikes: ${shoes}\nCars: ${newcar}\nMansions: ${newhouse}`);
+  .setDescription(`**${user}'s Profile**\n\nPocket: ${money}\nBank: ${bank}\nVIP Rank: ${vip} \nTotal Messages sent in this server: ${messages}\n\n**Inventory**\n\nNikes: ${shoes}\nCars: ${newcar}\nMansions: ${newhouse}`);
   message.channel.send(moneyEmbed)
 }
     if (command === "rob" ) {
