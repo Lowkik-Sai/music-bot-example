@@ -1461,7 +1461,7 @@ let user = message.mentions.members.first() || message.author;
 
   let moneyEmbed = new MessageEmbed()
   .setColor("RANDOM")
-  .setDescription(`**${user}'s Profile**\n\nPocket: ${money}\nBank: ${bank}\nVIP Rank: ${vip} \nLevel: ${levelfetch} \nTotal Messages sent in this server: ${messages}\n\n**Inventory**\n\nNikes: ${shoes}\nCars: ${newcar}\nMansions: ${newhouse}`);
+  .setDescription(`**${user}'s Profile**\n\nPocket: ${money}\nBank: ${bank}\nVIP Rank: ${vip}\n\n**Inventory**\n\nNikes: ${shoes}\nCars: ${newcar}\nMansions: ${newhouse}`);
   message.channel.send(moneyEmbed)
 }
     if (command === "rob" ) {
@@ -3129,7 +3129,7 @@ try {
       async function processArray(array) {
         for (const article of array) {
           const msg = await processArticle(article);
-          message.say(msg);
+          message.send(msg);
         }
       }
       await processArray(articleArr);
