@@ -564,8 +564,10 @@ bot.on("message", async (message) => { // eslint-disable-line
 
 	message.channel.send(`First argument: ${args[0]}`);
     }
-    if (command == "flipbattle")
-    {
+    if (command == "gtnbattle" ) {
+message.channel.send("Developing this command,Be Patience 🤪")
+}
+    if (command == "flipbattle") {
         if (args.length != 2)
             return message.reply('Usage: !battle <@user> <your prediction (heads/tails)>');
         if (!message.mentions.users.size)
@@ -3134,7 +3136,7 @@ try {
       }
       await processArray(articleArr);
     } catch (e) {
-      message.say('Something failed along the way');
+      message.send('Something failed along the way');
       return console.error(e);
     }
   }
