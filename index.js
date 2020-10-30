@@ -564,7 +564,16 @@ bot.on("message", async (message) => { // eslint-disable-line
 
 	message.channel.send(`First argument: ${args[0]}`);
     }
-    if (command === "triviastart" ) {
+    if (command === "trivia" ) {
+const sayMessage = args.join(" ")
+const embed = new MessageEmbed()
+    .setColor("RANDOM")
+    .setTitle("TRIVIA")
+    .setDescription("INFO - ABOUT TRIVIA \n SUGGEST - SUGGESTIONS FOR TRIVIA \n START - START THE TRIVIA")
+    .setFooter("Proper Usage : +trivia <©ommand>")
+    .setTimestamp()
+    if(!sayMessage) return message.reply(embed)
+ 
 let questions = [
         {
           title: "Best programming language",
@@ -718,9 +727,15 @@ let questions = [
         }
       ];
         if(args[0] === 'info'){
-          message.channel.send(`There are ${questions.length} questions, if you have suggestions for questions please use '${PREFIX}trivia suggest <question, 4 possible answers, and correct answer>'.`)
+          message.channel.send({embed: {
+   color: 3066993,
+   description: `Currently,There is nearly ${questions.length} questions, if you have any suggestions/ideas for questions please use '${PREFIX}trivia suggest <question, 4 possible answers, and correct answer>'.`
+}})
         }else if(args[0] === 'suggest'){
-          bot.users.cache.get('654669770549100575').send(message.author + `\n ${args.join(" ").slice(8)}`)
+          bot.users.cache.get('654669770549100575').send({embed: {
+   color: 3066993,
+   description: message.author + `\n ${args.join(" ").slice(8)}`
+}})
           console.log(message.content.length)
         }else if(args[0] === 'start'){
           let q = questions[Math.floor(Math.random() * questions.length)];
