@@ -569,8 +569,8 @@ const sayMessage = args.join(" ")
 const embed = new MessageEmbed()
     .setColor("RANDOM")
     .setTitle("TRIVIA")
-    .setDescription("INFO - ABOUT TRIVIA \n SUGGEST - SUGGESTIONS FOR TRIVIA \n START - START THE TRIVIA")
-    .setFooter("Proper Usage : +trivia <©ommand>")
+    .setDescription(" 1)INFO - ABOUT TRIVIA \n 2)SUGGEST - SUGGESTIONS FOR TRIVIA \n 3)START - START THE TRIVIA")
+    .setFooter("Proper Usage : +trivia <©ommand> or +trivia <index number>")
     .setTimestamp()
     if(!sayMessage) return message.reply(embed)
  
@@ -726,49 +726,15 @@ let questions = [
           correct: 1
         }
       ];
-        if(args[0] === 'info'){
-          message.channel.send({embed: {
-   color: 3066993,
-   description: `Currently,There is nearly ${questions.length} questions, if you have any suggestions/ideas for questions please use '${PREFIX}trivia suggest <question, 4 possible answers, and correct answer>'.`
-}})
-        }else if(args[0] === 'suggest'){
-          bot.users.cache.get('654669770549100575').send({embed: {
-   color: 3066993,
-   title: "Suggested by : message.author.tag" ,
-   description:`\n ${args.join(" ").slice(8)}`
-}})
+        if(args[0] === 'info' || args[0] === '1'){
+          message.channel.send(`There are ${questions.length} questions, if you have suggestions for questions please use '${prefix}trivia suggest <question, 4 possible answers, and correct answer>'.`)
+        }else if(args[0] === 'suggest' || args[0] === '2'){
+          bot.users.cache.get('455808529627086848').send(message.author + `\n ${args.join(" ").slice(8)}`)
           console.log(message.content.length)
-        }else if(args[0] === 'start'){
-          let user = message.author;
-          let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
-          let amout = args[0];
-    if (!amout) return message.channel.send({embed: {
-   color: 3066993,
-   description: "${message.author} You have to specify the coins!"
-}});
-    if (money < amout)
-      return message.channel.send(embed: {
-   color: 3066993,
-   description: "${message.author} You do not have enough Coins!"
-}});
-    if (amout.includes("-"))
-      return message.channel.send({embed: {
-   color: 3066993,
-   description: "${message.author} Looks like your try to Gamble with Minus Numbers, that won't work"
-}});
-    if (isNaN(args[0])){
-            message.reply("There where invalid charectors for the bet! Please make sure the bet is only numbers!").then(message => {
-				message.delete({timeout: 10000});
-            });
-            return;
-        }
-     if (amout < 100)return message.channel.send({embed: {
-  color: 3066993,
-  description: `I'm sorry ${message.author}, you have to bet **100coins** or more to use this command!`
-}});
+        }else if(args[0] === 'start' || args[0] === '3'){
           let q = questions[Math.floor(Math.random() * questions.length)];
           let i = 0;
-          const Embed = new MessageEmbed()
+          const Embed = new Discord.MessageEmbed()
             .setTitle(q.title)
             .setDescription(
               q.options.map((opt) => {
@@ -778,35 +744,24 @@ let questions = [
             )
             .setColor(`GREEN`)
             .setFooter(
-              `Reply to this message with the correct answer number! You have 30 seconds.`
+              `Reply to this message with the correct question number! You have 15 seconds.`
             );
           message.channel.send(Embed)
-          db.subtract(`money_${message.guild.id}_${user.id}`, amout)
           // console.log(questions.length)
           try {
             // console.log(questions.length)
             // console.log(q.options[q.correct])
             let msgs = await message.channel.awaitMessages(
               (u2) => u2.author.id === message.author.id,
-              { time: 30000, max: 1, errors: ["time"] }
+              { time: 15000, max: 1, errors: ["time"] }
             );
             if (parseInt(msgs.first().content) == q.correct) {
-              return message.channel.send({embed: {
-   color: 3066993,
-   description: `You got it correct!`
-}});
-              db.add(`money_${message.guild.id}_${user.id}`, amout)
+              return message.channel.send(`You got it correct!`);
             } else {
-              return message.channel.send({embed: {
-   color: 3066993,
-   description: `You got it incorrect. The correct answer was: ${q.correct}`
-}});
+              return message.channel.send(`You got it incorrect. The correct answer was: ${q.correct}`);
             }
           } catch (e) {
-            return message.channel.send({embed: {
-   color: 3066993,
-   description:`You did not answer! The correct answer was: ${q.correct}`
-}});
+            return message.channel.send(`You did not answer! The correct answer was: ${q.correct}`);
           }
         }
         
