@@ -825,9 +825,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
             return message.reply('You have to tag a user in order to battle them');
         let oppo = message.mentions.users.first();
         let amount = args[1];
-        if (args[1] !)
-            return message.reply('The second argument must be your bet amount');
-       let money = db.fetch(`money_${message.guild.id}_${message.author.id}`);
+        let money = db.fetch(`money_${message.guild.id}_${message.author.id}`);
        let oppomoney = db.fetch(`money_${message.guild.id}_${oppo.id}`);
 
       if (oppo.id == bot.user.id) return message.channel.send("No U!");
