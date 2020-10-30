@@ -3648,7 +3648,7 @@ let questions = [
           correct: 3,
         },
         {
-          trivia: "How many hearts does an octopus have?",
+          title: "How many hearts does an octopus have?",
           options: ["1", "2", "3", "4"],
           correct: 3,
         },
