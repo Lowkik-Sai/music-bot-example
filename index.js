@@ -735,8 +735,34 @@ let questions = [
           bot.users.cache.get('654669770549100575').send(message.author.tag + `\n ${args.join(" ").slice(8)}`)
           console.log(message.content.length)
         }else if(args[0] === 'start' || args[0] === '3'){
+let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
+
+    let amout = args[0];
+    if (!amout) return message.channel.send("You have to specify the coins!");
+    if (money < amout)
+      return message.channel.send("You do not have enough Coins!");
+    if (amout.includes("-"))
+      return message.channel.send("Looks like your try to Gamble with Minus Numbers, that won't work");
+          
+   if (isNaN(args[0])){
+            message.reply({embed: {
+   color: 3066993,
+   description: "There where invalid charectors for the bet! Please make sure the bet is only numbers!"}}).then(message => {
+				message.delete({timeout: 10000});
+            });
+            return;
+        }
+        if (!amout) return message.reply(':warning: You must bet atleast 100coins to use this command!').then(message => {
+			message.delete({timeout: 10000});
+		});
+        if (amout < 100)return message.channel.send({embed: {
+   color: 3066993,
+   description: `I'm sorry ${message.author}, you have to bet **100coins** or more to use this command!`
+}});
+        
           let q = questions[Math.floor(Math.random() * questions.length)];
           let i = 0;
+          db.subtract(`money_${message.guild.id}_${user.id}`, amout);
           const Embed = new MessageEmbed()
             .setTitle(q.title)
             .setDescription(
@@ -761,8 +787,9 @@ let questions = [
             if (parseInt(msgs.first().content) == q.correct) {
               return message.channel.send({embed: {
   color: 3066993,
-  description: `You got it correct!`
+  description: `You got it correct,And won 2 * ${amout}!`
 }});
+             db.add(`money_${message.guild.id}_${user.id}`, 2 * amout);
             } else {
               return message.channel.send({embed: {
    color: 3066993,
