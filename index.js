@@ -735,6 +735,7 @@ let questions = [
           bot.users.cache.get('654669770549100575').send(message.author.tag + `\n ${args.join(" ").slice(8)}`)
           console.log(message.content.length)
         }else if(args[0] === 'bet' || args[0] === '3'){
+let user = message.author;
 let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
 
     let amout = args[1];
