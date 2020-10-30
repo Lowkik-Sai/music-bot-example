@@ -830,10 +830,39 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
        let money = db.fetch(`money_${message.guild.id}_${message.author.id}`);
        let oppomoney = db.fetch(`money_${message.guild.id}_${oppo.id}`);
 
+       if (money < amount)
+      return message.channel.send({embed: {
+  color: 3066993,
+  description: "You do not have enough Coins!"
+}});
+    if (amount.includes("-"))
+      return message.channel.send({embed: {
+   color: 3066993,
+   description: "Looks like your try to Gamble with Minus Numbers, that won't work"
+}});
+          
+   if (isNaN(args[1])){
+            message.reply({embed: {
+   color: 3066993,
+   description: "There where invalid charectors for the bet! Please make sure the bet is only numbers!"}}).then(message => {
+				message.delete({timeout: 10000});
+            });
+            return;
+        }
+        if (!amount) return message.reply(':warning: You must bet atleast 100coins to use this command!').then(message => {
+			message.delete({timeout: 10000});
+		});
+        if (amount < 100)return message.channel.send({embed: {
+   color: 3066993,
+   description: `I'm sorry ${message.author}, you have to bet **100coins** or more to use this command!`
+}});
 
-        const taggedUser = message.mentions.users.first();
-        const userGuess = args[1];
-        
+       if (oppomoney < amount)
+      return message.channel.send({embed: {
+  color: 3066993,
+  description: "${oppo} do not have enough Coins!"
+}});
+          
         var timeleft = 3;
         var downloadTimer = setInterval(function(){
             message.channel.send(timeleft + '...');
