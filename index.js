@@ -739,11 +739,20 @@ let user = message.author;
 let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
 
     let amout = args[1];
-    if (!amout) return message.channel.send("You have to specify the coins!");
+    if (!amout) return message.channel.send({embed: {
+  color: 3066993,
+  description: "You have to specify the coins!"
+}});
     if (money < amout)
-      return message.channel.send("You do not have enough Coins!");
+      return message.channel.send({embed: {
+  color: 3066993,
+  description: "You do not have enough Coins!"
+}});
     if (amout.includes("-"))
-      return message.channel.send("Looks like your try to Gamble with Minus Numbers, that won't work");
+      return message.channel.send({embed: {
+   color: 3066993,
+   description: "Looks like your try to Gamble with Minus Numbers, that won't work"
+}});
           
    if (isNaN(args[1])){
             message.reply({embed: {
@@ -789,7 +798,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
               db.add(`money_${message.guild.id}_${user.id}`, 2 * amout);
               return message.channel.send({embed: {
   color: 3066993,
-  description: `You got it correct,And won 2 * ${amout}!`
+  description: `You got it correct and Won 2 * ${amout}!`
 }});
               } else {
               return message.channel.send({embed: {
