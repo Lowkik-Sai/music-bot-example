@@ -749,7 +749,7 @@ let questions = [
     if (money < amout)
       return message.channel.send(embed: {
    color: 3066993,
-   description: "${message.author}> You do not have enough Coins!"
+   description: "${message.author} You do not have enough Coins!"
 }});
     if (amout.includes("-"))
       return message.channel.send({embed: {
