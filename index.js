@@ -738,10 +738,37 @@ let questions = [
 }})
           console.log(message.content.length)
         }else if(args[0] === 'start'){
-          let bet = args[1];
+          let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
+          let amout = args[0];
+    if (!amout) return message.channel.send({embed: {
+   color: 3066993,
+   description: "${message.author} You have to specify the coins!"
+}});
+    if (money < amout)
+      return message.channel.send(embed: {
+   color: 3066993,
+   description: "${message.author}> You do not have enough Coins!"
+}});
+    if (amout.includes("-"))
+      return message.channel.send({embed: {
+   color: 3066993,
+   description: "${message.author}> Looks like your try to Gamble with Minus Numbers, that won't work"
+}});
+    if (isNaN(args[0])){
+            message.reply({embed: {
+   color: 3066993,
+   description: "There where invalid charectors for the bet! Please make sure the bet is only numbers!"}}).then(message => {
+				message.delete({timeout: 10000});
+            });
+            return;
+        }
+     if (amout < 100)return message.channel.send({embed: {
+  color: 3066993,
+  description: `I'm sorry ${message.author}, you have to bet **100coins** or more to use this command!`
+}});
           let q = questions[Math.floor(Math.random() * questions.length)];
           let i = 0;
-          const Embed = new Discord.MessageEmbed()
+          const Embed = new MessageEmbed()
             .setTitle(q.title)
             .setDescription(
               q.options.map((opt) => {
@@ -754,7 +781,7 @@ let questions = [
               `Reply to this message with the correct answer number! You have 30 seconds.`
             );
           message.channel.send(Embed)
-          db.subtract(`money_${message.guild.id}_${user.id}`, bet)
+          db.subtract(`money_${message.guild.id}_${user.id}`, amout)
           // console.log(questions.length)
           try {
             // console.log(questions.length)
@@ -768,7 +795,7 @@ let questions = [
    color: 3066993,
    description: `You got it correct!`
 }});
-              db.add(`money_${message.guild.id}_${user.id}`, bet)
+              db.add(`money_${message.guild.id}_${user.id}`, amout)
             } else {
               return message.channel.send({embed: {
    color: 3066993,
