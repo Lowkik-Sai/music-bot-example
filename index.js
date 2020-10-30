@@ -754,12 +754,10 @@ let questions = [
     if (amout.includes("-"))
       return message.channel.send({embed: {
    color: 3066993,
-   description: "${message.author}> Looks like your try to Gamble with Minus Numbers, that won't work"
+   description: "${message.author} Looks like your try to Gamble with Minus Numbers, that won't work"
 }});
     if (isNaN(args[0])){
-            message.reply({embed: {
-   color: 3066993,
-   description: "There where invalid charectors for the bet! Please make sure the bet is only numbers!"}}).then(message => {
+            message.reply("There where invalid charectors for the bet! Please make sure the bet is only numbers!").then(message => {
 				message.delete({timeout: 10000});
             });
             return;
