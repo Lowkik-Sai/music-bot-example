@@ -3131,12 +3131,12 @@ try {
       async function processArray(array) {
         for (const article of array) {
           const msg = await processArticle(article);
-          message.send(msg);
+          message.channel.send(msg);
         }
       }
       await processArray(articleArr);
     } catch (e) {
-      message.send('Something failed along the way');
+      message.channel.send('Something failed along the way');
       return console.error(e);
     }
   }
