@@ -731,8 +731,8 @@ let questions = [
    color: 3066993,
    description: `Currently,There is nearly ${questions.length} questions, if you have any suggestions/ideas for questions please use '${PREFIX}trivia suggest <question, 4 possible answers, and correct answer>'.`
 }})
-        }else if(args[0] === 'suggest' || args[0] === '2'){
-          bot.users.cache.get('654669770549100575').send(Suggested by : message.author.tag + `\n ${args.join(" ").slice(8)}`)
+        }else if(args[0] === 'suggest' || args[0] === '2'){         
+          bot.users.cache.get('654669770549100575').send(message.author.tag + `\n ${args.join(" ").slice(8)}`)
           console.log(message.content.length)
         }else if(args[0] === 'start' || args[0] === '3'){
           let q = questions[Math.floor(Math.random() * questions.length)];
