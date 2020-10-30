@@ -734,10 +734,11 @@ let questions = [
         }else if(args[0] === 'suggest'){
           bot.users.cache.get('654669770549100575').send({embed: {
    color: 3066993,
-   description: message.author.tag + `\n ${args.join(" ").slice(8)}`
+   description: Suggested by : message.author.tag + `\n ${args.join(" ").slice(8)}`
 }})
           console.log(message.content.length)
         }else if(args[0] === 'start'){
+          let bet = args[1];
           let q = questions[Math.floor(Math.random() * questions.length)];
           let i = 0;
           const Embed = new Discord.MessageEmbed()
@@ -750,24 +751,35 @@ let questions = [
             )
             .setColor(`GREEN`)
             .setFooter(
-              `Reply to this message with the correct question number! You have 15 seconds.`
+              `Reply to this message with the correct answer number! You have 30 seconds.`
             );
           message.channel.send(Embed)
+          db.subtract(`money_${message.guild.id}_${user.id}`, bet)
           // console.log(questions.length)
           try {
             // console.log(questions.length)
             // console.log(q.options[q.correct])
             let msgs = await message.channel.awaitMessages(
               (u2) => u2.author.id === message.author.id,
-              { time: 15000, max: 1, errors: ["time"] }
+              { time: 30000, max: 1, errors: ["time"] }
             );
             if (parseInt(msgs.first().content) == q.correct) {
-              return message.channel.send(`You got it correct!`);
+              return message.channel.send({embed: {
+   color: 3066993,
+   description: `You got it correct!`
+}});
+              db.add(`money_${message.guild.id}_${user.id}`, bet)
             } else {
-              return message.channel.send(`You got it incorrect. The correct answer was: ${q.correct}`);
+              return message.channel.send({embed: {
+   color: 3066993,
+   description: `You got it incorrect. The correct answer was: ${q.correct}`
+}});
             }
           } catch (e) {
-            return message.channel.send(`You did not answer! The correct answer was: ${q.correct}`);
+            return message.channel.send({embed: {
+   color: 3066993,
+   description:`You did not answer! The correct answer was: ${q.correct}`
+}});
           }
         }
         
