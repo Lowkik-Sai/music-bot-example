@@ -734,7 +734,8 @@ let questions = [
         }else if(args[0] === 'suggest'){
           bot.users.cache.get('654669770549100575').send({embed: {
    color: 3066993,
-   description: Suggested by : message.author.tag + `\n ${args.join(" ").slice(8)}`
+   title: Suggested by : message.author.tag ,
+   description:`\n ${args.join(" ").slice(8)}`
 }})
           console.log(message.content.length)
         }else if(args[0] === 'start'){
