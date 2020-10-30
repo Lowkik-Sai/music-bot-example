@@ -830,6 +830,9 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
        let money = db.fetch(`money_${message.guild.id}_${message.author.id}`);
        let oppomoney = db.fetch(`money_${message.guild.id}_${oppo.id}`);
 
+      if (oppo.id == bot.user.id) return message.channel.send("No U!");
+      if (oppo.id == message.author.id) return message.channel.send(`${message.author}, you can't battle yourself`);
+
        if (money < amount)
       return message.channel.send({embed: {
   color: 3066993,
@@ -894,7 +897,9 @@ message.channel.send("Developing this command,Be Patience 🤪")
 
         const taggedUser = message.mentions.users.first();
         const userGuess = args[1];
-        
+        if (taggedUser.id ==  bot.user.id) return message.channel.send("no u");
+	if (taggedUser.id == message.author.id) return message.channel.send(`${message.author.username}, you can't battle yourself`);
+
         var timeleft = 3;
         var downloadTimer = setInterval(function(){
             message.channel.send(timeleft + '...');
