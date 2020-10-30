@@ -786,18 +786,19 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
               { time: 30000, max: 1, errors: ["time"] }
             );
             if (parseInt(msgs.first().content) == q.correct) {
+              db.add(`money_${message.guild.id}_${user.id}`, 2 * amout);
               return message.channel.send({embed: {
   color: 3066993,
   description: `You got it correct,And won 2 * ${amout}!`
 }});
-             db.add(`money_${message.guild.id}_${user.id}`, 2 * amout);
-            } else {
+              } else {
               return message.channel.send({embed: {
    color: 3066993,
    description: `You got it incorrect. The correct answer was: ${q.correct}`
 }});
             }
           } catch (e) {
+            db.add(`money_${message.guild.id}_${user.id}`, amout);
             return message.channel.send({embed: {
   color: 3066993,
   description: `You did not answer! The correct answer was: ${q.correct}`
