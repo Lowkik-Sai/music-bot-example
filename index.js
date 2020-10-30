@@ -3174,7 +3174,7 @@ try {
     if (command === "indnews" ) {
 try {
       const response = await fetch(
-        `https://newsapi.org/v2/top-headlines?country=ind&pageSize=5&apiKey=${newsAPI}`
+        `https://newsapi.org/v2/top-headlines?country=in&pageSize=5&apiKey=${newsAPI}`
       );
       const json = await response.json();
       const articleArr = json.articles;
