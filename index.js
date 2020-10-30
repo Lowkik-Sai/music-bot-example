@@ -818,6 +818,41 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
  
         }
     if (command == "gtnbattle" ) {
+    number = Math.floor(Math.random()* Math.floor(limit));
+    if (args.length != 2)
+            return message.reply('Usage: !gtnbattle <@user> <betamount>');
+        if (!message.mentions.users.size)
+            return message.reply('You have to tag a user in order to battle them');
+        let oppo = message.mentions.users.first();
+        let amount = args[1];
+        if (args[1] !)
+            return message.reply('The second argument must be your bet amount');
+       let money = db.fetch(`money_${message.guild.id}_${message.author.id}`);
+       let oppomoney = db.fetch(`money_${message.guild.id}_${oppo.id}`);
+
+
+        const taggedUser = message.mentions.users.first();
+        const userGuess = args[1];
+        
+        var timeleft = 3;
+        var downloadTimer = setInterval(function(){
+            message.channel.send(timeleft + '...');
+            timeleft -= 1;  
+            if(timeleft <= 0){
+                clearInterval(downloadTimer);
+
+                if (FlipCoin() == 0)
+                    flipResult = 'heads';
+                else
+                    flipResult = 'tails';
+    
+                if (userGuess == flipResult)
+                    return message.channel.send(`Winner: <@${message.author.id}>, Coin: ${flipResult.toUpperCase()}`);
+                else
+                    return message.channel.send(`Winner: <@${taggedUser.id}>, Coin: ${flipResult.toUpperCase()}`);
+            }
+        }, 1000);
+    }
 message.channel.send("Developing this command,Be Patience 🤪")
 }
     if (command == "flipbattle") {
