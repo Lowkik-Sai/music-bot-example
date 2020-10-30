@@ -865,27 +865,25 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
   color: 3066993,
   description: "${oppo} do not have enough Coins!"
 }});
-          
-        var timeleft = 3;
-        var downloadTimer = setInterval(function(){
-            message.channel.send(timeleft + '...');
-            timeleft -= 1;  
-            if(timeleft <= 0){
-                clearInterval(downloadTimer);
+       message.channel.send(`${oppo.tag}, ${message.author.tag} has challenged you. Do you accept? Type yes or no.`);
+			const confirmation = message.channel.createMessageCollector((m) => m.author.id == oppo.id, { max: 1, time: 60000 });
+			const choice = await confirmation.next.then(message => {
+				return new Promise(res => {
+					if (message.content.toLowerCase() != "yes") return res("no");
+					else return res("yes");
+				});
+			}).catch(() => { return Promise.resolve("no"); });
+			if (choice == "no") return msg.channel.send(`${member.user.tag} has not accepted the challenge.`);
 
-                if (FlipCoin() == 0)
-                    flipResult = 'heads';
+			message.channel.send("Cancelled!");
+
+                if (userGuess == number)
+                    return message.channel.send(`Winner: <@${message.author.id}>, Number: ${number}`);
                 else
-                    flipResult = 'tails';
-    
-                if (userGuess == flipResult)
-                    return message.channel.send(`Winner: <@${message.author.id}>, Coin: ${flipResult.toUpperCase()}`);
-                else
-                    return message.channel.send(`Winner: <@${taggedUser.id}>, Coin: ${flipResult.toUpperCase()}`);
+                    return message.channel.send(`Winner: <@${oppo.id}>, Number: ${number}`);
             }
         }, 1000);
     }
-message.channel.send("Developing this command,Be Patience 🤪")
 }
     if (command == "flipbattle") {
         if (args.length != 2)
