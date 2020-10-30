@@ -875,13 +875,11 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
 
 			message.channel.send("Cancelled!");
 
-                if (userGuess == number)
+                if (userGuess == number) {
                     return message.channel.send(`Winner: <@${message.author.id}>, Number: ${number}`);
-                else
+              } else
                     return message.channel.send(`Winner: <@${oppo.id}>, Number: ${number}`);
-            }
-        }, 1000);
-    }
+    
 }
     if (command == "flipbattle") {
         if (args.length != 2)
