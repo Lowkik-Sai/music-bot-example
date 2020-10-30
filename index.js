@@ -569,7 +569,7 @@ const sayMessage = args.join(" ")
 const embed = new MessageEmbed()
     .setColor("RANDOM")
     .setTitle("TRIVIA")
-    .setDescription("  1)INFO - ABOUT TRIVIA \n 2)SUGGEST - SUGGESTIONS FOR TRIVIA \n 3)START - START THE TRIVIA")
+    .setDescription("  1)INFO - ABOUT TRIVIA \n 2)SUGGEST - SUGGESTIONS FOR TRIVIA \n 3)BET - BETTING ON THE TRIVIA")
     .setFooter("Proper Usage : +trivia <©ommand> or +trivia <index number>")
     .setTimestamp()
     if(!sayMessage) return message.reply(embed)
@@ -734,17 +734,17 @@ let questions = [
         }else if(args[0] === 'suggest' || args[0] === '2'){         
           bot.users.cache.get('654669770549100575').send(message.author.tag + `\n ${args.join(" ").slice(8)}`)
           console.log(message.content.length)
-        }else if(args[0] === 'start' || args[0] === '3'){
+        }else if(args[0] === 'bet' || args[0] === '3'){
 let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
 
-    let amout = args[0];
+    let amout = args[1];
     if (!amout) return message.channel.send("You have to specify the coins!");
     if (money < amout)
       return message.channel.send("You do not have enough Coins!");
     if (amout.includes("-"))
       return message.channel.send("Looks like your try to Gamble with Minus Numbers, that won't work");
           
-   if (isNaN(args[0])){
+   if (isNaN(args[1])){
             message.reply({embed: {
    color: 3066993,
    description: "There where invalid charectors for the bet! Please make sure the bet is only numbers!"}}).then(message => {
