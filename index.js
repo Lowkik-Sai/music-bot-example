@@ -2199,7 +2199,7 @@ let percents = ["3,51", "3,91", "4,00", "4,31", "4,72", "4,99"]
     if (result[resault] === "win") {
       db.add(`money_${message.guild.id}_${user.id}`, 3 * amout);
 
-      let embed = new Discord.RichEmbed()
+      let embed = new MessageEmbed()
       .setAuthor("Gambling Machine")
       .setDescription(`You won: **${amout}** coins\nYour Bet got multiplied by **3**\n\nYou now have ${money} coins`)
       .setColor("#32cd32")
@@ -5131,14 +5131,14 @@ bot.on('message', async message => {
 
 
             let author = message.author;
-            const newChannel = new Discord.RichEmbed()
+            const newChannel = new MessageEmbed()
                 .setColor('RANDOM')
                 .setAuthor(author.tag, author.avatarURL)
                 .setFooter('Support Ticket Created!')
                 .addField('User', author)
                 .addField('ID', author.id)
             await channel.send(newChannel);
-            const newTicket = new Discord.RichEmbed()
+            const newTicket = new MessageEmbed()
                 .setColor('RANDOM')
                 .setAuthor(`Hello, ${author.username}`, author.avatarURL)
                 .setFooter('Support Ticket Created!')
@@ -5147,13 +5147,13 @@ bot.on('message', async message => {
             active.targetID = author.id;
         }
         channel = bot.channels.get(active.channelID);
-        const dm = new Discord.RichEmbed()
+        const dm = new MessageEmbed()
             .setColor('RANDOM')
             .setAuthor(`Thank you, ${message.author.username}`, message.author.avatarURL)
             .setFooter(`Your message has been sent - A staff member will be in contact soon.`)
         await message.author.send(dm);
         if (message.content.startsWith('?complete')) return;
-        const embed5 = new Discord.RichEmbed()
+        const embed5 = new MessageEmbed()
             .setColor('RANDOM')
             .setAuthor(message.author.tag, message.author.avatarURL)
             .setDescription(message.content)
@@ -5169,7 +5169,7 @@ bot.on('message', async message => {
         let supportUser = bot.users.get(support.targetID);
         if (!supportUser) return message.channel.delete();
         if (message.content.toLowerCase() === '.close') {
-            const complete = new Discord.RichEmbed()
+            const complete = new MessageEmbed()
                 .setColor('RANDOM')
                 .setAuthor(`Hey, ${supportUser.tag}`, supportUser.avatarURL)
                 .setFooter('Ticket Closed -- Team TRIVIA CRACK')
@@ -5177,7 +5177,7 @@ bot.on('message', async message => {
             supportUser.send(complete);
             message.channel.delete();
             db.delete(`support_${support.targetID}`);
-            let inEmbed = new Discord.RichEmbed()
+            let inEmbed = new MessageEmbed()
                 .setTitle('Ticket Closed!')
                 .addField('Support User', `${supportUser.tag}`)
                 .addField('Closer', message.author.tag)
@@ -5185,7 +5185,7 @@ bot.on('message', async message => {
             const staffChannel = bot.channels.get('545474922466639892'); //Create a log channel and put id here
             staffChannel.send(inEmbed);
         }
-        const embed4 = new Discord.RichEmbed()
+        const embed4 = new MessageEmbed()
             .setColor('RANDOM')
             .setAuthor(message.author.tag, message.author.avatarURL)
             .setFooter(`Message Received - TRIVIA CRACK`)
