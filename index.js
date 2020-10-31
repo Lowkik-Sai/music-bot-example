@@ -58,7 +58,7 @@ bot.on("ready", () => {
 
 // Abyss reminder in Sky
 //CRON_TZ="Asia/Singapore"
-let scheduledMessage = new cron.CronJob('00 30 6,18 * * *', test => {
+let scheduledMessage = new cron.CronJob('30 6,18,21 * * 1-6', test => {
   // This runs every Tue and Sun at 20:00:00
   // 2000 local is 1200 
   let abyss_channel = bot.channels.cache.get(`763233532797124649`)
@@ -67,7 +67,7 @@ let scheduledMessage = new cron.CronJob('00 30 6,18 * * *', test => {
 });
 
 // Abyss reminder in 233
-let abyssTwothreethree = new cron.CronJob('00 30 7,19 * * *', test => {
+let abyssTwothreethree = new cron.CronJob('30 7,19 * * 1-6', test => {
   // This runs every Tue and Sun at 18:00:00
   // 1800 local is 1000 
   let huangwu_zh = bot.channels.cache.get(`763233532797124649`)
@@ -521,7 +521,7 @@ bot.on("message", async (message) => { // eslint-disable-line
       'Owner\n Name: MR JACKHDz#5248', 
       'Our Discord Server\n link: https://discord.gg/DrpkVTS', 
       'Big thx to everyone who help us!', 
-      "**That's it**", 
+      'That's it', 
       'you can go now...']
     let page = 1;
 
