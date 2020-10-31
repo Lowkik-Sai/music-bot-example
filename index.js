@@ -1010,10 +1010,6 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
         return message.reply(`You cannot battle outside of <#${process.env.BATTLE_CHAT_1}>, <#${process.env.BATTLE_CHAT_2}> channel.`);
     }
 
-    // If the tagged user's status is offline/idle
-    if (message.guild.members.cache.get(mentionedUser).presence.status === 'offline' ||
-        message.guild.members.cache.get(mentionedUser).presence.status === 'idle')
-        return message.reply("You cannot battle against an afk/offline member.");
 
     // Initiate game variables
     var gameRunning = true;
