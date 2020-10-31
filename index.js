@@ -871,7 +871,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
 					else return res("yes");
 				});
 			}).catch(() => { return Promise.resolve("no"); });
-			if (choice == "no") return message.channel.send(`${member.user.tag} has not accepted the challenge.`);
+			if (choice == "no") return message.channel.send(`${oppo.user.tag} has not accepted the challenge.`);
 
 			message.channel.send("Cancelled!");
 
