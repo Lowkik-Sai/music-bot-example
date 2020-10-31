@@ -920,21 +920,21 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
            var battlenumber = Math.floor(Math.random()* Math.floor(battlelimit));
           const embed = new MessageEmbed()
              .setTitle("Battle")
-             .setDescription("Successfully,Generated random number between 0-100,You have 30 seconds to guess the correct number!")
+             .setDescription("Successfully,Generated random number between 0-100,You have 30 seconds to guess the correct number!\nYou have 30seconds and 30 guesses")
              .setFooter("If no one won,then bet amount will be refunded back to your account")
              .setTimestamp()
   message.channel.send(embed)
             const mfilter = m => (m.content.toLowerCase() === battlenumber) && m.author.id === message.author.id;
                 await message.channel.awaitMessages(mfilter,
                 {
-                    max: 1,
+                    max: 30,
                     time: 30 * 1000,
                     errors: ['time']
                 })
             const ofilter = m => (m.content.toLowerCase() === battlenumber) && m.author.id === oppo.id;
                 await message.channel.awaitMessages(ofilter,
                 {
-                    max: 1,
+                    max: 30,
                     time: 30 * 1000,
                     errors: ['time']
                 }).catch(answer =>
