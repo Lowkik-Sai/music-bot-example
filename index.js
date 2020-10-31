@@ -21,6 +21,7 @@ const newsAPI = process.env.newsAPI;
 const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
+const usersOnCooldown = new Set();
 
 const bot = new Client({
     disableMentions: "everyone"
@@ -832,7 +833,6 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
  
         }
     if (command == "gtnbattle" ) {
-    battlenumber = Math.floor(Math.random()* Math.floor(battlelimit));
     if (args.length != 2)
             return message.reply('Usage: !gtnbattle <@user> <betamount>');
         if (!message.mentions.users.size)
@@ -882,25 +882,107 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
     {
         return message.reply(`You cannot battle outside of <#${process.env.BATTLE_CHAT_1}>, <#${process.env.BATTLE_CHAT_2}> channel.`);
     }
+    // Initiate game variables
+    var gameRunning = true;
 
-    // If the tagged user's status is offline/idle
-    if (oppo.presence.status === 'offline' ||
-        oppo.presence.status === 'idle')
-        return message.reply("You cannot battle against an afk/offline member.");
+    var firstPlayer = message.author;
+    var secondPlayer = message.guild.members.cache.get(oppo);
+    var currentPlayer;
+    var targetPlayer;
+    var turn = true;
 
-       message.channel.send(`<@${oppo.id}>, <@${message.author.id}> has challenged you. Do you accept? Type yes or no.`);
-			const confirmation = message.channel.createMessageCollector((m) => m.author.id == oppo.id, { max: 1, time: 60000 });
-			const choice = await confirmation.next.then(message => {
-				return new Promise(res => {
-					if (message.content.toLowerCase() != "yes") return res("no");
-					else return res("yes");
-				});
-			}).catch(() => { return Promise.resolve("no"); });
-			if (choice == "no") return message.channel.send(`${oppo.tag} has not accepted the challenge.`);
+    // If the users are not in the cooldown list, continue.
+    if (!usersOnCooldown.has(firstPlayer) && !usersOnCooldown.has(secondPlayer))
+    {
+        // Add users on cooldown until the game finishes.
+        usersOnCooldown.add(firstPlayer);
+        usersOnCooldown.add(secondPlayer);
+        setTimeout(() =>
+        {
+            usersOnCooldown.delete(firstPlayer);
+            usersOnCooldown.delete(secondPlayer);
+        }, 5 * 60 * 1000);
 
-			message.channel.send("Successfully Generated the number between 0-100 ,Start Guessing the number!");
+   message.channel.send(`<@${oppo.id}>, <@${message.author.id}> has challenged you. Do you accept? Type yes or no.`);
+        // Await for tagged user's answer.
+        const filter = m => (m.content.toLowerCase() === 'yes' || m.content.toLowerCase() === 'no') && m.author.id === oppo.id;
+        await message.channel.awaitMessages(filter,
+        {
+            max: 1,
+            time: 30 * 1000,
+            errors: ['time']
+        }).
+        then(async answer =>
+        {
+            let msg = answer.first().content.toLowerCase();
+        if (msg === 'yes')
+            {
+           var battlenumber = Math.floor(Math.random()* Math.floor(battlelimit));
+          const embed = new MessageEmbed()
+             .setTitle("Battle")
+             .setDescription("Successfully,Generated random number between 0-100,You have 30 seconds to guess the correct number!")
+             .setFooter("If no one won,then bet amount will be refunded back to your account")
+             .setTimestamp()
+  message.channel.send(embed)
+            const filter = m => (m.content.toLowerCase() === battlenumber) && m.author.id === message.author.id;
+                await message.channel.awaitMessages(filter,
+                {
+                    max: 1,
+                    time: 30 * 1000,
+                    errors: ['time']
+                })
+            const filter = m => (m.content.toLowerCase() === battlenumber) && m.author.id === oppo.id;
+                await message.channel.awaitMessages(filter,
+                {
+                    max: 1,
+                    time: 30 * 1000,
+                    errors: ['time']
+                }).catch(answer =>
+                {
+                    // Since the request timed out, remove both players from the cooldown list.
+                    usersOnCooldown.delete(firstPlayer);
+                    usersOnCooldown.delete(secondPlayer);
+                })
 
-                
+                // Since the battle is over, remove both players from the cooldown list.
+                usersOnCooldown.delete(firstPlayer);
+                usersOnCooldown.delete(secondPlayer);
+            }
+            else if (msg === 'no')
+            {
+                          // If the tagged user answered no.
+                // Since the request was refused, remove both players from the cooldown list.
+                usersOnCooldown.delete(firstPlayer);
+                usersOnCooldown.delete(secondPlayer);
+
+                message.channel.send(new Discord.RichEmbed()
+                    .setTitle(':crossed_swords: | Battle')
+                    .setColor(0x00AE86)
+                    .setDescription(`Kek, not willing to fight eh. <@!${message.author.id}>`)
+                    .setTimestamp());
+            }
+        }).catch(answer =>
+        {
+            // Since the request timed out, remove both players from the cooldown list.
+            usersOnCooldown.delete(firstPlayer);
+            usersOnCooldown.delete(secondPlayer);
+
+            message.channel.send(new Discord.RichEmbed()
+                .setTitle(':crossed_swords: | Battle')
+                .setColor(0xD11313)
+                .setDescription(`Time out. ${secondPlayer} did not answer to the request.`)
+                .setTimestamp())
+        });
+    }
+    else
+    {
+        // If the users are in the cooldown list.
+        message.channel.send(new Discord.RichEmbed()
+            .setTitle(':crossed_swords: | Battle')
+            .setColor(0xD11313)
+            .setDescription(`Your request has already been made. Try again later.`));
+    }
+ 
 }
     if (command == "flipbattle") {
         if (args.length != 2)
