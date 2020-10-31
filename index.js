@@ -5537,17 +5537,17 @@ bot.on('message', async message => {
             active = {};
             channel = await guild.channels.create(`${message.author.username}-${message.author.discriminator}`)
             channel.setParent(serverStats.ticketCategoryID)
-            channel.setTopic(`-close to close the ticket | Support for ${message.author.tag} | ID: ${message.author.id}`)
+            channel.setTopic(`+close to close the ticket | Support for ${message.author.tag} | ID: ${message.author.id}`)
 
             channel.overwritePermissions([
   {
-     id: message.guild,
+     id: guild.id,
      deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
             channel.overwritePermissions([
   {
-     id: message.author,
+     id: message.author.id,
      allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
@@ -5559,11 +5559,13 @@ bot.on('message', async message => {
                 .setFooter('Support Ticket Created!')
                 .addField('User', author)
                 .addField('ID', author.id)
+                .setTimestamp()
             await channel.send(newChannel);
             const newTicket = new MessageEmbed()
                 .setColor('RANDOM')
                 .setAuthor(`Hello, ${author.username}`, author.avatarURL)
                 .setFooter('Support Ticket Created!')
+                .setTimestamp()
             await author.send(newTicket);
             active.channelID = channel.id;
             active.targetID = author.id;
@@ -5573,6 +5575,7 @@ bot.on('message', async message => {
             .setColor('RANDOM')
             .setAuthor(`Thank you, ${message.author.username}`, message.author.avatarURL)
             .setFooter(`Your message has been sent - A staff member will be in contact soon.`)
+            .setTimestamp()
         await message.author.send(dm);
         if (message.content.startsWith('?complete')) return;
         const embed5 = new MessageEmbed()
@@ -5580,6 +5583,7 @@ bot.on('message', async message => {
             .setAuthor(message.author.tag, message.author.avatarURL)
             .setDescription(message.content)
             .setFooter(`Message Received - ${message.author.tag}`)
+            .setTimestamp()
         await channel.send(embed5);
         db.set(`support_${message.author.id}`, active);
         db.set(`supportChannel_${channel.id}`, message.author.id);
@@ -5590,12 +5594,13 @@ bot.on('message', async message => {
         support = await db.fetch(`support_${support}`);
         let supportUser = bot.users.cache.get(support.targetID);
         if (!supportUser) return message.channel.delete();
-        if (message.content.toLowerCase() === '.close') {
+        if (message.content.toLowerCase() === '+close') {
             const complete = new MessageEmbed()
                 .setColor('RANDOM')
                 .setAuthor(`Hey, ${supportUser.tag}`, supportUser.avatarURL)
-                .setFooter('Ticket Closed -- Team TRIVIA CRACK')
+                .setFooter('Ticket Closed -- Among Us')
                 .setDescription('*Your ticket has been marked as complete. If you wish to reopen it, or create a new one, please send a message to the bot.*')
+                .setTimestamp()
             supportUser.send(complete);
             message.channel.delete();
             db.delete(`support_${support.targetID}`);
@@ -5604,21 +5609,24 @@ bot.on('message', async message => {
                 .addField('Support User', `${supportUser.tag}`)
                 .addField('Closer', message.author.tag)
                 .setColor('RANDOM')
-            const staffChannel = bot.channels.cache.get('545474922466639892'); //Create a log channel and put id here
+                .setTimestamp()
+            const staffChannel = bot.channels.cache.get('772015807285690369'); //Create a log channel and put id here
             staffChannel.send(inEmbed);
         }
         const embed4 = new MessageEmbed()
             .setColor('RANDOM')
             .setAuthor(message.author.tag, message.author.avatarURL)
-            .setFooter(`Message Received - TRIVIA CRACK`)
+            .setFooter(`Message Received - Among Us`)
             .setDescription(message.content)
+            .setTimestamp()
         bot.users.cache.get(support.targetID)
             .send(embed4);
         message.delete({
             timeout: 10000
         });
         embed4.setFooter(`Message Sent -- ${supportUser.tag}`)
-            .setDescription(message.content);
+            .setDescription(message.content)
+            .setTimestamp();
         return message.channel.send(embed4);
     }
 });
