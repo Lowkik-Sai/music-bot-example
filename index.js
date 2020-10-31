@@ -871,9 +871,9 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
 					else return res("yes");
 				});
 			}).catch(() => { return Promise.resolve("no"); });
-			if (choice == "no") return message.channel.send(`${oppo.user.tag} has not accepted the challenge.`);
+			if (choice == "no") return message.channel.send(`${oppo.tag} has not accepted the challenge.`);
 
-			message.channel.send("Cancelled!");
+			message.channel.send("Successfully Generated the number between 0-2000 ,Start Guessing the number!");
 
                 if (message.content == number) {
                     return message.channel.send(`Winner: <@${message.author.id}>, Number: ${number}`);
