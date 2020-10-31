@@ -883,6 +883,25 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
         
  
         }
+    if (command == "number" ) {
+        let min = parseInt(args[0]);
+        let max = parseInt(args[1]);
+
+        if(min > max){
+            let temp = max;
+            max = min;
+            min = temp;
+        }
+
+        var Result = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        if(isNaN(Result)){
+            return message.channel.send("Please enter a min and a max number")
+        }else{
+            message.channel.send(Result);
+        }
+      
+}
     if (command == "gtnbattle" ) {
     if (args.length != 2)
             return message.reply('Usage: !gtnbattle <@user> <betamount>');
