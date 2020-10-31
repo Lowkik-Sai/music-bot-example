@@ -2604,8 +2604,8 @@ const ms = require("parse-ms");
 }
     if (command === "gamble" ) {
 let percents = ["3,51", "3,91", "4,00", "4,31", "4,72", "4,99"]
-    let math = Math.floor(Math.random() * percents.length)
-    
+    let math = Math.floor(Math.random() * percents.length);
+    let user = message.author;
     let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
 
     let amout = args[0];
