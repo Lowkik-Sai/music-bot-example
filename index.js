@@ -521,7 +521,7 @@ bot.on("message", async (message) => { // eslint-disable-line
       'Owner\n Name: MR JACKHDz#5248', 
       'Our Discord Server\n link: https://discord.gg/DrpkVTS', 
       'Big thx to everyone who help us!', 
-      'That's it', 
+      'Thats it', 
       'you can go now...']
     let page = 1;
 
