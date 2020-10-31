@@ -5573,11 +5573,10 @@ bot.on('message', async message => {
         channel = bot.channels.cache.get(active.channelID);
         const dm = new MessageEmbed()
             .setColor('RANDOM')
-            .setAuthor(`Thank you, ${message.author.username}`, message.author.avatarURL)
             .setFooter(`Your message has been sent - A staff member will be in contact soon.`)
             .setTimestamp()
         await message.author.send(dm);
-        if (message.content.startsWith('?complete')) return;
+        if (message.content.startsWith('+complete')) return;
         const embed5 = new MessageEmbed()
             .setColor('RANDOM')
             .setAuthor(message.author.tag, message.author.avatarURL)
