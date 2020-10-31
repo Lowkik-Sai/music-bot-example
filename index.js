@@ -2631,7 +2631,7 @@ const sayMessage = args.join(" ")
         var userz = message.guild.members.array();
         const roletogive = args.join(" ")
         
-        let subscriberRole = bot.guilds.get(message.guild.id).roles.find(r => r.name == roletogive);
+        let subscriberRole = bot.guilds.cache.get(message.guild.id).roles.find(r => r.name == roletogive);
         if (!subscriberRole) return message.channel.send(` **I can not find the role: ` + roletogive + `** `);
 
       
@@ -5068,10 +5068,10 @@ bot.on('message', async message => {
     if (message.author.bot) return;
     if (message.channel.type !== 'text') {
         let active = await db.fetch(`support_${message.author.id}`);
-        let guild = bot.guilds.get(serverStats.guildID);
+        let guild = bot.guilds.cache.get(serverStats.guildID);
         let channel, found = true;
         try {
-            if (active) bot.channels.get(active.channelID)
+            if (active) bot.channels.cache.get(active.channelID)
                 .guild;
         } catch (e) {
             found = false;
@@ -5146,7 +5146,7 @@ bot.on('message', async message => {
             active.channelID = channel.id;
             active.targetID = author.id;
         }
-        channel = bot.channels.get(active.channelID);
+        channel = bot.channels.cache.get(active.channelID);
         const dm = new MessageEmbed()
             .setColor('RANDOM')
             .setAuthor(`Thank you, ${message.author.username}`, message.author.avatarURL)
@@ -5166,7 +5166,7 @@ bot.on('message', async message => {
     let support = await db.fetch(`supportChannel_${message.channel.id}`);
     if (support) {
         support = await db.fetch(`support_${support}`);
-        let supportUser = bot.users.get(support.targetID);
+        let supportUser = bot.users.cache.get(support.targetID);
         if (!supportUser) return message.channel.delete();
         if (message.content.toLowerCase() === '.close') {
             const complete = new MessageEmbed()
@@ -5182,7 +5182,7 @@ bot.on('message', async message => {
                 .addField('Support User', `${supportUser.tag}`)
                 .addField('Closer', message.author.tag)
                 .setColor('RANDOM')
-            const staffChannel = bot.channels.get('545474922466639892'); //Create a log channel and put id here
+            const staffChannel = bot.channels.cache.get('545474922466639892'); //Create a log channel and put id here
             staffChannel.send(inEmbed);
         }
         const embed4 = new MessageEmbed()
@@ -5190,7 +5190,7 @@ bot.on('message', async message => {
             .setAuthor(message.author.tag, message.author.avatarURL)
             .setFooter(`Message Received - TRIVIA CRACK`)
             .setDescription(message.content)
-        bot.users.get(support.targetID)
+        bot.users.cache.get(support.targetID)
             .send(embed4);
         message.delete({
             timeout: 10000
