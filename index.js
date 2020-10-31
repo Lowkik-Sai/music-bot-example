@@ -5508,13 +5508,13 @@ bot.on('message', async message => {
 
             channel.overwritePermissions([
   {
-     id: message.guild.id,
+     id: message.guild,
      deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
             channel.overwritePermissions([
   {
-     id: message.author.id,
+     id: message.author,
      allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
