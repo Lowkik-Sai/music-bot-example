@@ -81,6 +81,8 @@ scheduledXdress.start()
 scheduledMessage.start()
 abyssTwothreethree.start()
 
+let battlelimit = 100; 
+let battlenumber = Math.floor(Math.random()* Math.floor(battlelimit));
 let limit = 20000; // You can change it through /limit command
 let number = Math.floor(Math.random()* Math.floor(limit)); // You can custom it through /number command and reroll it through /reroll
 let ownerID = '654669770549100575';
@@ -102,6 +104,13 @@ bot.on('message', async message => {
             .setTimestamp()
             .setFooter("Among Us");
 	if(message.channel.id === channelID) return message.author.send(helpembed);
+    }
+    if(message.content == "+viewbattlenumber") {
+        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
+        message.author.send({embed: {
+   color: 3066993,
+   description:`The current number is ${battlenumber}`
+}});
     }
     if(message.content == "+viewnumber") {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
@@ -818,7 +827,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
  
         }
     if (command == "gtnbattle" ) {
-    number = Math.floor(Math.random()* Math.floor(limit));
+    battlenumber = Math.floor(Math.random()* Math.floor(battlelimit));
     if (args.length != 2)
             return message.reply('Usage: !gtnbattle <@user> <betamount>');
         if (!message.mentions.users.size)
@@ -863,7 +872,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
   color: 3066993,
   description: "${oppo} do not have enough Coins!"
 }});
-       message.channel.send(`${oppo.tag}, ${message.author.tag} has challenged you. Do you accept? Type yes or no.`);
+       message.channel.send(`<@${oppo.id}>, <@${message.author.id}> has challenged you. Do you accept? Type yes or no.`);
 			const confirmation = message.channel.createMessageCollector((m) => m.author.id == oppo.id, { max: 1, time: 60000 });
 			const choice = await confirmation.next.then(message => {
 				return new Promise(res => {
@@ -873,13 +882,9 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
 			}).catch(() => { return Promise.resolve("no"); });
 			if (choice == "no") return message.channel.send(`${oppo.tag} has not accepted the challenge.`);
 
-			message.channel.send("Successfully Generated the number between 0-2000 ,Start Guessing the number!");
+			message.channel.send("Successfully Generated the number between 0-100 ,Start Guessing the number!");
 
-                if (message.content == number) {
-                    return message.channel.send(`Winner: <@${message.author.id}>, Number: ${number}`);
-              } else
-                    return message.channel.send(`Winner: <@${oppo.id}>, Number: ${number}`);
-    
+                
 }
     if (command == "flipbattle") {
         if (args.length != 2)
