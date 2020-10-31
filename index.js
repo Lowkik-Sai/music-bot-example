@@ -955,7 +955,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                 usersOnCooldown.delete(firstPlayer);
                 usersOnCooldown.delete(secondPlayer);
 
-                message.channel.send(new Discord.RichEmbed()
+                message.channel.send(new MessageEmbed()
                     .setTitle(':crossed_swords: | Battle')
                     .setColor(0x00AE86)
                     .setDescription(`Kek, not willing to fight eh. <@!${message.author.id}>`)
@@ -967,7 +967,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
             usersOnCooldown.delete(firstPlayer);
             usersOnCooldown.delete(secondPlayer);
 
-            message.channel.send(new Discord.RichEmbed()
+            message.channel.send(new MessageEmbed()
                 .setTitle(':crossed_swords: | Battle')
                 .setColor(0xD11313)
                 .setDescription(`Time out. ${secondPlayer} did not answer to the request.`)
@@ -977,7 +977,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
     else
     {
         // If the users are in the cooldown list.
-        message.channel.send(new Discord.RichEmbed()
+        message.channel.send(new MessageEmbed()
             .setTitle(':crossed_swords: | Battle')
             .setColor(0xD11313)
             .setDescription(`Your request has already been made. Try again later.`));
@@ -999,7 +999,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
     }
 
     // If the tagger user is a bot
-    if (client.users.get(mentionedUser).bot)
+    if (bot.users.get(mentionedUser).bot)
     {
         return message.reply("You cannot battle a bot.");
     }
@@ -1044,7 +1044,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
             usersOnCooldown.delete(secondPlayer);
         }, 5 * 60 * 1000);
 
-        message.channel.send(new Discord.RichEmbed().setTitle(':crossed_swords: | Battle')
+        message.channel.send(new MessageEmbed().setTitle(':crossed_swords: | Battle')
             .setColor(0x00AE86)
             .setDescription(`<@!${mentionedUser}> if you accept type '**yes**', otherwise type '**no**'. \n\nYou have **30** second(s).`));
 
@@ -1067,7 +1067,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                 var randomPerson = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
                 var personToFlip = randomPerson === 1 ? firstPlayer : secondPlayer;
 
-                await message.channel.send(new Discord.RichEmbed().setTitle(':crossed_swords: | Battle')
+                await message.channel.send(new MessageEmbed().setTitle(':crossed_swords: | Battle')
                     .setColor(0x00AE86)
                     .setDescription(`We shall have a flip coin to see who starts first!\n${personToFlip} what's your choice '**heads**' or '**tails**'? \n\nYou have **30** second(s).`));
 
@@ -1111,7 +1111,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                         }
 
                         // Let the users know about moves they can use along with their health stats.
-                        await message.channel.send(new Discord.RichEmbed().setTitle(':crossed_swords: | Battle')
+                        await message.channel.send(new MessageEmbed().setTitle(':crossed_swords: | Battle')
                             .setColor(0x00AE86)
                             .setDescription(`${currentPlayer} it's your turn, make your move.\n➾ **Attack** - Attacks the enemy. Damage 20 - 100.\n➾ **Guard** - Blocks the next incoming attack.\n➾ **Special** - Launches a powerful attack but has **15** % chance of landing. Damage 120 - 200.\n➾ **Run** - Runs as fast as you possibly can to escape death. \n\n${firstPlayer} HP : ${firstPlayer.health}\n${secondPlayer} HP : ${secondPlayer.health}\n\nYou have **10** second(s).`));
 
@@ -1246,7 +1246,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                             {
                                 gameRunning = false;
                                 winner = targetPlayer;
-                                message.channel.send(new Discord.RichEmbed()
+                                message.channel.send(new MessageEmbed()
                                     .setTitle(':crossed_swords: | Battle')
                                     .setColor(0xD11313)
                                     .setDescription(`${currentPlayer} missed 2 turns and yield the fight.`)
@@ -1257,7 +1257,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                                 // If the time is out, the current player loses his turn and changes player turns.
                                 currentPlayer.missedTurn++;
                                 turn = !turn;
-                                message.channel.send(new Discord.RichEmbed()
+                                message.channel.send(new MessageEmbed()
                                     .setTitle(':crossed_swords: | Battle')
                                     .setColor(0xD11313)
                                     .setDescription(`${currentPlayer}, you missed your turn.`)
@@ -1277,7 +1277,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                 usersOnCooldown.delete(secondPlayer);
 
                 // Winner declaration message.
-                message.channel.send(new Discord.RichEmbed()
+                message.channel.send(new MessageEmbed()
                     .setTitle(':crown: | Battle')
                     .setColor(0x00AE86)
                     .setDescription(`The battle is over! Congratulations to the winner ${winner} !\n\n${firstPlayer} HP : ${firstPlayer.health}\n${secondPlayer} HP : ${secondPlayer.health}`)
@@ -1291,7 +1291,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                 usersOnCooldown.delete(firstPlayer);
                 usersOnCooldown.delete(secondPlayer);
 
-                message.channel.send(new Discord.RichEmbed()
+                message.channel.send(new MessageEmbed()
                     .setTitle(':crossed_swords: | Battle')
                     .setColor(0x00AE86)
                     .setDescription(`Kek, not willing to fight eh. <@!${message.author.id}>`)
@@ -1303,7 +1303,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
             usersOnCooldown.delete(firstPlayer);
             usersOnCooldown.delete(secondPlayer);
 
-            message.channel.send(new Discord.RichEmbed()
+            message.channel.send(new MessageEmbed()
                 .setTitle(':crossed_swords: | Battle')
                 .setColor(0xD11313)
                 .setDescription(`Time out. ${secondPlayer} did not answer to the request.`)
@@ -1313,7 +1313,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
     else
     {
         // If the users are in the cooldown list.
-        message.channel.send(new Discord.RichEmbed()
+        message.channel.send(new MessageEmbed()
             .setTitle(':crossed_swords: | Battle')
             .setColor(0xD11313)
             .setDescription(`Your request has already been made. Try again later.`));
