@@ -475,7 +475,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
             //commands
     if(command === 'apply') {
-       const guildID = '763233532369567765';
+       const guildId = '763233532369567765';
         //Has to be in DMs
         if(message.channel.type != 'dm') {
             message.channel.send('Use this command in DMs!');
@@ -512,7 +512,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setColor('RED');
 
         //Sending Embed
-        const guild = bot.guilds.cache.get(guildID);
+        const guild = bot.guilds.cache.get(guildId);
         await guild.channels.cache.find(channel => channel.name === 'applications').send(embed);
     }
     if (command === "help" || command === "cmd") {
@@ -5541,7 +5541,7 @@ bot.on('message', async message => {
 
             channel.overwritePermissions([
   {
-     id: "763233532369567765",
+     id: guildID,
      deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
