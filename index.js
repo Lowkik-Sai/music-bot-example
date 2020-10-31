@@ -5541,13 +5541,13 @@ bot.on('message', async message => {
 
             channel.overwritePermissions([
   {
-     id: guild.id,
+     id: "763233532369567765",
      deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
             channel.overwritePermissions([
   {
-     id: message.author.id,
+     id: "772022106887159838",
      allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
