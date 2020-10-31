@@ -999,7 +999,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
     }
 
     // If the tagger user is a bot
-    if (bot.users.get(mentionedUser).bot)
+    if (bot.users.cache.get(mentionedUser).bot)
     {
         return message.reply("You cannot battle a bot.");
     }
@@ -1011,8 +1011,8 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
     }
 
     // If the tagged user's status is offline/idle
-    if (message.guild.members.get(mentionedUser).presence.status === 'offline' ||
-        message.guild.members.get(mentionedUser).presence.status === 'idle')
+    if (message.guild.members.cache.get(mentionedUser).presence.status === 'offline' ||
+        message.guild.members.cache.get(mentionedUser).presence.status === 'idle')
         return message.reply("You cannot battle against an afk/offline member.");
 
     // Initiate game variables
