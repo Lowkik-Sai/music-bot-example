@@ -970,7 +970,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
             message.channel.send(new MessageEmbed()
                 .setTitle(':crossed_swords: | Battle')
                 .setColor(0xD11313)
-                .setDescription(`Time out. ${secondPlayer} did not answer to the request.`)
+                .setDescription(`Time out. ${oppo.tag} did not answer to the request.`)
                 .setTimestamp())
         });
     }
