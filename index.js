@@ -5078,58 +5078,23 @@ bot.on('message', async message => {
         }
         if (!active || !found) {
             active = {};
-            channel = await guild.createChannel(`${message.author.username}-${message.author.discriminator}`)
+            channel = await guild.channel.create(`${message.author.username}-${message.author.discriminator}`)
             channel.setParent(serverStats.ticketCategoryID)
             channel.setTopic(`-close to close the ticket | Support for ${message.author.tag} | ID: ${message.author.id}`)
 
-            channel.overwritePermissions("547412713152970784", {   ///Private crack
-                VIEW_CHANNEL: false,
-                SEND_MESSAGES: false,
-                ADD_REACTIONS: false
-            })
-            channel.overwritePermissions("540746015528058899", {   ///all time supporter
-                VIEW_CHANNEL: false,
-                SEND_MESSAGES: false,
-                ADD_REACTIONS: false
-            })
-            channel.overwritePermissions("541666658356297729", {   ///coin bot access
-                VIEW_CHANNEL: false,
-                SEND_MESSAGES: false,
-                ADD_REACTIONS: false
-            })
-            channel.overwritePermissions("544893073856004097", {   ///paid member
-                VIEW_CHANNEL: false,
-                SEND_MESSAGES: false,
-                ADD_REACTIONS: false
-            })
-            channel.overwritePermissions("532629827732373534", {   ///bot fixer
-                VIEW_CHANNEL: false,
-                SEND_MESSAGES: false,
-                ADD_REACTIONS: false
-            })
-            channel.overwritePermissions("544588537606176768", {   ///bot controler
-                VIEW_CHANNEL: false,
-                SEND_MESSAGES: false,
-                ADD_REACTIONS: false
-            })
-            channel.overwritePermissions("547649177669206016", {   ///trivia crack member
-                VIEW_CHANNEL: false,
-                SEND_MESSAGES: false,
-                ADD_REACTIONS: false
-            })
-            channel.overwritePermissions("544225979103576065", {   ///moderator
-                VIEW_CHANNEL: false,
-                SEND_MESSAGES: false,
-                ADD_REACTIONS: false
-            })
-            channel.overwritePermissions("543840213651161101", {   ///tickety
-                VIEW_CHANNEL: false,
-                SEND_MESSAGES: false,
-                ADD_REACTIONS: false
-            });
-
-
-
+            channel.overwritePermissions([
+  {
+     id: message.guild.id,
+     deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
+  },
+]);
+            channel.overwritePermissions([
+  {
+     id: message.author.id,
+     allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
+  },
+]);
+            
             let author = message.author;
             const newChannel = new MessageEmbed()
                 .setColor('RANDOM')
