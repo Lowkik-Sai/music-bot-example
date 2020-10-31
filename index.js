@@ -5089,7 +5089,7 @@ bot.on('message', async message => {
         }
         if (!active || !found) {
             active = {};
-            channel = await guild.channel.create(`${message.author.username}-${message.author.discriminator}`)
+            channel = await guild.channels.create(`${message.author.username}-${message.author.discriminator}`)
             channel.setParent(serverStats.ticketCategoryID)
             channel.setTopic(`-close to close the ticket | Support for ${message.author.tag} | ID: ${message.author.id}`)
 
