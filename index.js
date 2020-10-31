@@ -58,7 +58,7 @@ bot.on("ready", () => {
 
 // Abyss reminder in Sky
 //CRON_TZ="Asia/Singapore"
-let scheduledMessage = new cron.CronJob('0 * */6 * * *', test => {
+let scheduledMessage = new cron.CronJob('00 30 6,18 * * *', test => {
   // This runs every Tue and Sun at 20:00:00
   // 2000 local is 1200 
   let abyss_channel = bot.channels.cache.get(`763233532797124649`)
@@ -67,7 +67,7 @@ let scheduledMessage = new cron.CronJob('0 * */6 * * *', test => {
 });
 
 // Abyss reminder in 233
-let abyssTwothreethree = new cron.CronJob('0 * */1 * * *', test => {
+let abyssTwothreethree = new cron.CronJob('00 30 7,19 * * *', test => {
   // This runs every Tue and Sun at 18:00:00
   // 1800 local is 1000 
   let huangwu_zh = bot.channels.cache.get(`763233532797124649`)
