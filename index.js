@@ -548,6 +548,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             embed.setDescription(pages[page-1]);
             embed.setFooter(`Page ${page} of ${pages.length}`);
             message.edit(embed)
+            r.users.remove(r.users.cache.filter(u => u === message.author).first())
           })
 
           forwards.on('collect', r => {
@@ -556,6 +557,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             embed.setDescription(pages[page-1]);
             embed.setFooter(`Page ${page} of ${pages.length}`);
             message.edit(embed)
+            r.users.remove(r.users.cache.filter(u => u === message.author).first())   
           })
 
         })
