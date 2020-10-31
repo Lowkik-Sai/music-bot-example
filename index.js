@@ -875,7 +875,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
 
 			message.channel.send("Cancelled!");
 
-                if (userGuess == number) {
+                if (message.content == number) {
                     return message.channel.send(`Winner: <@${message.author.id}>, Number: ${number}`);
               } else
                     return message.channel.send(`Winner: <@${oppo.id}>, Number: ${number}`);
