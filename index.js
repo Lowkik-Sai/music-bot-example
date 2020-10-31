@@ -5623,7 +5623,6 @@ bot.on('message', async message => {
             .setColor('RANDOM')
             .setFooter(`Your message has been sent - A staff member will be in contact soon.`)
             .setTimestamp()
-        await message.author.send(dm);
         await message.react('✅');
         if (message.content.startsWith('+complete')) return;
         const embed5 = new MessageEmbed()
