@@ -1015,7 +1015,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
     var gameRunning = true;
 
     var firstPlayer = message.author;
-    var secondPlayer = message.guild.members.get(mentionedUser);
+    var secondPlayer = message.guild.members.cache.get(mentionedUser);
     var currentPlayer;
     var targetPlayer;
     var turn = true;
