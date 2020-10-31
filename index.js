@@ -877,6 +877,17 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
   color: 3066993,
   description: "${oppo} do not have enough Coins!"
 }});
+    // Since this command results in a lot of spam it would be best to use on separate channel.
+    if ((message.channel.name != process.env.BATTLE_CHAT_1) && (message.channel.name != process.env.BATTLE_CHAT_2))
+    {
+        return message.reply(`You cannot battle outside of #${process.env.BATTLE_CHAT_1}, #${process.env.BATTLE_CHAT_2} channel.`);
+    }
+
+    // If the tagged user's status is offline/idle
+    if (message.guild.members.cache.get(oppo).presence.status === 'offline' ||
+        message.guild.members.cache.get(oppo).presence.status === 'idle')
+        return message.reply("You cannot battle against an afk/offline member.");
+
        message.channel.send(`<@${oppo.id}>, <@${message.author.id}> has challenged you. Do you accept? Type yes or no.`);
 			const confirmation = message.channel.createMessageCollector((m) => m.author.id == oppo.id, { max: 1, time: 60000 });
 			const choice = await confirmation.next.then(message => {
