@@ -884,8 +884,8 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
     }
 
     // If the tagged user's status is offline/idle
-    if (message.guild.members.cache.get(oppo).presence.status === 'offline' ||
-        message.guild.members.cache.get(oppo).presence.status === 'idle')
+    if (bot.users.cache.get(oppo).presence.status === 'offline' ||
+        bot.users.cache.get(oppo).presence.status === 'idle')
         return message.reply("You cannot battle against an afk/offline member.");
 
        message.channel.send(`<@${oppo.id}>, <@${message.author.id}> has challenged you. Do you accept? Type yes or no.`);
