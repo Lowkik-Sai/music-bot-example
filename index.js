@@ -652,7 +652,7 @@ const quiz = [
 ];
 const options = {
   max: 1,
-  time: 300000,
+  time: 60000,
   errors: ["time"],
 };
 
