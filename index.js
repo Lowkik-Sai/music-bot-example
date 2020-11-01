@@ -276,8 +276,7 @@ bot.on("guildCreate", (guild) => {
      .setDescription("Thanks for inviting me into this server!\n My Prefix is \`+\`")
      .setColor("RANDOM")
      .setTimestamp()
-     .setFooter("`Type +help for more info`")
-  if (channel) {
+     .setFooter("Type +help for more info!");
     channel.send(embed);
   } else {
     console.log(`can\`t send welcome message in guild ${guild.name}`);
