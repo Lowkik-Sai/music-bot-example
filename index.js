@@ -667,7 +667,7 @@ const options = {
                                  .setFooter(`Question: ${item.q}`)
                                  .setColor(`${message.guild.me.displayHexColor!=='#000000' ? message.guild.me.displayHexColor : 0xffffff}`)
                                 })
-  } catch (_) {
+  } catch (e) {
     return message.channel.send({embed: new MessageEmbed()
                                  .setAuthor('No one got the answer in time!')
                                  .setTitle(`Correct Answer(s): \`${item.a}\``)
