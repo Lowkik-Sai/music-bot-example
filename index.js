@@ -267,9 +267,15 @@ bot.on("message", async message => {
   }
 })
 
-bot.on('guildCreate', guild => {
-    const channel = guild.channels.cache.find(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has('SEND_MESSAGES'))
-    channel.send("Thanks for invite me")
+bot.on("guildCreate", (guild) => {
+  const channel = guild.channels.cache.find(
+    (c) => c.type === "text" && c.permissionsFor(guild.me).has("SEND_MESSAGES")
+  );
+  if (channel) {
+    channel.send(`Thanks for inviting me into this server!`);
+  } else {
+    console.log(`can\`t send welcome message in guild ${guild.name}`);
+  }
 });
 
 bot.on('guildCreate', async guild => {
@@ -389,10 +395,9 @@ const invites = {}
 
     bot.on("guildMemberAdd", (member) => { //usage of welcome event
   let chx = db.get(`welchannel_${member.guild.id}`); //defining var
-  
-  if(chx === null) { //check if var have value or not
-    return;
-  }
+  var def_chx = guild.channels.cache.filter(chx => chx.type === "text" && c.permissionsFor(guild.me).has("SEND_MESSAGES")).find(x => x.position === 0);
+
+  if(chx === null) chx = def_chx;
 
   let wembed = new MessageEmbed() //define embed
   .setAuthor(member.user.username, member.user.avatarURL())
