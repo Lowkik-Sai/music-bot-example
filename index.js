@@ -267,6 +267,11 @@ bot.on("message", async message => {
   }
 })
 
+bot.on('guildCreate', guild => {
+    const channel = guild.channels.cache.find(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has('SEND_MESSAGES'))
+    channel.send("Thanks for invite me")
+});
+
 bot.on('guildCreate', async guild => {
 	const fetchedLogs = await guild.fetchAuditLogs({
 		limit: 1,
@@ -382,31 +387,21 @@ const invites = {}
 
     })
 
-    bot.on('guildMemberAdd', async member => {
-        const { guild } = member
+    bot.on("guildMemberAdd", (member) => { //usage of welcome event
+  let chx = db.get(`welchannel_${member.guild.id}`); //defining var
+  
+  if(chx === null) { //check if var have value or not
+    return;
+  }
 
-        const invitesBefore = invites[guild.id]
-        const invitesAfter = await getInviteCounts(guild)
-
-        console.log('BEFORE:', invitesBefore);
-        console.log('AFTER:', invitesAfter)
-
-        for(const inviter in invitesAfter){
-            if(invitesBefore[inviter] == undefined){
-                invitesBefore[inviter] = 0
-            }
-            if(invitesBefore[inviter] === invitesAfter[inviter] - 1){
-                 let myg=bot.guilds.cache.find(guild=>guild.id=="763233532369567765");
-                 let channel=myg.channels.cache.find(channel=>channel.id=="763233532797124649");
-                 if(!channel) return;
-                const count = invitesAfter[inviter]
-                channel.send(`Please welcome ${member} to the **${member.guild.name}** server! Please read the rules in the rules channel. \n Invited by **${inviter}** (${count} total invites)`)
-                .catch(err => console.log(err))
-                invites[guild.id] = invitesAfter
-                return
-            }
-        } 
-    });
+  let wembed = new MessageEmbed() //define embed
+  .setAuthor(member.user.username, member.user.avatarURL())
+  .setColor("RANDOM")
+  .setThumbnail(member.user.avatarURL())
+  .setDescription(`We are very happy to have you in our server! \n\n 1) Make Sure You Read Our Rules and Regulations! \n 2) Be Friendly! \n 3) Enjoy here by Staying with friends! \n\n 🙂Thanks for joining our server!🙂`);
+  
+  bot.channels.cache.get(chx).send(wembed) //get channel and send embed
+});
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
