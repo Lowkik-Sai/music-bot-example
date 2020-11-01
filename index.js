@@ -1929,6 +1929,7 @@ class Drawing {
     }
 }
     if (command === "embed" ) {
+     message.delete();
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
   color: 3066993,
