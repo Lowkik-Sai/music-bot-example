@@ -659,7 +659,13 @@ const options = {
 };
 
   const item = quiz[Math.floor(Math.random() * quiz.length)];
-  await message.channel.send(item.q);
+   const quizembed = new MessageEmbed()
+     .setTitle("QUIZ")
+     .setDescription(item.q)
+     .setColor("RANDOM")
+     .setFooter("Guess the correcr answer within 60seconds and Get Coins")
+     .setTimestamp()
+  await message.channel.send(quizembed);
   try {
     const collected = await message.channel.awaitMessages(answer => item.a.includes(answer.content.toLowerCase()), options);
     const winnerMessage = collected.first();
