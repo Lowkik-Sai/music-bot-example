@@ -277,6 +277,7 @@ bot.on("guildCreate", (guild) => {
      .setColor("RANDOM")
      .setTimestamp()
      .setFooter("Type +help for more info!");
+  if (channel) {
     channel.send(embed);
   } else {
     console.log(`can\`t send welcome message in guild ${guild.name}`);
