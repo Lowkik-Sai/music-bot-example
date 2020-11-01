@@ -273,8 +273,7 @@ bot.on("guildCreate", (guild) => {
   );
    const embed = new MessageEmbed()
      .setTitle("Among Us"
-     .setDescription("Thanks for inviting me into this server!")
-     .addField("Prefix", "`+`")
+     .setDescription("Thanks for inviting me into this server!\n My Prefix is \`+\`")
      .setColor("RANDOM")
      .setTimestamp()
      .setFooter("`Type +help for more info`")
