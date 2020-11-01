@@ -542,7 +542,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             });
             sure.on('collect', r => {
                 msg.delete();
-                const emb = new A.RichEmbed()
+                const emb = new MessageEmbed()
                     .setColor(0xFFFF00)
                     .setImage('https://cdn.glitch.com/ce500e3d-b500-47a8-a6a8-c0b5657d808c%2FWebp.net-gifmaker.gif')
                     .setFooter(`Requested by: ${message.author.tag}`);
@@ -4300,6 +4300,19 @@ bot.on("message", async (message) => { // eslint-disable-line
         console.error(`I could not create the invite for the channel: ${error}`);
         message.channel.send(`You have to paste a correct channel ID!`);
     }
+}
+    if (command === "botstats") {
+let Owner = message.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
+  let msg =  bot.guilds.map(guild => `**${guild.name}** Members: ${guild.memberCount}`).join('\n');
+  let embed = new MessageEmbed()
+  .setTitle(`I am in ${bot.guilds.size} guilds!`)
+  .setDescription(`${msg}`)
+  .setColor("#ebf442");
+  message.channel.send(embed);
 }
     if (command === "stats") {
     let Owner = message.author;
