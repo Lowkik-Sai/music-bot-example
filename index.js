@@ -274,12 +274,12 @@ bot.on("guildCreate", (guild) => {
    const embed = new MessageEmbed()
      .setTitle("Among Us"
      .setDescription("Thanks for inviting me into this server!")
+     .addField("Prefix", "`+`")
      .setColor("RANDOM")
      .setTimestamp()
-     .addField("Prefix", "`+`")
-     .setFooter(`Type +help for more info`)
+     .setFooter("`Type +help for more info`")
   if (channel) {
-    channel.send(`embed`);
+    channel.send(embed);
   } else {
     console.log(`can\`t send welcome message in guild ${guild.name}`);
   }
