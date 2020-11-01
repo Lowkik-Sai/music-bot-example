@@ -277,7 +277,7 @@ bot.on("guildCreate", (guild) => {
      .setColor("RANDOM")
      .setTimestamp()
      .addField("Prefix", "`+`")
-     .setFooter("Type +help for more info")
+     .setFooter(`Type +help for more info`)
   if (channel) {
     channel.send(`embed`);
   } else {
