@@ -401,12 +401,11 @@ const invites = {}
                  if(!channel) return;
                 const count = invitesAfter[inviter]
                 channel.send(`Please welcome ${member} to the **${member.guild.name}** server! Please read the rules in the rules channel. \n Invited by **${inviter}** (${count} total invites)`)
+                .catch(err => console.log(err))
                 invites[guild.id] = invitesAfter
                 return
             }
-        } catch (e) {
-    console.log(e)
-        }
+        } 
     });
 
 bot.on("message", async (message) => { // eslint-disable-line
