@@ -530,10 +530,10 @@ bot.on("message", async (message) => { // eslint-disable-line
       .setFooter(`Page ${page} of ${pages.length}`)
       .setDescription(pages[page-1])
 
-      message.channel.send(embed).then(msg =>{
+      message.channel.send(embed).then(message =>{
           
-        msg.react('⬅').then( r => {
-          msg.react('➡')  
+        message.react('⬅').then( r => {
+          message.react('➡')  
 
           const backwardsFilter = (reaction, user) => reaction.emoji.name === '⬅' && user.id === message.author.id
           const forwardsFilter = (reaction, user) => reaction.emoji.name === '➡' && user.id === message.author.id
