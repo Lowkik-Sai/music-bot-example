@@ -272,7 +272,7 @@ bot.on("guildCreate", (guild) => {
     (c) => c.type === "text" && c.permissionsFor(guild.me).has("SEND_MESSAGES")
   );
    const embed = new MessageEmbed()
-     .setTitle("Among Us"
+     .setTitle("Among Us")
      .setDescription("Thanks for inviting me into this server!\n My Prefix is \`+\`")
      .setColor("RANDOM")
      .setTimestamp()
