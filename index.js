@@ -404,7 +404,7 @@ const invites = {}
   let chx = db.get(`welchannel_${member.guild.id}`); //defining var
   var def_chx = guild.channels.cache.filter(chx => chx.type === "text" && c.permissionsFor(guild.me).has("SEND_MESSAGES")).find(x => x.position === 0);
 
-  if(chx === null) chx = def_chx;
+  if(chx === null) chx = 'def_chx';
 
   let wembed = new MessageEmbed() //define embed
   .setAuthor(member.user.username, member.user.avatarURL())
@@ -413,6 +413,9 @@ const invites = {}
   .setDescription(`We are very happy to have you in our server! \n\n 1) Make Sure You Read Our Rules and Regulations! \n 2) Be Friendly! \n 3) Enjoy here by Staying with friends! \n\n 🙂Thanks for joining our server!🙂`);
   
   bot.channels.cache.get(chx).send(wembed) //get channel and send embed
+  catch (e) {
+    console.log(e)
+   }
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
