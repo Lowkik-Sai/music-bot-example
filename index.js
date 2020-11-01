@@ -516,53 +516,45 @@ bot.on("message", async (message) => { // eslint-disable-line
         await guild.channels.cache.find(channel => channel.name === 'applications').send(embed);
     }
     if (command === "pages" ) {
-    let pages = [
-      'Our Team\n Helper: Sap-Hapling09#1646\n Dev helper: liberty_fromanother_universe#8543\n Dev helper: MD. Jamie#2767',
-      'Owner\n Name: MR JACKHDz#5248', 
-      'Our Discord Server\n link: https://discord.gg/DrpkVTS', 
-      'Big thx to everyone who help us!', 
-      'Thats it', 
-      'you can go now...']
-    let page = 1;
+    
+let pages = ['Page one!', 'Second page', 'Third page']
+let page = 1 
 
-    const embed = new MessageEmbed()
-      .setColor(0xff0a0a)
-      .setFooter(`Page ${page} of ${pages.length}`)
-      .setDescription(pages[page-1])
+const embed = new Discord.MessageEmbed() // Define a new embed
+.setColor(0xffffff) // Set the color
+.setFooter(`Page ${page} of ${pages.length}`)
+.setDescription(pages[page-1])
 
-      message.channel.send(embed).then(message =>{
-          
-        message.react('⬅').then( r => {
-          message.react('➡')  
+message.channel.send({embed}).then(msg => {
+  msg.react('⬅').then( r => {
+    msg.react('➡')
 
-          const backwardsFilter = (reaction, user) => reaction.emoji.name === '⬅' && user.id === message.author.id
-          const forwardsFilter = (reaction, user) => reaction.emoji.name === '➡' && user.id === message.author.id
+    // Filters
+    const backwardsFilter = (reaction, user) => reaction.emoji.name === '⬅' && user.id === message.author.id
+    const forwardsFilter = (reaction, user) => reaction.emoji.name === '➡' && user.id === message.author.id
 
-          const backwards = message.createReactionCollector(backwardsFilter, { time: 60000 });
+    const backwards = msg.createReactionCollector(backwardsFilter, {timer: 6000})
+    const forwards = msg.createReactionCollector(forwardsFilter, {timer: 6000})
 
-          const forwards = message.createReactionCollector(forwardsFilter, { time: 60000 });
+    backwards.on('collect', (r, u) => {
+        if (page === 1) return r.users.remove(r.users.cache.filter(u => u === message.author).first())
+        page--
+        embed.setDescription(pages[page-1])
+        embed.setFooter(`Page ${page} of ${pages.length}`)
+        msg.edit(embed)
+        r.users.remove(r.users.cache.filter(u => u === message.author).first())
+    })
 
-          backwards.on('collect', r => {
-            if (page === 1) return;
-            page--;
-            embed.setDescription(pages[page-1]);
-            embed.setFooter(`Page ${page} of ${pages.length}`);
-            message.edit(embed)
-            r.users.remove(r.users.cache.filter(u => u === message.author).first())
-          })
-
-          forwards.on('collect', r => {
-            if (page === pages.length) return;
-            page++;
-            embed.setDescription(pages[page-1]);
-            embed.setFooter(`Page ${page} of ${pages.length}`);
-            message.edit(embed)
-            r.users.remove(r.users.cache.filter(u => u === message.author).first())   
-          })
-
-        })
-
-      })
+    forwards.on('collect', (r, u) => {
+        if (page === pages.length) return r.users.remove(r.users.cache.filter(u => u === message.author).first())
+        page++
+        embed.setDescription(pages[page-1])
+        embed.setFooter(`Page ${page} of ${pages.length}`)
+        msg.edit(embed)
+        r.users.remove(r.users.cache.filter(u => u === message.author).first())
+    })
+  })
+})
 
 }
     if (command === "help" || command === "cmd") {
