@@ -412,9 +412,6 @@ const invites = {}
   .setDescription(`We are very happy to have you in our server! \n\n 1) Make Sure You Read Our Rules and Regulations! \n 2) Be Friendly! \n 3) Enjoy here by Staying with friends! \n\n 🙂Thanks for joining our server!🙂`);
   
   bot.channels.cache.get(chx).send(wembed) //get channel and send embed
-  catch (e) {
-    console.log(e)
-   }
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
