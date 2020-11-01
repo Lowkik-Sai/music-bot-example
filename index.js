@@ -404,6 +404,8 @@ const invites = {}
                 invites[guild.id] = invitesAfter
                 return
             }
+        } catch (e) {
+    console.log(e)
         }
     });
 
