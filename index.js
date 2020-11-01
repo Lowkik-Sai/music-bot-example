@@ -276,7 +276,7 @@ bot.on("guildCreate", (guild) => {
      .setDescription("Thanks for inviting me into this server!")
      .setColor("RANDOM")
      .setTimestamp()
-     .addField("Prefix", "+");
+     .addField("Prefix", "`+`")
      .setFooter("Type +help for more info")
   if (channel) {
     channel.send(`embed`);
