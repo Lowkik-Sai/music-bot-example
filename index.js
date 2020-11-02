@@ -3682,7 +3682,7 @@ const sayMessage = args.join(" ")
                 })
         } catch (e) {
             const embed = new MessageEmbed()
-                .setTitle('An Error has occured')
+                .setTitle(`Error: {e}`)
             return await msg.edit(embed);
 
         }
