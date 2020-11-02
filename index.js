@@ -3830,8 +3830,8 @@ message.channel.send("Fetching Informtion for API").then(msg => {
     if (command === "vote" ) {
 const agree    = "✅";
 const disagree = "❎";
-
-  let msg = await message.channel.send("Vote now! (60 Seconds)");
+ 
+ let msg = await message.channel.send("Vote now! (60 Seconds)");
   await msg.react(agree);
   await msg.react(disagree);
 
@@ -3840,7 +3840,7 @@ const disagree = "❎";
 
   var NO_Count = reactions.get(disagree).count;
   var YES_Count = reactions.get(agree);
-
+  var draw = (!YES_Count && !NO_Count) || (YES_Count && NO_Count && NO_Count.count == YES_Count.count);
   if(YES_Count == undefined){
     var YES_Count = 1;
   }else{
