@@ -657,6 +657,66 @@ bot.on("message", async (message) => { // eslint-disable-line
     const searchString = args.slice(1).join(" ");
     const url = args[1] ? args[1].replace(/<(.+)>/g, "$1") : "";
       
+    let command = message.content().split(" ")[0];
+    command = command.slice(PREFIX.length);
+    
+    if (command === "help" || command === "cmd") {
+        const PaginationEmbed = require('discord-paginationembed');
+
+const embeds = [
+    { title: 'Fun Commands', description: 'CovidStats,Carona' },
+    { title: 'Mod Commands', description: 'Kick,Ban,Mute' },
+    { title: 'Info Commands', description: 'ServerInfo,BotInfo,UserInfo' },
+    { title: 'Role Commands', description: 'AddRole,RemoveRole' },
+    { title: 'Utility', description: 'Hastebin,Report,etc commands are coming asap!' },
+    { title: 'Owner', description: 'Answer' },
+    { title: 'Music', description: 'play, search,stop, skip,resume' },
+]
+  embeds.push(new MessageEmbed());
+ 
+ 
+const Embeds = new PaginationEmbed.Embeds()
+  .setArray(embeds)
+  .setAuthorizedUsers([message.author.id])
+  .setChannel(message.channel)
+  .setPageIndicator(true)
+  .setFooter('Type +help <commandname>')
+  .setURL('https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg')
+  .setColor("RANDOM")
+  .setTimestamp()
+  // Sets the client's assets to utilise. Available options:
+  //  - message: the client's Message object (edits the message instead of sending new one for this instance)
+  //  - prompt: custom content for the message sent when prompted to jump to a page
+  //      {{user}} is the placeholder for the user mention
+  .setDeleteOnTimeout(false)
+  
+  // Listeners for PaginationEmbed's events
+  // After the initial embed has been sent
+  // (technically, after the client finished reacting with enabled navigation and function emojis).
+  .on('start', () => console.log('Started!'))
+  // When the instance is finished by a user reacting with `delete` navigation emoji
+  // or a function emoji that throws non-Error type.
+  .on('finish', (user) => console.log(`Finished! User: ${user.username}`))
+  // Upon a user reacting on the instance.
+  .on('react', (user, emoji) => console.log(`Reacted! User: ${user.username} | Emoji: ${emoji.name} (${emoji.id})`))
+  // When the awaiting timeout is reached.
+  .on('expire', () => console.warn('Expired!'))
+  // Upon an occurance of error (e.g: Discord API Error).
+  .on('error', console.error);
+
+ 
+await Embeds.build();
+    }
+})
+
+bot.on("message", async (message) => { // eslint-disable-line
+    if (message.author.bot) return;
+    if (!message.content.startsWith(PREFIX)) return;
+
+    const args = message.content.slice(PREFIX.length).trim().split(/ +/);
+    const searchString = args.slice(1).join(" ");
+    const url = args[1] ? args[1].replace(/<(.+)>/g, "$1") : "";
+      
     let command = message.content.toLowerCase().split(" ")[0];
     command = command.slice(PREFIX.length);
     
@@ -846,53 +906,6 @@ message.channel.send({embed}).then(msg => {
 })
 
 }
-    if (command === "help" || command === "cmd") {
-        const PaginationEmbed = require('discord-paginationembed');
-
-const embeds = [
-    { title: 'Fun Commands', description: 'CovidStats,Carona' },
-    { title: 'Mod Commands', description: 'Kick,Ban,Mute' },
-    { title: 'Info Commands', description: 'ServerInfo,BotInfo,UserInfo' },
-    { title: 'Role Commands', description: 'AddRole,RemoveRole' },
-    { title: 'Utility', description: 'Hastebin,Report,etc commands are coming asap!' },
-    { title: 'Owner', description: 'Answer' },
-    { title: 'Music', description: 'play, search,stop, skip,resume' },
-]
-  embeds.push(new MessageEmbed());
- 
- 
-const Embeds = new PaginationEmbed.Embeds()
-  .setArray(embeds)
-  .setAuthorizedUsers([message.author.id])
-  .setChannel(message.channel)
-  .setPageIndicator(true)
-  .setFooter('Type +help <commandname>')
-  .setURL('https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg')
-  .setColor("RANDOM")
-  .setTimestamp()
-  // Sets the client's assets to utilise. Available options:
-  //  - message: the client's Message object (edits the message instead of sending new one for this instance)
-  //  - prompt: custom content for the message sent when prompted to jump to a page
-  //      {{user}} is the placeholder for the user mention
-  .setDeleteOnTimeout(false)
-  
-  // Listeners for PaginationEmbed's events
-  // After the initial embed has been sent
-  // (technically, after the client finished reacting with enabled navigation and function emojis).
-  .on('start', () => console.log('Started!'))
-  // When the instance is finished by a user reacting with `delete` navigation emoji
-  // or a function emoji that throws non-Error type.
-  .on('finish', (user) => console.log(`Finished! User: ${user.username}`))
-  // Upon a user reacting on the instance.
-  .on('react', (user, emoji) => console.log(`Reacted! User: ${user.username} | Emoji: ${emoji.name} (${emoji.id})`))
-  // When the awaiting timeout is reached.
-  .on('expire', () => console.warn('Expired!'))
-  // Upon an occurance of error (e.g: Discord API Error).
-  .on('error', console.error);
-
- 
-await Embeds.build();
-    }
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
