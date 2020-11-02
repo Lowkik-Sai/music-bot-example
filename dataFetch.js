@@ -1,7 +1,7 @@
 require('dotenv').config();
 // const fs = require('fs');
 const axios = require('axios').default;
-const schedule = require('../data.json');
+const schedule = require('./data.json');
 // const API_URL='http://cricscore-api.appspot.com/csa'
 
 const API_KEY = process.env.API_KEY;
