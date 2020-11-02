@@ -811,15 +811,21 @@ const { decodeHTMLEntities } = require('./util.js');
                 stats.push(playerStats);
               }
 
-              message.channel.send(`✅${winner.author} got the right answer with '${winner.content}'✅.`);
+              message.channel.send({embed: {
+  color: 3066993,
+  description: `✅ ${winner.author} got the right answer with '${winner.content}' ✅.`
+}});
             })
-            .catch(() => message.channel.send('❌Nobody answered correctly❌.'));
+            .catch(() => message.channel.send({embed: {
+  color: 3066993,
+  description: '❌ Nobody answered correctly in time ❌.'
+}}));
         }
       })
       .catch(error => {
         if (error.statusCode === 403) throw message.channel.send('OpenTDB is down, try again later.');
 
-        throw message.send(message.language.get('COMMAND_ERROR_UPDATE', message));
+        throw message.channel.send(message.language.get('COMMAND_ERROR_UPDATE', message));
       });
 
     stats.sort((a, b) => a.score - b.score);
@@ -834,9 +840,9 @@ const { decodeHTMLEntities } = require('./util.js');
       leaderboard.push('No-one answered any questions correctly.');
     }
 
-    message.send('The quiz is over, here are the results.');
+    message.channel.send('The quiz is over, here are the results.');
 
-    return message.send(new MessageEmbed()
+    return message.channel.send(new MessageEmbed()
       .setTitle('Results:')
       .setThumbnail(thumbnail)
       .setColor("RANDOM")
@@ -1095,7 +1101,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
         
  
         }
-    if (command == "number" ) {
+    if (command == "settnumber" ) {
         let min = parseInt(args[0]);
         let max = parseInt(args[1]);
 
