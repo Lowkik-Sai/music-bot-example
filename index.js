@@ -737,6 +737,9 @@ const options = {
   }
 }
     if (command === "triquiz") {
+const request = require('request-promise');
+const { decodeHTMLEntities } = require('./util.js');
+
     const timeChoice = 60000;
     const timeBoolean = 10000;
     const parameters = [];
