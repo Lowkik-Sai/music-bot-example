@@ -3827,6 +3827,38 @@ message.channel.send("Fetching Informtion for API").then(msg => {
     
     
   }
+    if (command === "vote" ) {
+const agree    = "✅";
+const disagree = "❎";
+
+  let msg = await message.channel.send("Vote now! (60 Seconds)");
+  await msg.react(agree);
+  await msg.react(disagree);
+
+  const reactions = await msg.awaitReactions(reaction => reaction.emoji.name === agree || reaction.emoji.name === disagree, {time: 60000});
+  msg.delete();
+
+  var NO_Count = reactions.get(disagree).count;
+  var YES_Count = reactions.get(agree);
+
+  if(YES_Count == undefined){
+    var YES_Count = 1;
+  }else{
+    var YES_Count = reactions.get(agree).count;
+  }
+
+  var sumsum = new MessageEmbed()
+  
+            .addField("Voting Finished:", "----------------------------------------\n" +
+                                          "Total votes (NO): " + `${NO_Count-1}\n` +
+                                          "Total votes (Yes): " + `${YES_Count-1}\n` +
+                                          "----------------------------------------", true)
+
+            .setColor("RANDOM")
+
+  await message.channel.send({embed: sumsum});
+
+}
     if (command === "rate" ) {
       
 
