@@ -4400,6 +4400,28 @@ try {
             message.channel.send(msg)
         }
     }  
+    if (command === "scorch") {
+message.channel.send('Are you sure you want to scorch this channel? (Type \'yes\' to confirm or do not reply to cancel.)');
+    await message.channel.awaitMessages(reply =>
+      reply.author == message.author && reply.content === 'yes',
+      {
+        max: 1,
+        time: 30000,
+        errors: ['time']
+      })
+      .then(() => {
+        const messageCount = message.channel.messages.size;
+
+        message.channel.clone();
+        message.send('Channel scorching initiated...');
+        message.channel.delete();
+
+        message.author.send(`Scorching complete. Successfully deleted ${messageCount} message(s).`);
+      })
+      .catch(() => message.send('Channel scorching has been cancelled.'))
+
+    return null;
+  }
     if (command === "purge" || command === "clear") {
 		const amount = args.join(" ");
 
