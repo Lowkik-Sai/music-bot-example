@@ -753,7 +753,7 @@ const options = {
     const footer = '© OpenTDB.com';
     const display = new MessageEmbed()
       .setAuthor(author)
-      .setColor(color)
+      .setColor("RANDOM")
       .setThumbnail(thumbnail)
       .setFooter(footer);
 
@@ -833,7 +833,7 @@ const options = {
     return message.send(new MessageEmbed()
       .setTitle('Results:')
       .setThumbnail(thumbnail)
-      .setColor(color)
+      .setColor("RANDOM")
       .setDescription(leaderboard));
   }
     if (command === "trivia" ) {
