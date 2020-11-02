@@ -4305,7 +4305,7 @@ let Owner = message.author;
 }})
   let msg =  bot.guilds.cache.map(guild => `**${guild.name}** Members: ${guild.memberCount}`).join('\n');
   let embed = new MessageEmbed()
-  .setTitle(`I am in ${bot.guilds.size} guilds!`)
+  .setTitle(`I am in ${bot.guilds.cache.size} guilds!`)
   .setDescription(`${msg}`)
   .setColor("#ebf442");
   message.channel.send(embed);
