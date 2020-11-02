@@ -244,6 +244,54 @@ sendPlayerStats = (stats, channel) => {
     }
 }
 
+bot.on('message', (message) => {
+    if (message.author.bot) return;
+    if (message.content.startsWith(PREFIX)) {
+        const [CMD_NAME, ...args] = message.content
+            .trim()
+            .substring(PREFIX.length)
+            .split(/\s+/);
+
+        if (CMD_NAME == 'upcoming') {
+            let upcommingMatch = getUpcommingMatch();
+            sendScheduleMatch(upcommingMatch, message.channel);
+        } else if (CMD_NAME == 'player') {
+            if (args.length === 0) {
+                message.channel.send(
+                    '```Enter player name\n Correct syntax: $player <player_name> .\nFor more help type $help```'
+                );
+                return;
+            }
+            const name = args.join(' ');
+            const playerStat = getPlayerStats(name);
+            if (playerStat == null) {
+                message.channel.send(
+                    '```Enter player name\nCorrect syntax: $player <player_name> \nFor more help type $help```'
+                );
+                return;
+            }
+            playerStat.then((value) => {
+                sendPlayerStats(value, message.channel);
+            });
+            return;
+        } else if (CMD_NAME === 'help') {
+            message.channel.send(
+                '```IPL Notifs Commands:-  \nupcoming:  \tSchedule of all upcoming IPL matches(at most 6)\nlive:  \t\tLive Score\nstandings: \tCurrent Standings\nplayer:    \tPlayer Info e.g $player Patt Cummins```'
+            );
+            return;
+        } else if (CMD_NAME === 'standings') {
+            sendStandings(message.channel);
+            return;
+        } else if (CMD_NAME === 'live') {
+            const liveData = getLiveData();
+            liveData.then((val) => {
+                sendLiveData(val, message.channel);
+            });
+            return;
+        }
+    }
+})
+
 bot.on("ready", () => {
     console.log("GuessTheNumber is Ready!");
 });
