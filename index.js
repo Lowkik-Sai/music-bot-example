@@ -435,6 +435,23 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.reply(helpembed);
     }
+    if (command === "pornn") {
+ const randomPuppy = require('random-puppy')
+
+ if(!message.channel.nsfw) {return message.channel.send(`:underage: **This channel is not marked as NSFW!** :angry: `)}
+  else{
+  randomPuppy('porn')
+            .then(url => {
+                const embed = new MessageEmbed()
+                
+                .setTitle(`PORN`)
+                .setFooter(`Requested by ${message.author.tag}`)
+                .setImage(url)
+                .setColor("RANDOM")
+    return message.channel.send({ embed });
+            })
+  }
+}
     if (command === "meme" ) {
         const randomPuppy = require('random-puppy');
         
