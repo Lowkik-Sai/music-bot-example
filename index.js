@@ -893,7 +893,7 @@ const Embeds = new PaginationEmbed.Embeds()
  
 await Embeds.build();
     }
-   if (args[0] === 'ipl') {
+   else if (args[0] === 'ipl') {
 message.channel.send(
                 '```IPL Notifs Commands:-  \nupcoming:  \tSchedule of all upcoming IPL matches(at most 6)\nlive:  \t\tLive Score\nstandings: \tCurrent Standings\nplayer:    \tPlayer Info e.g $player Patt Cummins```'
             )
