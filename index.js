@@ -341,7 +341,6 @@ bot.on('message', async message => {
         }, 1000);
     }
     if(message.content == "+help") {
-if (command === "help" || command === "cmd") {
         const PaginationEmbed = require('discord-paginationembed');
 
 const embeds = [
