@@ -744,6 +744,9 @@ const { decodeHTMLEntities } = require('./util.js');
     const timeBoolean = 10000;
     const parameters = [];
 
+    let noOfQuestions = args[0];
+    if(!args[0]) return message.channel.send("Please mention No.of Questions!");
+    
     parameters.push(
       noOfQuestions ? `amount=${noOfQuestions}` : 'amount=10'
     );
