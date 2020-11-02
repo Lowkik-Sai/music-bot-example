@@ -4303,7 +4303,7 @@ let Owner = message.author;
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
-  let msg =  bot.guilds.map(guild => `**${guild.name}** Members: ${guild.memberCount}`).join('\n');
+  let msg =  bot.guilds.cache.map(guild => `**${guild.name}** Members: ${guild.memberCount}`).join('\n');
   let embed = new MessageEmbed()
   .setTitle(`I am in ${bot.guilds.size} guilds!`)
   .setDescription(`${msg}`)
