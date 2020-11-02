@@ -274,11 +274,6 @@ bot.on('message', (message) => {
                 sendPlayerStats(value, message.channel);
             });
             return;
-        } else if (CMD_NAME === 'help') {
-            message.channel.send(
-                '```IPL Notifs Commands:-  \nupcoming:  \tSchedule of all upcoming IPL matches(at most 6)\nlive:  \t\tLive Score\nstandings: \tCurrent Standings\nplayer:    \tPlayer Info e.g $player Patt Cummins```'
-            );
-            return;
         } else if (CMD_NAME === 'standings') {
             sendStandings(message.channel);
             return;
@@ -898,6 +893,11 @@ const Embeds = new PaginationEmbed.Embeds()
  
 await Embeds.build();
     }
+   if (args[0] === 'ipl') {
+message.channel.send(
+                '```IPL Notifs Commands:-  \nupcoming:  \tSchedule of all upcoming IPL matches(at most 6)\nlive:  \t\tLive Score\nstandings: \tCurrent Standings\nplayer:    \tPlayer Info e.g $player Patt Cummins```'
+            )
+   }
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
