@@ -3859,7 +3859,7 @@ const disagree = "❎";
   await message.channel.send({embed: sumsum});
 
 }
-    if (command === "rate" ) {
+    if (command === "rateme" ) {
       
 
 let ratus = message.mentions.members.first();
