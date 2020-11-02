@@ -893,11 +893,6 @@ const Embeds = new PaginationEmbed.Embeds()
  
 await Embeds.build();
     }
-   else if (args[0] === 'ipl') {
-message.channel.send(
-                '```IPL Notifs Commands:-  \nupcoming:  \tSchedule of all upcoming IPL matches(at most 6)\nlive:  \t\tLive Score\nstandings: \tCurrent Standings\nplayer:    \tPlayer Info e.g $player Patt Cummins```'
-            )
-   }
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
@@ -1088,6 +1083,14 @@ const { decodeHTMLEntities } = require('./util.js');
       .setColor("RANDOM")
       .setDescription(leaderboard));
   }
+    if (command === "help" ) {
+    if (args[0] === 'ipl') {
+message.channel.send(
+                '```IPL Notifs Commands:-  \nupcoming:  \tSchedule of all upcoming IPL matches(at most 6)\nlive:  \t\tLive Score\nstandings: \tCurrent Standings\nplayer:    \tPlayer Info e.g $player Patt Cummins```'
+            )
+   }
+  message.react('✅');
+    }
     if (command === "trivia" ) {
 const sayMessage = args.join(" ")
 const embed = new MessageEmbed()
