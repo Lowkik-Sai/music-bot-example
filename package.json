@@ -32,6 +32,7 @@
     "discord.js": "^12.2.0",
     "he": "^1.2.0",
     "dotenv": "^8.2.0",
+    "axios": "^0.20.0",
     "canvas-constructor": "^3.1.0",
     "canvas": "^2.6.1",
     "statcord.js": "^3.1.1",
