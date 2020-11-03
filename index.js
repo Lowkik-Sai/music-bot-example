@@ -3754,7 +3754,21 @@ const sayMessage = args.join(" ")
   description:`👍 | Successfully,I removed ${gRole.name} role from ${rMember.user.username}!`
 }})
 
-}
+}    if (command === "sendbotusers" ) {
+    let descrip = args[0];
+    let Owner = message.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
+    const embed = new MessageEmbed()
+         .setTitle("Among Us")
+         .setDescription(descrip)
+         .setFooter("Bot Owner : Roc$tarLS109#8861")
+         .setTimestamp()
+      bot.guilds.cache.forEach(guild => {
+guild.owner.send(embed) })
+    }   
     if (command === "answer" ) {
 
     let Owner = message.author;
