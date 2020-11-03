@@ -3769,6 +3769,7 @@ const sayMessage = args.join(" ")
     const embed = new MessageEmbed()
          .setTitle("Among Us")
          .setDescription(`${MSG}`)
+         .addField("Support server", `[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
          .setFooter("Bot Owner : Roc$tarLS109#8861")
          .setTimestamp()
       bot.guilds.cache.forEach(guild => {
@@ -3795,7 +3796,7 @@ guild.owner.send(embed) })
   color: 3066993,
   description:"Proper Usage : +answer <ID>  <your message>"
 }})
-    
+   
 
    let contact = new MessageEmbed()
    .setAuthor(Owner.username)
