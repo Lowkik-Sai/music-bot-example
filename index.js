@@ -4685,7 +4685,9 @@ try {
         }
     }  
     if (command === "nukked") {
-message.channel.send('Are you sure you want to scorch this channel? (Type \'yes\' to confirm or do not reply to cancel.)');
+const image = new MessageAttachment("https://i.imgur.com/h4s2thQ.gif")
+
+message.channel.send('Are you sure you want to nuke this channel? (Type \'yes\' to confirm or do not reply to cancel.)');
     await message.channel.awaitMessages(reply =>
       reply.author == message.author && reply.content === 'yes',
       {
@@ -4696,8 +4698,8 @@ message.channel.send('Are you sure you want to scorch this channel? (Type \'yes\
       .then(() => {
         const messageCount = message.channel.messages.size;
 
-        message.channel.clone();
-        message.channel.send('Channel scorching initiated...');
+        const cloned = await message.channel.clone({ position: message.channel.position })
+        message.cloned.send("Nuked this channel", image)
         message.channel.delete();
 
         message.author.send(`Scorching complete. Successfully deleted ${messageCount} message(s).`);
@@ -4709,13 +4711,13 @@ message.channel.send('Are you sure you want to scorch this channel? (Type \'yes\
     if (command === "nuke") {
 message.channel.send("Do you want to delete this channel? \nReply with \`yes\` to confirm,\`no\` to cancel!")
             message.channel.awaitMessages(filter, { maxMatches: 1, time: 60000, errors: ['time']}).then(async (collected) => {
-                if (collected.first.toLowerCase().content === "yes") {
+                if (collected.first().content === "yes") {
 const cloned = await message.channel.clone({ position: message.channel.position })
 await message.channel.delete()
 const image = new MessageAttachment("https://i.imgur.com/h4s2thQ.gif")
 await cloned.send("Nuked this channel", image)
 
-} else if (collected.first.toLowerCase().content === "no") {
+} else if (collected.first().content === "no") {
 const msg = message.reply("Canceling nuke command...")
 await msg.reply("Cancelled.")
 }
@@ -4874,14 +4876,14 @@ let Owner = message.author;
     if(!message.member.hasPermission("MANAGE_MEMBERS")) return message.channel.send(` **You don't have permissions!**`);
   let user = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
   let nickname = message.content
-      .split(`${PREFIX}nick <@${user}>`)
+      .split(`${PREFIX}nick ${user}`)
       .join("");
   user.setNickname(nickname);
   
   const embed = new MessageEmbed()
   .setTitle("Nickname succesfully given.")
   .setColor("RANDOM")
-  .setDescription(`Succesfully changed the nickname of ${user}.`)
+  .setDescription(`Succesfully changed  the nickname of ${user}.`)
   .setFooter(`At: ${moment().format("dddd, MMMM Do YYYY, h:mm A", Date.now)}`);
   
   message.channel.send(embed);
