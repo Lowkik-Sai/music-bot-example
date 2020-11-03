@@ -4707,7 +4707,7 @@ message.channel.send('Are you sure you want to scorch this channel? (Type \'yes\
     return null;
   }
     if (command === "nuke") {
-message.channel.send("Do you want to delete this channel? \nReply with \`yes\` to confirm,\`no\` to cancel!").then(async (start) => {
+message.channel.send("Do you want to delete this channel? \nReply with \`yes\` to confirm,\`no\` to cancel!")
             message.channel.awaitMessages(filter, { maxMatches: 1, time: 60000, errors: ['time']}).then(async (collected) => {
                 if (collected.first.toLowerCase().content === "yes") {
 const cloned = await message.channel.clone({ position: message.channel.position })
@@ -4720,8 +4720,6 @@ const msg = message.reply("Canceling nuke command...")
 await msg.reply("Cancelled.")
 }
             })
-
-  })
    }
     if (command === "purge" || command === "clear") {
 		const amount = args.join(" ");
