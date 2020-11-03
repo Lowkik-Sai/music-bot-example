@@ -3941,7 +3941,7 @@ const sayMessage = args.join(" ")
                 })
         } catch (e) {
             const embed = new MessageEmbed()
-                .setTitle(`Error: {e}`)
+                .setTitle(`Error: ${e}`)
             return await msg.edit(embed);
 
         }
