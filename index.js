@@ -727,7 +727,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                 const embed = new MessageEmbed()
                 
                 .setTitle(`PORN`)
-                .setFooter(`Requested by ${message.author.tag}`)
+                .setFooter(`Command Used by ${message.author.tag}`)
                 .setImage(url)
                 .setColor("RANDOM")
     return message.channel.send({ embed });
@@ -840,7 +840,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                 const emb = new MessageEmbed()
                     .setColor(0xFFFF00)
                     .setImage('https://cdn.glitch.com/ce500e3d-b500-47a8-a6a8-c0b5657d808c%2FWebp.net-gifmaker.gif')
-                    .setFooter(`Requested by: ${message.author.tag}`);
+                    .setFooter(`Command Used by : ${message.author.tag}`);
                 message.channel.send({
                     embed: emb
                 })
@@ -1090,7 +1090,7 @@ const { decodeHTMLEntities } = require('./util.js');
     .setDescription('UpComing:  \tSchedule of all upcoming IPL matches(at most 6)\nLive:  \t\tLive Score\nStandings: \tCurrent Standings\nPlayer:    \tPlayer Info e.g +player Patt Cummins')
     .setColor("RANDOM")
     .setTimestamp()
-    .setFooter(`Command Used by : ${message.author}`)
+    .setFooter(`Command Used by : ${message.author.tag}`)
 message.channel.send(iplembed)
    }
   message.react('✅');
@@ -2343,7 +2343,7 @@ class Drawing {
       .setTitle(args[0])
       .setColor("RANDOM")
       .setDescription(args[1])
-      .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL)
+      .setFooter(`Command Used by : ${message.author.tag}`, message.author.avatarURL)
       .addField(args[2] , args[3])
       .setImage(args[4])
       .setTimestamp()
@@ -4991,7 +4991,7 @@ let Owner = message.author;
             .addField(`Online`, `${online}`, true)
             .addField(`Bots`, message.guild.members.cache.filter(m=>m.user.bot).size)
             .setTimestamp()
-            .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL);
+            .setFooter(`Command Used by : ${message.author.tag}`, message.author.avatarURL);
       message.channel.send({embed}) 
 }
     if (command === "serverinfo" || command === "si") {
