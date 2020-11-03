@@ -3755,9 +3755,7 @@ const sayMessage = args.join(" ")
 }})
 
 }    if (command === "sendbotusers" ) {
-    let MSG = message.content
-      .split(`${PREFIX}sendbotusers `)
-      .join("");
+    let MSG = args.join(" ");
     if (!MSG)
       return message.channel.send({embed: {
   color: 3066993,
