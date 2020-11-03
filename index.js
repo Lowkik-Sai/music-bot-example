@@ -2333,7 +2333,7 @@ class Drawing {
     if (command === "checktimegap" ) {
    let Channel = args[0];
    let Firstmessage = args[1];
-   let Secondmessage = args[2];
+   let Secondmessage = args[2]; 
 
  var chan=message.guild.channels.cache.get(Channel)
 chan.messages.fetch(Firstmessage).then(m=>{
