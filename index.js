@@ -2330,6 +2330,18 @@ class Drawing {
         );
     }
 }
+    if (command === "checktimegap" ) {
+   let Channel = args[0];
+   let Firstmessage = args[1];
+   let Secondmessage = args[2];
+
+ var chan=message.guild.channels.cache.get(Channel.id)
+chan.messages.fetch(Firstmessage).then(m=>{
+chan.messages.fetch(Secondmessage).then(me=>{
+message.reply((me.createdTimestamp-m.createdTimestamp)/1000)
+}) 
+})
+   }
     if (command === "embed" ) {
      message.delete();
      const sayMessage = args.join(" ")
