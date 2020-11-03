@@ -1085,9 +1085,13 @@ const { decodeHTMLEntities } = require('./util.js');
   }
     if (command === "help" ) {
     if (args[0] === 'ipl') {
-message.channel.send(
-                '```IPL Notifs Commands:-  \nupcoming:  \tSchedule of all upcoming IPL matches(at most 6)\nlive:  \t\tLive Score\nstandings: \tCurrent Standings\nplayer:    \tPlayer Info e.g $player Patt Cummins```'
-            )
+   const iplembed = new MessageEmbed()
+    .setTitle("IPL")
+    .setDescription('UpComing:  \tSchedule of all upcoming IPL matches(at most 6)\nLive:  \t\tLive Score\nStandings: \tCurrent Standings\nPlayer:    \tPlayer Info e.g +player Patt Cummins')
+    .setColor("RANDOM")
+    .setTimestamp()
+    .setFooter(`Command Used by : ${message.author}`)
+message.channel.send(iplembed)
    }
   message.react('✅');
     }
