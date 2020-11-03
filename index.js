@@ -4721,7 +4721,8 @@ await msg.reply("Cancelled.")
 }
             })
 
-  }
+  })
+   }
     if (command === "purge" || command === "clear") {
 		const amount = args.join(" ");
 
