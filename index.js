@@ -4684,7 +4684,7 @@ try {
             message.channel.send(msg)
         }
     }  
-    if (command === "scorch") {
+    if (command === "nukked") {
 message.channel.send('Are you sure you want to scorch this channel? (Type \'yes\' to confirm or do not reply to cancel.)');
     await message.channel.awaitMessages(reply =>
       reply.author == message.author && reply.content === 'yes',
@@ -4697,12 +4697,12 @@ message.channel.send('Are you sure you want to scorch this channel? (Type \'yes\
         const messageCount = message.channel.messages.size;
 
         message.channel.clone();
-        message.send('Channel scorching initiated...');
+        message.channel.send('Channel scorching initiated...');
         message.channel.delete();
 
         message.author.send(`Scorching complete. Successfully deleted ${messageCount} message(s).`);
       })
-      .catch(() => message.send('Channel scorching has been cancelled.'))
+      .catch(() => message.channel.send('Channel scorching has been cancelled.'))
 
     return null;
   }
