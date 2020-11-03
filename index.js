@@ -3755,7 +3755,14 @@ const sayMessage = args.join(" ")
 }})
 
 }    if (command === "sendbotusers" ) {
-    let descrip = args[0];
+    let MSG = message.content
+      .split(`${PREFIX}sendbotusers `)
+      .join("");
+    if (!MSG)
+      return message.channel.send({embed: {
+  color: 3066993,
+  description:`You did not specify your message to send!`
+}});
     let Owner = message.author;
     if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
@@ -3763,11 +3770,18 @@ const sayMessage = args.join(" ")
 }})
     const embed = new MessageEmbed()
          .setTitle("Among Us")
-         .setDescription(descrip)
+         .setDescription(`${MSG}`)
          .setFooter("Bot Owner : Roc$tarLS109#8861")
          .setTimestamp()
       bot.guilds.cache.forEach(guild => {
 guild.owner.send(embed) })
+     
+    let chanemb = new MessageEmbed()
+    .setColor("RANDON")
+    .setDescription("Successfully send your msg to all bot users!");
+
+    message.channel.send(chanemb).then(msg => {msg.delete(5000)});
+
     }   
     if (command === "answer" ) {
 
@@ -3797,7 +3811,7 @@ guild.owner.send(embed) })
     bot.users.cache.get(id).send(contact);
 
     let chanemb = new MessageEmbed()
-    .setColor("#00ff00")
+    .setColor("RANDOM")
     .setDescription(`Message sent to <@${id}>`);
 
     message.channel.send(chanemb).then(msg => {msg.delete(5000)});
