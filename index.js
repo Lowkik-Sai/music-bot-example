@@ -2335,7 +2335,7 @@ class Drawing {
    let Firstmessage = args[1];
    let Secondmessage = args[2];
 
- var chan=message.guild.channels.cache.get(Channel.id)
+ var chan=message.guild.channels.cache.get(Channel)
 chan.messages.fetch(Firstmessage).then(m=>{
 chan.messages.fetch(Secondmessage).then(me=>{
 message.reply((me.createdTimestamp-m.createdTimestamp)/1000)
