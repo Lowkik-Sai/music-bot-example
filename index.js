@@ -336,6 +336,20 @@ let ownerID = '654669770549100575';
 let channelID = '769473798978142210';
 
 bot.on('message', async message => {
+    try {
+        if (/^[0-9]*$/.test(message.content) == false) {
+            if (message.author.bot == true || message.channel.type == 'dm' || message.channel.id != "769473798978142210") {
+                return;
+            }
+        
+            message.delete();
+            message.author.send(`${message.author} you can only send numbers in <#${message.channel.id}>!`)
+        }
+    }
+    catch(e){console.log(e)}
+}
+ 
+bot.on('message', async message => {
     if(message.content == "+restart") {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
         message.react('✅');
