@@ -1,5 +1,6 @@
 const { Client, Util, MessageEmbed, GuildAuditLogs, MessageAttachment} = require("discord.js");
 const { Permissions } = require('discord.js');
+const { Embeds } = require('discord-paginationembed');
 const util = require('util');
 const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
@@ -14,6 +15,8 @@ const fetch = require('node-fetch');
 const Message = require("discord.js");
 const moment = require("moment");
 const cron = require('cron');
+
+
 const Canvas = require('canvas-constructor');
 var jimp = require('jimp');
 const Discord = require("discord.js");
@@ -4717,9 +4720,9 @@ const embeds = [];
         for (let i = 1; i <= 1; ++i)
         {
             embeds.push(new MessageEmbed()
-                .setColor(this.client.color.warn)
+                .setColor("RANDOM")
                 .setAuthor(message.author.tag, message.author.avatarURL({ dynamic: true }))
-                .setTitle(`${this.client.emoji.warn} Are you sure you want to nuke this channel?`)
+                .setTitle(`Are you sure you want to nuke this channel?`)
                 .setDescription(`Nuking this channel will delete all messages that are sent in this channel. This action is irreversable.`)
                 .addField('What do you want to do?', `✅ Nuke this channel!\n❌ Nothing. I changed my mind.`))
         }
