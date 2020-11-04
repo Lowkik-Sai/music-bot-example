@@ -939,7 +939,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     // the rest of your code
     if (command === "ticket") {
 const reason = message.content.split(" ").slice(1).join(" ");
-    if (!message.guild.roles.exists("name", "Support")) {
+    if (!message.guild.roles.cache.find(role => role.name === "support") {
     const embed0 = new MessageEmbed()
     .setColor("RANDOM")
     .addField(`Ticket Bot`, `This server doesn't have a \`Support\` role made, so the ticket won't be opened.\nIf you are an administrator, make one with that name exactly and give it to users that should be able to see tickets.`)
@@ -953,9 +953,9 @@ const reason = message.content.split(" ").slice(1).join(" ");
     message.channel.send({ embed: embed1 });
     return
     }
-    message.guild.createChannel(`ticket-${message.author.username}`, "text").then(c => {
-        let role = message.guild.roles.find("name", "Support");
-        let role2 = message.guild.roles.find("name", "@everyone");
+    message.guild.channels.create(`ticket-${message.author.username}`, "text").then(c => {
+        let role = message.guild.roles.cache.find(role => role.name === "support");
+        let role2 = message.guild.roles.cache.find(role => role.name === "@everyone");
         c.overwritePermissions(role, {
             SEND_MESSAGES: true,
             READ_MESSAGES: true
