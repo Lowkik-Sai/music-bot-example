@@ -336,18 +336,19 @@ let ownerID = '654669770549100575';
 let channelID = '769473798978142210';
 
 bot.on('message', async message => {
-  const guessemb = new MessageEmbed()
-     .setTitle("Among Us Guess the Number Contest")
-     .setColor("RANDOM")
-     .setTimestamp()
-     .setDescription(`${message.author} you can only send numbers in <#${message.channel.id}>!`)
-    try {
+      try {
         if (/^[0-9]*$/.test(message.content) == false) {
             if (message.author.bot == true || message.channel.type == 'dm' || message.channel.id != "769473798978142210") {
                 return;
             }
         
             message.delete();
+const guessemb = new MessageEmbed()
+     .setTitle("Among Us Guess the Number Contest")
+     .setColor("RANDOM")
+     .setTimestamp()
+     .setDescription(`You can only send numbers in <#${message.channel.id}>!`)
+
             message.author.send(guessemb)
  }
     }
@@ -512,8 +513,12 @@ await Embeds.build();
     if(message.author.bot) return;
     if(message.channel.id === channelID) {
         if(!message.content.isNaN) {
-            if(message.content > limit) return message.reply(`The number is between 1 and ${limit}! Try again`).then(sent => sent.delete(10000));
-            if(message.content < 1) return message.reply(`The number cannot be negative! Try again`).then(sent => sent.delete(10000));
+            if(message.content > limit) return author.send({embed: {
+   color: 3066993,
+   description: `The number is between 1 and ${limit}! Try again`}}).then(sent => sent.delete(10000));
+            if(message.content < 1) return author.send({embed: {
+   color: 3066993,
+   description: `The number cannot be negative! Try again`}}).then(sent => sent.delete(10000));
             if(message.content == number) {
                 var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
                 bot.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
