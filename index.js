@@ -4712,7 +4712,7 @@ message.channel.send('Are you sure you want to nuke this channel? (Type \'yes\' 
   }
     if (command === "nuke") {
 const image = new MessageAttachment("https://i.imgur.com/h4s2thQ.gif")
-const channel = message.mentions.channels.first() || message.guild.channels.cache.find((c) => c.name === args[0]) || <TextChannel>message.channel;
+const channel = message.mentions.channels.first() || message.guild.channels.cache.find((c) => c.name === args[0]) || message.channel;
         try {
             const newChannel = <TextChannel> await channel.clone();
             message.channel.send(Success('Nuking channel.'))
