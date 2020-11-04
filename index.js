@@ -4688,31 +4688,6 @@ try {
             message.channel.send(msg)
         }
     }  
-    if (command === "nukked") {
-const image = new MessageAttachment("https://i.imgur.com/h4s2thQ.gif")
-
-message.channel.send('Are you sure you want to nuke this channel? (Type \'yes\' to confirm or do not reply to cancel.)');
-    await message.channel.awaitMessages(reply =>
-      reply.author == message.author && reply.content === 'yes',
-      {
-        max: 1,
-        time: 30000,
-        errors: ['time']
-      })
-      .then(() => {
-        const messageCount = message.channel.messages.size;
-
-        const cloned = message.channel.clone({ position: message.channel.position })
-        message.cloned.send("Nuked this channel", image)
-        message.channel.delete();
-
-        message.author.send(`Scorching complete. Successfully deleted ${messageCount} message(s).`);
-      })
-      .catch(() => message.channel.send('Channel scorching has been cancelled.'))
-      .catch((e) => console.log(`${e}`))
-
-    return null;
-  }
     if (command === "nuke") {
 const image = new MessageAttachment("https://i.imgur.com/h4s2thQ.gif")
 const embeds = [];
