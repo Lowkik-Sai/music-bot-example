@@ -4699,7 +4699,7 @@ message.channel.send('Are you sure you want to nuke this channel? (Type \'yes\' 
       .then(() => {
         const messageCount = message.channel.messages.size;
 
-        const cloned = await message.channel.clone({ position: message.channel.position })
+        const cloned = message.channel.clone({ position: message.channel.position })
         message.cloned.send("Nuked this channel", image)
         message.channel.delete();
 
@@ -4710,7 +4710,7 @@ message.channel.send('Are you sure you want to nuke this channel? (Type \'yes\' 
     return null;
   }
     if (command === "nuke") {
-message.channel.send("Do you want to delete this channel? \nReply with \`yes\` to confirm,\`no\` to cancel!")
+message.channel.send("Do you want to delete this channel? \nReply with \`yes\` to confirm,\`no\` to cancel!").then(async (start) => {
             message.channel.awaitMessages(filter, { maxMatches: 1, time: 60000, errors: ['time']}).then(async (collected) => {
                 if (collected.first().content === "yes") {
 const cloned = await message.channel.clone({ position: message.channel.position })
