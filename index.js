@@ -4711,21 +4711,25 @@ message.channel.send('Are you sure you want to nuke this channel? (Type \'yes\' 
     return null;
   }
     if (command === "nuke") {
-message.channel.send("Do you want to delete this channel? \nReply with \`yes\` to confirm,\`no\` to cancel!").then(async (start) => {
-            message.channel.awaitMessages(filter, { maxMatches: 1, time: 60000, errors: ['time']}).then(async (collected) => {
-                if (collected.first().content === "yes") {
-const cloned = await message.channel.clone({ position: message.channel.position })
-await message.channel.delete()
 const image = new MessageAttachment("https://i.imgur.com/h4s2thQ.gif")
-await cloned.send("Nuked this channel", image)
-
-} else if (collected.first().content === "no") {
-const msg = message.reply("Canceling nuke command...")
-await msg.reply("Cancelled.")
-}
-            })
-        })
-   }
+const channel = message.mentions.channels.first() || message.guild.channels.cache.find((c) => c.name === args[0]) || <TextChannel>message.channel;
+        try {
+            const newChannel = <TextChannel> await channel.clone();
+            message.channel.send(Success('Nuking channel.'))
+                .then((msg) => {
+                    channel.delete()
+                        .then(() => {
+                            newChannel.setPosition(channel.rawPosition);
+                            channel === message.channel as TextChannel ?
+                                newChannel.send(Success('Nuked the channel.', image)) :
+                                msg.edit(Success(`Nuked ${newChannel}.`, image));
+                            bot.log({ action: 'Nuked Channel', description: `${message.member} nuked ${newChannel}.` });
+                        });
+                });
+        } catch (err) {
+            message.channel.send(`${err}`);
+        }
+    }
     if (command === "purge" || command === "clear") {
 		const amount = args.join(" ");
 
