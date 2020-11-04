@@ -510,12 +510,16 @@ await Embeds.build();
     if(message.author.bot) return;
     if(message.channel.id === channelID) {
         if(!message.content.isNaN) {
-            if(message.content > limit) return message.author.send({embed: {
+            if(message.content > limit)
+               message.delete();
+   return message.author.send({embed: {
    color: 3066993,
-   description: `The number is between 1 and ${limit}! Try again`}}).then(sent => sent.delete(10000));
-            if(message.content < 1) return message.author.send({embed: {
+   description: `The number is between 1 and ${limit}! Try again`}});
+            if(message.content < 1)
+               message.delete();
+    return message.author.send({embed: {
    color: 3066993,
-   description: `The number cannot be negative! Try again`}}).then(sent => sent.delete(10000));
+   description: `The number cannot be negative! Try again`}});
             if(message.content == number) {
                 var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
                 bot.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
