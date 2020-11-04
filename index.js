@@ -29,8 +29,18 @@ const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 const usersOnCooldown = new Set();
 
+
+const fetchAllUsers = process.env.CONFIG_FETCH_ALL_USERS === "yes";
 const bot = new Client({
-    disableMentions: "everyone"
+    disableMentions: "everyone",
+    fetchAllMembers: fetchAllUsers,
+    messageCacheLifetime: 60,
+    messageCacheMaxSize: Infinity,
+    messageEditHistoryMaxSize: Infinity,
+    messageSweepInterval: 180,
+    ws: {
+        intents: fetchAllUsers ? intents.concat(["GUILD_MEMBERS"]) : intents
+    }
 });
 
 const serverStats = {
