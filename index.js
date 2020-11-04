@@ -4712,23 +4712,50 @@ message.channel.send('Are you sure you want to nuke this channel? (Type \'yes\' 
   }
     if (command === "nuke") {
 const image = new MessageAttachment("https://i.imgur.com/h4s2thQ.gif")
-const channel = message.mentions.channels.first() || message.guild.channels.cache.find((c) => c.name === args[0]) || message.channel;
-        try {
-            const newChannel = await channel.clone();
-            message.channel.send(Success('Nuking channel.'))
-                .then((msg) => {
-                    channel.delete()
-                        .then(() => {
-                            newChannel.setPosition(channel.rawPosition);
-                            channel === message.channel as TextChannel ?
-                                newChannel.send(Success('Nuked the channel.', image)) :
-                                msg.edit(Success(`Nuked ${newChannel}.`, image));
-                            bot.log({ action: 'Nuked Channel', description: `${message.member} nuked ${newChannel}.` });
-                        });
-                });
-        } catch (err) {
-            message.channel.send(`${err}`);
+const embeds = [];
+
+        for (let i = 1; i <= 1; ++i)
+        {
+            embeds.push(new MessageEmbed()
+                .setColor(this.client.color.warn)
+                .setAuthor(message.author.tag, message.author.avatarURL({ dynamic: true }))
+                .setTitle(`${this.client.emoji.warn} Are you sure you want to nuke this channel?`)
+                .setDescription(`Nuking this channel will delete all messages that are sent in this channel. This action is irreversable.`)
+                .addField('What do you want to do?', `✅ Nuke this channel!\n❌ Nothing. I changed my mind.`))
         }
+
+        const embed = new Embeds()
+            .setArray(embeds)
+            .setAuthorizedUsers(message.author.id)
+            .setChannel(message.channel)
+            .setFunctionEmojis({
+                '✅': async () => {
+                    await message.channel.clone({
+                        name: message.channel.name,
+                        type: 'text',
+                        topic: message.channel.topic,
+                        reason: `${message.author.tag} nuked this channel.`
+                    });
+                    await message.channel.delete();
+                },
+                '❌': () => {
+                    return embed.delete();
+                }
+            })
+            .setDisabledNavigationEmojis(['all'])
+            .setDeleteOnTimeout(true)
+            .setTimeout(30000)
+            .on('error', (err) => {
+                // embed.delete() is not a function. But, ignore it since 
+                // it's a function of Message.
+                // Also, ignore any Discord API Errors.
+                if (err.name == 'TypeError' || err.name == 'DiscordAPIError') return;
+                message.recordError('error', 'nukechannel', 'Command Error', err.stack)
+            })
+            .on('finish', () => { return; });
+
+        embed.build();
+
     }
     if (command === "purge" || command === "clear") {
 		const amount = args.join(" ");
