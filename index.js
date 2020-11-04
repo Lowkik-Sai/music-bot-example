@@ -4706,6 +4706,7 @@ message.channel.send('Are you sure you want to nuke this channel? (Type \'yes\' 
         message.author.send(`Scorching complete. Successfully deleted ${messageCount} message(s).`);
       })
       .catch(() => message.channel.send('Channel scorching has been cancelled.'))
+      .catch((e) => console.log(`${e}`))
 
     return null;
   }
