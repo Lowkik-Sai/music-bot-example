@@ -29,7 +29,7 @@ const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 const usersOnCooldown = new Set();
 
-const intents: BitFieldResolvable<IntentsString> = ["GUILDS", "GUILD_VOICE_STATES", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"];
+const intents = ["GUILDS", "GUILD_VOICE_STATES", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"];
 const fetchAllUsers = process.env.CONFIG_FETCH_ALL_USERS === "yes";
 const bot = new Client({
     disableMentions: "everyone",
