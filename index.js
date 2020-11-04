@@ -38,6 +38,13 @@ const serverStats = {
     ticketCategoryID: '771936611063038012'
 }
 
+function clean(text) {
+    if (typeof(text) === "string")
+      return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    else
+        return text;
+}
+
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
@@ -930,7 +937,110 @@ bot.on("message", async (message) => { // eslint-disable-line
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
     // the rest of your code
-    
+    if (command === "ticket") {
+const reason = message.content.split(" ").slice(1).join(" ");
+    if (!message.guild.roles.exists("name", "Support")) {
+    const embed0 = new MessageEmbed()
+    .setColor("RANDOM")
+    .addField(`Ticket Bot`, `This server doesn't have a \`Support\` role made, so the ticket won't be opened.\nIf you are an administrator, make one with that name exactly and give it to users that should be able to see tickets.`)
+    message.channel.send({ embed: embed0 });
+    return
+    }
+    if (message.guild.channels.exists("name", "ticket-" + message.author.username)) {
+    const embed1 = new MessageEmbed()
+    .setColor("RANDOM")
+    .addField(`Ticket Bot`, `You already have a ticket open.`)
+    message.channel.send({ embed: embed1 });
+    return
+    }
+    message.guild.createChannel(`ticket-${message.author.username}`, "text").then(c => {
+        let role = message.guild.roles.find("name", "Support");
+        let role2 = message.guild.roles.find("name", "@everyone");
+        c.overwritePermissions(role, {
+            SEND_MESSAGES: true,
+            READ_MESSAGES: true
+        });
+        c.overwritePermissions(role2, {
+            SEND_MESSAGES: false,
+            READ_MESSAGES: false
+        });
+        c.overwritePermissions(message.author, {
+            SEND_MESSAGES: true,
+            READ_MESSAGES: true
+        });
+        const embed2 = new MessageEmbed()
+        .setColor("RANDOM")
+        .addField(`Ticket Bot`, `Your ticket has been created in ` + c.toString())
+        .setTimestamp();
+        message.channel.send({ embed: embed2 });
+
+        const embed3 = new MessageEmbed()
+        .setColor(embedColor)
+        .addField(`Hey ${message.author.username}!`, `Our **Support Team** will be with you shortly. Please explain your reason for opening the ticket in as much detail as possible.`)
+        .setTimestamp();
+        c.send({ embed: embed3 });
+    }).catch(console.error);
+  }
+   if (command === "add") {
+   if (!message.channel.name.startsWith(`ticket-`)) {
+    const embed4 = new MessageEmbed()
+    .setColor("RANDOM")
+    .addField(`Ticket Bot`, `You can't use the this outside of a ticket channel.`)
+    message.channel.send({ embed: embed4 });
+    return
+    }
+    addedmember = message.mentions.members.first();
+    message.channel.overwritePermissions(addedmember, { SEND_MESSAGES : true, VIEW_CHANNEL : true});
+    const embed5 = new MessageEmbed()
+    .setColor("RANDOM")
+    .addField(`Ticket Bot`, '**' + addedmember + `** has been added to the ticket. Remove with [${PREFIX}remove]().`)
+    message.channel.send({ embed: embed5 });
+
+  }
+  if (command === "remove") {
+  if (!message.channel.name.startsWith(`ticket-`)) {
+    const embed6 = new MessageEmbed()
+    .setColor("RANDOM")
+    .addField(`Ticket Bot`, `You can't use the this outside of a ticket channel.`)
+    message.channel.send({ embed: embed6 });
+    return
+    }
+    removedmember = message.mentions.members.first();
+    message.channel.overwritePermissions(removedmember, { SEND_MESSAGES : false, VIEW_CHANNEL : false});
+    const embed7 = new MessageEmbed()
+    .setColor("RANDOM")
+    .addField(`Ticket Bot`, '**' + removedmember + '** has been removed from the ticket.')
+    message.channel.send({ embed: embed7 });
+  }
+   if (command === "close") {
+   if (!message.channel.name.startsWith(`ticket-`)) {
+    const embed8 = new MessageEmbed()
+    .setColor("RANDOM")
+    .addField(`Ticket Bot`, `You can't use the this outside of a ticket channel.`)
+    message.channel.send({ embed: embed8 });
+    return
+    }   
+
+    const embed9 = new MessageEmbed()
+    .setColor("RANDOM")
+    .addField(`Ticket Bot`, 'Are you sure? Once confirmed, you cannot reverse this action!\nTo confirm, type \`-confirm\`. This will time out in 10 seconds and be cancelled.')
+    message.channel.send({ embed: embed9 })
+    .then((m) => {
+      message.channel.awaitMessages(response => response.content === '-confirm', {
+        max: 1,
+        time: 10000,
+        errors: ['time'],
+      })
+      .then((collected) => {
+          message.channel.delete();
+        })
+        .catch(() => {
+          m.edit('Ticket close timed out, the ticket was not closed.').then(m2 => {
+              m2.delete();
+          }, 3000);
+        });
+    });
+  }
     if (command === 'args-info') {
 	if (!args.length) {
 		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
