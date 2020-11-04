@@ -336,6 +336,11 @@ let ownerID = '654669770549100575';
 let channelID = '769473798978142210';
 
 bot.on('message', async message => {
+  const guessemb = new MessageEmbed()
+     .setTitle("Among Us Guess the Number Contest")
+     .setColor("RANDOM")
+     .setTimestamp()
+     .setDescription(`${message.author} you can only send numbers in <#${message.channel.id}>!`)
     try {
         if (/^[0-9]*$/.test(message.content) == false) {
             if (message.author.bot == true || message.channel.type == 'dm' || message.channel.id != "769473798978142210") {
@@ -343,8 +348,8 @@ bot.on('message', async message => {
             }
         
             message.delete();
-            message.author.send(`${message.author} you can only send numbers in <#${message.channel.id}>!`)
-        }
+            message.author.send(guessemb)
+ }
     }
     catch(e){console.log(e)}
 });
