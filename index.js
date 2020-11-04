@@ -4723,6 +4723,7 @@ const msg = message.reply("Canceling nuke command...")
 await msg.reply("Cancelled.")
 }
             })
+        })
    }
     if (command === "purge" || command === "clear") {
 		const amount = args.join(" ");
