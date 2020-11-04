@@ -347,7 +347,7 @@ bot.on('message', async message => {
         }
     }
     catch(e){console.log(e)}
-}
+});
  
 bot.on('message', async message => {
     if(message.content == "+restart") {
