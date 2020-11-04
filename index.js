@@ -1111,7 +1111,7 @@ const { decodeHTMLEntities } = require('./util.js');
     if (args[0] === 'ipl') {
    const iplembed = new MessageEmbed()
     .setTitle("IPL")
-    .setDescription('UpComing:  \tSchedule of all upcoming IPL matches(at most 6)\nLive:  \t\tLive Score\nStandings: \tCurrent Standings\nPlayer:    \tPlayer Info e.g +player Patt Cummins')
+    .setDescription('1)**UpComing:**  \tSchedule of all upcoming IPL matches(at most 6)\n2)**Live:**  \t\tLive Score\n3)**Standings:** \tCurrent Standings\n4)**Player:**    \tPlayer Info e.g +player Patt Cummins')
     .setColor("RANDOM")
     .setTimestamp()
     .setFooter(`Command Used by : ${message.author.tag}`)
