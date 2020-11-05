@@ -959,19 +959,19 @@ const reason = message.content.split(" ").slice(1).join(" ");
         c.overwritePermissions([
   {
      id: role.id,
-     allow: ['SEND_MESSAGES', 'READ_MESSAGES'],
+     allow: ['SEND_MESSAGES'], ['READ_MESSAGES'],
   },
 ]);
         c.overwritePermissions([
   {
      id: message.guild.id,
-     deny: ['SEND_MESSAGES', 'READ_MESSAGES'],
+     deny: ['SEND_MESSAGES'], ['READ_MESSAGES'],
   },
 ]);
         c.overwritePermissions([
   {
      id: message.author.id,
-     allow: ['SEND_MESSAGES', 'READ_MESSAGES'],
+     allow: ['SEND_MESSAGES'], ['READ_MESSAGES'],
   },
 ]);
         const embed2 = new MessageEmbed()
