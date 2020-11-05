@@ -955,7 +955,7 @@ const reason = message.content.split(" ").slice(1).join(" ");
     return
     }
     let role = message.guild.roles.cache.find(role => role.name === "support");        
-    let c = message.guild.channels.create(`ticket-${message.author.username}`, {
+   channel = message.guild.channels.create(`ticket-${message.author.username}`, {
 			type: 'text', permissionOverwrites: [
 				{
 					id: message.guild.id,
@@ -981,7 +981,7 @@ const reason = message.content.split(" ").slice(1).join(" ");
         .setColor("RANDOM")
         .setDescription(`Hey ${message.author.username}! \n Our **Support Team** will be with you shortly. Please explain your reason for opening the ticket in as much detail as possible.`)
         .setTimestamp();
-        c.send(embed3);
+        channel.send(embed3);
   }
    if (command === "add") {
    if (!message.channel.name.startsWith(`ticket-`)) {
@@ -6388,13 +6388,13 @@ bot.on('message', async message => {
         }
         if (!active || !found) {
             active = {};
-            let channel = await guild.channels.create(`${message.author.username}-${message.author.discriminator}`)
+            channel = await guild.channels.create(`${message.author.username}-${message.author.discriminator}`)
             channel.setParent(serverStats.ticketCategoryID)
             channel.setTopic(`+close to close the ticket | Support for ${message.author.tag} | ID: ${message.author.id}`)
 
             channel.overwritePermissions([
   {
-     id: channel.guild.id,
+     id: "763233532369567765",
      deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
