@@ -959,19 +959,19 @@ const reason = message.content.split(" ").slice(1).join(" ");
         c.overwritePermissions([
   {
      id: role.id,
-     allow: ['SEND_MESSAGES'], ['READ_MESSAGES'],
+     allow: ['SEND_MESSAGES'], ['VIEW_CHANNEL'],
   },
 ]);
         c.overwritePermissions([
   {
      id: message.guild.id,
-     deny: ['SEND_MESSAGES'], ['READ_MESSAGES'],
+     deny: ['SEND_MESSAGES'], ['VIEW_CHANNEL'],
   },
 ]);
         c.overwritePermissions([
   {
      id: message.author.id,
-     allow: ['SEND_MESSAGES'], ['READ_MESSAGES'],
+     allow: ['SEND_MESSAGES'], ['VIEW_CHANNEL'],
   },
 ]);
         const embed2 = new MessageEmbed()
@@ -999,7 +999,7 @@ const reason = message.content.split(" ").slice(1).join(" ");
     message.channel.overwritePermissions([
   {
      id: addedmember.id,
-     allow: ['SEND_MESSAGES', 'READ_MESSAGES'],
+     allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
     const embed5 = new MessageEmbed()
@@ -1020,7 +1020,7 @@ const reason = message.content.split(" ").slice(1).join(" ");
     message.channel.overwritePermissions([
   {
      id: removedmember.id,
-     deny: ['SEND_MESSAGES', 'READ_MESSAGES'],
+     deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
     const embed7 = new MessageEmbed()
