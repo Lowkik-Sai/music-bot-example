@@ -955,7 +955,7 @@ const reason = message.content.split(" ").slice(1).join(" ");
     return
     }
     let role = message.guild.roles.cache.find(role => role.name === "support");        
-   channel = message.guild.channels.create(`ticket-${message.author.username}`, {
+    message.guild.channels.create(`ticket-${message.author.username}`, {
 			type: 'text', permissionOverwrites: [
 				{
 					id: message.guild.id,
@@ -970,18 +970,19 @@ const reason = message.content.split(" ").slice(1).join(" ");
 					allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
 				},
 			],
-    }).catch(console.error);
+    }).then(c => {
+       const embed3 = new MessageEmbed()
+        .setColor("RANDOM")
+        .setDescription(`Hey ${message.author.username}! \n Our **Support Team** will be with you shortly. Please explain your reason for opening the ticket in as much detail as possible.`)
+        .setTimestamp();
+        c.send(embed3)
+   }).catch(console.error);
        const embed2 = new MessageEmbed()
         .setColor("RANDOM")
         .setDescription(`Your ticket has been created in ` + c.toString())
         .setTimestamp();
         message.channel.send(embed2);
 
-        const embed3 = new MessageEmbed()
-        .setColor("RANDOM")
-        .setDescription(`Hey ${message.author.username}! \n Our **Support Team** will be with you shortly. Please explain your reason for opening the ticket in as much detail as possible.`)
-        .setTimestamp();
-        channel.send(embed3);
   }
    if (command === "add") {
    if (!message.channel.name.startsWith(`ticket-`)) {
