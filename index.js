@@ -360,6 +360,10 @@ const guessemb = new MessageEmbed()
  }
     }
     catch(e){console.log(e)}
+});
+
+bot.on('message', async message => {
+    
     if(message.content == "+restart") {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
         message.react('✅');
@@ -976,13 +980,13 @@ const reason = message.content.split(" ").slice(1).join(" ");
         .setDescription(`Hey ${message.author.username}! \n Our **Support Team** will be with you shortly. Please explain your reason for opening the ticket in as much detail as possible.`)
         .setTimestamp();
         c.send(embed3)
-   }).catch(console.error);
+   
        const embed2 = new MessageEmbed()
         .setColor("RANDOM")
         .setDescription(`Your ticket has been created in ` + c.toString())
         .setTimestamp();
         message.channel.send(embed2);
-
+    }).catch(console.error);
   }
    if (command === "add") {
    if (!message.channel.name.startsWith(`ticket-`)) {
