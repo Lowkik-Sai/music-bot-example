@@ -577,12 +577,6 @@ bot.on("ready", async () => {
     .setDescription("I'm Online")
     .setTimestamp()
   dms.send(sendembed);
-   if (message.channel.id === giveawayChannel) {
-    if (giveawayActive) {
-        lastMessageID = message.id;
-        setTimeout(CheckWinner, 30000, message);
-    }
-}
 
 });
 
@@ -605,6 +599,13 @@ bot.on("message", async message => {
       .setDescription(`${message.author}, You have leveled up to level ${levelfetch}`)
     message.channel.send(levelembed)
   }
+
+  if (message.channel.id === giveawayChannel) {
+    if (giveawayActive) {
+        lastMessageID = message.id;
+        setTimeout(CheckWinner, 30000, message);
+    }
+}
 })
 
 bot.on("guildCreate", (guild) => {
