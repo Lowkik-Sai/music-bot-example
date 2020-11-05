@@ -976,13 +976,13 @@ const reason = message.content.split(" ").slice(1).join(" ");
 ]);
         const embed2 = new MessageEmbed()
         .setColor("RANDOM")
-        .addField(`Ticket Bot`, `Your ticket has been created in ` + c.toString())
+        .setDescription(`Your ticket has been created in ` + c.toString())
         .setTimestamp();
         message.channel.send(embed2);
 
         const embed3 = new MessageEmbed()
-        .setColor(embedColor)
-        .addField(`Hey ${message.author.username}!`, `Our **Support Team** will be with you shortly. Please explain your reason for opening the ticket in as much detail as possible.`)
+        .setColor("RANDOM")
+        .setDescription(`Hey ${message.author.username}!`, `Our **Support Team** will be with you shortly. Please explain your reason for opening the ticket in as much detail as possible.`)
         .setTimestamp();
         c.send(embed3);
     }).catch(console.error);
@@ -991,7 +991,7 @@ const reason = message.content.split(" ").slice(1).join(" ");
    if (!message.channel.name.startsWith(`ticket-`)) {
     const embed4 = new MessageEmbed()
     .setColor("RANDOM")
-    .addField(`Ticket Bot`, `You can't use the this outside of a ticket channel.`)
+    .setDescription(`You can't use the this outside of a ticket channel.`)
     message.channel.send(embed4);
     return
     }
@@ -1004,7 +1004,7 @@ const reason = message.content.split(" ").slice(1).join(" ");
 ]);
     const embed5 = new MessageEmbed()
     .setColor("RANDOM")
-    .addField(`Ticket Bot`, '**' + addedmember + `** has been added to the ticket. Remove with [${PREFIX}remove]().`)
+    .setDescription('**' + addedmember + `** has been added to the ticket. Remove with [${PREFIX}remove]().`)
     message.channel.send(embed5);
 
   }
@@ -1012,7 +1012,7 @@ const reason = message.content.split(" ").slice(1).join(" ");
   if (!message.channel.name.startsWith(`ticket-`)) {
     const embed6 = new MessageEmbed()
     .setColor("RANDOM")
-    .addField(`Ticket Bot`, `You can't use the this outside of a ticket channel.`)
+    .setDescription(`You can't use the this outside of a ticket channel.`)
     message.channel.send(embed6);
     return
     }
@@ -1025,21 +1025,21 @@ const reason = message.content.split(" ").slice(1).join(" ");
 ]);
     const embed7 = new MessageEmbed()
     .setColor("RANDOM")
-    .addField(`Ticket Bot`, '**' + removedmember + '** has been removed from the ticket.')
+    .setDescription('**' + removedmember + '** has been removed from the ticket.')
     message.channel.send(embed7);
   }
    if (command === "close") {
    if (!message.channel.name.startsWith(`ticket-`)) {
     const embed8 = new MessageEmbed()
     .setColor("RANDOM")
-    .addField(`Ticket Bot`, `You can't use the this outside of a ticket channel.`)
+    .setDescription(`You can't use the this outside of a ticket channel.`)
     message.channel.send(embed8);
     return
     }   
 
     const embed9 = new MessageEmbed()
     .setColor("RANDOM")
-    .addField(`Ticket Bot`, 'Are you sure? Once confirmed, you cannot reverse this action!\nTo confirm, type \`-confirm\`. This will time out in 10 seconds and be cancelled.')
+    .setDescription('Are you sure? Once confirmed, you cannot reverse this action!\nTo confirm, type \`-confirm\`. This will time out in 10 seconds and be cancelled.')
     message.channel.send(embed9)
     .then((m) => {
       message.channel.awaitMessages(response => response.content === '-confirm', {
@@ -6398,7 +6398,7 @@ bot.on('message', async message => {
 
             channel.overwritePermissions([
   {
-     id: serverStats.guildID,
+     id: channel.guild.id,
      deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
   },
 ]);
