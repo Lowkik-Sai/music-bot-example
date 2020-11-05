@@ -955,19 +955,24 @@ const reason = message.content.split(" ").slice(1).join(" ");
     }
     message.guild.channels.create(`ticket-${message.author.username}`, "text").then(c => {
         let role = message.guild.roles.cache.find(role => role.name === "support");
-        let role2 = message.guild.roles.cache.find(role => role.name === "@everyone");
-        c.overwritePermissions(role, {
-            SEND_MESSAGES: true,
-            READ_MESSAGES: true
-        });
-        c.overwritePermissions(role2, {
-            SEND_MESSAGES: false,
-            READ_MESSAGES: false
-        });
-        c.overwritePermissions(message.author, {
-            SEND_MESSAGES: true,
-            READ_MESSAGES: true
-        });
+        c.overwritePermissions([
+  {
+     id: role.id,
+     allow: ['SEND_MESSAGES', 'READ_MESSAGES'],
+  },
+]);
+        c.overwritePermissions([
+  {
+     id: message.guild.id,
+     deny: ['SEND_MESSAGES', 'READ_MESSAGES'],
+  },
+]);
+        c.overwritePermissions([
+  {
+     id: message.author.id,
+     allow: ['SEND_MESSAGES', 'READ_MESSAGES'],
+  },
+]);
         const embed2 = new MessageEmbed()
         .setColor("RANDOM")
         .addField(`Ticket Bot`, `Your ticket has been created in ` + c.toString())
