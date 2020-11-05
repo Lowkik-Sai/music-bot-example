@@ -955,7 +955,7 @@ const reason = message.content.split(" ").slice(1).join(" ");
     return
     }
     message.guild.channels.create(`ticket-${message.author.username}`, "text").then(c => {
-        let role = message.guild.roles.cache.find(role => role.name === "support");
+        let role = message.guild.roles.cache.find(role => role.name === "support");        
         c.overwritePermissions([
   {
      id: role.id,
