@@ -49,6 +49,7 @@ function CheckWinner(message) {
   color: 3066993,
   description: `Congratulations ${message.author}, you won the survival contest!`
 }});
+    db.set(`lms_${message.author.id}`, message.author.id) 
     }
 }
 
@@ -607,6 +608,23 @@ bot.on("message", async message => {
         setTimeout(CheckWinner, 30000, message);
     }
 }
+   if(message.content.startsWith("+resetwinnerslms")) {
+        if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
+        db.delete(`lms_${message.author.id}`)
+        let winnerEmbed = new MessageEmbed()
+  .setColor("RANDOM")
+  .setDescription(`Successfully,Resetted LMS winner!`);
+  message.channel.send(winnerEmbed)
+     }
+     if(message.content.startsWith("+winnerslms")) {
+        if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
+        let winner = db.fetch(`lms_${message.author.id}`)
+        if (!winner) return message.reply("No Winner yet!");
+      let winnerEmbed = new MessageEmbed()
+  .setColor("RANDOM")
+  .setDescription(`Winner of this LMS contest is <@${winner}>`);
+  message.channel.send(winnerEmbed)
+     }
 })
 
 bot.on("guildCreate", (guild) => {
