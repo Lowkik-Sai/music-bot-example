@@ -954,26 +954,23 @@ const reason = message.content.split(" ").slice(1).join(" ");
     message.channel.send(embed1);
     return
     }
-    message.guild.channels.create(`ticket-${message.author.username}`, "text").then(c => {
-        let role = message.guild.roles.cache.find(role => role.name === "support");        
-        c.overwritePermissions([
-  {
-     id: role.id,
-     allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
-  },
-]);
-        c.overwritePermissions([
-  {
-     id: message.guild.id,
-     deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
-  },
-]);
-        c.overwritePermissions([
-  {
-     id: message.author.id,
-     allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
-  },
-]);
+    let role = message.guild.roles.cache.find(role => role.name === "support");        
+    message.guild.channels.create(`ticket-${message.author.username}`, {
+			type: 'text', permissionOverwrites: [
+				{
+					id: message.guild.id,
+					deny: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
+				},
+				{
+					id: message.author.id,
+					allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
+				},
+				{
+					id: role.id,
+					allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
+				},
+			],
+		})
         const embed2 = new MessageEmbed()
         .setColor("RANDOM")
         .setDescription(`Your ticket has been created in ` + c.toString())
@@ -1004,7 +1001,7 @@ const reason = message.content.split(" ").slice(1).join(" ");
 ]);
     const embed5 = new MessageEmbed()
     .setColor("RANDOM")
-    .setDescription('**' + addedmember + `** has been added to the ticket. Remove with [${PREFIX}remove]().`)
+    .setDescription('**' + addedmember + `** has been added to the ticket. To Remove type +member`)
     message.channel.send(embed5);
 
   }
