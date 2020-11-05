@@ -995,7 +995,12 @@ const reason = message.content.split(" ").slice(1).join(" ");
     return
     }
     addedmember = message.mentions.members.first();
-    message.channel.overwritePermissions(addedmember, { SEND_MESSAGES : true, VIEW_CHANNEL : true});
+    message.channel.overwritePermissions([
+  {
+     id: addedmember.id,
+     allow: ['SEND_MESSAGES', 'READ_MESSAGES'],
+  },
+]);
     const embed5 = new MessageEmbed()
     .setColor("RANDOM")
     .addField(`Ticket Bot`, '**' + addedmember + `** has been added to the ticket. Remove with [${PREFIX}remove]().`)
@@ -1011,7 +1016,12 @@ const reason = message.content.split(" ").slice(1).join(" ");
     return
     }
     removedmember = message.mentions.members.first();
-    message.channel.overwritePermissions(removedmember, { SEND_MESSAGES : false, VIEW_CHANNEL : false});
+    message.channel.overwritePermissions([
+  {
+     id: removedmember.id,
+     deny: ['SEND_MESSAGES', 'READ_MESSAGES'],
+  },
+]);
     const embed7 = new MessageEmbed()
     .setColor("RANDOM")
     .addField(`Ticket Bot`, '**' + removedmember + '** has been removed from the ticket.')
