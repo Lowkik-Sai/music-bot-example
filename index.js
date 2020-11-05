@@ -970,7 +970,6 @@ const reason = message.content.split(" ").slice(1).join(" ");
 					allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
 				},
 			],
-		})
         const embed2 = new MessageEmbed()
         .setColor("RANDOM")
         .setDescription(`Your ticket has been created in ` + c.toString())
@@ -1036,10 +1035,10 @@ const reason = message.content.split(" ").slice(1).join(" ");
 
     const embed9 = new MessageEmbed()
     .setColor("RANDOM")
-    .setDescription('Are you sure? Once confirmed, you cannot reverse this action!\nTo confirm, type \`-confirm\`. This will time out in 10 seconds and be cancelled.')
+    .setDescription('Are you sure? Once confirmed, you cannot reverse this action!\nTo confirm, type \`+confirm\`. This will time out in 10 seconds and be cancelled.')
     message.channel.send(embed9)
     .then((m) => {
-      message.channel.awaitMessages(response => response.content === '-confirm', {
+      message.channel.awaitMessages(response => response.content === '+confirm', {
         max: 1,
         time: 10000,
         errors: ['time'],
