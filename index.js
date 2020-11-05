@@ -38,18 +38,19 @@ const serverStats = {
     ticketCategoryID: '771936611063038012'
 }
 
-function CheckWinner(message) {
-    if (message.id === lastMessageID) {
-        giveawayActive = false;
-        message.reply(`Congratulations ${message.author}, you won the giveaway!`);
-    }
-}
-
 let giveawayActive = true;
 let giveawayChannel = '763233532797124649';
 let lastMessageID = '';
 
-
+function CheckWinner(message) {
+    if (message.id === lastMessageID) {
+        giveawayActive = false;
+        message.channel.send({embed: {
+  color: 3066993,
+  description: `Congratulations ${message.author}, you won the survival contest!`
+}});
+    }
+}
 
 function clean(text) {
     if (typeof(text) === "string")
