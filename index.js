@@ -722,7 +722,7 @@ const invites = {}
 
     bot.on("guildMemberAdd", (member) => { //usage of welcome event
   let chx = db.get(`welchannel_${member.guild.id}`); //defining var
-  var def_chx = guild.channels.cache.filter(chx => chx.type === "text" && c.permissionsFor(guild.me).has("SEND_MESSAGES")).find(x => x.position === 0);
+  var def_chx = guild.channels.cache.filter(chx => chx.type === "text" && chx.permissionsFor(guild.me).has("SEND_MESSAGES")).find(x => x.position === 0);
 
   if(chx === null) chx = 'def_chx';
 
