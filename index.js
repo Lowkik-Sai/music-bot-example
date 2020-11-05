@@ -955,7 +955,7 @@ const reason = message.content.split(" ").slice(1).join(" ");
     return
     }
     let role = message.guild.roles.cache.find(role => role.name === "support");        
-    message.guild.channels.create(`ticket-${message.author.username}`, {
+    let c = message.guild.channels.create(`ticket-${message.author.username}`, {
 			type: 'text', permissionOverwrites: [
 				{
 					id: message.guild.id,
@@ -970,7 +970,8 @@ const reason = message.content.split(" ").slice(1).join(" ");
 					allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
 				},
 			],
-        const embed2 = new MessageEmbed()
+    }).catch(console.error);
+       const embed2 = new MessageEmbed()
         .setColor("RANDOM")
         .setDescription(`Your ticket has been created in ` + c.toString())
         .setTimestamp();
@@ -978,10 +979,9 @@ const reason = message.content.split(" ").slice(1).join(" ");
 
         const embed3 = new MessageEmbed()
         .setColor("RANDOM")
-        .setDescription(`Hey ${message.author.username}!`, `Our **Support Team** will be with you shortly. Please explain your reason for opening the ticket in as much detail as possible.`)
+        .setDescription(`Hey ${message.author.username}! \n Our **Support Team** will be with you shortly. Please explain your reason for opening the ticket in as much detail as possible.`)
         .setTimestamp();
         c.send(embed3);
-    }).catch(console.error);
   }
    if (command === "add") {
    if (!message.channel.name.startsWith(`ticket-`)) {
@@ -6388,7 +6388,7 @@ bot.on('message', async message => {
         }
         if (!active || !found) {
             active = {};
-            channel = await guild.channels.create(`${message.author.username}-${message.author.discriminator}`)
+            let channel = await guild.channels.create(`${message.author.username}-${message.author.discriminator}`)
             channel.setParent(serverStats.ticketCategoryID)
             channel.setTopic(`+close to close the ticket | Support for ${message.author.tag} | ID: ${message.author.id}`)
 
