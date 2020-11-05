@@ -942,11 +942,12 @@ const reason = message.content.split(" ").slice(1).join(" ");
     if (!message.guild.roles.cache.find(role => role.name === "support")) {
     const embed0 = new MessageEmbed()
     .setColor("RANDOM")
-    .addField(`Ticket Bot`, `This server doesn't have a \`Support\` role made, so the ticket won't be opened.\nIf you are an administrator, make one with that name exactly and give it to users that should be able to see tickets.`)
+    .setTimestamp()
+    .setDescription(`This server doesn't have a \`Support\` role made, so the ticket won't be opened.\nIf you are an administrator, make one with that name exactly and give it to users that should be able to see tickets.`)
     message.channel.send(embed0);
     return
     }
-    if (message.guild.channels.exists("name", "ticket-" + message.author.username)) {
+    if (message.guild.channels.cache.find((ch) => ch.name === "ticket-" + message.author.username)) {
     const embed1 = new MessageEmbed()
     .setColor("RANDOM")
     .addField(`Ticket Bot`, `You already have a ticket open.`)
