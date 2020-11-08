@@ -1,5 +1,6 @@
-const { Client, Util, MessageEmbed} = require("discord.js");
+const { Client, Util, MessageEmbed, GuildAuditLogs, MessageAttachment} = require("discord.js");
 const { Permissions } = require('discord.js');
+const { Embeds } = require('discord-paginationembed');
 const util = require('util');
 const YouTube = require("simple-youtube-api");
 const ytdl = require("ytdl-core");
@@ -7,21 +8,57 @@ const db = require("quick.db");
 const Statcord = require("statcord.js");
 const ms = require("ms");
 const fs = require("fs");
+const arraySort = require('array-sort');// This will be used for sorting arrays
+const table = require('console.table'); // This will be used for preparing the output to a table
+const send = require('quick.hook'); // This will be used for creating & sending webhooks
+const fetch = require('node-fetch');
+const Message = require("discord.js");
 const moment = require("moment");
+const cron = require('cron');
+
+
 const Canvas = require('canvas-constructor');
 var jimp = require('jimp');
 const Discord = require("discord.js");
 require("dotenv").config();
 require("./server.js");
 
-
+const newsAPI = process.env.newsAPI;
 const PREFIX = process.env.PREFIX;
 const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
+const usersOnCooldown = new Set();
 
 const bot = new Client({
-    disableMentions: "everyone"
+    disableMentions: "everyone",
 });
+
+const serverStats = {
+    guildID: '763233532369567765',
+    ticketCategoryID: '771936611063038012'
+}
+
+let giveawayActive = true;
+let giveawayChannel = '763233532797124649';
+let lastMessageID = '';
+
+function CheckWinner(message) {
+    if (message.id === lastMessageID) {
+        giveawayActive = false;
+        message.channel.send({embed: {
+  color: 3066993,
+  description: `Congratulations ${message.author}, you won the survival contest!`
+}});
+    db.set(`lms_${message.author.id}`, message.author.id) 
+    }
+}
+
+function clean(text) {
+    if (typeof(text) === "string")
+      return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    else
+        return text;
+}
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
@@ -39,23 +76,362 @@ bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
 },10000);
 
+const {
+    getUpcommingMatch,
+    getPlayerStats,
+    getLiveData,
+} = require('./dataFetch.js');
+
+const request = require('request');
+const cheerio = require('cheerio');
+
+const PAGE_URL = 'https://www.iplt20.com/points-table/2020';
+
+sendLiveData = (data, channel) => {
+    var title = data['score']
+    var score = data['stat']
+    if(typeof(title) ===  'undefined' || typeof(score) ==='undefined'){
+        title="Oops!! Please try again after sometime"
+        score="Perhaps there is no live game!! Or wait a couple of minutes"
+    }
+    const liveEmbed = new MessageEmbed()
+        .setColor("RANDOM")
+        .setTitle(title)
+        .setDescription(score)
+        .setURL('https://www.iplt20.com/')
+        .setThumbnail('https://i.imgur.com/WdkS5wH.jpg')
+        .setTimestamp();
+
+    channel.send(liveEmbed);
+};
+
+sendStandings = (channel) => {
+    let table = [],
+        row = [],
+        teamNames = [];
+    try {
+        request(PAGE_URL, (error, response, html) => {
+            if (!error && response.statusCode == 200) {
+                const $ = cheerio.load(html);
+                $('.standings-table__team-name--short').each((i, el) => {
+                    const item = $(el).text();
+                    teamNames.push(item);
+                });
+
+                $('.standings-table td').each((i, el) => {
+                    const item = $(el).text();
+                    if (i % 12 == 0) {
+                        row = [];
+                        // row.push(item);
+                    } else if (i % 12 == 11) {
+                        table.push(row);
+                    } else if (
+                        i % 12 != 1 &&
+                        i % 12 != 6 &&
+                        i % 12 != 5 &&
+                        i % 12 != 8 &&
+                        i % 12 != 9
+                    ) {
+                        row.push(item.replace(' ', ''));
+                    }
+                });
+
+                headers = [
+                    'Teams',
+                    'Played',
+                    'Win',
+                    'Lose',
+                    'Net RR',
+                    'Points',
+                ];
+                const SPACE = 6;
+                let msg = '```|';
+                for (let i = 0; i < headers.length; i++) {
+                    msg +=
+                        '  ' +
+                        headers[i] +
+                        ' '.repeat(SPACE - headers[i].length) +
+                        '|';
+                }
+                msg += '\n';
+                for (let i = 0; i < headers.length; i++) {
+                    msg += '-'.repeat(SPACE + 3);
+                }
+                msg += '\n|';
+                for (let i = 0; i < 8; i++) {
+                    msg +=
+                        '  ' +
+                        teamNames[i] +
+                        ' '.repeat(SPACE - teamNames[i].length) +
+                        '|';
+                    for (let j = 0; j < table[0].length; j++) {
+                        msg +=
+                            '  ' +
+                            table[i][j] +
+                            ' '.repeat(SPACE - table[i][j].length) +
+                            '|';
+                    }
+                    if (i != 7) {
+                        msg += '\n|';
+                    }
+                }
+                msg += '```';
+                channel.send('**IPL 2020 Standings**\n');
+                channel.send(msg);
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        channel.send('> Something went wrong :(');
+    }
+};
+
+formatDDMMYY = (date) => {
+    let res = '';
+    date = new Date(date);
+    res +=
+        date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+    return 'Date: ' + res;
+};
+
+formatTime = (date) => {
+    let res = '';
+    date = new Date(date);
+    mins = date.getMinutes() + 30;
+    hour = date.getHours() + Math.floor(mins / 60) + 5;
+    mins = mins % 60;
+    res += hour + ':' + mins.toString().padStart(2, '0');
+    return 'Time: ' + res;
+};
+
+sendScheduleMatch = (matches, channel) => {
+    let fields = [];
+    if (matches.length > 6) {
+        matches = matches.slice(0, 6);
+    }
+    for (match of matches) {
+        fields.push({
+            name: match['team-1'],
+            value: formatDDMMYY(match['dateTimeGMT']),
+            inline: true,
+        });
+        fields.push({
+            name: match['team-2'],
+            value: formatTime(match['dateTimeGMT']),
+            inline: true,
+        });
+        fields.push({ name: '\u200B', value: '\u200B' });
+    }
+
+    const matchEmbed = new MessageEmbed()
+        .setColor("RANDOM")
+        .setTitle('Upcoming Matches')
+        .setDescription('Team 1  vs  Team 2')
+        .setURL('https://www.iplt20.com/')
+        .setThumbnail('https://i.imgur.com/WdkS5wH.jpg')
+        .addFields(fields)
+        .setTimestamp();
+
+    channel.send(matchEmbed);
+};
+
+sendPlayerStats = (stats, channel) => {
+    try {
+        const matchEmbed = new MessageEmbed()
+            .setColor("RANDOM")
+            .setTitle(stats['fullName'])
+            .setDescription(stats['country'])
+            .setURL('https://www.iplt20.com/')
+            .setThumbnail(stats['imageURL'])
+            .addFields([
+                {
+                    name: 'Teams',
+                    value: stats['majorTeams'].split(','),
+                },
+                { name: 'Playing Role', value: stats['playingRole'] },
+                {
+                    name: 'Batting Style',
+                    value: stats['battingStyle'],
+                    inline: true,
+                },
+                {
+                    name: 'Batting Style',
+                    value: stats['battingStyle'],
+                    inline: true,
+                },
+                { name: 'Current Age', value: stats['currentAge'] },
+            ])
+            .setImage(stats['imageURL'])
+            .setTimestamp();
+        channel.send(matchEmbed);
+    } catch (err) {
+        channel.send('> Sorry something went wrong !!');
+    }
+}
+
+bot.on('message', (message) => {
+    if (message.author.bot) return;
+    if (message.content.startsWith(PREFIX)) {
+        const [CMD_NAME, ...args] = message.content
+            .trim()
+            .substring(PREFIX.length)
+            .split(/\s+/);
+
+        if (CMD_NAME == 'upcoming') {
+            let upcommingMatch = getUpcommingMatch();
+            sendScheduleMatch(upcommingMatch, message.channel);
+        } else if (CMD_NAME == 'player') {
+            if (args.length === 0) {
+                message.channel.send(
+                    '```Enter player name\n Correct syntax: $player <player_name> .\nFor more help type $help```'
+                );
+                return;
+            }
+            const name = args.join(' ');
+            const playerStat = getPlayerStats(name);
+            if (playerStat == null) {
+                message.channel.send(
+                    '```Enter player name\nCorrect syntax: $player <player_name> \nFor more help type $help```'
+                );
+                return;
+            }
+            playerStat.then((value) => {
+                sendPlayerStats(value, message.channel);
+            });
+            return;
+        } else if (CMD_NAME === 'standings') {
+            sendStandings(message.channel);
+            return;
+        } else if (CMD_NAME === 'live') {
+            const liveData = getLiveData();
+            liveData.then((val) => {
+                sendLiveData(val, message.channel);
+            });
+            return;
+        }
+    }
+})
 
 bot.on("ready", () => {
     console.log("GuessTheNumber is Ready!");
 });
 
+// Abyss reminder in Sky
+//CRON_TZ="Asia/Singapore"
+let scheduledMessage = new cron.CronJob('30 6,18,21 * * 1-6', test => {
+  // This runs every Tue and Sun at 20:00:00
+  // 2000 local is 1200 
+  let abyss_channel = bot.channels.cache.get(`763233532797124649`)
+  abyss_channel.send("Abyss ending today!! " + '<@&769942587666464819>')
+  // pings Abyss Ping role
+});
+
+// Abyss reminder in 233
+let abyssTwothreethree = new cron.CronJob('30 7,19 * * 1-6', test => {
+  // This runs every Tue and Sun at 18:00:00
+  // 1800 local is 1000 
+  let huangwu_zh = bot.channels.cache.get(`763233532797124649`)
+  const attachment = new MessageAttachment("https://cdn.discordapp.com/attachments/672091622619480066/715150933297987604/image0.jpg");
+  huangwu_zh.send(attachment)
+});
+
+
+/* experimental
+let scheduledXdress = new cron.CronJob('* * * * *', test => {
+  // This runs every Tue and Sun at 20:00:00
+  // 2000 local is 1200 
+  let abyss_channel = bot.channels.cache.get(`675356163432513536`)
+  abyss_channel.send("crossdress <@" + '471300810194681866' + ">")
+  // pings hibiki
+});
+scheduledXdress.start()
+*/
+
+scheduledMessage.start()
+abyssTwothreethree.start()
+
+let battlelimit = 100; 
+let battlenumber = Math.floor(Math.random()* Math.floor(battlelimit));
 let limit = 20000; // You can change it through /limit command
 let number = Math.floor(Math.random()* Math.floor(limit)); // You can custom it through /number command and reroll it through /reroll
 let ownerID = '654669770549100575';
 let channelID = '769473798978142210';
 
 bot.on('message', async message => {
+    try {
+        if (/^[0-9]*$/.test(message.content) == false) {
+            if (message.author.bot == true || message.channel.type == 'dm' || message.channel.id != "769473798978142210") {
+                return;
+            }
+        
+            message.delete();
+const guessemb = new MessageEmbed()
+     .setTitle("Among Us Guess the Number Contest")
+     .setColor("RANDOM")
+     .setTimestamp()
+     .setDescription(`You can only send numbers in <#${message.channel.id}>!`)
+
+            message.author.send(guessemb)
+ }
+    }
+    catch(e){console.log(e)}
+});
+
+bot.on('message', async message => {
+    
     if(message.content == "+restart") {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
         message.react('✅');
         setTimeout(function() {
         	process.exit(0);
         }, 1000);
+    }
+    if(message.content == "+help") {
+        const PaginationEmbed = require('discord-paginationembed');
+
+const embeds = [
+    { title: 'Fun Commands', description: 'CovidStats,Carona' },
+    { title: 'Mod Commands', description: 'Kick,Ban,Mute' },
+    { title: 'Info Commands', description: 'ServerInfo,BotInfo,UserInfo' },
+    { title: 'Role Commands', description: 'AddRole,RemoveRole' },
+    { title: 'Utility', description: 'Hastebin,Report,etc commands are coming asap!' },
+    { title: 'Owner', description: 'Answer' },
+    { title: 'Music', description: 'play, search,stop, skip,resume' },
+]
+  embeds.push(new MessageEmbed());
+ 
+ 
+const Embeds = new PaginationEmbed.Embeds()
+  .setArray(embeds)
+  .setAuthorizedUsers([message.author.id])
+  .setChannel(message.channel)
+  .setPageIndicator(true)
+  .setFooter('Type +help <commandname>')
+  .setURL('https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg')
+  .setColor("RANDOM")
+  .setTimestamp()
+  // Sets the client's assets to utilise. Available options:
+  //  - message: the client's Message object (edits the message instead of sending new one for this instance)
+  //  - prompt: custom content for the message sent when prompted to jump to a page
+  //      {{user}} is the placeholder for the user mention
+  .setDeleteOnTimeout(false)
+  
+  // Listeners for PaginationEmbed's events
+  // After the initial embed has been sent
+  // (technically, after the client finished reacting with enabled navigation and function emojis).
+  .on('start', () => console.log('Started!'))
+  // When the instance is finished by a user reacting with `delete` navigation emoji
+  // or a function emoji that throws non-Error type.
+  .on('finish', (user) => console.log(`Finished! User: ${user.username}`))
+  // Upon a user reacting on the instance.
+  .on('react', (user, emoji) => console.log(`Reacted! User: ${user.username} | Emoji: ${emoji.name} (${emoji.id})`))
+  // When the awaiting timeout is reached.
+  .on('expire', () => console.warn('Expired!'))
+  // Upon an occurance of error (e.g: Discord API Error).
+  .on('error', console.error);
+
+ 
+await Embeds.build();
     }
     if(message.content == "+contestinfo" ) {
 	 const helpembed = new MessageEmbed()
@@ -65,6 +441,13 @@ bot.on('message', async message => {
             .setTimestamp()
             .setFooter("Among Us");
 	if(message.channel.id === channelID) return message.author.send(helpembed);
+    }
+    if(message.content == "+viewbattlenumber") {
+        if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
+        message.author.send({embed: {
+   color: 3066993,
+   description:`The current number is ${battlenumber}`
+}});
     }
     if(message.content == "+viewnumber") {
         if(message.author.id !== ownerID) return message.reply(`You don't have the permission to run this command.`);
@@ -153,8 +536,16 @@ bot.on('message', async message => {
     if(message.author.bot) return;
     if(message.channel.id === channelID) {
         if(!message.content.isNaN) {
-            if(message.content > limit) return message.reply(`The number is between 1 and ${limit}! Try again`).then(sent => sent.delete(10000));
-            if(message.content < 1) return message.reply(`The number cannot be negative! Try again`).then(sent => sent.delete(10000));
+            if(message.content > limit)
+               message.delete();
+   return message.author.send({embed: {
+   color: 3066993,
+   description: `The number is between 1 and ${limit}! Try again`}});
+            if(message.content < 1)
+               message.delete();
+    return message.author.send({embed: {
+   color: 3066993,
+   description: `The number cannot be negative! Try again`}});
             if(message.content == number) {
                 var everyone =  message.guild.roles.cache.find(r => r.name === 'everyone');
                 bot.channels.cache.find(channel=>channel.id== channelID).overwritePermissions([
@@ -174,6 +565,83 @@ bot.on('message', async message => {
             }
         } else return
     }
+});
+
+bot.on("ready", async () => {
+   const id = "654669770549100575"; // Discord User IDs look like a long string of random numbers
+
+  const user = await bot.users.fetch(id);
+
+  // Create/access a DM thread between the bot account and the user
+  const dms = await user.createDM();
+   const sendembed = new MessageEmbed()
+    .setColor("RANDOM")
+    .setDescription("I'm Online")
+    .setTimestamp()
+  dms.send(sendembed);
+
+});
+
+bot.on("message", async message => {
+  db.add(`messages_${message.guild.id}_${message.author.id}`, 1)
+  let messagefetch = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
+
+  let messages;
+  if (messagefetch == 25) messages = 25; //Level 1
+  else if (messagefetch == 65) messages = 65; // Level 2
+  else if (messagefetch == 115) messages = 115; // Level 3
+  else if (messagefetch == 200) messages = 200; // Level 4
+  else if (messagefetch == 300) messages = 300; // Level 5
+
+  if (!isNaN(messages)) {
+    db.add(`level_${message.guild.id}_${message.author.id}`, 1)
+    let levelfetch = db.fetch(`level_${message.guild.id}_${message.author.id}`)
+
+    let levelembed = new Discord.MessageEmbed()
+      .setDescription(`${message.author}, You have leveled up to level ${levelfetch}`)
+    message.channel.send(levelembed)
+  }
+
+  if (message.channel.id === giveawayChannel) {
+    if (giveawayActive) {
+        lastMessageID = message.id;
+        setTimeout(CheckWinner, 30000, message);
+    }
+}
+   if(message.content.startsWith("+resetwinnerslms")) {
+        if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
+        db.delete(`lms_${message.author.id}`)
+        let winnerEmbed = new MessageEmbed()
+  .setColor("RANDOM")
+  .setDescription(`Successfully,Resetted LMS winner!`);
+  message.channel.send(winnerEmbed)
+     }
+     if(message.content.startsWith("+winnerslms")) {
+        if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
+        let winner = db.fetch(`lms_${message.author.id}`)
+        if (!winner) return message.reply("No Winner yet!");
+      let winnerEmbed = new MessageEmbed()
+  .setColor("RANDOM")
+  .setDescription(`Winner of this LMS contest is <@${winner}>`);
+  message.channel.send(winnerEmbed)
+     }
+})
+
+bot.on("guildCreate", (guild) => {
+  const channel = guild.channels.cache.find(
+    (c) => c.type === "text" && c.permissionsFor(guild.me).has("SEND_MESSAGES")
+  );
+   const embed = new MessageEmbed()
+     .setTitle("Among Us")
+     .setDescription("Thanks for inviting me into this server!\n My Prefix is \`+\`")
+     .setColor("RANDOM")
+     .setTimestamp()
+     .setFooter("Type +help for more info!");
+  if (channel) {
+    channel.send(embed);
+  } else {
+    console.log(`can\`t send welcome message in guild ${guild.name}`);
+  }
 });
 
 bot.on('guildCreate', async guild => {
@@ -262,12 +730,40 @@ bot.on("voiceStateUpdate", (mold, mnew) => {
 	} ;
 });
 
-bot.on("guildMemberAdd", (member) => { //usage of welcome event
+const invites = {}
+
+    const getInviteCounts = async (guild) => {
+        return await new Promise(resolve => {
+            guild.fetchInvites().then(invites => {
+                const inviteCounter = {}
+
+                invites.forEach(invite => {
+                    const { uses, inviter } = invite
+                    const { username, discriminator } = inviter
+
+                    const name = `${username}#${discriminator}`
+
+                    inviteCounter[name] = (inviteCounter[name] || 0) + uses
+
+
+                });
+
+                resolve(inviteCounter)
+            })
+        })
+
+    }
+
+    bot.guilds.cache.forEach(async (guild) => {
+        invites[guild.id] = await getInviteCounts(guild);
+
+    })
+
+    bot.on("guildMemberAdd", (member) => { //usage of welcome event
   let chx = db.get(`welchannel_${member.guild.id}`); //defining var
-  
-  if(chx === null) { //check if var have value or not
-    return;
-  }
+  var def_chx = guild.channels.cache.filter(chx => chx.type === "text" && chx.permissionsFor(guild.me).has("SEND_MESSAGES")).find(x => x.position === 0);
+
+  if(chx === null) chx = 'def_chx';
 
   let wembed = new MessageEmbed() //define embed
   .setAuthor(member.user.username, member.user.avatarURL())
@@ -299,6 +795,23 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.reply(helpembed);
     }
+    if (command === "pornn") {
+ const randomPuppy = require('random-puppy')
+
+ if(!message.channel.nsfw) {return message.channel.send(`:underage: **This channel is not marked as NSFW!** :angry: `)}
+  else{
+  randomPuppy('porn')
+            .then(url => {
+                const embed = new MessageEmbed()
+                
+                .setTitle(`PORN`)
+                .setFooter(`Command Used by ${message.author.tag}`)
+                .setImage(url)
+                .setColor("RANDOM")
+    return message.channel.send({ embed });
+            })
+  }
+}
     if (command === "meme" ) {
         const randomPuppy = require('random-puppy');
         
@@ -346,7 +859,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
             //commands
     if(command === 'apply') {
-       const guildID = '763233532369567765';
+       const guildId = '763233532369567765';
         //Has to be in DMs
         if(message.channel.type != 'dm') {
             message.channel.send('Use this command in DMs!');
@@ -383,56 +896,81 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setColor('RED');
 
         //Sending Embed
-        const guild = bot.guilds.cache.get(guildID);
+        const guild = bot.guilds.cache.get(guildId);
         await guild.channels.cache.find(channel => channel.name === 'applications').send(embed);
     }
-    if (command === "help" || command === "cmd") {
-        const PaginationEmbed = require('discord-paginationembed');
+    if (command === "seizure") {
+    const emoji1 = '🇳'
+    const emoji = '🇾'
+    message.channel.send('Attention: This command could give you a mini seizure.. Do you want to continue?\nBy accepting you are responsible for giving other people seizures.').then(msg => {
+        msg.react(emoji).then(r => {
+            msg.react(emoji1)
+            const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
+            const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
+            const sure = msg.createReactionCollector(yes, {
+                time: 1000000
+            });
+            const no = msg.createReactionCollector(nopleas, {
+                time: 1000000
+            });
+            sure.on('collect', r => {
+                msg.delete();
+                const emb = new MessageEmbed()
+                    .setColor(0xFFFF00)
+                    .setImage('https://cdn.glitch.com/ce500e3d-b500-47a8-a6a8-c0b5657d808c%2FWebp.net-gifmaker.gif')
+                    .setFooter(`Command Used by : ${message.author.tag}`);
+                message.channel.send({
+                    embed: emb
+                })
+            })
+            no.on('collect', r => {
+                msg.delete();
+            })
+        })
+    })
+}
+    if (command === "pages" ) {
+    
+let pages = ['Page one!', 'Second page', 'Third page']
+let page = 1 
 
-const embeds = [
-    { title: 'Fun Commands', description: 'CovidStats,Carona' },
-    { title: 'Mod Commands', description: 'Kick,Ban,Mute' },
-    { title: 'Info Commands', description: 'ServerInfo,BotInfo,UserInfo' },
-    { title: 'Role Commands', description: 'AddRole,RemoveRole' },
-    { title: 'Utility', description: 'Hastebin,Report,etc commands are coming asap!' },
-    { title: 'Owner', description: 'Answer' },
-    { title: 'Music', description: 'play, search,stop, skip,resume' },
-]
-  embeds.push(new MessageEmbed());
- 
- 
-const Embeds = new PaginationEmbed.Embeds()
-  .setArray(embeds)
-  .setAuthorizedUsers([message.author.id])
-  .setChannel(message.channel)
-  .setPageIndicator(true)
-  .setFooter('Type +help <commandname>')
-  .setURL('https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg')
-  .setColor("RANDOM")
-  .setTimestamp()
-  // Sets the client's assets to utilise. Available options:
-  //  - message: the client's Message object (edits the message instead of sending new one for this instance)
-  //  - prompt: custom content for the message sent when prompted to jump to a page
-  //      {{user}} is the placeholder for the user mention
-  .setDeleteOnTimeout(false)
-  
-  // Listeners for PaginationEmbed's events
-  // After the initial embed has been sent
-  // (technically, after the client finished reacting with enabled navigation and function emojis).
-  .on('start', () => console.log('Started!'))
-  // When the instance is finished by a user reacting with `delete` navigation emoji
-  // or a function emoji that throws non-Error type.
-  .on('finish', (user) => console.log(`Finished! User: ${user.username}`))
-  // Upon a user reacting on the instance.
-  .on('react', (user, emoji) => console.log(`Reacted! User: ${user.username} | Emoji: ${emoji.name} (${emoji.id})`))
-  // When the awaiting timeout is reached.
-  .on('expire', () => console.warn('Expired!'))
-  // Upon an occurance of error (e.g: Discord API Error).
-  .on('error', console.error);
+const embed = new Discord.MessageEmbed() // Define a new embed
+.setColor(0xffffff) // Set the color
+.setFooter(`Page ${page} of ${pages.length}`)
+.setDescription(pages[page-1])
 
- 
-await Embeds.build();
-    }
+message.channel.send({embed}).then(msg => {
+  msg.react('⬅').then( r => {
+    msg.react('➡')
+
+    // Filters
+    const backwardsFilter = (reaction, user) => reaction.emoji.name === '⬅' && user.id === message.author.id
+    const forwardsFilter = (reaction, user) => reaction.emoji.name === '➡' && user.id === message.author.id
+
+    const backwards = msg.createReactionCollector(backwardsFilter, {timer: 6000})
+    const forwards = msg.createReactionCollector(forwardsFilter, {timer: 6000})
+
+    backwards.on('collect', (r, u) => {
+        if (page === 1) return r.users.remove(r.users.cache.filter(u => u === message.author).first())
+        page--
+        embed.setDescription(pages[page-1])
+        embed.setFooter(`Page ${page} of ${pages.length}`)
+        msg.edit(embed)
+        r.users.remove(r.users.cache.filter(u => u === message.author).first())
+    })
+
+    forwards.on('collect', (r, u) => {
+        if (page === pages.length) return r.users.remove(r.users.cache.filter(u => u === message.author).first())
+        page++
+        embed.setDescription(pages[page-1])
+        embed.setFooter(`Page ${page} of ${pages.length}`)
+        msg.edit(embed)
+        r.users.remove(r.users.cache.filter(u => u === message.author).first())
+    })
+  })
+})
+
+}
 });
 
 bot.on("message", async (message) => { // eslint-disable-line
@@ -442,7 +980,123 @@ bot.on("message", async (message) => { // eslint-disable-line
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
     // the rest of your code
-    
+    if (command === "ticket") {
+const reason = message.content.split(" ").slice(1).join(" ");
+    if (!message.guild.roles.cache.find(role => role.name === "support")) {
+    const embed0 = new MessageEmbed()
+    .setColor("RANDOM")
+    .setTimestamp()
+    .setDescription(`This server doesn't have a \`Support\` role made, so the ticket won't be opened.\nIf you are an administrator, make one with that name exactly and give it to users that should be able to see tickets.`)
+    message.channel.send(embed0);
+    return
+    }
+    if (message.guild.channels.cache.find((ch) => ch.name === "ticket-" + message.author.username)) {
+    const embed1 = new MessageEmbed()
+    .setColor("RANDOM")
+    .addField(`Ticket Bot`, `You already have a ticket open.`)
+    message.channel.send(embed1);
+    return
+    }
+    let role = message.guild.roles.cache.find(role => role.name === "support");        
+    message.guild.channels.create(`ticket-${message.author.username}`, {
+			type: 'text', permissionOverwrites: [
+				{
+					id: message.guild.id,
+					deny: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
+				},
+				{
+					id: message.author.id,
+					allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
+				},
+				{
+					id: role.id,
+					allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
+				},
+			],
+    }).then(c => {
+       const embed3 = new MessageEmbed()
+        .setColor("RANDOM")
+        .setDescription(`Hey ${message.author.username}! \n Our **Support Team** will be with you shortly. Please explain your reason for opening the ticket in as much detail as possible.`)
+        .setTimestamp();
+        c.send(embed3)
+   
+       const embed2 = new MessageEmbed()
+        .setColor("RANDOM")
+        .setDescription(`Your ticket has been created in ` + c.toString())
+        .setTimestamp();
+        message.channel.send(embed2);
+    }).catch(console.error);
+  }
+   if (command === "add") {
+   if (!message.channel.name.startsWith(`ticket-`)) {
+    const embed4 = new MessageEmbed()
+    .setColor("RANDOM")
+    .setDescription(`You can't use the this outside of a ticket channel.`)
+    message.channel.send(embed4);
+    return
+    }
+    addedmember = message.mentions.members.first();
+    message.channel.overwritePermissions([
+  {
+     id: addedmember.id,
+     allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
+  },
+]);
+    const embed5 = new MessageEmbed()
+    .setColor("RANDOM")
+    .setDescription('**' + addedmember + `** has been added to the ticket. To Remove type +member`)
+    message.channel.send(embed5);
+
+  }
+  if (command === "remove") {
+  if (!message.channel.name.startsWith(`ticket-`)) {
+    const embed6 = new MessageEmbed()
+    .setColor("RANDOM")
+    .setDescription(`You can't use the this outside of a ticket channel.`)
+    message.channel.send(embed6);
+    return
+    }
+    removedmember = message.mentions.members.first();
+    message.channel.overwritePermissions([
+  {
+     id: removedmember.id,
+     deny: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
+  },
+]);
+    const embed7 = new MessageEmbed()
+    .setColor("RANDOM")
+    .setDescription('**' + removedmember + '** has been removed from the ticket.')
+    message.channel.send(embed7);
+  }
+   if (command === "close") {
+   if (!message.channel.name.startsWith(`ticket-`)) {
+    const embed8 = new MessageEmbed()
+    .setColor("RANDOM")
+    .setDescription(`You can't use the this outside of a ticket channel.`)
+    message.channel.send(embed8);
+    return
+    }   
+
+    const embed9 = new MessageEmbed()
+    .setColor("RANDOM")
+    .setDescription('Are you sure? Once confirmed, you cannot reverse this action!\nTo confirm, type \`+confirm\`. This will time out in 10 seconds and be cancelled.')
+    message.channel.send(embed9)
+    .then((m) => {
+      message.channel.awaitMessages(response => response.content === '+confirm', {
+        max: 1,
+        time: 10000,
+        errors: ['time'],
+      })
+      .then((collected) => {
+          message.channel.delete();
+        })
+        .catch(() => {
+          m.edit('Ticket close timed out, the ticket was not closed.').then(m2 => {
+              m2.delete();
+          }, 3000);
+        });
+    });
+  }
     if (command === 'args-info') {
 	if (!args.length) {
 		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
@@ -453,8 +1107,962 @@ bot.on("message", async (message) => { // eslint-disable-line
 
 	message.channel.send(`First argument: ${args[0]}`);
     }
-    if (command == "flipbattle")
+    if (command === "quiz" ) {
+const quiz = [
+  { q: "What color is the sky?", a: ["no color", "invisible"] },
+  { q: "Name a soft drink brand.", a: ["pepsi", "coke", "rc", "7up", "sprite", "mountain dew"] },
+  { q: "Name a programming language.", a: ["actionscript", "coffeescript", "c", "c++", "basic", "python", "perl", "javascript", "dotnet", "lua", "crystal", "go", "d", "php", "ruby", "rust", "dart", "java", "javascript"] },
+  { q: "Who's a good boy?", a: ["you are", "whirl"] },
+  { q: "Who created me?", a: ["whirl", "Whirl#9077"] },
+  { q: "What programming language am I made in?", a: ["javascript",] },
+  { q: "Name the seventh planet from the Sun.", a: ["uranus"] },
+  { q: "Name the World's biggest island.", a: ["greenland",] },
+  { q: "What's the World's longest river?", a: ["amazon", "amazon river"] },
+  { q: "Name the World's largest ocean.", a: ["pacific", "pacific ocean"] },
+  { q: "Name one of the three primary colors.", a: ["blue", "red", "yellow"] },
+  { q: "How many colors are there in a rainbow?", a: ["7", "seven"] },
+  { q: "What do you call a time span of one thousand years?", a: ["millennium"] },
+  { q: "How many squares are there on a chess board?", a: ["64", "sixty four"] },
+  { q: "How many degrees are found in a circle?", a: ["360", "360 degrees", "three hundred sixty"] },
+  { q: "The Dewey Decimal system is used to categorize what?", a: ["books"] },
+  { q: "How many points does a compass have?", a: ["32", "thirty two"] },
+  { q: "How many strings does a cello have?", a: ["4", "four"] },
+  { q: "How many symphonies did Beethoven compose?", a: ["9", "nine"] },
+  { q: "How many lines should a limerick have?", a: ["5", "five"] },
+  { q: "What is the most basic language Microsoft made?", a: ["visual basic"] },
+  { q: "What is the most complicated language?", a: ["binary"] },
+  { q: "'OS' computer abbreviation usually means?", a: ["operating system"] }
+];
+const options = {
+  max: 1,
+  time: 60000,
+  errors: ["time"],
+};
+
+  const item = quiz[Math.floor(Math.random() * quiz.length)];
+   const quizembed = new MessageEmbed()
+     .setTitle("QUIZ")
+     .setDescription(item.q)
+     .setColor("RANDOM")
+     .setFooter("Guess the correcr answer within 60seconds and Get Coins")
+     .setTimestamp()
+  await message.channel.send(quizembed);
+  try {
+    const collected = await message.channel.awaitMessages(answer => item.a.includes(answer.content.toLowerCase()), options);
+    const winnerMessage = collected.first();
+    return message.channel.send({embed: new MessageEmbed()
+                                 .setAuthor(`Winner: ${winnerMessage.author.tag}`, winnerMessage.author.displayAvatarURL)
+                                 .setTitle(`Correct Answer: \`${winnerMessage.content}\``)
+                                 .setFooter(`Question: ${item.q}`)
+                                 .setColor("RANDOM")
+                                })
+  } catch (e) {
+    console.log(e)
+    return message.channel.send({embed: new MessageEmbed()
+                                 .setAuthor('No one got the answer in time!')
+                                 .setTitle(`Correct Answer(s): \`${item.a}\``)
+                                 .setFooter(`Question: ${item.q}`)
+                                })
+  }
+}
+    if (command === "triquiz") {
+const request = require('request-promise');
+const { decodeHTMLEntities } = require('./util.js');
+
+    const timeChoice = 60000;
+    const timeBoolean = 10000;
+    const parameters = [];
+
+    let noOfQuestions = args[0];
+    if(!args[0]) return message.channel.send("Please mention No.of Questions!");
+    
+    parameters.push(
+      noOfQuestions ? `amount=${noOfQuestions}` : 'amount=10'
+    );
+
+    const query = parameters.join('&');
+
+    const author = 'OpenTDB';
+    const thumbnail = 'https://opentdb.com/images/logo-banner.png';
+    const url = 'https://opentdb.com/api.php?';
+    const footer = '© OpenTDB.com';
+    const display = new MessageEmbed()
+      .setAuthor(author)
+      .setColor("RANDOM")
+      .setThumbnail(thumbnail)
+      .setFooter(footer);
+
+    const stats = [];
+    const leaderboard = [];
+
+    await request(url + query)
+      .then(questions => JSON.parse(questions).results)
+      .then(async quiz => {
+        for (let question = 0; question < quiz.length; question++) {
+          let questionTime = 30000;
+          let title = `**${quiz[question].category}**`;
+          let questionToAsk = decodeHTMLEntities(quiz[question].question.toString());
+          let type = `**${quiz[question].type
+            .replace('boolean', 'True or False?')
+            .replace('multiple', 'Multiple Choice:')}**`;
+
+          if (quiz[question].type == 'boolean') questionTime = timeBoolean;
+          if (quiz[question].type == 'multiple') questionTime = timeChoice;
+
+          display
+            .setTitle(title)
+            .setDescription([
+              type,
+              questionToAsk
+            ]);
+
+          message.channel.send(display);
+
+          await message.channel.awaitMessages(reply =>
+            decodeHTMLEntities(quiz[question].correct_answer.toLowerCase())
+              .includes(reply.content.toLowerCase()) && !reply.author.bot,
+            {
+              max: 1,
+              time: questionTime,
+              errors: ['time']
+            })
+            .then(winnerFound => {
+              let winner = winnerFound.first();
+              let position = stats.findIndex((player => player.name == winner.author));
+
+              if (position != -1) stats[position].score += 1;
+              else {
+                let playerStats = {
+                  name: winner.author,
+                  score: 1
+                }
+
+                stats.push(playerStats);
+              }
+
+              message.channel.send({embed: {
+  color: 3066993,
+  description: `✅ ${winner.author} got the right answer with '${winner.content}' ✅.`
+}});
+            })
+            .catch(() => message.channel.send({embed: {
+  color: 3066993,
+  description: '❌ Nobody answered correctly in time ❌.'
+}}));
+        }
+      })
+      .catch(error => {
+        if (error.statusCode === 403) throw message.channel.send('OpenTDB is down, try again later.');
+
+        throw message.channel.send(message.language.get('COMMAND_ERROR_UPDATE', message));
+      });
+
+    stats.sort((a, b) => a.score - b.score);
+
+    for (let player = 0; player < stats.length; player++) {
+      leaderboard.push(
+        `**${player + 1}.** **${stats[player].name.username}** (${stats[player].score}/${noOfQuestions ? noOfQuestions : 10} questions correct)\n`
+      );
+    }
+
+    if (leaderboard.length < 1) {
+      leaderboard.push('No-one answered any questions correctly.');
+    }
+
+    message.channel.send('The quiz is over, here are the results.');
+
+    return message.channel.send(new MessageEmbed()
+      .setTitle('Results:')
+      .setThumbnail(thumbnail)
+      .setColor("RANDOM")
+      .setDescription(leaderboard));
+  }
+    if (command === "help" ) {
+    if (args[0] === 'ipl') {
+   const iplembed = new MessageEmbed()
+    .setTitle("IPL")
+    .setDescription('1)**UpComing:**  \tSchedule of all upcoming IPL matches(at most 6)\n2)**Live:**  \t\tLive Score\n3)**Standings:** \tCurrent Standings\n4)**Player:**    \tPlayer Info e.g +player Patt Cummins')
+    .setColor("RANDOM")
+    .setTimestamp()
+    .setFooter(`Command Used by : ${message.author.tag}`)
+message.channel.send(iplembed)
+   }
+  message.react('✅');
+    }
+    if (command === "trivia" ) {
+const sayMessage = args.join(" ")
+const embed = new MessageEmbed()
+    .setColor("RANDOM")
+    .setTitle("TRIVIA")
+    .setDescription("  1)INFO - ABOUT TRIVIA \n 2)SUGGEST - SUGGESTIONS FOR TRIVIA \n 3)BET - BETTING ON THE TRIVIA")
+    .setFooter("Proper Usage : +trivia <©ommand> or +trivia <index number>")
+    .setTimestamp()
+    if(!sayMessage) return message.reply(embed)
+ 
+let questions = [
+        {
+          title: "Best programming language",
+          options: ["JavaScript/TypeScript", "Python", "Ruby", "Rust"],
+          correct: 1,
+        },
+        {
+          title: "Best NPM package",
+          options: ["int.engine", "ms", "ws", "discord.js"],
+          correct: 3,
+        },
+        {
+          title: "What is the rarest M&M color?",
+          options: ["Blue", "Green", "Brown", "Yellow"],
+          correct: 3,
+        },
+        {
+          title: "In what year was the first AIR Jordan sneakers released?",
+          options: ["1983", "1984", "1979", "1990"],
+          correct: 2,
+        },
+        {
+          title: "In a game of bingo, which number is represented by the phrase “two little ducks”?",
+          options: ["2", "12", "20", "22"], 
+          correct: 4,
+        },
+        {
+          title: "Which African country was formerly known as Abyssinia?",
+          options: ["Algeria", "Ethiopia", "Burkina Faso", "Chad"],
+          correct: 2,
+        },
+        {
+          title: "Which turn-of-the-century NBA great's middle name is \"Bean\"?",
+          options: ["Micheal Jordan", "Kyrie Irving", "JaVale McGee", "Kobe Bryant"],
+          correct: 4,
+        },
+        {
+          title: "Champion NBA point guard Kyrie Irving was born in which country?", 
+          options: ["Denmark", "USA", "Australia", "Congo"],
+          correct: 3,
+        },
+        {
+          title: "Which country consumes the most chocolate per capita?",
+          options: ["Switzerland", "Sweden", "USA", "Columbia"],
+          correct: 1,
+        },
+        {
+          title: "What was the first toy to be advertised on television?",
+          options: ["Lego", "Army Men", "Slinky", "Mr.Potato Head"],
+          correct: 4,
+        },
+        {
+          title: "What is the tiny piece at the end of a shoelace called?",
+          options: ["An aglet", "The tip", "The lace", "Lace tip"],
+          correct: 1,
+        },
+        {
+          title:"What is the tallest breed of dog in the world?",
+          options: ["The Great Dane", "Dachshund", "Dobermann", "Irish Wolfhound"],
+          correct: 1,
+        },
+        {
+          title: "How many ribs are in a human body?",
+          options: ["30", "24", "32", "16"],
+          correct: 2,
+        },
+        {
+          title: "What is the world’s biggest island?",
+          options: ["New Guinea", "Madagascar", "Greenland", "Baffin Island"],
+          correct: 3,
+        },
+        {
+          title: "What color eyes do most humans have?",
+          options: ["Black", "Brown", "Blue", "Green"],
+          correct: 2,
+        },
+        {
+          title: "In which city was Anne Frank’s hiding place?",
+          options: ["Frankfurt", "Echternach", "Amsterdam", "Antwerp"],
+          correct: 3,
+        },
+        {
+          title: "When Michael Jordan played for the Chicago Bulls, how many NBA Championships did he win?",
+          options: ["5", "4", "6", "7"],
+          correct: 3,
+        },
+        {
+          title: "What country won the very first FIFA World Cup in 1930?",
+          options: ["Germany", "Netherlands", "Argentina", "Uruguay"],
+          correct: 4,
+        },
+        {
+          title: "In what year was the first ever Wimbledon Championship held?",
+          options: ["1877", "1876", "1867","1866"],
+          correct: 1,
+        },
+        {
+          title: "Which country produces the most coffee in the world?",
+          options: ["USA", "Canada", "Brazil", "France"],
+          correct: 3,
+        },
+        {
+          title: "How many hearts does an octopus have?",
+          options: ["1", "2", "3", "4"],
+          correct: 3,
+        },
+        {
+          title: "How many eyes does a bee have?",
+          options: ["2", "3", "4", "5"],
+          correct: 4,
+        },
+        {
+          title: "Who was the first person to win a Nobel Prize?",
+          options: ["Henry Dunat", "Marie Curie", "Jacobus H. van‘t Hoff", "Sully Prudhomme"],
+          correct: 1,
+        },
+        {
+          title: "Which mammal has no vocal cords?",
+          options: ["Hippos", "Elephants", "Rats", "Girrafes"],
+          correct: 4,
+        },
+        {
+          title: "What type of music has been shown to help plants grow better and faster?",
+          options: ["R&B", "Rock", "Jazz", "Classical"],
+          correct: 4,
+        },
+        {
+          title: "Power outages in the US are mostly caused by what?",
+          options: ["Rats", "Bad Communication", "Squirrels", "Malfunctions"],
+          correct: 3,
+        },
+        {
+          title: "What’s the hardest rock?",
+          options: ["A boulder", "A diamond", "A ruby", "A pebble"],
+          correct: 2
+        },
+        {
+          title: "The Statue of Liberty was given to the US by which country?",
+          options: ["Germany", "Canada", "Russia", "France"],
+          correct: 4
+        },
+        {
+          title: "Kyrie Irving, one of the best point guards in the league, signed with what team for a 5 year contract?",
+          options: ["Lakers", "Cavaliers", "Celtics", "Nets"],
+          correct: 2
+        },
+        {
+          title: "What team did Carmelo Anthony and Chauncey Billups go to?",
+          options: ["Knicks", "Lakers", "Wizards", "Mavericks"],
+          correct: 1
+        }
+      ];
+        if(args[0] === 'info' || args[0] === '1'){
+          message.channel.send({embed: {
+   color: 3066993,
+   description: `Currently,There is nearly ${questions.length} questions, if you have any suggestions/ideas for questions please use '${PREFIX}trivia suggest <question, 4 possible answers, and correct answer>'.`
+}})
+        }else if(args[0] === 'suggest' || args[0] === '2'){         
+          bot.users.cache.get('654669770549100575').send(message.author.tag + `\n ${args.join(" ").slice(8)}`)
+          console.log(message.content.length)
+        }else if(args[0] === 'bet' || args[0] === '3'){
+let user = message.author;
+let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
+
+    let amout = args[1];
+    if (!amout) return message.channel.send({embed: {
+  color: 3066993,
+  description: "You have to specify the coins!"
+}});
+    if (money < amout)
+      return message.channel.send({embed: {
+  color: 3066993,
+  description: "You do not have enough Coins!"
+}});
+    if (amout.includes("-"))
+      return message.channel.send({embed: {
+   color: 3066993,
+   description: "Looks like your try to Gamble with Minus Numbers, that won't work"
+}});
+          
+   if (isNaN(args[1])){
+            message.reply({embed: {
+   color: 3066993,
+   description: "There where invalid charectors for the bet! Please make sure the bet is only numbers!"}}).then(message => {
+				message.delete({timeout: 10000});
+            });
+            return;
+        }
+        if (!amout) return message.reply(':warning: You must bet atleast 100coins to use this command!').then(message => {
+			message.delete({timeout: 10000});
+		});
+        if (amout < 100)return message.channel.send({embed: {
+   color: 3066993,
+   description: `I'm sorry ${message.author}, you have to bet **100coins** or more to use this command!`
+}});
+        
+          let q = questions[Math.floor(Math.random() * questions.length)];
+          let i = 0;
+          db.subtract(`money_${message.guild.id}_${user.id}`, amout);
+          const Embed = new MessageEmbed()
+            .setTitle(q.title)
+            .setDescription(
+              q.options.map((opt) => {
+                i++;
+                return `${i} - ${opt}\n`;
+              })
+            )
+            .setColor("RANDOM")
+            .setFooter(
+              `Reply to this message with the correct answer number! You have 30 seconds.`
+            );
+          message.channel.send(Embed)
+          // console.log(questions.length)
+          try {
+            // console.log(questions.length)
+            // console.log(q.options[q.correct])
+            let msgs = await message.channel.awaitMessages(
+              (u2) => u2.author.id === message.author.id,
+              { time: 30000, max: 1, errors: ["time"] }
+            );
+            if (parseInt(msgs.first().content) == q.correct) {
+              db.add(`money_${message.guild.id}_${user.id}`, 2 * amout);
+              return message.channel.send({embed: {
+  color: 3066993,
+  description: `You got it correct and Won 2 * ${amout}!`
+}});
+              } else {
+              return message.channel.send({embed: {
+   color: 3066993,
+   description: `You got it incorrect. The correct answer was: ${q.correct}`
+}});
+            }
+          } catch (e) {
+            db.add(`money_${message.guild.id}_${user.id}`, amout);
+            return message.channel.send({embed: {
+  color: 3066993,
+  description: `You did not answer! The correct answer was: ${q.correct}`
+}});
+          }
+        }
+        
+ 
+        }
+    if (command == "settnumber" ) {
+        let min = parseInt(args[0]);
+        let max = parseInt(args[1]);
+
+        if(min > max){
+            let temp = max;
+            max = min;
+            min = temp;
+        }
+
+        var Result = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        if(isNaN(Result)){
+            return message.channel.send("Please enter a min and a max number")
+        }else{
+            message.channel.send(Result);
+        }
+      
+}
+    if (command == "rate" ) {
+       if(!args[0]) return message.channel.send("**Ask me to rate someone or something** `?rate <someone/something>`");
+   let ratings = ["0", "⭐ - 1", "⭐⭐ - 2", "⭐⭐⭐ - 3", "⭐⭐⭐⭐- 4", "⭐⭐⭐⭐⭐ - 5", "⭐⭐⭐⭐⭐⭐ - 6",  "⭐⭐⭐⭐⭐⭐ - 7", "⭐⭐⭐⭐⭐⭐⭐⭐ - 8", "⭐⭐⭐⭐⭐⭐⭐⭐⭐ - 9", "⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ - 10"];
+
+   let result = Math.floor((Math.random() * ratings.length));
+   let user = message.mentions.users.first();
+
+   let rateEmbed = new MessageEmbed()
+
+   .setAuthor(message.author.username)
+   .setColor("#000000")
+   .addField("Something", args[0])
+   .addField("Rating", ratings[result]);
+
+   message.channel.send(rateEmbed)
+
+
+}
+    if (command == "gtnbattle" ) {
+    if (args.length != 2)
+            return message.reply('Usage: !gtnbattle <@user> <betamount>');
+        if (!message.mentions.users.size)
+            return message.reply('You have to tag a user in order to battle them');
+        let oppo = message.mentions.users.first();
+        let amount = args[1];
+        let money = db.fetch(`money_${message.guild.id}_${message.author.id}`);
+       let oppomoney = db.fetch(`money_${message.guild.id}_${oppo.id}`);
+
+      if (oppo.id == bot.user.id) return message.channel.send("No U!");
+      if (oppo.id == message.author.id) return message.channel.send(`${message.author}, you can't battle yourself`);
+
+       if (money < amount)
+      return message.channel.send({embed: {
+  color: 3066993,
+  description: "You do not have enough Coins!"
+}});
+    if (amount.includes("-"))
+      return message.channel.send({embed: {
+   color: 3066993,
+   description: "Looks like your try to Gamble with Minus Numbers, that won't work"
+}});
+          
+   if (isNaN(args[1])){
+            message.reply({embed: {
+   color: 3066993,
+   description: "There where invalid charectors for the bet! Please make sure the bet is only numbers!"}}).then(message => {
+				message.delete({timeout: 10000});
+            });
+            return;
+        }
+        if (!amount) return message.reply(':warning: You must bet atleast 100coins to use this command!').then(message => {
+			message.delete({timeout: 10000});
+		});
+        if (amount < 100)return message.channel.send({embed: {
+   color: 3066993,
+   description: `I'm sorry ${message.author}, you have to bet **100coins** or more to use this command!`
+}});
+
+       if (oppomoney < amount)
+      return message.channel.send({embed: {
+  color: 3066993,
+  description: "${oppo} do not have enough Coins!"
+}});
+    // Since this command results in a lot of spam it would be best to use on separate channel.
+    if ((message.channel.id != process.env.BATTLE_CHAT_1) && (message.channel.id != process.env.BATTLE_CHAT_2))
     {
+        return message.reply(`You cannot battle outside of <#${process.env.BATTLE_CHAT_1}>, <#${process.env.BATTLE_CHAT_2}> channel.`);
+    }
+    // Initiate game variables
+    var gameRunning = true;
+
+    var firstPlayer = message.author;
+    var secondPlayer = message.guild.members.cache.get(oppo);
+    var currentPlayer;
+    var targetPlayer;
+    var turn = true;
+
+    // If the users are not in the cooldown list, continue.
+    if (!usersOnCooldown.has(firstPlayer) && !usersOnCooldown.has(secondPlayer))
+    {
+        // Add users on cooldown until the game finishes.
+        usersOnCooldown.add(firstPlayer);
+        usersOnCooldown.add(secondPlayer);
+        setTimeout(() =>
+        {
+            usersOnCooldown.delete(firstPlayer);
+            usersOnCooldown.delete(secondPlayer);
+        }, 5 * 60 * 1000);
+
+   message.channel.send(`<@${oppo.id}>, <@${message.author.id}> has challenged you. Do you accept? Type yes or no.`);
+        // Await for tagged user's answer.
+        const afilter = m => (m.content.toLowerCase() === 'yes' || m.content.toLowerCase() === 'no') && m.author.id === oppo.id;
+        await message.channel.awaitMessages(afilter,
+        {
+            max: 1,
+            time: 30 * 1000,
+            errors: ['time']
+        }).
+        then(async answer =>
+        {
+            let msg = answer.first().content.toLowerCase();
+        if (msg === 'yes')
+            {
+           var battlenumber = Math.floor(Math.random()* Math.floor(battlelimit));
+          const embed = new MessageEmbed()
+             .setTitle("Battle")
+             .setDescription("Successfully,Generated random number between 0-100,You have 30 seconds to guess the correct number!\nYou have 30seconds and 30 guesses")
+             .setFooter("If no one won,then bet amount will be refunded back to your account")
+             .setTimestamp()
+  message.channel.send(embed)
+            const mfilter = m => (m.content.toLowerCase() === battlenumber) && m.author.id === message.author.id;
+                await message.channel.awaitMessages(mfilter,
+                {
+                    max: 30,
+                    time: 30 * 1000,
+                    errors: ['time']
+                })
+            const ofilter = m => (m.content.toLowerCase() === battlenumber) && m.author.id === oppo.id;
+                await message.channel.awaitMessages(ofilter,
+                {
+                    max: 30,
+                    time: 30 * 1000,
+                    errors: ['time']
+                }).catch(answer =>
+                {
+                    // Since the request timed out, remove both players from the cooldown list.
+                    usersOnCooldown.delete(firstPlayer);
+                    usersOnCooldown.delete(secondPlayer);
+                })
+
+                // Since the battle is over, remove both players from the cooldown list.
+                usersOnCooldown.delete(firstPlayer);
+                usersOnCooldown.delete(secondPlayer);
+            }
+            else if (msg === 'no')
+            {
+                          // If the tagged user answered no.
+                // Since the request was refused, remove both players from the cooldown list.
+                usersOnCooldown.delete(firstPlayer);
+                usersOnCooldown.delete(secondPlayer);
+
+                message.channel.send(new MessageEmbed()
+                    .setTitle(':crossed_swords: | Battle')
+                    .setColor(0x00AE86)
+                    .setDescription(`Kek, not willing to fight eh. <@!${message.author.id}>`)
+                    .setTimestamp());
+            }
+        }).catch(answer =>
+        {
+            // Since the request timed out, remove both players from the cooldown list.
+            usersOnCooldown.delete(firstPlayer);
+            usersOnCooldown.delete(secondPlayer);
+
+            message.channel.send(new MessageEmbed()
+                .setTitle(':crossed_swords: | Battle')
+                .setColor(0xD11313)
+                .setDescription(`Time out. ${oppo.tag} did not answer to the request.`)
+                .setTimestamp())
+        });
+    }
+    else
+    {
+        // If the users are in the cooldown list.
+        message.channel.send(new MessageEmbed()
+            .setTitle(':crossed_swords: | Battle')
+            .setColor(0xD11313)
+            .setDescription(`Your request has already been made. Try again later.`));
+    }
+ 
+}
+    if (command == "battles" ) {
+    if (args.length != 1)
+    {
+        return message.reply("Incorrect command you have to tag someone first.");
+    }
+
+    var mentionedUser = message.mentions.users.firstKey();
+
+    // If tagged user is the same as the author of the message
+    if (mentionedUser === message.author.id)
+    {
+        return message.reply("You cannot battle yourself");
+    }
+
+    // If the tagger user is a bot
+    if (bot.users.cache.get(mentionedUser).bot)
+    {
+        return message.reply("You cannot battle a bot.");
+    }
+
+    // Since this command results in a lot of spam it would be best to use on separate channel.
+    if ((message.channel.id != process.env.BATTLE_CHAT_1) && (message.channel.id != process.env.BATTLE_CHAT_2))
+    {
+        return message.reply(`You cannot battle outside of <#${process.env.BATTLE_CHAT_1}>, <#${process.env.BATTLE_CHAT_2}> channel.`);
+    }
+
+
+    // Initiate game variables
+    var gameRunning = true;
+
+    var firstPlayer = message.author;
+    var secondPlayer = message.guild.members.cache.get(mentionedUser);
+    var currentPlayer;
+    var targetPlayer;
+    var turn = true;
+
+    firstPlayer.health = 500;
+    firstPlayer.guard = false;
+    firstPlayer.missedTurn = 0;
+
+    secondPlayer.health = 500;
+    secondPlayer.guard = false;
+    secondPlayer.missedTurn = 0;
+
+    // If the users are not in the cooldown list, continue.
+    if (!usersOnCooldown.has(firstPlayer) && !usersOnCooldown.has(secondPlayer))
+    {
+        // Add users on cooldown until the game finishes.
+        usersOnCooldown.add(firstPlayer);
+        usersOnCooldown.add(secondPlayer);
+        setTimeout(() =>
+        {
+            usersOnCooldown.delete(firstPlayer);
+            usersOnCooldown.delete(secondPlayer);
+        }, 5 * 60 * 1000);
+
+        message.channel.send(new MessageEmbed().setTitle(':crossed_swords: | Battle')
+            .setColor(0x00AE86)
+            .setDescription(`<@!${mentionedUser}> if you accept type '**yes**', otherwise type '**no**'. \n\nYou have **30** second(s).`));
+
+        // Await for tagged user's answer.
+        const filter = m => (m.content.toLowerCase() === 'yes' || m.content.toLowerCase() === 'no') && m.author.id === mentionedUser;
+        await message.channel.awaitMessages(filter,
+        {
+            max: 1,
+            time: 30 * 1000,
+            errors: ['time']
+        }).
+        then(async answer =>
+        {
+            let msg = answer.first().content.toLowerCase();
+
+            // If the reply from the tagged user is yes, start the game
+            if (msg === 'yes')
+            {
+                // Choose a person to flip coin
+                var randomPerson = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
+                var personToFlip = randomPerson === 1 ? firstPlayer : secondPlayer;
+
+                await message.channel.send(new MessageEmbed().setTitle(':crossed_swords: | Battle')
+                    .setColor(0x00AE86)
+                    .setDescription(`We shall have a flip coin to see who starts first!\n${personToFlip} what's your choice '**heads**' or '**tails**'? \n\nYou have **30** second(s).`));
+
+                const filter = m => (m.content.toLowerCase() === 'heads' || m.content.toLowerCase() === 'tails') && m.author.id === personToFlip.id;
+                await message.channel.awaitMessages(filter,
+                {
+                    max: 1,
+                    time: 30 * 1000,
+                    errors: ['time']
+                }).then(async answer =>
+                {
+                    let choice = answer.first().content.toLowerCase();
+
+                    // Coin randomization
+                    var randCoin = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
+                    var coinResult = randCoin === 1 ? 'heads' : 'tails';
+                    var result = coinResult === choice ? 'yes' : 'no';
+
+                    // If the firstPlayer won or secondPlayer lost, then it's firstPlayer's turn.
+                    // If the firstPlayer lost or secondPlayer won, then it's secondPlayer's turn.
+                    if ((result === 'yes' && personToFlip === firstPlayer) || (result === 'no' && personToFlip === secondPlayer))
+                        turn = true;
+                    else
+                        turn = false;
+
+                    await message.channel.send(`The coin rolled and landed on: **${coinResult}**`);
+
+                    // That person gets to pick heads or tails.
+                    while (gameRunning)
+                    {
+                        // If turn is true, it's author's turn, otherwise it's tagged user's turn.
+                        if (turn)
+                        {
+                            currentPlayer = firstPlayer;
+                            targetPlayer = secondPlayer;
+                        }
+                        else
+                        {
+                            currentPlayer = secondPlayer;
+                            targetPlayer = firstPlayer;
+                        }
+
+                        // Let the users know about moves they can use along with their health stats.
+                        await message.channel.send(new MessageEmbed().setTitle(':crossed_swords: | Battle')
+                            .setColor(0x00AE86)
+                            .setDescription(`${currentPlayer} it's your turn, make your move.\n➾ **Attack** - Attacks the enemy. Damage 20 - 100.\n➾ **Guard** - Blocks the next incoming attack.\n➾ **Special** - Launches a powerful attack but has **15** % chance of landing. Damage 120 - 200.\n➾ **Run** - Runs as fast as you possibly can to escape death. \n\n${firstPlayer} HP : ${firstPlayer.health}\n${secondPlayer} HP : ${secondPlayer.health}\n\nYou have **10** second(s).`));
+
+                        // Await for current player's choice
+                        const filter = m => (m.content.toLowerCase() === 'attack' ||
+                            m.content.toLowerCase() === 'guard' || m.content.toLowerCase() === 'special' ||
+                            m.content.toLowerCase() === 'run') && m.author.id === currentPlayer.id;
+                        await message.channel.awaitMessages(filter,
+                        {
+                            max: 1,
+                            time: 10 * 1000,
+                            errors: ['time']
+                        }).
+                        then(async answer =>
+                        {
+                            let choice = await answer.first().content.toLowerCase();
+
+                            // Check for the player's choice, and execute the appropriate behaviour.
+                            switch (choice)
+                            {
+                                case 'attack':
+                                    // Randomize a damage value between 20 - 100.
+                                    var damageVal = Math.floor(Math.random() * (100 - 20) + 20);
+
+                                    // If the current player had previously used guard, but did not get attacked remove the guard.
+                                    if (currentPlayer.guard)
+                                    {
+                                        currentPlayer.guard = false;
+                                    }
+
+                                    // If the enemy used guard move on previous round, block any incoming attacks.
+                                    if (targetPlayer.guard)
+                                    {
+                                        message.channel.send(`${targetPlayer} was on guard for any incoming attacks on this turn.`);
+                                        targetPlayer.guard = false;
+                                    }
+                                    else
+                                    {
+                                        // If the enemy didn't use guard move, sap his health.
+                                        targetPlayer.health -= damageVal;
+
+                                        // If the enemy's health dropped below 0, the current player has won the game.
+                                        if (targetPlayer.health <= 0)
+                                        {
+                                            targetPlayer.health = 0;
+                                            winner = currentPlayer;
+                                            gameRunning = false;
+                                        }
+                                        message.channel.send(`${currentPlayer} attacked and dealt **${damageVal}** damage.`);
+                                    }
+                                    break;
+                                case 'guard':
+                                    // If the current player chose to guard, enable the boolean flag for the next turn.
+                                    message.channel.send(`${currentPlayer} prepares to block your next attack!`);
+                                    currentPlayer.guard = true;
+                                    break;
+                                case 'special':
+                                    // Randomize a chance between 0 - 100.
+                                    var chance = Math.random() * 100;
+
+                                    // If the current player had previously used guard, but did not get attacked remove the guard.
+                                    currentPlayer.guard = false;
+
+                                    // If the chance is within 0 - 15 % then the special blow succeeded.
+                                    if (chance <= 15)
+                                    {
+                                        // If the enemy used guard move on previous round, block any incoming attacks.
+                                        if (targetPlayer.guard)
+                                        {
+                                            message.channel.send(`${targetPlayer} was on guard for any incoming attacks on this turn.`);
+                                            targetPlayer.guard = false;
+                                        }
+                                        else
+                                        {
+                                            // Randomize a damage value between 120 - 250.
+                                            var damageVal = Math.floor(Math.random() * (250 - 120) + 120);
+
+                                            // If the enemy didn't use guard move, sap his health.
+                                            targetPlayer.health -= damageVal;
+
+                                            // If the enemy's health dropped below 0, the current player has won the game.
+                                            if (targetPlayer.health <= 0)
+                                            {
+                                                targetPlayer.health = 0;
+                                                winner = currentPlayer;
+                                                gameRunning = false;
+                                            }
+                                            message.channel.send(`${currentPlayer} attacked with his special attack and dealt a whooping **${damageVal}** damage!`);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // If the current player's special attack fails but the enemy used guard on previous turn, consume it.
+                                        if (targetPlayer.guard)
+                                        {
+                                            targetPlayer.guard = false;
+                                        }
+
+                                        message.channel.send(`Special attack failed!`);
+                                    }
+                                    break;
+                                case 'run':
+                                    // Randomize a chance between 0 - 100.
+                                    var chance = Math.random() * 100;
+
+                                    // Consume guards of both players.
+                                    targetPlayer.guard = false;
+                                    currentPlayer.guard = true;
+
+                                    // If the chance is within 0 - 25% then current player fled successfully and declared the opponent player as the winner.
+                                    if (chance <= 100)
+                                    {
+                                        winner = targetPlayer;
+                                        gameRunning = false;
+                                        message.channel.send(`${currentPlayer} chose to run away with his tails between his legs! Hahaha!!`);
+                                    }
+                                    else
+                                    {
+                                        message.channel.send(`${currentPlayer} tried to flee from the battle but got caught!`);
+                                    }
+                                    break;
+                                default:
+                                    message.reply("Wrong choice");
+                            }
+
+                            // After the choice was made, change player turns.
+                            turn = !turn;
+                        }).catch(answer =>
+                        {
+                            // If the current player missed more than 2 turns, then it means he's busy/AFK and the enemy wins this battle.
+                            if (currentPlayer.missedTurn >= 2)
+                            {
+                                gameRunning = false;
+                                winner = targetPlayer;
+                                message.channel.send(new MessageEmbed()
+                                    .setTitle(':crossed_swords: | Battle')
+                                    .setColor(0xD11313)
+                                    .setDescription(`${currentPlayer} missed 2 turns and yield the fight.`)
+                                    .setTimestamp());
+                            }
+                            else
+                            {
+                                // If the time is out, the current player loses his turn and changes player turns.
+                                currentPlayer.missedTurn++;
+                                turn = !turn;
+                                message.channel.send(new MessageEmbed()
+                                    .setTitle(':crossed_swords: | Battle')
+                                    .setColor(0xD11313)
+                                    .setDescription(`${currentPlayer}, you missed your turn.`)
+                                    .setTimestamp());
+                            }
+                        });
+                    }
+                }).catch(answer =>
+                {
+                    // Since the request timed out, remove both players from the cooldown list.
+                    usersOnCooldown.delete(firstPlayer);
+                    usersOnCooldown.delete(secondPlayer);
+                })
+
+                // Since the battle is over, remove both players from the cooldown list.
+                usersOnCooldown.delete(firstPlayer);
+                usersOnCooldown.delete(secondPlayer);
+
+                // Winner declaration message.
+                message.channel.send(new MessageEmbed()
+                    .setTitle(':crown: | Battle')
+                    .setColor(0x00AE86)
+                    .setDescription(`The battle is over! Congratulations to the winner ${winner} !\n\n${firstPlayer} HP : ${firstPlayer.health}\n${secondPlayer} HP : ${secondPlayer.health}`)
+                    .setTimestamp());
+
+            }
+            else if (msg === 'no')
+            {
+                // If the tagged user answered no.
+                // Since the request was refused, remove both players from the cooldown list.
+                usersOnCooldown.delete(firstPlayer);
+                usersOnCooldown.delete(secondPlayer);
+
+                message.channel.send(new MessageEmbed()
+                    .setTitle(':crossed_swords: | Battle')
+                    .setColor(0x00AE86)
+                    .setDescription(`Kek, not willing to fight eh. <@!${message.author.id}>`)
+                    .setTimestamp());
+            }
+        }).catch(answer =>
+        {
+            // Since the request timed out, remove both players from the cooldown list.
+            usersOnCooldown.delete(firstPlayer);
+            usersOnCooldown.delete(secondPlayer);
+
+            message.channel.send(new MessageEmbed()
+                .setTitle(':crossed_swords: | Battle')
+                .setColor(0xD11313)
+                .setDescription(`Time out. ${secondPlayer} did not answer to the request.`)
+                .setTimestamp())
+        });
+    }
+    else
+    {
+        // If the users are in the cooldown list.
+        message.channel.send(new MessageEmbed()
+            .setTitle(':crossed_swords: | Battle')
+            .setColor(0xD11313)
+            .setDescription(`Your request has already been made. Try again later.`));
+    }
+}
+    if (command == "flipbattle") {
         if (args.length != 2)
             return message.reply('Usage: !battle <@user> <your prediction (heads/tails)>');
         if (!message.mentions.users.size)
@@ -464,7 +2072,9 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         const taggedUser = message.mentions.users.first();
         const userGuess = args[1];
-        
+        if (taggedUser.id ==  bot.user.id) return message.channel.send("no u");
+	if (taggedUser.id == message.author.id) return message.channel.send(`${message.author.username}, you can't battle yourself`);
+
         var timeleft = 3;
         var downloadTimer = setInterval(function(){
             message.channel.send(timeleft + '...');
@@ -683,6 +2293,28 @@ bot.on("message", async (message) => { // eslint-disable-line
 }});
   }, ms(mutetime));
 }
+    if (command === "pol" ) {
+if (!message.member.hasPermission('MANAGE_GUILD') && message.author.id !== '357555941215961099') return message.channels.send('Sorry, you don/t have permission to create poll!').then(msg => msg.delete({timeout: 10000}));
+  if (!args.join(' ')) return message.channel.send('Usage: poll <title>').then(msg => msg.delete({timeout: 10000}));
+  
+  const embed = new MessageEmbed()
+    .setTitle(args.join(' '))
+    .setFooter('DROP A VOTE!')
+    .setColor('RANDOM')
+    const pollTitle = await message.channel.send({ embed });
+      await pollTitle.react(`👍`);
+      await pollTitle.react(`👎`);
+      
+    const filter = (reaction) => reaction.emoji.name === '👍';
+    const collector = pollTitle.createReactionCollector(filter, { time: 150000 });
+      collector.on('collect', r => console.log(`Collected ${r.emoji.name}`));
+      collector.on('end', collected => console.log(`Collected ${collected.size} items`));
+  
+    const filter1 = (reaction) => reaction.emoji.name === '👎';
+    const collector1 = pollTitle.createReactionCollector(filter1, { time: 150000 });
+      collector1.on('collect', r => console.log(`Collected ${r.emoji.name}`));
+      collector1.on('end', collected => console.log(`Collected ${collected.size} items`));
+}
     if (command === "poll" ) {
     if (!message.member.permissions.has("ADMINISTRATOR"))
       return message.channel.send({embed: {
@@ -795,14 +2427,14 @@ class Drawing {
         this.drawCanvas(true);
         this.message.edit(`**Thanks for drawing with us!**` + reason);
         this.message.clearReactions();
-        this.message.client.clearTimeout(this.timeout);
+        this.message.bot.clearTimeout(this.timeout);
         channels = channels.filter(item => item !== this.message.channel.id);
     }
 
     renewTimeout() {
         let self = this;
-        this.message.client.clearTimeout(this.timeout);
-        this.timeout = this.message.client.setTimeout(function() {
+        this.message.bot.clearTimeout(this.timeout);
+        this.timeout = this.message.bot.setTimeout(function() {
             self.stop("**\nEnd Reason: Timeout (2 minutes)**");
         }, 120000);
     }
@@ -892,7 +2524,20 @@ class Drawing {
         );
     }
 }
+    if (command === "checktimegap" ) {
+   let Channel = args[0];
+   let Firstmessage = args[1];
+   let Secondmessage = args[2]; 
+
+ var chan=message.guild.channels.cache.get(Channel)
+chan.messages.fetch(Firstmessage).then(m=>{
+chan.messages.fetch(Secondmessage).then(me=>{
+message.reply((me.createdTimestamp-m.createdTimestamp)/1000)
+}) 
+})
+   }
     if (command === "embed" ) {
+     message.delete();
      const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
   color: 3066993,
@@ -904,7 +2549,7 @@ class Drawing {
       .setTitle(args[0])
       .setColor("RANDOM")
       .setDescription(args[1])
-      .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL)
+      .setFooter(`Command Used by : ${message.author.tag}`, message.author.avatarURL)
       .addField(args[2] , args[3])
       .setImage(args[4])
       .setTimestamp()
@@ -913,10 +2558,13 @@ class Drawing {
 
     }
     if (command === "slowmode" ) {
+       if (!message.member.permissions.has("MANAGE_CHANNELS")) return message.channel.send(` **Sorry, you do not have permission to perform the antiraid command.**`);
+       if (!message.guild.member(bot.user).hasPermission('MANAGE_CHANNELS')) return message.reply(`**Sorry, i dont have the perms to do this cmd i need MANAGE_CHANNELS.**`)
+ 
 const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
   color: 3066993,
-  description:"Proper Usage : +slowmode <number in seconds> <reason>"
+  description:"Proper Usage : +slowmode <number in seconds> <reason> / To cancel slowmode type +slowmode 0"
 }})
 
 if (!args[0])
@@ -928,16 +2576,15 @@ if (!args[0])
    color: 3066993,
    description:`That is not a number!`
 }});
-    let reason = args[1];
-    if (!reason) {
-      reason == "No reason provided!";
-    }
+   let reason = args[1];
+   if (!reason) { reason = "No Reason Provided!" }
     message.channel.setRateLimitPerUser(args[0], reason);
-    message.channel.send({embed: {
-    color: 3066993,
-    description:`Set the slowmode of this channel too **${args[0]}** with the reason: **${reason}**`,
-    footer: "To Stop Slowmode Type +slowmode 0 finished"
-}});
+    const slowembed = new MessageEmbed()
+       .setColor("RANDOM")
+       .setTimestamp()
+       .setDescription(` Set the slowmode of this channel too **${args[0]}** sec ,\n Mod : <@${message.author.id}> ,\n Reason : ${reason}`)
+       .setFooter( "To Stop Slowmode Type +slowmode 0 finished")
+    message.channel.send(slowembed)
   }
     if (command === "timer" ) {
 
@@ -1198,6 +2845,26 @@ const { Timers } = require("./variable.js");
    description:`**${user.username}** has *${warnings}* warning(s)`
 }});
     }
+    if (command === "mylevel" || command === "lvl" || command === "level" ) {
+     let user = message.author;
+     let levelfetch = db.fetch(`level_${message.guild.id}_${user.id}`)
+     if (levelfetch === null) levelfetch = 0;
+     const embed = new MessageEmbed()
+      .setTitle("Among Us Official")
+      .setDescription(`${user}'s Level : ${levelfetch}`)
+      .setTimestamp()
+    message.channel.send(embed)
+   }
+    if (command === "mymessages" ) {
+    let user = message.author;
+    let mymessages = db.fetch(`messages_${message.guild.id}_${user.id}`)
+    if (mymessages === null) mymessages = 0;
+    const embed = new MessageEmbed()
+      .setTitle("Among Us Official")
+      .setDescription(`Total Messages sent by ${user} is ${mymessages}`)
+      .setTimestamp()
+    message.channel.send(embed)
+   }
     if (command === "bal" ) {
         
         
@@ -1291,6 +2958,18 @@ const ms = require("parse-ms");
 
 
   }
+}
+    if (command === "points" ) {
+   let messages = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
+  if (messages === null) messages = 0;
+
+  let levelfetch = db.fetch(`level_${message.guild.id}_${message.author.id}`)
+  if (levelfetch === null) levelfetch = 0;
+    const embed = new MessageEmbed()
+        .setTitle("Points")
+        .setColor("RANDOM")
+        .setDescription(`${message.author.id} \n Total Messages : ${messages} \n Level : {levelfetch}`)
+     message.channel.send(embed)
 }
     if (command === "profile" ) {
 let user = message.mentions.members.first() || message.author;
@@ -1707,8 +3386,8 @@ const ms = require("parse-ms");
 }
     if (command === "gamble" ) {
 let percents = ["3,51", "3,91", "4,00", "4,31", "4,72", "4,99"]
-    let math = Math.floor(Math.random() * percents.length)
-    
+    let math = Math.floor(Math.random() * percents.length);
+    let user = message.author;
     let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
 
     let amout = args[0];
@@ -1726,7 +3405,7 @@ let percents = ["3,51", "3,91", "4,00", "4,31", "4,72", "4,99"]
     if (result[resault] === "win") {
       db.add(`money_${message.guild.id}_${user.id}`, 3 * amout);
 
-      let embed = new Discord.RichEmbed()
+      let embed = new MessageEmbed()
       .setAuthor("Gambling Machine")
       .setDescription(`You won: **${amout}** coins\nYour Bet got multiplied by **3**\n\nYou now have ${money} coins`)
       .setColor("#32cd32")
@@ -1767,6 +3446,33 @@ let percents = ["3,51", "3,91", "4,00", "4,31", "4,72", "4,99"]
         db.set(`work_${message.guild.id}_${user.id}`, Date.now())
     };
 }
+    if (command === "inventory" ) {
+        
+        let user = message.author;
+
+        let nikes = await db.fetch(`nikes_${message.guild.id}_${user.id}`)
+        if(nikes === null) nikes = "0"
+
+        let bronze = await db.fetch(`bronze_${message.guild.id}_${user.id}`)
+        if(bronze === null) bronze = "0"
+
+        let car = await db.fetch(`car_${message.guild.id}_${user.id}`)
+        if(car === null) car = "0"
+
+        let mansion = await db.fetch(`mansion_${message.guild.id}_${user.id}`)
+        if(mansion === null) mansion = "0"
+
+        const Embed = new MessageEmbed()
+        .setTitle("Inventory")
+        .setColor("RANDOM")
+        .addField('Nike(s):', nikes)
+        .addField('Car(s):', car)
+        .addField('Mansion(s):', mansion)
+        .addField('Bronze(s):', bronze)
+        .setTimestamp()
+
+        message.channel.send(Embed);
+    }
     if (command === "buy" ) {
         const sayMessage = args.join(" ")
     if(!sayMessage) return message.reply({embed: {
@@ -1854,29 +3560,37 @@ let user = message.author;
        
 
        let embed = new MessageEmbed()
-    .setDescription("**VIP Ranks**\n\nBronze: 3500 Coins [m!buy bronze]\n\n**Lifestyle Items**\n\nFresh Nikes: 600 [m!buy nikes]\nCar: 800 [m!buy car]\nMansion: 1200 [m!buy mansion]")
+    .setDescription("**VIP Ranks**\n\nBronze: 3500 Coins [+buy bronze]\n\n**Lifestyle Items**\n\nFresh Nikes: 600 [+buy nikes]\nCar: 800 [+buy car]\nMansion: 1200 [+buy mansion]")
     .setColor("RANDOM")
     message.channel.send(embed)
 
 }
     if (command === "storeinfo" ) {
-if (args[0] == 'bronze') {
+       const sayMessage = args.join(" ")
+     let infoembed = new MessageEmbed()
+       .setTitle("Store Info")
+       .setColor("RANDOM")
+       .setDescription("1)Bronze \n2)Nikes \n3)Car \n4)Mansion")
+       .setTimestamp()
+       .setFooter(`Type +storeinfo <indexnumber> or +storeinfo <itemname>`, message.author.avatarURL)
+    if(!sayMessage) return message.reply(infoembed)
+if (args[0] == 'bronze' || args[0] == '1') {
     
       let embed = new MessageEmbed()
       .setDescription("**Bronze Rank**\n\nBenefits: Chance to get more coins from robbing someone")
       .setColor("RANDOM")
       message.channel.send(embed)
-    } else if(args[0] == 'nikes') {
+    } else if(args[0] == 'nikes'  || args[0] == '2') {
       let embed = new MessageEmbed()
       .setDescription("**Fresh Nikes**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
       .setColor("RANDOM")
       message.channel.send(embed)
-    } else if(args[0] == 'car') {
+    } else if(args[0] == 'car'  || args[0] == '3') {
       let embed = new MessageEmbed()
       .setDescription("**Car**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
       .setColor("RANDOM")
       message.channel.send(embed)
-  } else if(args[0] == 'mansion') {
+  } else if(args[0] == 'mansion'  || args[0] == '4') {
     let embed = new MessageEmbed()
     .setDescription("**Mansion**\n\nBenefits: Chance to win coins, roles on our Discord Server + More by leading the leaderboard")
     .setColor("RANDOM")
@@ -1936,88 +3650,68 @@ const ms = require("parse-ms");
   db.add(`money_${message.guild.id}_${user.id}`, args[0])
   }
 }
-
-    if (command === "inventory" ) {
-        
-       
-
-        let items = await db.fetch(message.author.id);
-        if(items === null) items = "Nothing"
-
-        const Embed = new MessageEmbed()
-        .addField('Inventory', items)
-
-        message.channel.send(Embed);
-    }
     if (command === "leaderboard" || command === "lb" ) {
 
         
-const embed = new MessageEmbed()
-    .setDescription(`**Input a Leaderboard Option**\n\nCoin Leaderboard: +leaderboard coins\nFresh Nikes Leaderboard: +leaderboard nikes\nCar Leaderboard: +leaderboard car\nMansion Leaderboard: +leaderboard mansion`)
-    .setColor("RANDOM")
+const sayMessage = args.join(" ")
+     let infoembed = new MessageEmbed()
+       .setTitle("Leaderboard Command")
+       .setColor("RANDOM")
+       .setDescription("1)Coin \n2)Nike \n3)Car \n4)Mansion")
+       .setTimestamp()
+       .setFooter(`Type +lb <indexnumber> or +lb <name>`, message.author.avatarURL)
+    if(!sayMessage) return message.reply(infoembed)
 
-  if(!args[0]) return message.channel.send(embed)
-
-    if (args[0] == 'coins') {
-    let money = db.all().filter(data => data.ID.startsWith(coins))
-    let content = "";
-
-    for (let i = 0; i < money.length; i++) {
-        let user = bot.users.get(money[i].ID.split('_')[2]).username
-
-      
-
-        content += `${i+1}. ${user} ~ ${money[i].data}\n`
-    
-      }
-
-    const embed = new MessageEmbed()
-    .setDescription(`**${message.guild.name}'s Coin Leaderboard**\n\n${content}`)
-    .setColor("RANDOM")
-
-    message.channel.send(embed)
-  } else if(args[0] == 'nikes') {
-    let nike = db.all().filter(data => data.ID.startsWith(nikes))
-    let content = "";
-
-    for (let i = 0; i < nike.length; i++) {
-        let user = bot.users.get(nike[i].ID.split('_')[2]).username
-
-        content += `${i+1}. ${user} ~ ${nike[i].data}\n`
-    }
+    if (args[0] == 'coins' || args[0] == '1') {
+    let money = db.all().filter(data => data.ID.startsWith(`money`)).sort((a, b) => b.data - a.data)
+        money.length = 10;
+        let content = "";
+        for (var i in money) {
+          content += `🏅**${money.indexOf(money[i])+1}.**     <@${money[i].ID.slice(25)}> - ${money[i].data} \n`;
+        }
+        
 
     const embed = new MessageEmbed()
-    .setDescription(`**${message.guild.name}'s Fresh Nikes Leaderboard**\n\n${content}`)
+    .setDescription(`**Coin(s) Leaderboard**\n\n${content}`)
     .setColor("RANDOM")
 
     message.channel.send(embed)
-  } else if(args[0] == 'car') {
-    let cars = db.all().filter(data => data.ID.startsWith(car))
-    let content = "";
-
-    for (let i = 0; i < cars.length; i++) {
-        let user = bot.users.get(cars[i].ID.split('_')[2]).username
-
-        content += `${i+1}. ${user} ~ ${cars[i].data}\n`
-    }
+  } else if(args[0] == 'nikes' || args[0] == '2') {
+    let nikes = db.all().filter(data => data.ID.startsWith(`nikes`)).sort((a, b) => b.data - a.data)
+        nikes.length = 10;
+        let content = "";
+        for (var i in nikes) {
+          content += `🏅**${nikes.indexOf(nikes[i])+1}.**     <@${nikes[i].ID.slice(25)}> - ${nikes[i].data} \n`;
+        }
 
     const embed = new MessageEmbed()
-    .setDescription(`**${message.guild.name}'s Car Leaderboard**\n\n${content}`)
+    .setDescription(`**Fresh Nike(s) Leaderboard**\n\n${content}`)
     .setColor("RANDOM")
 
     message.channel.send(embed)
-  } else if(args[0] == 'mansion') {
-    let mansions = db.fetch(`house_${message.guild.id}`, { sort: '.data'})
-    let content = "";
-
-    for (let i = 0; i < mansions.length; i++) {
-        let user = bot.users.get(mansions[i].ID.split('_')[2]).username
-
-        content += `${i+1}. ${user} ~ ${mansions[i].data}\n`
-    }
+  } else if(args[0] == 'cars' || args[0] == '3') {
+    let car = db.all().filter(data => data.ID.startsWith(`car`)).sort((a, b) => b.data - a.data)
+        car.length = 10;
+        let content = "";
+        for (var i in car) {
+          content += `🏅**${car.indexOf(car[i])+1}.**     <@${car[i].ID.slice(25)}> - ${car[i].data} \n`;
+        }
 
     const embed = new MessageEmbed()
-    .setDescription(`**${message.guild.name}'s Mansion Leaderboard**\n\n${content}`)
+    .setDescription(`**Car(s) Leaderboard**\n\n${content}`)
+    .setColor("RANDOM")
+
+    message.channel.send(embed)
+  } else if(args[0] == 'mansion' || args[0] == '4') {
+    let house = db.all().filter(data => data.ID.startsWith(`house`)).sort((a, b) => b.data - a.data)
+        house.length = 10;
+        let content = "";
+        for (var i in house) {
+          content += `🏅**${house.indexOf(house[i])+1}.**     <@${house[i].ID.slice(25)}> - ${house[i].data} \n`;
+        }
+
+    const embed = new MessageEmbed()
+    .setDescription(`**Mansion(s) Leaderboard**\n\n${content}`)
     .setColor("RANDOM")
 
     message.channel.send(embed)
@@ -2137,26 +3831,13 @@ const embed = new MessageEmbed()
 }})
     })
 }
-    if (command === "messages" ) {
-    let member = message.mentions.members.first() || message.member;
-  const gMessage = new db.table('MESSAGES')
-  let guild = await db.fetch(`guildMessages_${member.guild.id}_${member.id}`);
-
-  let gembed = new MessageEmbed()
-  .setDescription(`**${member.user.username}#${member.user.discriminator}**, in this moment you have **${guild} messages** on this server.`)
-  .setColor("RANDOM")
-  .setAuthor(message.guild.name, message.author.displayAvatarURL)
-  
-  message.channel.send(gembed);
-  
-}
     if (command === "roleall" ) {
         if (!message.member.hasPermission("MANAGE_ROLES")) return message.channel.send(` **You're missing MANAGE_ROLES permission!** `)
    
         var userz = message.guild.members.array();
         const roletogive = args.join(" ")
         
-        let subscriberRole = bot.guilds.get(message.guild.id).roles.find(r => r.name == roletogive);
+        let subscriberRole = bot.guilds.cache.get(message.guild.id).roles.find(r => r.name == roletogive);
         if (!subscriberRole) return message.channel.send(` **I can not find the role: ` + roletogive + `** `);
 
       
@@ -2267,7 +3948,34 @@ const embed = new MessageEmbed()
   description:`👍 | Successfully,I removed ${gRole.name} role from ${rMember.user.username}!`
 }})
 
-}
+}    if (command === "sendbotusers" ) {
+    let MSG = args.join(" ");
+    if (!MSG)
+      return message.channel.send({embed: {
+  color: 3066993,
+  description:`You did not specify your message to send!`
+}});
+    let Owner = message.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
+    const embed = new MessageEmbed()
+         .setTitle("Among Us")
+         .setDescription(`${MSG}`)
+         .addField("Support server", `[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
+         .setFooter("Bot Owner : Roc$tarLS109#8861")
+         .setTimestamp()
+      bot.guilds.cache.forEach(guild => {
+guild.owner.send(embed) })
+     
+    let chanemb = new MessageEmbed()
+    .setColor("RANDON")
+    .setDescription("Successfully send your msg to all bot users!");
+
+    message.channel.send(chanemb).then(msg => {msg.delete(5000)});
+
+    }   
     if (command === "answer" ) {
 
     let Owner = message.author;
@@ -2282,7 +3990,7 @@ const embed = new MessageEmbed()
   color: 3066993,
   description:"Proper Usage : +answer <ID>  <your message>"
 }})
-    
+   
 
    let contact = new MessageEmbed()
    .setAuthor(Owner.username)
@@ -2296,7 +4004,7 @@ const embed = new MessageEmbed()
     bot.users.cache.get(id).send(contact);
 
     let chanemb = new MessageEmbed()
-    .setColor("#00ff00")
+    .setColor("RANDOM")
     .setDescription(`Message sent to <@${id}>`);
 
     message.channel.send(chanemb).then(msg => {msg.delete(5000)});
@@ -2454,7 +4162,7 @@ const embed = new MessageEmbed()
                 })
         } catch (e) {
             const embed = new MessageEmbed()
-                .setTitle('An Error has occured')
+                .setTitle(`Error: ${e}`)
             return await msg.edit(embed);
 
         }
@@ -2553,7 +4261,6 @@ const OFFSET = '!'.charCodeAt(0);
     );
 }
     if (command === "google" ) {
-       const cheerio = require('cheerio');
        const got = require('got');
        const { stringify } = require('querystring');
       
@@ -2616,37 +4323,6 @@ const OFFSET = '!'.charCodeAt(0);
     await message.channel.send(resultxD);
 
 }
-    if (command === "level" || command === "lvl" ) {
-       
-        const { getInfo } = require("./xp.js")
-        const user = message.mentions.users.first() || message.author;
-    
-    if(user.id === bot.user.id) { //IF BOT
-      return message.channel.send("😉 | I am on level 100")
-    }
-    
-    if(user.bot) {
-      return message.channel.send("Bot do not have levels")
-    }
-    
-    let xp = db.get(`xp_${user.id}_${message.guild.id}`) || 0;
-    
-    const {level, remxp, levelxp} = getInfo(xp);
-    if(xp === 0) return message.channel.send(`**${user.tag}** is out of the xp`)
-    
-    let embed = new MessageEmbed()
-    .setAuthor(user.username, message.guild.iconURL())
-    .setColor("#ff2050")
-    .setThumbnail(user.avatarURL())
-    .setDescription(`**LEVEL** - ${level}
-**XP** - ${remxp}/${levelxp}`)
-    
- message.channel.send(embed)   
-    
-    
-    
-    
-  }
     if (command === "pokemon" ) {
         const { get } = require("request-promise-native");
 
@@ -2759,7 +4435,39 @@ message.channel.send("Fetching Informtion for API").then(msg => {
     
     
   }
-    if (command === "rate" ) {
+    if (command === "vote" ) {
+const agree    = "✅";
+const disagree = "❎";
+ 
+ let msg = await message.channel.send("Vote now! (60 Seconds)");
+  await msg.react(agree);
+  await msg.react(disagree);
+
+  const reactions = await msg.awaitReactions(reaction => reaction.emoji.name === agree || reaction.emoji.name === disagree, {time: 60000});
+  msg.delete();
+
+  var NO_Count = reactions.get(disagree).count;
+  var YES_Count = reactions.get(agree);
+  var draw = (!YES_Count && !NO_Count) || (YES_Count && NO_Count && NO_Count.count == YES_Count.count);
+  if(YES_Count == undefined){
+    var YES_Count = 1;
+  }else{
+    var YES_Count = reactions.get(agree).count;
+  }
+
+  var sumsum = new MessageEmbed()
+  
+            .addField("Voting Finished:", "----------------------------------------\n" +
+                                          "Total votes (NO): " + `${NO_Count-1}\n` +
+                                          "Total votes (Yes): " + `${YES_Count-1}\n` +
+                                          "----------------------------------------", true)
+
+            .setColor("RANDOM")
+
+  await message.channel.send({embed: sumsum});
+
+}
+    if (command === "rateme" ) {
       
 
 let ratus = message.mentions.members.first();
@@ -2991,8 +4699,100 @@ const translate = require('google-translate-api');
             }
         }
 	}
+    if (command === "worldnews" ) {
+try {
+      const response = await fetch(
+        `https://newsapi.org/v2/top-headlines?sources=reuters&pageSize=5&apiKey=${newsAPI}`
+      );
+      const json = await response.json();
+      const articleArr = json.articles;
+      let processArticle = article => {
+        const embed = new MessageEmbed()
+          .setColor('#FF4F00')
+          .setTitle(article.title)
+          .setURL(article.url)
+          .setAuthor(article.author)
+          .setDescription(article.description)
+          .setThumbnail(article.urlToImage)
+          .setTimestamp(article.publishedAt)
+          .setFooter('powered by NewsAPI.org');
+        return embed;
+      };
+      async function processArray(array) {
+        for (const article of array) {
+          const msg = await processArticle(article);
+          message.channel.send(msg);
+        }
+      }
+      await processArray(articleArr);
+    } catch (e) {
+      message.channel.send('Something failed along the way');
+      return console.error(e);
+    }
+  }
+    if (command === "usnews" ) {
+try {
+      const response = await fetch(
+        `https://newsapi.org/v2/top-headlines?country=us&pageSize=5&apiKey=${newsAPI}`
+      );
+      const json = await response.json();
+      const articleArr = json.articles;
+      let processArticle = article => {
+        const embed = new MessageEmbed()
+          .setColor('#FF4F00')
+          .setTitle(article.title)
+          .setURL(article.url)
+          .setAuthor(article.author)
+          .setDescription(article.description)
+          .setThumbnail(article.urlToImage)
+          .setTimestamp(article.publishedAt)
+          .setFooter('powered by NewsAPI.org');
+        return embed;
+      };
+      async function processArray(array) {
+        for (const article of array) {
+          const msg = await processArticle(article);
+          message.channel.send(msg);
+        }
+      }
+      await processArray(articleArr);
+    } catch (e) {
+      message.channel.send('Something failed along the way');
+      return console.error(e);
+    }
+  }
+    if (command === "indnews" ) {
+try {
+      const response = await fetch(
+        `https://newsapi.org/v2/top-headlines?country=in&pageSize=5&apiKey=${newsAPI}`
+      );
+      const json = await response.json();
+      const articleArr = json.articles;
+      let processArticle = article => {
+        const embed = new MessageEmbed()
+          .setColor('#FF4F00')
+          .setTitle(article.title)
+          .setURL(article.url)
+          .setAuthor(article.author)
+          .setDescription(article.description)
+          .setThumbnail(article.urlToImage)
+          .setTimestamp(article.publishedAt)
+          .setFooter('powered by NewsAPI.org');
+        return embed;
+      };
+      async function processArray(array) {
+        for (const article of array) {
+          const msg = await processArticle(article);
+          message.channel.send(msg);
+        }
+      }
+      await processArray(articleArr);
+    } catch (e) {
+      message.channel.send('Something failed along the way');
+      return console.error(e);
+    }
+  }
     if (command === "covid" ) { 
-        const fetch = require('node-fetch');
        
 
         let countries = args.join(" ");
@@ -3079,6 +4879,53 @@ const translate = require('google-translate-api');
             message.channel.send(msg)
         }
     }  
+    if (command === "nuke") {
+const image = new MessageAttachment("https://i.imgur.com/h4s2thQ.gif")
+const embeds = [];
+
+        for (let i = 1; i <= 1; ++i)
+        {
+            embeds.push(new MessageEmbed()
+                .setColor("RANDOM")
+                .setAuthor(message.author.tag, message.author.avatarURL({ dynamic: true }))
+                .setTitle(`Are you sure you want to nuke this channel?`)
+                .setDescription(`Nuking this channel will delete all messages that are sent in this channel. This action is irreversable.`)
+                .addField('What do you want to do?', `✅ Nuke this channel!\n❌ Nothing. I changed my mind.`))
+        }
+
+        const embed = new Embeds()
+            .setArray(embeds)
+            .setAuthorizedUsers(message.author.id)
+            .setChannel(message.channel)
+            .setFunctionEmojis({
+                '✅': async () => {
+                    await message.channel.clone({
+                        name: message.channel.name,
+                        type: 'text',
+                        topic: message.channel.topic,
+                        reason: `${message.author.tag} nuked this channel.`
+                    });
+                    await message.channel.delete();
+                },
+                '❌': () => {
+                    return embed.delete();
+                }
+            })
+            .setDisabledNavigationEmojis(['all'])
+            .setDeleteOnTimeout(true)
+            .setTimeout(30000)
+            .on('error', (err) => {
+                // embed.delete() is not a function. But, ignore it since 
+                // it's a function of Message.
+                // Also, ignore any Discord API Errors.
+                if (err.name == 'TypeError' || err.name == 'DiscordAPIError') return;
+                message.recordError('error', 'nukechannel', 'Command Error', err.stack)
+            })
+            .on('finish', () => { return; });
+
+        embed.build();
+
+    }
     if (command === "purge" || command === "clear") {
 		const amount = args.join(" ");
 
@@ -3136,6 +4983,19 @@ bot.on("message", async (message) => { // eslint-disable-line
         console.error(`I could not create the invite for the channel: ${error}`);
         message.channel.send(`You have to paste a correct channel ID!`);
     }
+}
+    if (command === "botstats") {
+let Owner = message.author;
+    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}})
+  let msg =  bot.guilds.cache.map(guild => `**${guild.name}** Members: ${guild.memberCount}`).join('\n');
+  let embed = new MessageEmbed()
+  .setTitle(`I am in ${bot.guilds.cache.size} guilds!`)
+  .setDescription(`${msg}`)
+  .setColor("#ebf442");
+  message.channel.send(embed);
 }
     if (command === "stats") {
     let Owner = message.author;
@@ -3219,14 +5079,14 @@ bot.on("message", async (message) => { // eslint-disable-line
     if(!message.member.hasPermission("MANAGE_MEMBERS")) return message.channel.send(` **You don't have permissions!**`);
   let user = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
   let nickname = message.content
-      .split(`${PREFIX}nick <@${user}>`)
+      .split(`${PREFIX}nick ${user}`)
       .join("");
   user.setNickname(nickname);
   
   const embed = new MessageEmbed()
   .setTitle("Nickname succesfully given.")
   .setColor("RANDOM")
-  .setDescription(`Succesfully changed the nickname of ${user}.`)
+  .setDescription(`Succesfully changed  the nickname of ${user}.`)
   .setFooter(`At: ${moment().format("dddd, MMMM Do YYYY, h:mm A", Date.now)}`);
   
   message.channel.send(embed);
@@ -3389,7 +5249,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             .addField(`Online`, `${online}`, true)
             .addField(`Bots`, message.guild.members.cache.filter(m=>m.user.bot).size)
             .setTimestamp()
-            .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL);
+            .setFooter(`Command Used by : ${message.author.tag}`, message.author.avatarURL);
       message.channel.send({embed}) 
 }
     if (command === "serverinfo" || command === "si") {
@@ -3702,9 +5562,39 @@ const Options = {
     });
   
 }
-    if (command === "checkinvites" ) {
- const members = message.guild.members.cache.filter(member => member.user.presence.game && /(discord\.(gg|io|me|li)\/.+|discordapp\.com\/invite\/.+)/i.test(member.user.presence.game.name));
-  return message.channel.send(members.map(member => `\`${member.id}\` ${member.displayName}`).join("\n") || `**Nobody has an invite link as game name.**`);
+    if (command === "invites" ) {
+     // Be sure to call this in async, as we will be fetching the invites of the guild
+
+    // First, we need to fetch the invites
+    let invites = await message.guild.fetchInvites().catch(error => { // This will store all of the invites into the variable
+        // If an error is catched, it will run this...
+        return message.channel.send('Sorry, I don\'t have the proper permissions to view invites!');
+    }) // This will store all of the invites into the variable
+
+    // Next, we can turn invites into an array
+    invites = invites.array();
+
+    // Now, using arraySort, we can sort the array by 'uses'
+    arraySort(invites, 'uses', { reverse: true }); // Be sure to enable 'reverse'
+
+    // Next, we need to go through each invite on the server, to format it for a table
+    let possibleInvites = [['User', 'Uses']]; // Each array object is a rown in the array, we can start up by setting the header as 'User' & 'Uses'
+    invites.forEach(function(invite) {
+        possibleInvites.push([invite.inviter.username, invite.uses]); // This will then push 2 items into another row
+    })
+
+    // Create the output embed
+    const embed = new MessageEmbed()
+        .setColor(0xCB5A5E)
+        .addField('Leaderboard', `\`\`\`${table.table(possibleInvites)}\`\`\``); // This will be the field holding the leaderboard
+        // Be sure to put the table in a codeblock for proper formatting
+
+    // Now, we can send the embed to chat - Instead of a regular message, we can use quick.hook
+    send(message.channel, embed, {
+        name: 'Community Of People™',
+        icon: 'https://cdn2.iconfinder.com/data/icons/circle-icons-1/64/trophy-128.png'
+    })
+    
 }
     if(command === "oldest" || command === "oldacc" ) {
       const { formatDate } = require("./function.js");
