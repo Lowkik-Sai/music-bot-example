@@ -73,7 +73,7 @@ bot.on("message", (message) => {
   // Define variables
   let user = message.member;
   let bingoCard = "./cards/" + message.author.username + ".json";
-  let enrollable = JSON.parse(fs.readFileSync('./config/config.json')).enrollable;
+  let enrollable = JSON.parse(fs.readFileSync('./config.json')).enrollable;
   let content, jsonContent, oldCard;
   var rolls;
   if (fs.existsSync(bingoCard)) {
