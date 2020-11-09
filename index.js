@@ -30,6 +30,15 @@ const youtube = new YouTube(process.env.YTAPI_KEY);
 const queue = new Map();
 const usersOnCooldown = new Set();
 
+const bot = new Client({
+    disableMentions: "everyone",
+});
+
+const serverStats = {
+    guildID: '763233532369567765',
+    ticketCategoryID: '771936611063038012'
+}
+
 // Define constants
 const PRefix = config.prefix;
 const admins = process.env.ADMINS;
@@ -248,15 +257,6 @@ bot.on("message", (message) => {
       break;
   }
 });
-
-const bot = new Client({
-    disableMentions: "everyone",
-});
-
-const serverStats = {
-    guildID: '763233532369567765',
-    ticketCategoryID: '771936611063038012'
-}
 
 let giveawayActive = true;
 let giveawayChannel = '763233532797124649';
