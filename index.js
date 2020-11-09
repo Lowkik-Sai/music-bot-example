@@ -20,6 +20,7 @@ const cron = require('cron');
 const Canvas = require('canvas-constructor');
 var jimp = require('jimp');
 const Discord = require("discord.js");
+const config = require("./config.json");
 require("dotenv").config();
 require("./server.js");
 
