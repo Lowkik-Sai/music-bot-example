@@ -867,13 +867,14 @@ bot.on("message", async message => {
         setTimeout(CheckWinner, 30000, message);
     }
 }
-   if(message.content.startsWith("+resetwinnerslms")) {
+   if(message.content.startsWith("+restartlms")) {
         if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
         db.delete(`lms_${message.author.id}`)
         let winnerEmbed = new MessageEmbed()
   .setColor("RANDOM")
-  .setDescription(`Successfully,Resetted LMS winner!`);
+  .setDescription(`Successfully,Restarted LMS contest!`);
   message.channel.send(winnerEmbed)
+        giveawayActive = true;
      }
      if(message.content.startsWith("+winnerslms")) {
         if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
