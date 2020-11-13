@@ -757,12 +757,10 @@ await Embeds.build();
     if(message.channel.id === channelID) {
         if(!message.content.isNaN) {
             if(message.content > limit)
-               message.delete();
    return message.author.send({embed: {
    color: 3066993,
    description: `The number is between 1 and ${limit}! Try again`}});
             if(message.content < 1)
-               message.delete();
     return message.author.send({embed: {
    color: 3066993,
    description: `The number cannot be negative! Try again`}});
