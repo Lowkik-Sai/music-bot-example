@@ -290,14 +290,14 @@ function FlipCoin()
 }
 
 bot.on("message", async message => {
-setInterval(async function() {
-
-  const randomWord = require('random-word');
+const randomWord = require('random-word');
   const wordscramble = require('wordscramble');
 
   const word = randomWord()
   const scrambled = wordscramble.scramble(word);
   
+setInterval(async function() {
+
   const channel = bot.channels.cache.get("763233532797124649")
   channel.send("The scrambled word is: " + scrambled + " \n Write the correct word within 5 minutes here, first person to give correct answer will get 1 coin")
 
