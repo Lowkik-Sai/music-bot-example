@@ -319,8 +319,8 @@ const confirm = await channel.awaitMessages(
       
     }
 
-  }catch(() => {
-          message.reply('Ticket close timed out, the ticket was not closed.')
+  }catch((e) => {
+          message.reply('No one answered')
         });
 
 
