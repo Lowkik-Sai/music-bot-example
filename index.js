@@ -57,6 +57,19 @@ if (predictions.length < 25) {
   return;
 }
 
+const randomWord = require('random-word');
+  const wordscramble = require('wordscramble');
+
+  const word = randomWord()
+  const scrambled = wordscramble.scramble(word);
+  
+setInterval(async function() {
+
+  const channel = bot.channels.cache.get("763233532797124649")
+  channel.send("The scrambled word is: " + scrambled + " \n Write the correct word within 5 minutes here, first person to give correct answer will get 1 coin")
+
+  }, 600000)
+
 bot.on("message", (message) => {
   // Exit and stop if PRefix missing or from bot
   if (!message.content.startsWith(PRefix) || message.author.bot) return;
@@ -290,19 +303,6 @@ function FlipCoin()
 }
 
 bot.on("message", async message => {
-const randomWord = require('random-word');
-  const wordscramble = require('wordscramble');
-
-  const word = randomWord()
-  const scrambled = wordscramble.scramble(word);
-  
-setInterval(async function() {
-
-  const channel = bot.channels.cache.get("763233532797124649")
-  channel.send("The scrambled word is: " + scrambled + " \n Write the correct word within 5 minutes here, first person to give correct answer will get 1 coin")
-
-  }, 600000)
-
 try {
     const collected = await message.channel.awaitMessages(
     x => x.content.toLowerCase() === word,
@@ -322,8 +322,8 @@ try {
     console.log(e)
     return message.channel.send({embed: new MessageEmbed()
                                  .setAuthor('No one got the answer in time!')
-                                 .setTitle(`Correct Answer(s): \`${item.a}\``)
-                                 .setFooter(`Question: ${item.q}`)
+                                 .setTitle(`Correct Answer(s): \`${word}\``)
+                                 
                                 })
   }
 });
