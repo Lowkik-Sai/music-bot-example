@@ -1420,8 +1420,8 @@ const options = {
     console.log(e)
     return message.channel.send({embed: new MessageEmbed()
                                  .setAuthor('No one got the answer in time!')
-                                 .setTitle(`Correct Answer(s): \`${item.a}\``)
-                                 .setFooter(`Question: ${item.q}`)
+                                 .setTitle(`Correct Answer(s): \`${word}\``)
+                                 .setColor("RANDOM")
                                 })
   }
 }
