@@ -301,7 +301,7 @@ setInterval(async function() {
   const channel = bot.channels.cache.get("763233532797124649")
   channel.send("The scrambled word is: " + scrambled + " \n Write the correct word within 5 minutes here, first person to give correct answer will get 1 coin")
 
-  }, 10000)
+  }, 60000)
 
 try {
     const collected = await message.channel.awaitMessages(
