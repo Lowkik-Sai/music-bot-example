@@ -303,7 +303,8 @@ setInterval(async function() {
   }, 10000)
 
 bot.on("message", async message => {
-const confirm = await channel.awaitMessages(
+try {
+    const collected = await message.channel.awaitMessages(
     x => x.content.toLowerCase() === word,
     {
       max: 1,
@@ -311,18 +312,20 @@ const confirm = await channel.awaitMessages(
       errors: ["time"]
     }
   );
-  if (confirm.size) {
-    if (confirm.first().content.toLowerCase() === word) {
-
-      
-      channel.send(`Winner is: ${confirm.first().author}, He has won 1 coin and it was added to his LAFF bank`)
-      
-    }
-
-  } catch (error) {
-		message.reply('No one answered')	// handle failure of any Promise rejection inside here
-		}
-
+    const winnerMessage = collected.first();
+    return message.channel.send({embed: new MessageEmbed()
+                                 .setAuthor(`Winner: ${winnerMessage.author.tag}`, winnerMessage.author.displayAvatarURL)
+                                 .setTitle(`Correct Answer: \`${word}\``)
+                                 .setColor("RANDOM")
+                                })
+  } catch (e) {
+    console.log(e)
+    return message.channel.send({embed: new MessageEmbed()
+                                 .setAuthor('No one got the answer in time!')
+                                 .setTitle(`Correct Answer(s): \`${item.a}\``)
+                                 .setFooter(`Question: ${item.q}`)
+                                })
+  }
 });
 
 setInterval(function(){
