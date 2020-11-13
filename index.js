@@ -319,10 +319,9 @@ const confirm = await channel.awaitMessages(
       
     }
 
-  }catch((e) => {
-          message.reply('No one answered')
-        });
-
+  } catch (error) {
+		message.reply('No one answered')	// handle failure of any Promise rejection inside here
+		}
 
 });
 
