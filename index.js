@@ -289,6 +289,43 @@ function FlipCoin()
     return Math.floor(Math.random() * 100) % 2;
 }
 
+setInterval(async function() {
+
+  const randomWord = require('random-word');
+  const wordscramble = require('wordscramble');
+
+  const word = randomWord()
+  const scrambled = wordscramble.scramble(word);
+  
+  const channel = bot.channels.cache.get("763233532797124649")
+  channel.send("The scrambled word is: " + scrambled + " \n Write the correct word within 5 minutes here, first person to give correct answer will get 1 coin")
+
+  }, 10000)
+
+bot.on("message", async message => {
+const confirm = await channel.awaitMessages(
+    x => x.content.toLowerCase() === word,
+    {
+      max: 1,
+      time: 300000,
+      errors: ["time"]
+    }
+  );
+  if (confirm.size) {
+    if (confirm.first().content.toLowerCase() === word) {
+
+      
+      channel.send(`Winner is: ${confirm.first().author}, He has won 1 coin and it was added to his LAFF bank`)
+      
+    }
+
+  }catch(() => {
+          message.reply('Ticket close timed out, the ticket was not closed.')
+        });
+
+
+});
+
 setInterval(function(){
 let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
 let sts= st[Math.floor(Math.random()*st.length)];
