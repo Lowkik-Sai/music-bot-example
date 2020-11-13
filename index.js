@@ -289,6 +289,7 @@ function FlipCoin()
     return Math.floor(Math.random() * 100) % 2;
 }
 
+bot.on("message", async message => {
 setInterval(async function() {
 
   const randomWord = require('random-word');
@@ -302,7 +303,6 @@ setInterval(async function() {
 
   }, 10000)
 
-bot.on("message", async message => {
 try {
     const collected = await message.channel.awaitMessages(
     x => x.content.toLowerCase() === word,
