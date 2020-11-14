@@ -837,6 +837,14 @@ bot.on("message", async message => {
   message.channel.send(winnerEmbed)
         giveawayActive = true;
      }
+     if(message.content.startsWith("+pauselms")) {
+        if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
+        let winnerEmbed = new MessageEmbed()
+  .setColor("RANDOM")
+  .setDescription(`Successfully,Paused LMS contest!`);
+  message.channel.send(winnerEmbed)
+        giveawayActive = false;
+     }
      if(message.content.startsWith("+winnerslms")) {
         if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
         let winner = db.fetch(`lms_${message.author.id}`)
