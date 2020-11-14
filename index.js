@@ -289,6 +289,14 @@ function FlipCoin()
     return Math.floor(Math.random() * 100) % 2;
 }
 
+function ContestInfo(message) {
+    if (giveawayActive) {
+        message.reply('True - Contest is running');
+    } else {
+        message.reply('False - Contest is not running');
+    }
+}
+
 setInterval(function(){
 let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
 let sts= st[Math.floor(Math.random()*st.length)];
@@ -845,6 +853,9 @@ bot.on("message", async message => {
   .setDescription(`Successfully,Paused LMS contest!`);
   message.channel.send(winnerEmbed)
         
+     }
+     if(message.content.startsWith("+contestinfo")) {
+      ContestInfo(message);
      }
      if(message.content.startsWith("+winnerslms")) {
         if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
