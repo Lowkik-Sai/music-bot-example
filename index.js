@@ -587,7 +587,7 @@ let channelID = '769473798978142210';
 
 bot.on('message', async message => {
     try {
-        if (messagage.content == "+contestinfo") {
+        if (message.content == "+contestinfo") {
              return;
         }
         if (/^[0-9]*$/.test(message.content) == false) {
