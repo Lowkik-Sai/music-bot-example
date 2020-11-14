@@ -297,13 +297,13 @@ function ContestInfo(message) {
              .setColor("RANDOM")
              .setDescription("Contest is running!")
              .setTimestamp()
-        if(message.channel.id === CHANNELID) return message.author.send(true);
+        if(message.channel.id === CHANNELID) return message.channel.send(true);
     } else {
         const false = new MessageEmbed()
              .setColor("RANDOM")
              .setDescription("Contest is not running!")
              .setTimestamp()
-        if(message.channel.id === CHANNELID) return message.author.send(false);
+        if(message.channel.id === CHANNELID) return message.channel.send(false);
     }
 }
 
