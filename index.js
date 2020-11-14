@@ -293,17 +293,17 @@ let CHANNELID = '763233532797124649';
 
 function ContestInfo(message) {
     if (giveawayActive) {
-       const true = new MessageEmbed()
+       const trueembed = new MessageEmbed()
              .setColor("RANDOM")
              .setDescription("Contest is running!")
              .setTimestamp()
-        if(message.channel.id === CHANNELID) return message.channel.send(true);
+        if(message.channel.id === CHANNELID) return message.channel.send(trueembed);
     } else {
-        const false = new MessageEmbed()
+        const falseembed = new MessageEmbed()
              .setColor("RANDOM")
              .setDescription("Contest is not running!")
              .setTimestamp()
-        if(message.channel.id === CHANNELID) return message.channel.send(false);
+        if(message.channel.id === CHANNELID) return message.channel.send(falseembed);
     }
 }
 
