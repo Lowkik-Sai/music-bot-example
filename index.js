@@ -289,11 +289,21 @@ function FlipCoin()
     return Math.floor(Math.random() * 100) % 2;
 }
 
+let CHANNELID = '763233532797124649';
+
 function ContestInfo(message) {
     if (giveawayActive) {
-        message.reply('True - Contest is running');
+       const true = new MessageEmbed()
+             .setColor("RANDOM")
+             .setDescription("Contest is running!")
+             .setTimestamp()
+        if(message.channel.id === CHANNELID) return message.author.send(true);
     } else {
-        message.reply('False - Contest is not running');
+        const false = new MessageEmbed()
+             .setColor("RANDOM")
+             .setDescription("Contest is not running!")
+             .setTimestamp()
+        if(message.channel.id === CHANNELID) return message.author.send(false);
     }
 }
 
