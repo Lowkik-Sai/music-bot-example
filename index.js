@@ -845,15 +845,13 @@ bot.on("message", async message => {
 
   if (message.channel.id === giveawayChannel) {
     if (giveawayActive && !message.author.bot && !message.author.id in blacklist) {
-        if (!roleblacklist.some(role => {
-      if(message.member.roles.has(role)) return true;
- })) {
-    //Put lastmessageID and setTimeout here
-        lastMessageID = message.id;
-        setTimeout(CheckWinner, 30000, message);
+        if (!roleblacklist.some(role => { if(message.member.roles.has(role)) return true; })) {
+            lastMessageID = message.id;
+            setTimeout(CheckWinner, 30000, message);
+        }
+    }
 }
-      }
-}
+
 
    if(message.content.startsWith("+restartlms")) {
         if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
