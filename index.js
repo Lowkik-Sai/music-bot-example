@@ -262,6 +262,8 @@ bot.on("message", (message) => {
 let giveawayActive = true;
 let giveawayChannel = '763233532797124649';
 let lastMessageID = '';
+let blacklist = ['722666387386007653', '72266638738600765', '7226663873860076'];
+let roleblacklist = ['774101485796851764', '77410148579685176'];
 
 function CheckWinner(message) {
     if (message.id === lastMessageID) {
@@ -842,11 +844,15 @@ bot.on("message", async message => {
   }
 
   if (message.channel.id === giveawayChannel) {
-    if (giveawayActive) {
+    if (giveawayActive && !message.author.bot && message.author.id not in blacklist) {
+        foreach(role in roleblacklist) {
+            if(message.member.has(role) return;
+        }
         lastMessageID = message.id;
         setTimeout(CheckWinner, 30000, message);
     }
 }
+
    if(message.content.startsWith("+restartlms")) {
         if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
         db.delete(`lms_${message.author.id}`)
