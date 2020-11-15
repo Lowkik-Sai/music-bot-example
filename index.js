@@ -45,6 +45,8 @@ const PRefix = config.prefix;
 const admins = process.env.ADMINS;
 const maxRolls = config.maxRolls;
 const userSelectsCard = config.userSelectsCard;
+const blacklist = ['722666387386007653', '72266638738600765', '7226663873860076'];
+const roleblacklist = ['774101485796851764', '77410148579685176'];
 
 // Read predictions from file, remove last prediction if empty string
 var predictions = fs.readFileSync('./predictions.txt').toString().split('\n');
@@ -262,8 +264,6 @@ bot.on("message", (message) => {
 let giveawayActive = true;
 let giveawayChannel = '763233532797124649';
 let lastMessageID = '';
-blacklist = ['722666387386007653', '72266638738600765', '7226663873860076'];
-roleblacklist = ['774101485796851764', '77410148579685176'];
 
 function CheckWinner(message) {
     if (message.id === lastMessageID) {
@@ -844,7 +844,7 @@ bot.on("message", async message => {
   }
 
   if (message.channel.id === giveawayChannel) {
-    if (giveawayActive && !message.author.bot && message.author.id not in blacklist) {
+    if (giveawayActive && !message.author.bot && !message.author.id in blacklist) {
         foreach(role in roleblacklist) {
             if(message.member.has(role) return;
         }
