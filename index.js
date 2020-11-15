@@ -845,7 +845,7 @@ bot.on("message", async message => {
 
   if (message.channel.id === giveawayChannel) {
     if (giveawayActive && !message.author.bot && !message.author.id in blacklist) {
-        foreach(role in roleblacklist) {
+        forEach(role in roleblacklist) {
             if(message.member.roles.has(role) return;
         }
         lastMessageID = message.id;
