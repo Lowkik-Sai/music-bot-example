@@ -31,6 +31,7 @@ const queue = new Map();
 const usersOnCooldown = new Set();
 
 const bot = new Client({
+    unknownCommandResponse: false,
     disableMentions: "everyone",
 });
 
