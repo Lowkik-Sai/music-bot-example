@@ -262,8 +262,8 @@ bot.on("message", (message) => {
 let giveawayActive = true;
 let giveawayChannel = '763233532797124649';
 let lastMessageID = '';
-let blacklist = ['722666387386007653', '72266638738600765', '7226663873860076'];
-let roleblacklist = ['774101485796851764', '77410148579685176'];
+blacklist = ['722666387386007653', '72266638738600765', '7226663873860076'];
+roleblacklist = ['774101485796851764', '77410148579685176'];
 
 function CheckWinner(message) {
     if (message.id === lastMessageID) {
