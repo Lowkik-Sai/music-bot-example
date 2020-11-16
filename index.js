@@ -846,8 +846,11 @@ bot.on("message", async message => {
   if (message.channel.id === giveawayChannel) {
     if (giveawayActive && !message.author.bot && !blacklist.includes(message.author.id)) {
         if (!roleblacklist.some(role => { if(message.member.roles.cache.has(role)) return true; })) {
+            if(lastUserID !== message.author.id) {
+            lastUserID = message.author.id;
             lastMessageID = message.id;
             setTimeout(CheckWinner, 30000, message);
+           }
         }
     }
 }
