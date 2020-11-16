@@ -264,6 +264,7 @@ bot.on("message", (message) => {
 let giveawayActive = true;
 let giveawayChannel = '763233532797124649';
 let lastMessageID = '';
+let lastUserID = '';
 
 function CheckWinner(message) {
     if (message.id === lastMessageID) {
