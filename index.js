@@ -297,6 +297,7 @@ let CHANNELID = '763233532797124649';
 function ContestInfo(message) {
     if (giveawayActive) {
        const trueembed = new MessageEmbed()
+             
              .setColor("RANDOM")
              .setDescription("Contest is running!")
              .setTimestamp()
@@ -337,6 +338,7 @@ sendLiveData = (data, channel) => {
     }
     const liveEmbed = new MessageEmbed()
         .setColor("RANDOM")
+        .setURL('https://discord.gg/NqT45sY')
         .setTitle(title)
         .setDescription(score)
         .setURL('https://www.iplt20.com/')
@@ -466,6 +468,7 @@ sendScheduleMatch = (matches, channel) => {
 
     const matchEmbed = new MessageEmbed()
         .setColor("RANDOM")
+        .setURL('https://discord.gg/NqT45sY')
         .setTitle('Upcoming Matches')
         .setDescription('Team 1  vs  Team 2')
         .setURL('https://www.iplt20.com/')
@@ -480,6 +483,7 @@ sendPlayerStats = (stats, channel) => {
     try {
         const matchEmbed = new MessageEmbed()
             .setColor("RANDOM")
+            .setURL('https://discord.gg/NqT45sY')
             .setTitle(stats['fullName'])
             .setDescription(stats['country'])
             .setURL('https://www.iplt20.com/')
@@ -607,6 +611,7 @@ bot.on('message', async message => {
         
             message.delete();
 const guessemb = new MessageEmbed()
+     .setURL('https://discord.gg/NqT45sY')
      .setTitle("Among Us Guess the Number Contest")
      .setColor("RANDOM")
      .setTimestamp()
@@ -893,6 +898,7 @@ bot.on("guildCreate", (guild) => {
   );
    const embed = new MessageEmbed()
      .setTitle("Among Us")
+     .setURL('https://discord.gg/NqT45sY')
      .setDescription("Thanks for inviting me into this server!\n My Prefix is \`+\`")
      .setColor("RANDOM")
      .setTimestamp()
@@ -1063,7 +1069,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   randomPuppy('porn')
             .then(url => {
                 const embed = new MessageEmbed()
-                
+                .setURL('https://discord.gg/NqT45sY')
                 .setTitle(`PORN`)
                 .setFooter(`Command Used by ${message.author.tag}`)
                 .setImage(url)
@@ -1083,6 +1089,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   
         const memeEmbed = new MessageEmbed()
         .setColor("RANDOM")
+        .setURL('https://discord.gg/NqT45sY')
         .setImage(img)
         .setTitle(`Your meme. From r/${random}`)
         .setURL(`https://reddit.com/r/${random}`)
@@ -1102,6 +1109,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     let embed = new MessageEmbed()
     .setColor("#00ff00")
     .setThumbnail(bicon)
+    .setURL('https://discord.gg/NqT45sY')
     .setTitle("Support Info")
     .addField("To see the bot commands use", "`+help`")
     .addField("To report bug use", "`+contact <reason>`")
@@ -1112,6 +1120,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     if(command === "allcommands" || command === "ac" ) {
     const acEmbed = new MessageEmbed()
          .setTitle("Commands List")
+         .setURL('https://discord.gg/NqT45sY')
          .setDescription(`invite \n meme \n ping \n report \n support \n help \n args-info \n role create or delete \n mute \n announce \n oldestmember \n youngestmember \n poll \n advertise \n embed \n slowmode \n timer \n ascii \n finduser \n Blacklist \n deletewarns \n warn \n warnings \n bal \n hastebin \n beg \n daily \n profile \n rob \n roulette \n sell \n slots \n weekly \n pay \n deposit \n addmoney \n remove money \n work \n buy \n store \n store info \n withdraw \n inventory \n leaderboard \n colour \n changemy mind \n beautify \n calculate \n give me ajoke \n add role \n remove role \n answer \n clap \n suggest \n contact \n eval \n morse \n reverse \n flip \n google \n level \n pokemon \n add command \n delete command \n imdb \n rate \n kill \n translate \n covid stats \n say \n purge \n channel invite \n stats \n uptime \n leave \n setbotnick \n avatar \n carona virus \n covid checking \n serverinfo \n userinfo \n roles \n check perms \n botinfo \n emoji \n settimerinseconds \n unmute \n kick \n ban \n play \n search \n queue \n stop \n skip \n volume \n skip \n pause \n loop \n nowplaying \n resume \n mod-everyone \n unmod-everyone \n create-mod \n check-mod \n can-kick \n make-private \n create-private \n un-private \n my-permissions \n  lock-permissions \n role-permissions `)
          .setColor("RANDOM")
          .setTimestamp();
@@ -1402,6 +1411,7 @@ const options = {
   const item = quiz[Math.floor(Math.random() * quiz.length)];
    const quizembed = new MessageEmbed()
      .setTitle("QUIZ")
+     .setURL('https://discord.gg/NqT45sY')
      .setDescription(item.q)
      .setColor("RANDOM")
      .setFooter("Guess the correcr answer within 60seconds and Get Coins")
@@ -1412,6 +1422,7 @@ const options = {
     const winnerMessage = collected.first();
     return message.channel.send({embed: new MessageEmbed()
                                  .setAuthor(`Winner: ${winnerMessage.author.tag}`, winnerMessage.author.displayAvatarURL)
+                                 .setURL('https://discord.gg/NqT45sY')
                                  .setTitle(`Correct Answer: \`${winnerMessage.content}\``)
                                  .setFooter(`Question: ${item.q}`)
                                  .setColor("RANDOM")
@@ -1422,6 +1433,7 @@ const options = {
                                  .setAuthor('No one got the answer in time!')
                                  .setTitle(`Correct Answer(s): \`${word}\``)
                                  .setColor("RANDOM")
+                                 .setURL('https://discord.gg/NqT45sY')
                                 })
   }
 }
@@ -1471,6 +1483,7 @@ const { decodeHTMLEntities } = require('./util.js');
 
           display
             .setTitle(title)
+            .setURL('https://discord.gg/NqT45sY')
             .setDescription([
               type,
               questionToAsk
@@ -1533,6 +1546,7 @@ const { decodeHTMLEntities } = require('./util.js');
 
     return message.channel.send(new MessageEmbed()
       .setTitle('Results:')
+      .setURL('https://discord.gg/NqT45sY')
       .setThumbnail(thumbnail)
       .setColor("RANDOM")
       .setDescription(leaderboard));
@@ -1541,6 +1555,7 @@ const { decodeHTMLEntities } = require('./util.js');
     if (args[0] === 'ipl') {
    const iplembed = new MessageEmbed()
     .setTitle("IPL")
+    .setURL('https://discord.gg/NqT45sY')
     .setDescription('1)**UpComing:**  \tSchedule of all upcoming IPL matches(at most 6)\n2)**Live:**  \t\tLive Score\n3)**Standings:** \tCurrent Standings\n4)**Player:**    \tPlayer Info e.g +player Patt Cummins')
     .setColor("RANDOM")
     .setTimestamp()
@@ -1553,6 +1568,7 @@ message.channel.send(iplembed)
 const sayMessage = args.join(" ")
 const embed = new MessageEmbed()
     .setColor("RANDOM")
+    .setURL('https://discord.gg/NqT45sY')
     .setTitle("TRIVIA")
     .setDescription("  1)INFO - ABOUT TRIVIA \n 2)SUGGEST - SUGGESTIONS FOR TRIVIA \n 3)BET - BETTING ON THE TRIVIA")
     .setFooter("Proper Usage : +trivia <©ommand> or +trivia <index number>")
@@ -1760,6 +1776,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
           db.subtract(`money_${message.guild.id}_${user.id}`, amout);
           const Embed = new MessageEmbed()
             .setTitle(q.title)
+            .setURL('https://discord.gg/NqT45sY')
             .setDescription(
               q.options.map((opt) => {
                 i++;
@@ -1927,6 +1944,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
            var battlenumber = Math.floor(Math.random()* Math.floor(battlelimit));
           const embed = new MessageEmbed()
              .setTitle("Battle")
+             .setURL('https://discord.gg/NqT45sY')
              .setDescription("Successfully,Generated random number between 0-100,You have 30 seconds to guess the correct number!\nYou have 30seconds and 30 guesses")
              .setFooter("If no one won,then bet amount will be refunded back to your account")
              .setTimestamp()
@@ -1965,6 +1983,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                 message.channel.send(new MessageEmbed()
                     .setTitle(':crossed_swords: | Battle')
                     .setColor(0x00AE86)
+                    .setURL('https://discord.gg/NqT45sY')
                     .setDescription(`Kek, not willing to fight eh. <@!${message.author.id}>`)
                     .setTimestamp());
             }
@@ -1977,6 +1996,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
             message.channel.send(new MessageEmbed()
                 .setTitle(':crossed_swords: | Battle')
                 .setColor(0xD11313)
+                .setURL('https://discord.gg/NqT45sY')
                 .setDescription(`Time out. ${oppo.tag} did not answer to the request.`)
                 .setTimestamp())
         });
@@ -1987,6 +2007,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
         message.channel.send(new MessageEmbed()
             .setTitle(':crossed_swords: | Battle')
             .setColor(0xD11313)
+            .setURL('https://discord.gg/NqT45sY')
             .setDescription(`Your request has already been made. Try again later.`));
     }
  
@@ -2252,6 +2273,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                                 message.channel.send(new MessageEmbed()
                                     .setTitle(':crossed_swords: | Battle')
                                     .setColor(0xD11313)
+                                    .setURL('https://discord.gg/NqT45sY')
                                     .setDescription(`${currentPlayer} missed 2 turns and yield the fight.`)
                                     .setTimestamp());
                             }
@@ -2263,6 +2285,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                                 message.channel.send(new MessageEmbed()
                                     .setTitle(':crossed_swords: | Battle')
                                     .setColor(0xD11313)
+                                    .setURL('https://discord.gg/NqT45sY')
                                     .setDescription(`${currentPlayer}, you missed your turn.`)
                                     .setTimestamp());
                             }
@@ -2283,6 +2306,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                 message.channel.send(new MessageEmbed()
                     .setTitle(':crown: | Battle')
                     .setColor(0x00AE86)
+                    .setURL('https://discord.gg/NqT45sY')
                     .setDescription(`The battle is over! Congratulations to the winner ${winner} !\n\n${firstPlayer} HP : ${firstPlayer.health}\n${secondPlayer} HP : ${secondPlayer.health}`)
                     .setTimestamp());
 
@@ -2297,6 +2321,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                 message.channel.send(new MessageEmbed()
                     .setTitle(':crossed_swords: | Battle')
                     .setColor(0x00AE86)
+                   .setURL('https://discord.gg/NqT45sY')
                     .setDescription(`Kek, not willing to fight eh. <@!${message.author.id}>`)
                     .setTimestamp());
             }
@@ -2309,6 +2334,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
             message.channel.send(new MessageEmbed()
                 .setTitle(':crossed_swords: | Battle')
                 .setColor(0xD11313)
+                .setURL('https://discord.gg/NqT45sY')
                 .setDescription(`Time out. ${secondPlayer} did not answer to the request.`)
                 .setTimestamp())
         });
@@ -2319,6 +2345,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
         message.channel.send(new MessageEmbed()
             .setTitle(':crossed_swords: | Battle')
             .setColor(0xD11313)
+            .setURL('https://discord.gg/NqT45sY')
             .setDescription(`Your request has already been made. Try again later.`));
     }
 }
@@ -2418,6 +2445,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
       });
       const Embed = new MessageEmbed()
         .setTitle(`New role!`)
+        .setURL('https://discord.gg/NqT45sY')
         .setDescription(
           `${message.author.username} has created the role "${rName}"\nIts Hex Color Code: ${rColor}\nIts ID: ${rNew.id}`
         )
@@ -2434,6 +2462,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
       roleDelete.delete();
       const Embed1 = new MessageEmbed()
         .setTitle(`Deleted role!`)
+        .setURL('https://discord.gg/NqT45sY')
         .setColor(roleDelete.color)
         .setDescription(
           `${message.author.username} has deleted the role "${roleDelete.name}"\nIts ID: ${roleDelete.id}\nIts Hex Color Code: ${roleDelete.color}`
@@ -2559,6 +2588,7 @@ if (!message.member.hasPermission('MANAGE_GUILD') && message.author.id !== '3575
   
   const embed = new MessageEmbed()
     .setTitle(args.join(' '))
+    .setURL('https://discord.gg/NqT45sY')
     .setFooter('DROP A VOTE!')
     .setColor('RANDOM')
     const pollTitle = await message.channel.send({ embed });
@@ -2599,6 +2629,7 @@ if (!message.member.hasPermission('MANAGE_GUILD') && message.author.id !== '3575
 }});
     const Embed = new MessageEmbed()
       .setTitle(`New poll!`)
+      .setURL('https://discord.gg/NqT45sY')
       .setDescription(`${question}`)
       .setFooter(`${message.author.username} created this poll.`)
       .setColor(`RANDOM`);
