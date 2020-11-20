@@ -264,6 +264,7 @@ bot.on("message", (message) => {
 let giveawayActive = true;
 let giveawayChannel = '763233532797124649';
 let lastMessageID = '';
+let lastUserID = '';
 
 function CheckWinner(message) {
     if (message.id === lastMessageID) {
@@ -848,9 +849,11 @@ bot.on("message", async message => {
   if (message.channel.id === giveawayChannel) {
     if (giveawayActive && !message.author.bot && !blacklist.includes(message.author.id)) {
         if (!roleblacklist.some(role => { if(message.member.roles.cache.has(role)) return true; })) {
+            if(lastUserID !== message.author.id) {
+            lastUserID = message.author.id;
             lastMessageID = message.id;
             setTimeout(CheckWinner, 30000, message);
-          
+           }
         }
     }
 }
@@ -866,12 +869,11 @@ bot.on("message", async message => {
      }
      if(message.content.startsWith("+pauselms")) {
         if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
-        giveawayActive = false;
         let winnerEmbed = new MessageEmbed()
   .setColor("RANDOM")
   .setDescription(`Successfully,Paused LMS contest!`);
   message.channel.send(winnerEmbed)
-        
+         giveawayActive = false;       
      }
      if(message.content.startsWith("+contestinfo")) {
       ContestInfo(message);
