@@ -5321,7 +5321,7 @@ let Owner = message.author;
     let Owner = message.author;
     if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
-    description:"Only the bot owner can use this command!"
+    description:"You can't use this command,\n Dm Roc$tarLS109#8861 for more details!"
 }})
        const rulesembed = new MessageEmbed()
              .setTitle("Rules:")
