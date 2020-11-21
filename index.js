@@ -869,7 +869,7 @@ bot.on("message", async message => {
      }
      if(message.content.startsWith("+pauselms")) {
         if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
-        let winnerEmbed = new MessageEmbed()
+        const winnerEmbed = new MessageEmbed()
   .setColor("RANDOM")
   .setDescription(`Successfully,Paused LMS contest!`);
   message.channel.send(winnerEmbed)
