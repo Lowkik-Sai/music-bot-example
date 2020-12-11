@@ -63,9 +63,6 @@ if (predictions.length < 25) {
   return;
 }
 
-
-const { Client, RichEmbed } = require('discord.js');
-const client= new Client();
 const GoogleSpreadsheet = require('google-spreadsheet');
 const {promisify} = require('util');
 const creds = require('./client_secret.json');
