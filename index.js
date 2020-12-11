@@ -63,10 +63,6 @@ if (predictions.length < 25) {
   return;
 }
 
-const GoogleSpreadsheet = require('google-spreadsheet');
-const {promisify} = require('util');
-const creds = require('./client_secret.json');
-
 bot.on('message', message => {
     if (message.content === '+forms'){
 
