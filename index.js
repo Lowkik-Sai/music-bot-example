@@ -67,6 +67,18 @@ bot.on('message', message => {
     if (message.content === '+forms'){
 
 async function accessSpreadsheet(embed) {
+await doc.useServiceAccountAuth({
+    client_email: creds.client_email,
+    private_key: creds.private_key,
+  });
+
+  await doc.loadInfo(); // loads document properties and worksheets
+  console.log(doc.title);
+
+  const sheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
+  console.log(sheet.title);
+  console.log(sheet.rowCount);
+
   // Insert the code already being used up to the for loop.
 const doc = new GoogleSpreadsheet('16Xa3O1y9M4d15WkhwFQ0abasZfayg3KUJ_eTEo7ERDc');
             await promisify(doc.useServiceAccountAuth)(creds);
