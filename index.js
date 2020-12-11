@@ -15,6 +15,9 @@ const fetch = require('node-fetch');
 const Message = require("discord.js");
 const moment = require("moment");
 const cron = require('cron');
+const GoogleSpreadsheet = require('google-spreadsheet');
+const {promisify} = require('util');
+const creds = require('./client_secret.json');
 
 
 const Canvas = require('canvas-constructor');
@@ -59,6 +62,47 @@ if (predictions.length < 25) {
   console.log("You don't have enough predictions to generate a card. You need at least 24");
   return;
 }
+
+
+const { Client, RichEmbed } = require('discord.js');
+const client= new Client();
+const GoogleSpreadsheet = require('google-spreadsheet');
+const {promisify} = require('util');
+const creds = require('./client_secret.json');
+
+bot.on('message', message => {
+    if (message.content === '+forms'){
+
+        async function accessSpreadsheet() {
+            const doc = new GoogleSpreadsheet('16Xa3O1y9M4d15WkhwFQ0abasZfayg3KUJ_eTEo7ERDc');
+            await promisify(doc.useServiceAccountAuth)(creds);
+            const info = await promisify(doc.getInfo)();
+            var sheet = info.worksheets[0];
+
+            var cells = await promisify(sheet.getCells)({
+                'min-row': 2,
+                'max-row': 5,
+                'min-col': 3,
+                'max-col': 3,
+                'return-empty': true,
+            })
+            for (var cell of cells) {
+                message.author.send(cell.value)
+            }
+        }
+
+        accessSpreadsheet();
+        const embede = new MessageEmbed()
+    .setColor('#0099ff')
+    .setTitle("My Title")
+    .addBlankField()
+    .setDescription('Some description')
+    .addBlankField()
+    .addField('Name', '•'+ cell[1].value , true)
+    .setTimestamp();
+
+        message.author.send{ (embede) }
+})
 
 bot.on("message", (message) => {
   // Exit and stop if PRefix missing or from bot
