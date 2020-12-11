@@ -15,7 +15,7 @@ const fetch = require('node-fetch');
 const Message = require("discord.js");
 const moment = require("moment");
 const cron = require('cron');
-const GoogleSpreadsheet = require('google-spreadsheet');
+const { GoogleSpreadsheet } = require('google-spreadsheet');
 const {promisify} = require('util');
 const creds = require('./client_secret.json');
 
