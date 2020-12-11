@@ -69,8 +69,13 @@ const doc = new GoogleSpreadsheet('16Xa3O1y9M4d15WkhwFQ0abasZfayg3KUJ_eTEo7ERDc'
    
 async function accessSpreadsheet(embed) {
 await doc.useServiceAccountAuth({
-    client_email: creds.client_email,
-    private_key: creds.private_key,
+    client_id: creds.client_id,
+    project_id: creds.project_id,
+    auth_uri: creds.auth_uri,
+    token_uri: creds.token_uri,
+    auth_provider_x509_cert_url: creds.auth_provider_x509_cert_url,
+    client_secret: creds.client_secret,
+    redirect_uris: creds.redirect_uris,
   });
 
   await doc.loadInfo(); // loads document properties and worksheets
