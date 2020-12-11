@@ -90,7 +90,6 @@ bot.on('message', message => {
     .setTitle("My Title")
     .addBlankField()
     .setDescription('Some description')
-    .addBlankField()
     .addField('Name', '•'+ cell[1].value , true)
     .setTimestamp();
 
