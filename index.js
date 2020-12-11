@@ -85,7 +85,7 @@ bot.on('message', message => {
         }
 
         accessSpreadsheet();
-        const embede = new RichEmbed()
+        const embede = new MessageEmbed()
     .setColor('#0099ff')
     .setTitle("My Title")
     .setDescription('Some description')
