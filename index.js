@@ -66,8 +66,9 @@ if (predictions.length < 25) {
 bot.on('message', message => {
     if (message.content === '+forms'){
 
-        async function accessSpreadsheet() {
-            const doc = new GoogleSpreadsheet('16Xa3O1y9M4d15WkhwFQ0abasZfayg3KUJ_eTEo7ERDc');
+async function accessSpreadsheet(embed) {
+  // Insert the code already being used up to the for loop.
+const doc = new GoogleSpreadsheet('16Xa3O1y9M4d15WkhwFQ0abasZfayg3KUJ_eTEo7ERDc');
             await promisify(doc.useServiceAccountAuth)(creds);
             const info = await promisify(doc.getInfo)();
             var sheet = info.worksheets[0];
@@ -82,17 +83,18 @@ bot.on('message', message => {
             for (var cell of cells) {
                 message.author.send(cell.value)
             }
-        }
+  for (let i = 0; i < 25 && cells[i]; i++) embed.addField('Name', `•${cells[i].value}`, true);
+}
 
-        accessSpreadsheet();
-        const embede = new MessageEmbed()
-    .setColor('#0099ff')
-    .setTitle("My Title")
-    .setDescription('Some description')
-    .addField('Name', '•'+ cell[1].value , true)
-    .setTimestamp();
+var embed = new RichEmbed()
+  .setColor('#0099ff')
+  .setTitle('**Spreadsheet Info**')
+  .setDescription('Showing as many values as possible...');
 
-        message.author.send(embede) }
+accessSpreadsheet(embed)
+  .then(() => message.author.send(embed))
+  .catch(console.error);
+}
 })
 
 bot.on("message", (message) => {
