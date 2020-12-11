@@ -65,7 +65,8 @@ if (predictions.length < 25) {
 
 bot.on('message', message => {
     if (message.content === '+forms'){
-
+const doc = new GoogleSpreadsheet('16Xa3O1y9M4d15WkhwFQ0abasZfayg3KUJ_eTEo7ERDc');
+   
 async function accessSpreadsheet(embed) {
 await doc.useServiceAccountAuth({
     client_email: creds.client_email,
@@ -80,8 +81,7 @@ await doc.useServiceAccountAuth({
   console.log(sheet.rowCount);
 
   // Insert the code already being used up to the for loop.
-const doc = new GoogleSpreadsheet('16Xa3O1y9M4d15WkhwFQ0abasZfayg3KUJ_eTEo7ERDc');
-            await promisify(doc.useServiceAccountAuth)(creds);
+         await promisify(doc.useServiceAccountAuth)(creds);
             const info = await promisify(doc.getInfo)();
             var sheet = info.worksheets[0];
 
