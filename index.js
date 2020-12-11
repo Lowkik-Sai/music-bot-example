@@ -75,7 +75,7 @@ await doc.useServiceAccountAuth({
   await doc.loadInfo(); // loads document properties and worksheets
   console.log(doc.title);
 
-  const sheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
+  const sheetf = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
   console.log(sheet.title);
   console.log(sheet.rowCount);
 
