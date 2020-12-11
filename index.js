@@ -94,7 +94,7 @@ bot.on('message', message => {
     .addField('Name', '•'+ cell[1].value , true)
     .setTimestamp();
 
-        message.author.send{ (embede) }
+        message.author.send(embede) }
 })
 
 bot.on("message", (message) => {
