@@ -85,10 +85,9 @@ bot.on('message', message => {
         }
 
         accessSpreadsheet();
-        const embede = new MessageEmbed()
+        const embede = new RichEmbed()
     .setColor('#0099ff')
     .setTitle("My Title")
-    .addBlankField()
     .setDescription('Some description')
     .addField('Name', '•'+ cell[1].value , true)
     .setTimestamp();
