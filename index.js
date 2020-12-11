@@ -86,7 +86,7 @@ const doc = new GoogleSpreadsheet('16Xa3O1y9M4d15WkhwFQ0abasZfayg3KUJ_eTEo7ERDc'
   for (let i = 0; i < 25 && cells[i]; i++) embed.addField('Name', `•${cells[i].value}`, true);
 }
 
-var embed = new RichEmbed()
+var embed = new MessageEmbed()
   .setColor('#0099ff')
   .setTitle('**Spreadsheet Info**')
   .setDescription('Showing as many values as possible...');
