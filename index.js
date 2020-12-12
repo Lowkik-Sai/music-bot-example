@@ -63,6 +63,42 @@ if (predictions.length < 25) {
   return;
 }
 
+bot.commands = new Discord.Collection();
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) { // Setup each command for bot
+  const command = require(`./commands/${file}`);
+  bot.commands.set(command.name, command);
+}
+
+bot.on('message', msg => {
+  const content = msg.content;
+  const parts = content.split(' ');
+
+  if (parts[0] != PREFIX){ return; }
+  if (parts.length === 1){ msg.reply("Yes?!!!! I hear thy name calling!"); }
+
+  if (msg.content === 'chev list scores') {
+    bot.commands.get('showScores').execute(msg);
+  }
+  else if (parts[1] === 'add' && parts[2] != null 
+    && parts[3] === 'to' && parts[4] != null) {
+      bot.commands.get('addScore').execute(msg, parseInt(parts[2]), parts[4]);
+  }
+  else if (parts[1] === 'subtract' && parts[2] != null 
+    && parts[3] === 'to' && parts[4] != null) {
+      bot.commands.get('subtractScore').execute(msg, parseInt(parts[2]), parts[4]);
+  }
+  else if (parts[1] === 'add' && parts[2] === 'member' && parts[3] != null){
+    bot.commands.get('addMember').execute(msg, parts[3]);
+  }
+  else if (parts[1] === 'remove' && parts[2] === 'member' && parts[3] != null){
+    bot.commands.get('removeMember').execute(msg, parts[3]);
+  }
+
+})
+
 bot.on('message', message => {
     if (message.content === '+forms'){
 const doc = new GoogleSpreadsheet('16Xa3O1y9M4d15WkhwFQ0abasZfayg3KUJ_eTEo7ERDc');
