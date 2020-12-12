@@ -45,6 +45,7 @@ const serverStats = {
 
 // Define constants
 const PRefix = config.prefix;
+const prefIX = config.prefIX;
 const admins = process.env.ADMINS;
 const maxRolls = config.maxRolls;
 const userSelectsCard = config.userSelectsCard;
@@ -76,7 +77,7 @@ bot.on('message', msg => {
   const content = msg.content;
   const parts = content.split(' ');
 
-  if (parts[0] != PREFIX){ return; }
+  if (parts[0] != prefIX){ return; }
   if (parts.length === 1){ msg.reply("Yes?!!!! I hear thy name calling!"); }
 
   if (msg.content === 'chev list scores') {
