@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ."
+    "start": "node .",
+    "dev": "nodemon ."
   },
   "repository": {
     "type": "git",
@@ -81,5 +82,8 @@
   },
   "optionalDependencies": {
     "@discordjs/uws": "^11.149.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.3"
   }
 } 
