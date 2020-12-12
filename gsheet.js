@@ -3,7 +3,7 @@ const {google} = require('googleapis');
 const fs = require('fs');
 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
-const TOKEN_PATH = './credentials.json';
+const TOKEN_PATH = './token.json';
 
 try {   
     const content = fs.readFileSync('client_secret.json');   
