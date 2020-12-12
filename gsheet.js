@@ -78,12 +78,6 @@ function listEvents(auth) {
 }); 
 }
 
-Any ideas?
-
-share edit follow
-asked
-May 10 '18 at 20:37
-
 
 
 module.exports.authorizeScoreChange = function authorizeScoreChange(credentials, callback, val1, val2) {
