@@ -27,6 +27,13 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 // time.
 const TOKEN_PATH = './credentials.json';
 
+try {   
+    const content = fs.readFileSync('credentials.json');   
+    authorize(JSON.parse(content), listEvents); 
+} catch (err) {   
+    return console.log('Error loading client secret file:', err); 
+}
+
 // Load client secrets from a local file.
 fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
