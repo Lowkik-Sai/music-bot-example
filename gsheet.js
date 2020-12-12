@@ -3,7 +3,7 @@ const {google} = require('googleapis');
 const fs = require('fs');
 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
-const TOKEN_PATH = 'token.json';
+const TOKEN_PATH = './credentials.json';
 
 const spreadsheetId = '1FS9OGmrB4LJXprzwUbW9vivpygIgv7QJoVLi73c92CA';
 
