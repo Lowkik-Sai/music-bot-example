@@ -1,7 +1,7 @@
 const fs = require('fs');
-var google = require('./gsheet').google;
-var authorize = require('./gsheet').authorize;
-var spreadsheetId = require('./gsheet').spreadsheetId;
+var google = require('../gsheet').google;
+var authorize = require('../gsheet').authorize;
+var spreadsheetId = require('../gsheet').spreadsheetId;
 
 module.exports = {
   name: 'showScores',
