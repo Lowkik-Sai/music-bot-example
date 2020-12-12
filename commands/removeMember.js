@@ -1,7 +1,7 @@
 const fs = require('fs');
-var google = require('./gsheet.js').google;
-var authorizeMemberChange = require('./gsheet.js').authorizeMemberChange;
-var spreadsheetId = require('./gsheet.js').spreadsheetId;
+var google = require('./gsheet').google;
+var authorizeMemberChange = require('./gsheet').authorizeMemberChange;
+var spreadsheetId = require('./gsheet').spreadsheetId;
 module.exports = {
   name: 'removeMember',
   description: 'Remove a member from the cheevos list',
