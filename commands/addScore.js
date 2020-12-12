@@ -1,7 +1,7 @@
 const fs = require('fs');
-var google = require('./gsheet').google;
-var authorizeScoreChange = require('./gsheet').authorizeScoreChange;
-var spreadsheetId = require('./gsheet').spreadsheetId;
+var google = require('../gsheet').google;
+var authorizeScoreChange = require('../gsheet').authorizeScoreChange;
+var spreadsheetId = require('../gsheet').spreadsheetId;
 
 module.exports = {
   name: 'addScore',
