@@ -406,7 +406,7 @@ function ContestInfo(message) {
 setInterval(function(){
 let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Noob Army Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
 let sts= st[Math.floor(Math.random()*st.length)];
-bot.user.setPresence({ activity: { name: sts }, status: 'online' })
+bot.user.setActivity({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
 },10000);
 
