@@ -742,7 +742,7 @@ const Embeds = new PaginationEmbed.Embeds()
   .setChannel(message.channel)
   .setPageIndicator(true)
   .setFooter('Type +help <commandname>')
-  .setURL('https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg')
+  .setURL('https://cdn.discordapp.com/attachments/688674336240173086/787879241886597131/Screenshot_2020-12-13-07-57-552.jpg')
   .setColor("RANDOM")
   .setTimestamp()
   // Sets the client's assets to utilise. Available options:
@@ -1144,9 +1144,9 @@ bot.on("message", async (message) => { // eslint-disable-line
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
             .setAuthor("Invite Link", message.author.displayAvatarURL())
-            .setDescription(`[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
+            .setDescription(`[Click here!](https://discord.com/api/oauth2/authorize?client_id=787879524037689355&permissions=8&scope=bot)`)
             .setTimestamp()
-            .setFooter("Noob Army Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
+            .setFooter("Noob Army Official", "https://cdn.discordapp.com/attachments/688674336240173086/787879241886597131/Screenshot_2020-12-13-07-57-552.jpg");
         message.reply(helpembed);
     }
     if (command === "pornn") {
@@ -4358,7 +4358,7 @@ const sayMessage = args.join(" ")
          .setTitle("Noob Army")
          .setURL('https://discord.gg/NqT45sY')
          .setDescription(`${MSG}`)
-         .addField("Support server", `[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
+         .addField("Support server", `[Click here!](https://discord.gg/noobarmy)`)
          .setFooter("Bot Owner : Aᴋ᭄Abhiᴮᴼˢˢ࿐")
          .setTimestamp()
       bot.guilds.cache.forEach(guild => {
