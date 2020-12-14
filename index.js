@@ -903,7 +903,7 @@ await Embeds.build();
 });
 
 bot.on("ready", async () => {
-   const id = "654669770549100575"; // Discord User IDs look like a long string of random numbers
+   const id = "688671832068325386"; // Discord User IDs look like a long string of random numbers
 
   const user = await bot.users.fetch(id);
 
@@ -1029,7 +1029,7 @@ cc.send({embed: {
 bot.on('message',m=>{
 if(m.content=="+servers_name"){
 let Owner = m.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return m.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return m.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -1046,7 +1046,7 @@ m.channel.send({embed: {
 bot.on('message',m=>{
 if(m.content=="+servers_link"){
 let Owner = m.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return m.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return m.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -1820,7 +1820,7 @@ let questions = [
    description: `Currently,There is nearly ${questions.length} questions, if you have any suggestions/ideas for questions please use '${PREFIX}trivia suggest <question, 4 possible answers, and correct answer>'.`
 }})
         }else if(args[0] === 'suggest' || args[0] === '2'){         
-          bot.users.cache.get('654669770549100575').send(message.author.tag + `\n ${args.join(" ").slice(8)}`)
+          bot.users.cache.get('688671832068325386').send(message.author.tag + `\n ${args.join(" ").slice(8)}`)
           console.log(message.content.length)
         }else if(args[0] === 'bet' || args[0] === '3'){
 let user = message.author;
@@ -3052,7 +3052,7 @@ const { Timers } = require("./variable.js");
     if (command === "blacklist" ) {
         
   
-    if (message.author.id != 654669770549100575) return message.reply("you do not have permission to use this command!")
+    if (message.author.id != 688671832068325386) return message.reply("you do not have permission to use this command!")
     const user = message.mentions.users.first()
     if (!user) return message.reply("Please mention someone!")
     
@@ -3741,7 +3741,7 @@ const ms = require("parse-ms");
   }
 }
     if (command === "addmoney" || command === "am" ) {
-        let ownerID = '654669770549100575'
+        let ownerID = '688671832068325386'
   if(message.author.id !== ownerID) return;
 
   let user = message.mentions.members.first() || message.author;
@@ -3757,7 +3757,7 @@ const ms = require("parse-ms");
 
 }
     if (command === "removemoney" || command === "rm" ) {
-        let ownerID = '654669770549100575'
+        let ownerID = '688671832068325386'
   if(message.author.id !== ownerID) return;
 
   let user = message.mentions.members.first() || message.author;
@@ -4350,7 +4350,7 @@ const sayMessage = args.join(" ")
   description:`You did not specify your message to send!`
 }});
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -4374,7 +4374,7 @@ guild.owner.send(embed) })
     if (command === "answer" ) {
 
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -4513,7 +4513,7 @@ guild.owner.send(embed) })
    .addField("Message: ", sayMessage)
    .setTimestamp()
 
-    bot.users.cache.get("654669770549100575").send(contact);
+    bot.users.cache.get("688671832068325386").send(contact);
 
     let embed = new MessageEmbed()
     .setColor("#00ff00")
@@ -4530,7 +4530,7 @@ guild.owner.send(embed) })
     if (command === "eval" ) {
 
         let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }});
@@ -4611,7 +4611,7 @@ var rndInt = getRandomInt(20) + 1;
         message.channel.send(`<@${message.author.id}>,You've rolled **` + rndInt + "**");
 let number = "11";
 let number1 = "20";// You can custom it through /number command and reroll it through /reroll
-let ownerID = '654669770549100575';
+let ownerID = '688671832068325386';
 let channelID = '763233532797124649';
         if(message.channel.id === channelID) {
         if(rndInt == number) {
@@ -5398,7 +5398,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 }
     if (command === "botstats") {
 let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -5412,7 +5412,7 @@ let Owner = message.author;
 }
     if (command === "rules") {
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"You can't use this command,\n Dm Aᴋ᭄Abhiᴮᴼˢˢ࿐ for more details!"
 }})
@@ -5428,7 +5428,7 @@ let Owner = message.author;
     }
     if (command === "stats") {
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -5483,7 +5483,7 @@ let Owner = message.author;
 }
     if (command === "leave") {
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -5494,7 +5494,7 @@ let Owner = message.author;
     }
     if (command === "leave") {
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -5523,7 +5523,7 @@ let Owner = message.author;
 }
     if (command === "setbotnick") {
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -5603,7 +5603,7 @@ let Owner = message.author;
                                             .setFooter(`Noob Army`)
                                             .setThumbnail(servericon)
                                             .setColor('RANDOM')
-                                        bot.channels.cache.get('766581746505613352').send(`|| <@654669770549100575> ||`, form).then(async msg => {
+                                        bot.channels.cache.get('766581746505613352').send(`|| <@688671832068325386> ||`, form).then(async msg => {
                                             const collector = msg.createReactionCollector((r, u) => (r.emoji.name === '✔') && (u.id !== bot.user.id && u.id === message.author.id))
                                             collector.on("collect", r => {
                                                 switch (r.emoji.name) {
@@ -5968,7 +5968,7 @@ const member = message.guild.member(user);
         .setDescription(`Noob Army Music Bot Information`)
         .setImage(bot.user.displayAvatarURL())
         .addField("Bot Owner", `Aᴋ᭄Abhiᴮᴼˢˢ࿐`)
-        .addField("Owner Id", `654669770549100575`)
+        .addField("Owner Id", `688671832068325386`)
         .addField("My Id", `758889056649216041`)
         .addField("My Prefix", `+`)
         .addField(`Servers`,`${servers}`, true)
