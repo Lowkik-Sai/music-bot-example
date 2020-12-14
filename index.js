@@ -2926,7 +2926,7 @@ message.reply((me.createdTimestamp-m.createdTimestamp)/1000)
 
     let emb = new MessageEmbed()
       .setTitle(args[0])
-      .setURL('https://discord.gg/NqT45sY')
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setColor("RANDOM")
       .setDescription(args[1])
       .setFooter(`Command Used by : ${message.author.tag}`, message.author.avatarURL)
@@ -3008,7 +3008,7 @@ const { Timers } = require("./variable.js");
     setTimeout(() => {
       let Embed = new MessageEmbed()
         .setTitle(`Timer finished`)
-        .setURL('https://discord.gg/NqT45sY')
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setDescription(
           `Your timer for ${args[0]} (${ms(args[0])}MS) has finished!`
         )
@@ -3167,7 +3167,7 @@ const { Timers } = require("./variable.js");
             db.set(`warnings_${message.guild.id}_${user.id}`, 1);
             const warnembed = new MessageEmbed()
               .setTitle('Warning')
-              .setURL('https://discord.gg/NqT45sY')
+              .setURL('https://discord.gg/WGtQPBWpT8')
               .setDescription(`You were warned in ${message.guild.name}`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
@@ -3179,7 +3179,7 @@ const { Timers } = require("./variable.js");
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
-              .setURL('https://discord.gg/NqT45sY')
+              .setURL('https://discord.gg/WGtQPBWpT8')
               .setDescription(`**${user.username}** has been warned!`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
@@ -3194,7 +3194,7 @@ const { Timers } = require("./variable.js");
             db.add(`warnings_${message.guild.id}_${user.id}`, 1)
             const warnembed = new MessageEmbed()
               .setTitle('Warning')
-              .setURL('https://discord.gg/NqT45sY')
+              .setURL('https://discord.gg/WGtQPBWpT8')
               .setDescription(`You were warned in ${message.guild.name}`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
@@ -3205,7 +3205,7 @@ const { Timers } = require("./variable.js");
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
-              .setURL('https://discord.gg/NqT45sY')
+              .setURL('https://discord.gg/WGtQPBWpT8')
               .setDescription(`**<@${id}>** has been warned!`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
@@ -3236,7 +3236,7 @@ const { Timers } = require("./variable.js");
      if (levelfetch === null) levelfetch = 0;
      const embed = new MessageEmbed()
       .setTitle("Noob Army Official")
-      .setURL('https://discord.gg/NqT45sY')
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setDescription(`${user}'s Level : ${levelfetch}`)
       .setTimestamp()
     message.channel.send(embed)
@@ -3247,7 +3247,7 @@ const { Timers } = require("./variable.js");
     if (mymessages === null) mymessages = 0;
     const embed = new MessageEmbed()
       .setTitle("Noob Army Official")
-      .setURL('https://discord.gg/NqT45sY')
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setDescription(`Total Messages sent by ${user} is ${mymessages}`)
       .setTimestamp()
     message.channel.send(embed)
@@ -3354,7 +3354,7 @@ const ms = require("parse-ms");
   if (levelfetch === null) levelfetch = 0;
     const embed = new MessageEmbed()
         .setTitle("Points")
-        .setURL('https://discord.gg/NqT45sY')
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setColor("RANDOM")
         .setDescription(`${message.author.id} \n Total Messages : ${messages} \n Level : {levelfetch}`)
      message.channel.send(embed)
@@ -3852,7 +3852,7 @@ let percents = ["3,51", "3,91", "4,00", "4,31", "4,72", "4,99"]
 
         const Embed = new MessageEmbed()
         .setTitle("Inventory")
-        .setURL('https://discord.gg/NqT45sY')
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setColor("RANDOM")
         .addField('Nike(s):', nikes)
         .addField('Car(s):', car)
@@ -3958,7 +3958,7 @@ let user = message.author;
        const sayMessage = args.join(" ")
      let infoembed = new MessageEmbed()
        .setTitle("Store Info")
-       .setURL('https://discord.gg/NqT45sY')
+       .setURL('https://discord.gg/WGtQPBWpT8')
        .setColor("RANDOM")
        .setDescription("1)Bronze \n2)Nikes \n3)Car \n4)Mansion")
        .setTimestamp()
@@ -4047,7 +4047,7 @@ const sayMessage = args.join(" ")
      let infoembed = new MessageEmbed()
        .setTitle("Leaderboard Command")
        .setColor("RANDOM")
-       .setURL('https://discord.gg/NqT45sY')
+       .setURL('https://discord.gg/WGtQPBWpT8')
        .setDescription("1)Coin \n2)Nike \n3)Car \n4)Mansion")
        .setTimestamp()
        .setFooter(`Type +lb <indexnumber> or +lb <name>`, message.author.avatarURL)
@@ -4205,7 +4205,7 @@ const sayMessage = args.join(" ")
 
         const embed = new MessageEmbed()
         .setColor(0x808080)
-        .setURL('https://discord.gg/NqT45sY')
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setTitle('Calculator')
         .addField('Question', `\`\`\`css\n${args.join(' ')}\`\`\``)
         .addField('Answer', `\`\`\`css\n${resp}\`\`\``)
@@ -4257,7 +4257,7 @@ const sayMessage = args.join(" ")
 
   let xdemb = new MessageEmbed()
   .setColor("RANDOM")
-  .setURL('https://discord.gg/NqT45sY')
+  .setURL('https://discord.gg/WGtQPBWpT8')
   .setTitle(`Addrole command`)
   .addField("Description:", "Add role to member", true)
   .addField("Usage", "!addrole [user] [role]", true)
@@ -4306,7 +4306,7 @@ const sayMessage = args.join(" ")
 
   let xdemb = new MessageEmbed()
   .setColor("RANDOM")
-  .setURL('https://discord.gg/NqT45sY')
+  .setURL('https://discord.gg/WGtQPBWpT8')
   .setTitle(`Removerole command`)
   .addField("Description:", "Take role from member", true)
   .addField("Usage", "!removerole [user] [role]", true)
@@ -4356,7 +4356,7 @@ const sayMessage = args.join(" ")
 }})
     const embed = new MessageEmbed()
          .setTitle("Noob Army")
-         .setURL('https://discord.gg/NqT45sY')
+         .setURL('https://discord.gg/WGtQPBWpT8')
          .setDescription(`${MSG}`)
          .addField("Support server", `[Click here!](https://discord.gg/noobarmy)`)
          .setFooter("Bot Owner : Aᴋ᭄Abhiᴮᴼˢˢ࿐")
@@ -4390,11 +4390,11 @@ guild.owner.send(embed) })
    let contact = new MessageEmbed()
    .setAuthor(Owner.username)
    .setColor("00ff00")
-   .setURL('https://discord.gg/NqT45sY')
+   .setURL('https://discord.gg/WGtQPBWpT8')
    .setThumbnail(Owner.displayAvatarURL)
    .setTitle("Response  from your contact!")
    .addField("Response:", sayMessage)
-   .addField("Support Server", "[Gamer's World](https://discord.gg/NqT45sY)")
+   .addField("Support Server", "[Gamer's World](https://discord.gg/WGtQPBWpT8)")
    .setTimestamp()
 
     bot.users.cache.get(id).send(contact);
@@ -4435,7 +4435,7 @@ guild.owner.send(embed) })
         );
       let Embed = new MessageEmbed()
         .setTitle(`New report!`)
-        .setURL('https://discord.gg/NqT45sY')
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setDescription(
           `The moderator \`${message.author.tag}\` has reported the user \`${User.tag}\`! `
         )
@@ -4507,7 +4507,7 @@ guild.owner.send(embed) })
    .setThumbnail(Sender.displayAvatarURL)
    .setDescription(`Contact message from [${message.guild.name}]`)
    .setTitle("Message from contact command!")
-   .setURL('https://discord.gg/NqT45sY')
+   .setURL('https://discord.gg/WGtQPBWpT8')
    .addField("User", Sender, true)
    .addField("User ID: ", Sender.id, true)
    .addField("Message: ", sayMessage)
@@ -4518,7 +4518,7 @@ guild.owner.send(embed) })
     let embed = new MessageEmbed()
     .setColor("#00ff00")
     .setTitle("Message Sent!")
-    .setURL('https://discord.gg/NqT45sY')
+    .setURL('https://discord.gg/WGtQPBWpT8')
     .setDescription("Your contact message has been sent!")
     .addField("Reqested by ", Sender)
     .addField("Message: ", sayMessage)
@@ -4536,13 +4536,13 @@ guild.owner.send(embed) })
 }});
    const embed = new MessageEmbed()
             .setTitle('Evaluating...')
-            .setURL('https://discord.gg/NqT45sY')
+            .setURL('https://discord.gg/WGtQPBWpT8')
         const msg = await message.channel.send(embed);
         try {
             const data = eval(args.join(' ').replace(/```/g, ''));
             const embed = new MessageEmbed()
                 .setTitle('Output: ')
-                .setURL('https://discord.gg/NqT45sY')
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .setDescription(await data)
             await msg.edit(embed)
             await msg.react('✅')
@@ -4564,7 +4564,7 @@ guild.owner.send(embed) })
         } catch (e) {
             const embed = new MessageEmbed()
                 .setTitle(`Error: ${e}`)
-                .setURL('https://discord.gg/NqT45sY')
+                .setURL('https://discord.gg/WGtQPBWpT8')
             return await msg.edit(embed);
 
         }
@@ -4823,7 +4823,7 @@ message.channel.send("Fetching Informtion for API").then(msg => {
     
     let embed = new discord.MessageEmbed()
     .setTitle(movie.title)
-    .setURL('https://discord.gg/NqT45sY')
+    .setURL('https://discord.gg/WGtQPBWpT8')
     .setColor("#ff2050")
     .setThumbnail(movie.poster)
     .setDescription(movie.plot)
@@ -4924,7 +4924,7 @@ const translate = require('google-translate-api');
 
             let emb = new MessageEmbed()
             .setColor("#00ff00")
-            .setURL('https://discord.gg/NqT45sY')
+            .setURL('https://discord.gg/WGtQPBWpT8')
             .setTitle("Please choose language to translate to:")
             .setDescription("'afrikaans','albanian','amharic','arabic','armenian','azerbaijani','bangla','basque','belarusian','bengali','bosnian','bulgarian','burmese','catalan','cebuano','chichewa','chinese simplified','chinese traditional','corsican','croatian','czech','danish','dutch','english','esperanto','estonian','filipino','finnish','french','frisian','galician','georgian','german','greek','gujarati','haitian creole','hausa','hawaiian','hebrew','hindi','hmong','hungarian','icelandic','igbo','indonesian','irish','italian','japanese','javanese','kannada','kazakh','khmer','korean','kurdish (kurmanji)','kyrgyz','lao','latin','latvian','lithuanian','luxembourgish','macedonian','malagasy','malay','malayalam','maltese','maori','marathi','mongolian','myanmar (burmese)','nepali','norwegian','nyanja','pashto','persian','polish','portugese','punjabi','romanian','russian','samoan','scottish gaelic','serbian','sesotho','shona','sindhi','sinhala','slovak','slovenian','somali','spanish','sundanese','swahili','swedish','tajik','tamil','telugu','thai','turkish','ukrainian','urdu','uzbek','vietnamese','welsh','xhosa','yiddish','yoruba','zulu'")
             .addField("Usage", `!translate <language> | <text>`)
@@ -4935,7 +4935,7 @@ const translate = require('google-translate-api');
 
             let emb = new MessageEmbed()
             .setColor("#00ff00")
-            .setURL('https://discord.gg/NqT45sY')
+            .setURL('https://discord.gg/WGtQPBWpT8')
             .setTitle("What do you want to translate?")
             .setDescription("'afrikaans','albanian','amharic','arabic','armenian','azerbaijani','bangla','basque','belarusian','bengali','bosnian','bulgarian','burmese','catalan','cebuano','chichewa','chinese simplified','chinese traditional','corsican','croatian','czech','danish','dutch','english','esperanto','estonian','filipino','finnish','french','frisian','galician','georgian','german','greek','gujarati','haitian creole','hausa','hawaiian','hebrew','hindi','hmong','hungarian','icelandic','igbo','indonesian','irish','italian','japanese','javanese','kannada','kazakh','khmer','korean','kurdish (kurmanji)','kyrgyz','lao','latin','latvian','lithuanian','luxembourgish','macedonian','malagasy','malay','malayalam','maltese','maori','marathi','mongolian','myanmar (burmese)','nepali','norwegian','nyanja','pashto','persian','polish','portugese','punjabi','romanian','russian','samoan','scottish gaelic','serbian','sesotho','shona','sindhi','sinhala','slovak','slovenian','somali','spanish','sundanese','swahili','swedish','tajik','tamil','telugu','thai','turkish','ukrainian','urdu','uzbek','vietnamese','welsh','xhosa','yiddish','yoruba','zulu'")
             .addField("Usage", `!translate <language> | <text>`)
@@ -4952,7 +4952,7 @@ const translate = require('google-translate-api');
 
                 let emb = new MessageEmbed()
                 .setColor("#00ff00")
-                .setURL('https://discord.gg/NqT45sY')
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .setTitle("Language not found!")
                 .setDescription("'afrikaans','albanian','amharic','arabic','armenian','azerbaijani','bangla','basque','belarusian','bengali','bosnian','bulgarian','burmese','catalan','cebuano','chichewa','chinese simplified','chinese traditional','corsican','croatian','czech','danish','dutch','english','esperanto','estonian','filipino','finnish','french','frisian','galician','georgian','german','greek','gujarati','haitian creole','hausa','hawaiian','hebrew','hindi','hmong','hungarian','icelandic','igbo','indonesian','irish','italian','japanese','javanese','kannada','kazakh','khmer','korean','kurdish (kurmanji)','kyrgyz','lao','latin','latvian','lithuanian','luxembourgish','macedonian','malagasy','malay','malayalam','maltese','maori','marathi','mongolian','myanmar (burmese)','nepali','norwegian','nyanja','pashto','persian','polish','portugese','punjabi','romanian','russian','samoan','scottish gaelic','serbian','sesotho','shona','sindhi','sinhala','slovak','slovenian','somali','spanish','sundanese','swahili','swedish','tajik','tamil','telugu','thai','turkish','ukrainian','urdu','uzbek','vietnamese','welsh','xhosa','yiddish','yoruba','zulu'")
                 .addField("Usage", `!translate <language> | <text>`)
@@ -4975,7 +4975,7 @@ const translate = require('google-translate-api');
       
     const embed = new MessageEmbed()
     .setColor("00ff00")
-    .setURL('https://discord.gg/NqT45sY')
+    .setURL('https://discord.gg/WGtQPBWpT8')
     .setTitle("Please choose a language to translate to:")
     .setDescription('`afrikaans`, `albanian`, `amharic`, `arabic`, `armenian`, `azerbaijani`, `bangla`, `basque`, `belarusian`, `bengali`, `bosnian`, `bulgarian`, `burmese`, `catalan`, `cebuano`, `chichewa`, `chinese simplified`, `chinese traditional`, `corsican`, `croatian`, `czech`, `danish`, `dutch`, `english`, `esperanto`, `estonian`, `filipino`, `finnish`, `french`, `frisian`, `galician`, `georgian`, `german`, `greek`, `gujarati`, `haitian creole`, `hausa`, `hawaiian`, `hebrew`, `hindi`, `hmong`, `hungarian`, `icelandic`, `igbo`, `indonesian`, `irish`, `italian`, `japanese`, `javanese`, `kannada`, `kazakh`, `khmer`, `korean`, `kurdish (kurmanji)`, `kyrgyz`, `lao`, `latin`, `latvian`, `lithuanian`, `luxembourgish`, `macedonian`, `malagasy`, `malay`, `malayalam`, `maltese`, `maori`, `marathi`, `mongolian`, `myanmar (burmese)`, `nepali`, `norwegian`, `nyanja`, `pashto`, `persian`, `polish`, `portugese`, `punjabi`, `romanian`, `russian`, `samoan`, `scottish gaelic`, `serbian`, `sesotho`, `shona`, `sindhi`, `sinhala`, `slovak`, `slovenian`, `somali`, `spanish`, `sundanese`, `swahili`, `swedish`, `tajik`, `tamil`, `telugu`, `thai`, `turkish`, `ukrainian`, `urdu`, `uzbek`, `vietnamese`, `welsh`, `xhosa`, `yiddish`, `yoruba`, `zulu`');
 
@@ -5116,7 +5116,7 @@ try {
       let processArticle = article => {
         const embed = new MessageEmbed()
           .setColor('#FF4F00')
-          .setURL('https://discord.gg/NqT45sY')
+          .setURL('https://discord.gg/WGtQPBWpT8')
           .setTitle(article.title)
           .setAuthor(article.author)
           .setDescription(article.description)
@@ -5147,7 +5147,7 @@ try {
       let processArticle = article => {
         const embed = new MessageEmbed()
           .setColor('#FF4F00')
-          .setURL('https://discord.gg/NqT45sY')
+          .setURL('https://discord.gg/WGtQPBWpT8')
           .setTitle(article.title)
           .setAuthor(article.author)
           .setDescription(article.description)
@@ -5178,7 +5178,7 @@ try {
       let processArticle = article => {
         const embed = new MessageEmbed()
           .setColor('#FF4F00')
-          .setURL('https://discord.gg/NqT45sY')
+          .setURL('https://discord.gg/WGtQPBWpT8')
           .setTitle(article.title)
           .setAuthor(article.author)
           .setDescription(article.description)
@@ -5208,7 +5208,7 @@ try {
 
         const noArgs = new MessageEmbed()
         .setTitle('Missing arguments')
-        .setURL('https://discord.gg/NqT45sY')
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setColor(0xFF0000)
         .setDescription('You are missing some args (ex: +covid all || +covid <country name>)')
         .setTimestamp()
@@ -5225,7 +5225,7 @@ try {
 
                 const embed = new MessageEmbed()
                 .setTitle(`Worldwide COVID-19 Stats 🌎`)
-                .setURL('https://discord.gg/NqT45sY')
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .addField('Confirmed Cases', confirmed)
                 .addField('Recovered', recovered)
                 .addField('Deaths', deaths)
@@ -5242,7 +5242,7 @@ try {
 
                 const embed = new MessageEmbed()
                 .setTitle(`COVID-19 Stats for **${countries}**`)
-                .setURL('https://discord.gg/NqT45sY')
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .addField('Confirmed Cases', confirmed)
                 .addField('Recovered', recovered)
                 .addField('Deaths', deaths)
@@ -5271,7 +5271,7 @@ try {
 }});
     const _ = new MessageEmbed()
       .setTitle(`New announcement!`)
-      .setURL('https://discord.gg/NqT45sY')
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setDescription(`${MSG}`)
       .setColor("RANDOM");
     rChannel.send(_);
@@ -5298,7 +5298,7 @@ const embeds = [];
         {
             embeds.push(new MessageEmbed()
                 .setColor("RANDOM")
-                .setURL('https://discord.gg/NqT45sY')
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .setAuthor(message.author.tag, message.author.avatarURL({ dynamic: true }))
                 .setTitle(`Are you sure you want to nuke this channel?`)
                 .setDescription(`Nuking this channel will delete all messages that are sent in this channel. This action is irreversable.`)
@@ -5404,7 +5404,7 @@ let Owner = message.author;
 }})
   let msg =  bot.guilds.cache.map(guild => `**${guild.name}** Members: ${guild.memberCount}`).join('\n');
   let embed = new MessageEmbed()
-  .setURL('https://discord.gg/NqT45sY')
+  .setURL('https://discord.gg/WGtQPBWpT8')
   .setTitle(`I am in ${bot.guilds.cache.size} guilds!`)
   .setDescription(`${msg}`)
   .setColor("#ebf442");
@@ -5513,7 +5513,7 @@ let Owner = message.author;
   user.setNickname(nickname);
   
   const embed = new MessageEmbed()
-  .setURL('https://discord.gg/NqT45sY')
+  .setURL('https://discord.gg/WGtQPBWpT8')
   .setTitle("Nickname succesfully given.")
   .setColor("RANDOM")
   .setDescription(`Succesfully changed  the nickname of ${user}.`)
@@ -5547,7 +5547,7 @@ let Owner = message.author;
         const helpembed = new MessageEmbed()
         .setTitle(`${member.username}'s avatar`)
         .setImage(avatar)
-        .setURL('https://discord.gg/NqT45sY')
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setColor("RANDOM")
 
         message.channel.send(helpembed);
@@ -5596,7 +5596,7 @@ let Owner = message.author;
                       let servericon = message.author.displayAvatarURL;
                                         const form = new Discord.MessageEmbed()
                                             .setTitle('New Entry')
-                                            .setURL('https://discord.gg/NqT45sY')
+                                            .setURL('https://discord.gg/WGtQPBWpT8')
                                             .addField("Submitted by:", message.author.tag)
                                             .addField("Freind Discord Tag:", nome)
                                             .addField("Description:", serve)
@@ -5664,7 +5664,7 @@ let Owner = message.author;
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
         const helpembed = new MessageEmbed()
              .setColor("VIOLET")
-             .setURL('https://discord.gg/NqT45sY')
+             .setURL('https://discord.gg/WGtQPBWpT8')
              .setTitle("Your Health Status")
              .setAuthor(message.author.username)
              .setDescription(randomMessage)
@@ -6038,7 +6038,7 @@ const Options = {
     const Embed = new MessageEmbed()
       .setTitle(`The oldest member in ${message.guild.name}`)
       .setColor(`RANDOM`)
-      .setURL('https://discord.gg/NqT45sY')
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setFooter(`Date format: MM/DD/YYYY`)
       .setDescription(
         `${mem.user.tag} is the oldest user in ${
@@ -6056,7 +6056,7 @@ const Options = {
     const Embed = new MessageEmbed()
       .setTitle(`The youngest member in ${message.guild.name}`)
       .setColor(`RANDOM`)
-      .setURL('https://discord.gg/NqT45sY')
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setFooter(`Date format: MM/DD/YYYY`)
       .setDescription(
         `${mem.user.tag} is the youngest user in ${
@@ -6086,7 +6086,7 @@ const Options = {
     });
     let Embed = new MessageEmbed()
       .setTitle(`Emojis in ${message.guild.name}.`)
-      .setURL('https://discord.gg/NqT45sY')
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setDescription(
         `**Animated [${Animated}]**:\n${EmojisAnimated}\n\n**Standard [${EmojiCount}]**:\n${Emojis}\n\n**Over all emojis [${OverallEmojis}]**`
       )
