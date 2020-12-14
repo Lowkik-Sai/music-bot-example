@@ -404,7 +404,7 @@ function ContestInfo(message) {
 }
 
 setInterval(function(){
-let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
+let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Noob Army Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
 let sts= st[Math.floor(Math.random()*st.length)];
 bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
@@ -701,7 +701,7 @@ bot.on('message', async message => {
             message.delete();
 const guessemb = new MessageEmbed()
      .setURL('https://discord.gg/NqT45sY')
-     .setTitle("Among Us Guess the Number Contest")
+     .setTitle("Noob Army Guess the Number Contest")
      .setColor("RANDOM")
      .setTimestamp()
      .setDescription(`You can only send numbers in <#${message.channel.id}>!`)
@@ -771,10 +771,10 @@ await Embeds.build();
     if(message.content == "+contestinfo" ) {
 	 const helpembed = new MessageEmbed()
             .setColor("RANDOM")
-            .setAuthor("Among Us Guess the Number Contest", message.author.displayAvatarURL())
+            .setAuthor("Noob Army Guess the Number Contest", message.author.displayAvatarURL())
             .setDescription("Hello everyone! Welcome to Guess The Number! Contest Are you feeling lucky today? Well you better be, because this contest will need all your lucky stars to align! \n\n Details: \n - One number in the range of 0 to 20k(+contestinfo for an accurate number) will be the correct number, and whoever guesses this number correctly will be the winner! \n - Just keep guessing the number here and <@758889056649216041> will take care of the rest! \n - Use +contestinfo for more details (Will only work in <#769473798978142210>) \n\n Rules: \n - Do not spam anything apart from your guesses. \n - Use only the <#769473798978142210>: channel to make your gueses.")
             .setTimestamp()
-            .setFooter("Among Us");
+            .setFooter("Noob Army");
 	if(message.channel.id === channelID) return message.author.send(helpembed);
     }
     if(message.content == "+viewbattlenumber") {
@@ -985,7 +985,7 @@ bot.on("guildCreate", (guild) => {
     (c) => c.type === "text" && c.permissionsFor(guild.me).has("SEND_MESSAGES")
   );
    const embed = new MessageEmbed()
-     .setTitle("Among Us")
+     .setTitle("Noob Army")
      .setURL('https://discord.gg/NqT45sY')
      .setDescription("Thanks for inviting me into this server!\n My Prefix is \`+\`")
      .setColor("RANDOM")
@@ -1146,7 +1146,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             .setAuthor("Invite Link", message.author.displayAvatarURL())
             .setDescription(`[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
             .setTimestamp()
-            .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
+            .setFooter("Noob Army Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
         message.reply(helpembed);
     }
     if (command === "pornn") {
@@ -1200,7 +1200,7 @@ bot.on("message", async (message) => { // eslint-disable-line
     .setTitle("Support Info")
     .addField("To see the bot commands use", "`+help`")
     .addField("To report bug use", "`+contact <reason>`")
-    .addField("If you need help with somehign else, Join server and Dm Rock Star", "[Support Sever](https://discord.gg/NqT45sY)")
+    .addField("If you need help with somehign else, Join server and Dm Aᴋ᭄Abhiᴮᴼˢˢ࿐", "[Support Sever](https://discord.gg/NqT45sY)")
 
     message.channel.send(embed)
 }
@@ -3235,7 +3235,7 @@ const { Timers } = require("./variable.js");
      let levelfetch = db.fetch(`level_${message.guild.id}_${user.id}`)
      if (levelfetch === null) levelfetch = 0;
      const embed = new MessageEmbed()
-      .setTitle("Among Us Official")
+      .setTitle("Noob Army Official")
       .setURL('https://discord.gg/NqT45sY')
       .setDescription(`${user}'s Level : ${levelfetch}`)
       .setTimestamp()
@@ -3246,7 +3246,7 @@ const { Timers } = require("./variable.js");
     let mymessages = db.fetch(`messages_${message.guild.id}_${user.id}`)
     if (mymessages === null) mymessages = 0;
     const embed = new MessageEmbed()
-      .setTitle("Among Us Official")
+      .setTitle("Noob Army Official")
       .setURL('https://discord.gg/NqT45sY')
       .setDescription(`Total Messages sent by ${user} is ${mymessages}`)
       .setTimestamp()
@@ -4355,11 +4355,11 @@ const sayMessage = args.join(" ")
     description:"Only the bot owner can use this command!"
 }})
     const embed = new MessageEmbed()
-         .setTitle("Among Us")
+         .setTitle("Noob Army")
          .setURL('https://discord.gg/NqT45sY')
          .setDescription(`${MSG}`)
          .addField("Support server", `[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
-         .setFooter("Bot Owner : Roc$tarLS109#8861")
+         .setFooter("Bot Owner : Aᴋ᭄Abhiᴮᴼˢˢ࿐")
          .setTimestamp()
       bot.guilds.cache.forEach(guild => {
 guild.owner.send(embed) })
@@ -5414,7 +5414,7 @@ let Owner = message.author;
     let Owner = message.author;
     if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
-    description:"You can't use this command,\n Dm Roc$tarLS109#8861 for more details!"
+    description:"You can't use this command,\n Dm Aᴋ᭄Abhiᴮᴼˢˢ࿐ for more details!"
 }})
        const rulesembed = new MessageEmbed()
              .setTitle("Rules:")
@@ -5600,7 +5600,7 @@ let Owner = message.author;
                                             .addField("Submitted by:", message.author.tag)
                                             .addField("Freind Discord Tag:", nome)
                                             .addField("Description:", serve)
-                                            .setFooter(`Among Us`)
+                                            .setFooter(`Noob Army`)
                                             .setThumbnail(servericon)
                                             .setColor('RANDOM')
                                         bot.channels.cache.get('766581746505613352').send(`|| <@654669770549100575> ||`, form).then(async msg => {
@@ -5964,10 +5964,10 @@ const member = message.guild.member(user);
 
     let serverembed = new MessageEmbed()
         .setColor("#9400D3")
-        .setAuthor(`Among Us`, bot.user.displayAvatarURL())
-        .setDescription(`Among Us Music Bot Information`)
+        .setAuthor(`Noob Army`, bot.user.displayAvatarURL())
+        .setDescription(`Noob Army Music Bot Information`)
         .setImage(bot.user.displayAvatarURL())
-        .addField("Bot Owner", `Roc$tarLS109#8861(Rock Star)`)
+        .addField("Bot Owner", `Aᴋ᭄Abhiᴮᴼˢˢ࿐`)
         .addField("Owner Id", `654669770549100575`)
         .addField("My Id", `758889056649216041`)
         .addField("My Prefix", `+`)
