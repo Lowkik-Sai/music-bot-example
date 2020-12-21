@@ -4537,7 +4537,7 @@ guild.owner.send(embed) })
    const embed = new MessageEmbed()
             .setTitle('Evaluating...')
             .setURL('https://discord.gg/WGtQPBWpT8')
-        const msg = await message.channel.send(embed);
+        const msg = await message.author.send(embed);
         try {
             const data = eval(args.join(' ').replace(/```/g, ''));
             const embed = new MessageEmbed()
@@ -4563,7 +4563,7 @@ guild.owner.send(embed) })
                 })
         } catch (e) {
             const embed = new MessageEmbed()
-                .setTitle(`Error: ${e}`)
+                .setTitle(`${e}`)
                 .setURL('https://discord.gg/WGtQPBWpT8')
             return await msg.edit(embed);
 
