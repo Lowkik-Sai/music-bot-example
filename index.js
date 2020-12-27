@@ -156,7 +156,7 @@ accessSpreadsheet(embed)
 bot.on("message", (message) => {
   // Exit and stop if PRefix missing or from bot
   if (!message.content.startsWith(PRefix) || message.author.bot) return;
-  if (blockedUsers.includes(message.author.id)) return;
+  if (blockedUsers.includes(message.author.id)) return message.author.send("You are blocked!");
 
   // Trim PRefix and sanitize
   var string = message.content.slice(PRefix.length).trim();
@@ -608,7 +608,7 @@ sendPlayerStats = (stats, channel) => {
 
 bot.on('message', (message) => {
     if (message.author.bot) return;
-    if (blockedUsers.includes(message.author.id)) return;
+    if (blockedUsers.includes(message.author.id)) return message.author.send("You are blocked!");
     if (message.content.startsWith(PREFIX)) {
         const [CMD_NAME, ...args] = message.content
             .trim()
@@ -1134,7 +1134,7 @@ const invites = {}
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
-    if (blockedUsers.includes(message.author.id)) return;
+    if (blockedUsers.includes(message.author.id)) return message.author.send("You are blocked!");
     if (!message.content.startsWith(PREFIX)) return;
 
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
@@ -1336,7 +1336,7 @@ message.channel.send({embed}).then(msg => {
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
-    if (blockedUsers.includes(message.author.id)) return;
+    if (blockedUsers.includes(message.author.id)) return message.author.send("You are blocked!");
     if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
 
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
@@ -5387,7 +5387,7 @@ const embeds = [];
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
-    if (blockedUsers.includes(message.author.id)) return;
+    if (blockedUsers.includes(message.author.id)) return message.author.send("You are blocked!");
     if (!message.content.startsWith(PREFIX)) return;
 
     
