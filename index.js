@@ -1279,8 +1279,8 @@ bot.on("message", async (message) => { // eslint-disable-line
         await guild.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ʀᴇᴄᴏʀᴅꜱ').send(embed);
       
         //Sending Embed
-        const guild = bot.guilds.cache.get(guildId);
-        await guild.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ᴄʜᴀᴛꜱ').send(winner);
+        const guildu = bot.guilds.cache.get(guildId);
+        await guildu.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ᴄʜᴀᴛꜱ').send(winner);
   
     }
     if (command === "seizure") {
