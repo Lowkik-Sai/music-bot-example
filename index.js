@@ -1244,12 +1244,12 @@ bot.on("message", async (message) => { // eslint-disable-line
         const name = (answer.map(answers => answers.content).join());
 
         //Third Question
-        await message.author.send(`Winner IGN\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐):`);
+        await message.author.send(`Winner IGN\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const ign = (answer.map(answers => answers.content).join());
 
         //Fourth Question
-        await message.author.send('Any Remarks/Issues:');
+        await message.author.send('Any Remarks/Issues');
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const location = (answer.map(answers => answers.content).join());
 
@@ -1262,17 +1262,16 @@ bot.on("message", async (message) => { // eslint-disable-line
          .addField('*Tournament Name:*', age)
          .addField('*IGN:*', ign)
          .setTimestamp()
-         .setFooter(`From ${message.author.tag}`);
+         .setFooter(`From ${message.author.tag}`)
          .setColor("RANDOM");
 
-        const embed = new MessageEmbed()
-        
+        const embed = new MessageEmbed()        
         .addField('*Tournament Name:*', age)
         .addField('*Screenshot:*', name)
         .addField('*Remarks:*', location)
         .setImage(name)
         .setTimestamp()
-        .setFooter(`From ${message.author.tag}`);
+        .setFooter(`From ${message.author.tag}`)
         .setColor("RANDOM");
 
         //Sending Embed
