@@ -1258,6 +1258,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         .addField('Tournament Name:', age)
         .addField('Screenshot:', name)
         .addField('Remarks:', location)
+        .setImage(name)
         .setTimestamp()
         .setColor("RANDOM");
 
@@ -5625,7 +5626,7 @@ let Owner = message.author;
                                             .setFooter(`Noob Army`)
                                             .setThumbnail(servericon)
                                             .setColor('RANDOM')
-                                        bot.channels.cache.get('766581746505613352').send(`|| <@688671832068325386> ||`, form).then(async msg => {
+                                        bot.channels.cache.get('787908794743128084').send(`|| <@688671832068325386> ||`, form).then(async msg => {
                                             const collector = msg.createReactionCollector((r, u) => (r.emoji.name === '✔') && (u.id !== bot.user.id && u.id === message.author.id))
                                             collector.on("collect", r => {
                                                 switch (r.emoji.name) {
