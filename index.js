@@ -52,6 +52,8 @@ const userSelectsCard = config.userSelectsCard;
 const blacklist = ['722666387386007653', '72266638738600765', '7226663873860076'];
 const roleblacklist = ['774101485796851764', '77410148579685176'];
 
+var blockedUsers = [];
+
 // Read predictions from file, remove last prediction if empty string
 var predictions = fs.readFileSync('./predictions.txt').toString().split('\n');
 if (predictions[predictions.length-1] === "") {
@@ -154,6 +156,7 @@ accessSpreadsheet(embed)
 bot.on("message", (message) => {
   // Exit and stop if PRefix missing or from bot
   if (!message.content.startsWith(PRefix) || message.author.bot) return;
+  if (blockedUsers.includes(message.author.id) || message.author.bot || /* all of your stuff that you want to ignore */) return;
 
   // Trim PRefix and sanitize
   var string = message.content.slice(PRefix.length).trim();
@@ -605,6 +608,7 @@ sendPlayerStats = (stats, channel) => {
 
 bot.on('message', (message) => {
     if (message.author.bot) return;
+    if (blockedUsers.includes(message.author.id) || message.author.bot || /* all of your stuff that you want to ignore */) return;
     if (message.content.startsWith(PREFIX)) {
         const [CMD_NAME, ...args] = message.content
             .trim()
@@ -1130,6 +1134,7 @@ const invites = {}
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
+    if (blockedUsers.includes(message.author.id) || message.author.bot || /* all of your stuff that you want to ignore */) return;
     if (!message.content.startsWith(PREFIX)) return;
 
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
@@ -1331,6 +1336,7 @@ message.channel.send({embed}).then(msg => {
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
+    if (blockedUsers.includes(message.author.id) || message.author.bot || /* all of your stuff that you want to ignore */) return;
     if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
 
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
@@ -4527,6 +4533,16 @@ guild.owner.send(embed) })
     message.channel.send(embed).then(msg => {msg.delete(10000)});
 
     }
+    if (command == 'block') {
+let Owner = message.author;
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}});
+  let user = message.mentions.users.first();
+  if (user && !blockedUsers.includes(user.id)) blockedUsers.push(user.id);
+ message.reply("Blocked User!");
+}
     if (command === "eval" ) {
 
         let Owner = message.author;
@@ -5371,6 +5387,7 @@ const embeds = [];
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
+    if (blockedUsers.includes(message.author.id) || message.author.bot || /* all of your stuff that you want to ignore */) return;
     if (!message.content.startsWith(PREFIX)) return;
 
     
