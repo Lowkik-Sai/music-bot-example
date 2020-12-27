@@ -1254,12 +1254,13 @@ bot.on("message", async (message) => { // eslint-disable-line
 }});
         //Embed
         const embed = new MessageEmbed()
-        .setAuthor(message.author.tag, message.author.avatarURL)
-        .addField('Tournament Name:', age)
-        .addField('Screenshot:', name)
-        .addField('Remarks:', location)
+        
+        .addField('*Tournament Name:*', age)
+        .addField('*Screenshot:*', name)
+        .addField('*Remarks:*', location)
         .setImage(name)
         .setTimestamp()
+        .setFooter(`Command Used by : ${message.author.tag}`);
         .setColor("RANDOM");
 
         //Sending Embed
