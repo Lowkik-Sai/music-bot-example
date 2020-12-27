@@ -1219,8 +1219,13 @@ bot.on("message", async (message) => { // eslint-disable-line
     message.channel.send(acEmbed)
     }
             //commands
-    if(command === 'apply') {
-       const guildId = '763233532369567765';
+    if(command === 'hostingrecords' || command === 'hr') {
+       const guildId = '785777717966536724';
+        let Owner = message.author;
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Sorry, You can't use this command!"
+}})
         //Has to be in DMs
         if(message.channel.type != 'dm') {
             message.channel.send('Use this command in DMs!');
@@ -1229,17 +1234,17 @@ bot.on("message", async (message) => { // eslint-disable-line
         message.author.send('Application started!');
 
         //First Question
-        await message.author.send('How old are you?');
+        await message.author.send(`Tournament Name\n(Ex : NA | FF SOLO 109 || POWERED BY GAME.TV)`);
         let answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const age = (answer.map(answers => answers.content).join());
 
         //Second Question
-        await message.author.send('Whats your name?');
+        await message.author.send('Screenshot Link');
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const name = (answer.map(answers => answers.content).join());
 
         //Third Question
-        await message.author.send('Where do you live?');
+        await message.author.send('Any Remarks/Issues:');
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const location = (answer.map(answers => answers.content).join());
 
@@ -1250,15 +1255,15 @@ bot.on("message", async (message) => { // eslint-disable-line
         //Embed
         const embed = new MessageEmbed()
         .setAuthor(message.author.tag, message.author.avatarURL)
-        .addField('Age', age)
-        .addField('Name', name)
-        .addField('Location', location)
+        .addField('Tournament Name:', age)
+        .addField('Screenshot:', name)
+        .addField('Remarks:', location)
         .setTimestamp()
-        .setColor('RED');
+        .setColor("RANDOM");
 
         //Sending Embed
         const guild = bot.guilds.cache.get(guildId);
-        await guild.channels.cache.find(channel => channel.name === 'applications').send(embed);
+        await guild.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ʀᴇᴄᴏʀᴅꜱ').send(embed);
     }
     if (command === "seizure") {
     const emoji1 = '🇳'
