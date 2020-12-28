@@ -15,6 +15,9 @@ const fetch = require('node-fetch');
 const Message = require("discord.js");
 const moment = require("moment");
 const cron = require('cron');
+const { GoogleSpreadsheet } = require('google-spreadsheet');
+const {promisify} = require('util');
+const creds = require('./client_secret.json');
 
 
 const Canvas = require('canvas-constructor');
@@ -31,6 +34,7 @@ const queue = new Map();
 const usersOnCooldown = new Set();
 
 const bot = new Client({
+    unknownCommandResponse: false,
     disableMentions: "everyone",
 });
 
@@ -41,9 +45,14 @@ const serverStats = {
 
 // Define constants
 const PRefix = config.prefix;
+const prefIX = config.prefIX;
 const admins = process.env.ADMINS;
 const maxRolls = config.maxRolls;
 const userSelectsCard = config.userSelectsCard;
+const blacklist = ['722666387386007653', '72266638738600765', '7226663873860076'];
+const roleblacklist = ['774101485796851764', '77410148579685176'];
+
+var blockedUsers = [];
 
 // Read predictions from file, remove last prediction if empty string
 var predictions = fs.readFileSync('./predictions.txt').toString().split('\n');
@@ -57,22 +66,97 @@ if (predictions.length < 25) {
   return;
 }
 
-const randomWord = require('random-word');
-  const wordscramble = require('wordscramble');
+bot.commands = new Discord.Collection();
 
-  const word = randomWord()
-  const scrambled = wordscramble.scramble(word);
-  
-setInterval(async function() {
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-  const channel = bot.channels.cache.get("763233532797124649")
-  channel.send("The scrambled word is: " + scrambled + " \n Write the correct word within 5 minutes here, first person to give correct answer will get 1 coin")
+for (const file of commandFiles) { // Setup each command for bot
+  const command = require(`./commands/${file}`);
+  bot.commands.set(command.name, command);
+}
 
-  }, 600000)
+bot.on('message', msg => {
+  const content = msg.content;
+  const parts = content.split(' ');
+
+  if (parts[0] != prefIX){ return; }
+  if (parts.length === 1){ msg.reply("Yes?!!!! I hear thy name calling!"); }
+
+  if (msg.content === 'chev list scores') {
+    bot.commands.get('showScores').execute(msg);
+  }
+  else if (parts[1] === 'add' && parts[2] != null 
+    && parts[3] === 'to' && parts[4] != null) {
+      bot.commands.get('addScore').execute(msg, parseInt(parts[2]), parts[4]);
+  }
+  else if (parts[1] === 'subtract' && parts[2] != null 
+    && parts[3] === 'to' && parts[4] != null) {
+      bot.commands.get('subtractScore').execute(msg, parseInt(parts[2]), parts[4]);
+  }
+  else if (parts[1] === 'add' && parts[2] === 'member' && parts[3] != null){
+    bot.commands.get('addMember').execute(msg, parts[3]);
+  }
+  else if (parts[1] === 'remove' && parts[2] === 'member' && parts[3] != null){
+    bot.commands.get('removeMember').execute(msg, parts[3]);
+  }
+
+})
+
+bot.on('message', message => {
+    if (message.content === '+forms'){
+const doc = new GoogleSpreadsheet('16Xa3O1y9M4d15WkhwFQ0abasZfayg3KUJ_eTEo7ERDc');
+   
+async function accessSpreadsheet(embed) {
+await doc.useServiceAccountAuth({
+    client_id: creds.client_id,
+    project_id: creds.project_id,
+    auth_uri: creds.auth_uri,
+    token_uri: creds.token_uri,
+    auth_provider_x509_cert_url: creds.auth_provider_x509_cert_url,
+    client_secret: creds.client_secret,
+    redirect_uris: creds.redirect_uris,
+  });
+
+  await doc.loadInfo(); // loads document properties and worksheets
+  console.log(doc.title);
+
+  const sheetf = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
+  console.log(sheet.title);
+  console.log(sheet.rowCount);
+
+  // Insert the code already being used up to the for loop.
+         await promisify(doc.useServiceAccountAuth)(creds);
+            const info = await promisify(doc.getInfo)();
+            var sheet = info.worksheets[0];
+
+            var cells = await promisify(sheet.getCells)({
+                'min-row': 2,
+                'max-row': 5,
+                'min-col': 3,
+                'max-col': 3,
+                'return-empty': true,
+            })
+            for (var cell of cells) {
+                message.author.send(cell.value)
+            }
+  for (let i = 0; i < 25 && cells[i]; i++) embed.addField('Name', `•${cells[i].value}`, true);
+}
+
+var embed = new MessageEmbed()
+  .setColor('#0099ff')
+  .setTitle('**Spreadsheet Info**')
+  .setDescription('Showing as many values as possible...');
+
+accessSpreadsheet(embed)
+  .then(() => message.author.send(embed))
+  .catch(console.error);
+}
+})
 
 bot.on("message", (message) => {
   // Exit and stop if PRefix missing or from bot
   if (!message.content.startsWith(PRefix) || message.author.bot) return;
+  if (blockedUsers.includes(message.author.id)) return message.author.send("You are blocked!");
 
   // Trim PRefix and sanitize
   var string = message.content.slice(PRefix.length).trim();
@@ -274,6 +358,7 @@ bot.on("message", (message) => {
 let giveawayActive = true;
 let giveawayChannel = '763233532797124649';
 let lastMessageID = '';
+let lastUserID = '';
 
 function CheckWinner(message) {
     if (message.id === lastMessageID) {
@@ -302,34 +387,27 @@ function FlipCoin()
     return Math.floor(Math.random() * 100) % 2;
 }
 
-bot.on("message", async message => {
-try {
-    const collected = await message.channel.awaitMessages(
-    x => x.content.toLowerCase() === word,
-    {
-      max: 1,
-      time: 300000,
-      errors: ["time"]
+let CHANNELID = '763233532797124649';
+
+function ContestInfo(message) {
+    if (giveawayActive) {
+       const trueembed = new MessageEmbed()
+             
+             .setColor("RANDOM")
+             .setDescription("Contest is running!")
+             .setTimestamp()
+        if(message.channel.id === CHANNELID) return message.channel.send(trueembed);
+    } else {
+        const falseembed = new MessageEmbed()
+             .setColor("RANDOM")
+             .setDescription("Contest is not running!")
+             .setTimestamp()
+        if(message.channel.id === CHANNELID) return message.channel.send(falseembed);
     }
-  );
-    const winnerMessage = collected.first();
-    return message.channel.send({embed: new MessageEmbed()
-                                 .setAuthor(`Winner: ${winnerMessage.author.tag}`, winnerMessage.author.displayAvatarURL)
-                                 .setTitle(`Correct Answer: \`${word}\``)
-                                 .setColor("RANDOM")
-                                })
-  } catch (e) {
-    console.log(e)
-    return message.channel.send({embed: new MessageEmbed()
-                                 .setAuthor('No one got the answer in time!')
-                                 .setTitle(`Correct Answer(s): \`${word}\``)
-                                 
-                                })
-  }
-});
+}
 
 setInterval(function(){
-let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Among Us Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
+let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Noob Army Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
 let sts= st[Math.floor(Math.random()*st.length)];
 bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
@@ -355,9 +433,9 @@ sendLiveData = (data, channel) => {
     }
     const liveEmbed = new MessageEmbed()
         .setColor("RANDOM")
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setTitle(title)
         .setDescription(score)
-        .setURL('https://www.iplt20.com/')
         .setThumbnail('https://i.imgur.com/WdkS5wH.jpg')
         .setTimestamp();
 
@@ -484,9 +562,9 @@ sendScheduleMatch = (matches, channel) => {
 
     const matchEmbed = new MessageEmbed()
         .setColor("RANDOM")
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setTitle('Upcoming Matches')
         .setDescription('Team 1  vs  Team 2')
-        .setURL('https://www.iplt20.com/')
         .setThumbnail('https://i.imgur.com/WdkS5wH.jpg')
         .addFields(fields)
         .setTimestamp();
@@ -498,9 +576,9 @@ sendPlayerStats = (stats, channel) => {
     try {
         const matchEmbed = new MessageEmbed()
             .setColor("RANDOM")
+            .setURL('https://discord.gg/WGtQPBWpT8')
             .setTitle(stats['fullName'])
             .setDescription(stats['country'])
-            .setURL('https://www.iplt20.com/')
             .setThumbnail(stats['imageURL'])
             .addFields([
                 {
@@ -530,6 +608,7 @@ sendPlayerStats = (stats, channel) => {
 
 bot.on('message', (message) => {
     if (message.author.bot) return;
+    if (blockedUsers.includes(message.author.id)) return message.author.send("You are blocked!");
     if (message.content.startsWith(PREFIX)) {
         const [CMD_NAME, ...args] = message.content
             .trim()
@@ -613,19 +692,20 @@ let battlelimit = 100;
 let battlenumber = Math.floor(Math.random()* Math.floor(battlelimit));
 let limit = 20000; // You can change it through /limit command
 let number = Math.floor(Math.random()* Math.floor(limit)); // You can custom it through /number command and reroll it through /reroll
-let ownerID = '654669770549100575';
+let ownerID = '688671832068325386';
 let channelID = '769473798978142210';
 
 bot.on('message', async message => {
     try {
         if (/^[0-9]*$/.test(message.content) == false) {
-            if (message.author.bot == true || message.channel.type == 'dm' || message.channel.id != "769473798978142210") {
+            if (message.content == "+contestinfo" || message.author.bot == true || message.channel.type == 'dm' || message.channel.id != "769473798978142210") {
                 return;
             }
         
             message.delete();
 const guessemb = new MessageEmbed()
-     .setTitle("Among Us Guess the Number Contest")
+     .setURL('https://discord.gg/WGtQPBWpT8')
+     .setTitle("Noob Army Guess the Number Contest")
      .setColor("RANDOM")
      .setTimestamp()
      .setDescription(`You can only send numbers in <#${message.channel.id}>!`)
@@ -666,7 +746,7 @@ const Embeds = new PaginationEmbed.Embeds()
   .setChannel(message.channel)
   .setPageIndicator(true)
   .setFooter('Type +help <commandname>')
-  .setURL('https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg')
+  .setURL('https://cdn.discordapp.com/attachments/688674336240173086/787879241886597131/Screenshot_2020-12-13-07-57-552.jpg')
   .setColor("RANDOM")
   .setTimestamp()
   // Sets the client's assets to utilise. Available options:
@@ -695,10 +775,10 @@ await Embeds.build();
     if(message.content == "+contestinfo" ) {
 	 const helpembed = new MessageEmbed()
             .setColor("RANDOM")
-            .setAuthor("Among Us Guess the Number Contest", message.author.displayAvatarURL())
+            .setAuthor("Noob Army Guess the Number Contest", message.author.displayAvatarURL())
             .setDescription("Hello everyone! Welcome to Guess The Number! Contest Are you feeling lucky today? Well you better be, because this contest will need all your lucky stars to align! \n\n Details: \n - One number in the range of 0 to 20k(+contestinfo for an accurate number) will be the correct number, and whoever guesses this number correctly will be the winner! \n - Just keep guessing the number here and <@758889056649216041> will take care of the rest! \n - Use +contestinfo for more details (Will only work in <#769473798978142210>) \n\n Rules: \n - Do not spam anything apart from your guesses. \n - Use only the <#769473798978142210>: channel to make your gueses.")
             .setTimestamp()
-            .setFooter("Among Us");
+            .setFooter("Noob Army");
 	if(message.channel.id === channelID) return message.author.send(helpembed);
     }
     if(message.content == "+viewbattlenumber") {
@@ -796,12 +876,12 @@ await Embeds.build();
     if(message.channel.id === channelID) {
         if(!message.content.isNaN) {
             if(message.content > limit)
-               message.delete();
+              
    return message.author.send({embed: {
    color: 3066993,
    description: `The number is between 1 and ${limit}! Try again`}});
             if(message.content < 1)
-               message.delete();
+               
     return message.author.send({embed: {
    color: 3066993,
    description: `The number cannot be negative! Try again`}});
@@ -827,7 +907,7 @@ await Embeds.build();
 });
 
 bot.on("ready", async () => {
-   const id = "654669770549100575"; // Discord User IDs look like a long string of random numbers
+   const id = "688671832068325386"; // Discord User IDs look like a long string of random numbers
 
   const user = await bot.users.fetch(id);
 
@@ -862,11 +942,17 @@ bot.on("message", async message => {
   }
 
   if (message.channel.id === giveawayChannel) {
-    if (giveawayActive) {
-        lastMessageID = message.id;
-        setTimeout(CheckWinner, 30000, message);
+    if (giveawayActive && !message.author.bot && !blacklist.includes(message.author.id)) {
+        if (!roleblacklist.some(role => { if(message.member.roles.cache.has(role)) return true; })) {
+            if(lastUserID !== message.author.id) {
+            lastUserID = message.author.id;
+            lastMessageID = message.id;
+            setTimeout(CheckWinner, 30000, message);
+           }
+        }
     }
 }
+
    if(message.content.startsWith("+restartlms")) {
         if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
         db.delete(`lms_${message.author.id}`)
@@ -875,6 +961,17 @@ bot.on("message", async message => {
   .setDescription(`Successfully,Restarted LMS contest!`);
   message.channel.send(winnerEmbed)
         giveawayActive = true;
+     }
+     if(message.content.startsWith("+pauselms")) {
+        if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
+        const winnerEmbed = new MessageEmbed()
+  .setColor("RANDOM")
+  .setDescription(`Successfully,Paused LMS contest!`);
+  message.channel.send(winnerEmbed)
+         giveawayActive = false;       
+     }
+     if(message.content.startsWith("+contestinfo")) {
+      ContestInfo(message);
      }
      if(message.content.startsWith("+winnerslms")) {
         if(message.author.id !== ownerID)  return message.reply(`You don't have the permission to run this command.`);
@@ -892,7 +989,8 @@ bot.on("guildCreate", (guild) => {
     (c) => c.type === "text" && c.permissionsFor(guild.me).has("SEND_MESSAGES")
   );
    const embed = new MessageEmbed()
-     .setTitle("Among Us")
+     .setTitle("Noob Army")
+     .setURL('https://discord.gg/WGtQPBWpT8')
      .setDescription("Thanks for inviting me into this server!\n My Prefix is \`+\`")
      .setColor("RANDOM")
      .setTimestamp()
@@ -935,7 +1033,7 @@ cc.send({embed: {
 bot.on('message',m=>{
 if(m.content=="+servers_name"){
 let Owner = m.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return m.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return m.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -952,7 +1050,7 @@ m.channel.send({embed: {
 bot.on('message',m=>{
 if(m.content=="+servers_link"){
 let Owner = m.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return m.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return m.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -1036,6 +1134,7 @@ const invites = {}
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
+    if (blockedUsers.includes(message.author.id)) return message.author.send("You are blocked!");
     if (!message.content.startsWith(PREFIX)) return;
 
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
@@ -1050,9 +1149,9 @@ bot.on("message", async (message) => { // eslint-disable-line
         const helpembed = new MessageEmbed()
             .setColor("BLUE")
             .setAuthor("Invite Link", message.author.displayAvatarURL())
-            .setDescription(`[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
+            .setDescription(`[Click here!](https://discord.com/api/oauth2/authorize?client_id=787879524037689355&permissions=8&scope=bot)`)
             .setTimestamp()
-            .setFooter("Among Us Official", "https://cdn.discordapp.com/attachments/758709208543264778/758904787499745310/Screenshot_2020-09-25-09-45-28-68.jpg");
+            .setFooter("Noob Army Official", "https://cdn.discordapp.com/attachments/688674336240173086/787879241886597131/Screenshot_2020-12-13-07-57-552.jpg");
         message.reply(helpembed);
     }
     if (command === "pornn") {
@@ -1063,7 +1162,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   randomPuppy('porn')
             .then(url => {
                 const embed = new MessageEmbed()
-                
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .setTitle(`PORN`)
                 .setFooter(`Command Used by ${message.author.tag}`)
                 .setImage(url)
@@ -1083,9 +1182,9 @@ bot.on("message", async (message) => { // eslint-disable-line
   
         const memeEmbed = new MessageEmbed()
         .setColor("RANDOM")
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setImage(img)
         .setTitle(`Your meme. From r/${random}`)
-        .setURL(`https://reddit.com/r/${random}`)
   
         message.channel.send(memeEmbed);
     }
@@ -1102,62 +1201,145 @@ bot.on("message", async (message) => { // eslint-disable-line
     let embed = new MessageEmbed()
     .setColor("#00ff00")
     .setThumbnail(bicon)
+    .setURL('https://discord.gg/WGtQPBWpT8')
     .setTitle("Support Info")
     .addField("To see the bot commands use", "`+help`")
     .addField("To report bug use", "`+contact <reason>`")
-    .addField("If you need help with somehign else, Join server and Dm Rock Star", "[Support Sever](https://discord.gg/NqT45sY)")
+    .addField("If you need help with somehign else, Join server and Dm Aᴋ᭄Abhiᴮᴼˢˢ࿐", "[Support Sever](https://discord.gg/WGtQPBWpT8)")
 
     message.channel.send(embed)
 }
     if(command === "allcommands" || command === "ac" ) {
     const acEmbed = new MessageEmbed()
          .setTitle("Commands List")
+         .setURL('https://discord.gg/WGtQPBWpT8')
          .setDescription(`invite \n meme \n ping \n report \n support \n help \n args-info \n role create or delete \n mute \n announce \n oldestmember \n youngestmember \n poll \n advertise \n embed \n slowmode \n timer \n ascii \n finduser \n Blacklist \n deletewarns \n warn \n warnings \n bal \n hastebin \n beg \n daily \n profile \n rob \n roulette \n sell \n slots \n weekly \n pay \n deposit \n addmoney \n remove money \n work \n buy \n store \n store info \n withdraw \n inventory \n leaderboard \n colour \n changemy mind \n beautify \n calculate \n give me ajoke \n add role \n remove role \n answer \n clap \n suggest \n contact \n eval \n morse \n reverse \n flip \n google \n level \n pokemon \n add command \n delete command \n imdb \n rate \n kill \n translate \n covid stats \n say \n purge \n channel invite \n stats \n uptime \n leave \n setbotnick \n avatar \n carona virus \n covid checking \n serverinfo \n userinfo \n roles \n check perms \n botinfo \n emoji \n settimerinseconds \n unmute \n kick \n ban \n play \n search \n queue \n stop \n skip \n volume \n skip \n pause \n loop \n nowplaying \n resume \n mod-everyone \n unmod-everyone \n create-mod \n check-mod \n can-kick \n make-private \n create-private \n un-private \n my-permissions \n  lock-permissions \n role-permissions `)
          .setColor("RANDOM")
          .setTimestamp();
     message.channel.send(acEmbed)
     }
             //commands
-    if(command === 'apply') {
-       const guildId = '763233532369567765';
+    if(command === 'hostingrecords' || command === 'hr') {
+       const guildId = '785777717966536724';
+        let Owner = message.author;
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Sorry, You can't use this command!"
+}})
         //Has to be in DMs
         if(message.channel.type != 'dm') {
             message.channel.send('Use this command in DMs!');
             return;
         }
-        message.author.send('Application started!');
+        message.author.send('Record Started!');
 
         //First Question
-        await message.author.send('How old are you?');
+        await message.author.send(`Tournament Name\n(Ex : NA | FF SOLO 109 || POWERED BY GAME.TV)`);
         let answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const age = (answer.map(answers => answers.content).join());
 
         //Second Question
-        await message.author.send('Whats your name?');
+        await message.author.send('Screenshot Link');
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
-        const name = (answer.map(answers => answers.content).join());
+        const ss = (answer.map(answers => answers.content).join());
 
         //Third Question
-        await message.author.send('Where do you live?');
+        await message.author.send(`Winner IGN\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
+        answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const ign = (answer.map(answers => answers.content).join());
+
+        //Fourth Question
+        await message.author.send(`Room created by\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999)`);
+        answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const room = (answer.map(answers => answers.content).join());
+
+        //Fifth Question
+        await message.author.send('Any Remarks/Issues');
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const location = (answer.map(answers => answers.content).join());
 
         await message.author.send({embed: {
   color: 3066993,
-  description: "Successfully Applied!"
+  description: "Successfully Recorded!"
 }});
         //Embed
-        const embed = new MessageEmbed()
-        .setAuthor(message.author.tag, message.author.avatarURL)
-        .addField('Age', age)
-        .addField('Name', name)
-        .addField('Location', location)
+        const winner = new MessageEmbed()
+         .addField('*Tournament Name:*', age)
+         .addField('*IGN:*', ign)
+         .setTimestamp()
+         .setFooter(`Updated by ${message.author.tag}`)
+         .setColor("RANDOM");
+
+        //Embed
+        const created = new MessageEmbed()
+         .setTitle(age)
+         .addField('*Room Created By*', room)
+         .setTimestamp()
+         .setColor("RANDOM");
+
+        const embed = new MessageEmbed()        
+        .addField('*Tournament Name:*', age)
+        .addField('*Screenshot:*', ss)
+        .addField('*Room Created By:*', room)
+        .addField('*Remarks:*', location)
+        .setImage(ss)
+        .setFooter(`Updated by ${message.author.tag}`)
         .setTimestamp()
-        .setColor('RED');
+        .setColor("RANDOM");
 
         //Sending Embed
         const guild = bot.guilds.cache.get(guildId);
-        await guild.channels.cache.find(channel => channel.name === 'applications').send(embed);
+        await guild.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ʀᴇᴄᴏʀᴅꜱ').send(embed);
+      
+        //Sending Embed
+        const guildu = bot.guilds.cache.get(guildId);
+        await guildu.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ʀᴇᴄᴏʀᴅꜱ').send(winner);
+
+        //Sending Embed
+        const roomuu = bot.guilds.cache.get(guildId);
+        await roomuu.channels.cache.find(channel => channel.name === '𒃽・ᴄᴜꜱᴛᴏᴍ-ʀᴇᴄᴏʀᴅꜱ').send(created);
+  
+    }
+    if(command === 'hostingtime' || command === 'ht') {
+       const guildId = '785777717966536724';
+        let Owner = message.author;
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Sorry, You can't use this command!"
+}})
+        //Has to be in DMs
+        if(message.channel.type != 'dm') {
+            message.channel.send('Use this command in DMs!');
+            return;
+        }
+        message.author.send('Record Started!');
+
+        //First Question
+        await message.author.send(`Date and Month\n(Ex : 10th Feb)`);
+        let answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const age = (answer.map(answers => answers.content).join());
+
+        //Second Question
+        await message.author.send('Timings\n(Ex : 11:00 AM\n12:00 PM\netc...)');
+        answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const name = (answer.map(answers => answers.content).join());
+
+        await message.author.send({embed: {
+  color: 3066993,
+  description: "Successfully Recorded!"
+}});
+        //Embed
+        const time = new MessageEmbed()
+         .setTitle(age)
+         .addField('*Timings:*', name)
+         .setTimestamp()
+         .setFooter(`Be Ready...`)
+         .setColor("RANDOM");
+           
+        //Sending Embed
+        const guildu = bot.guilds.cache.get(guildId);
+        await guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(`<@&785810182797131786>`, time);
+        
     }
     if (command === "seizure") {
     const emoji1 = '🇳'
@@ -1235,6 +1417,7 @@ message.channel.send({embed}).then(msg => {
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (!message.content.startsWith(PREFIX) || message.author.bot) return;
+    if (blockedUsers.includes(message.author.id)) return message.author.send("You are blocked!");
     if (!message.channel.permissionsFor(bot.user).has('SEND_MESSAGES')) return;
 
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
@@ -1402,6 +1585,7 @@ const options = {
   const item = quiz[Math.floor(Math.random() * quiz.length)];
    const quizembed = new MessageEmbed()
      .setTitle("QUIZ")
+     .setURL('https://discord.gg/WGtQPBWpT8')
      .setDescription(item.q)
      .setColor("RANDOM")
      .setFooter("Guess the correcr answer within 60seconds and Get Coins")
@@ -1412,6 +1596,7 @@ const options = {
     const winnerMessage = collected.first();
     return message.channel.send({embed: new MessageEmbed()
                                  .setAuthor(`Winner: ${winnerMessage.author.tag}`, winnerMessage.author.displayAvatarURL)
+                                 .setURL('https://discord.gg/WGtQPBWpT8')
                                  .setTitle(`Correct Answer: \`${winnerMessage.content}\``)
                                  .setFooter(`Question: ${item.q}`)
                                  .setColor("RANDOM")
@@ -1422,6 +1607,7 @@ const options = {
                                  .setAuthor('No one got the answer in time!')
                                  .setTitle(`Correct Answer(s): \`${word}\``)
                                  .setColor("RANDOM")
+                                 .setURL('https://discord.gg/WGtQPBWpT8')
                                 })
   }
 }
@@ -1471,6 +1657,7 @@ const { decodeHTMLEntities } = require('./util.js');
 
           display
             .setTitle(title)
+            .setURL('https://discord.gg/WGtQPBWpT8')
             .setDescription([
               type,
               questionToAsk
@@ -1533,6 +1720,7 @@ const { decodeHTMLEntities } = require('./util.js');
 
     return message.channel.send(new MessageEmbed()
       .setTitle('Results:')
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setThumbnail(thumbnail)
       .setColor("RANDOM")
       .setDescription(leaderboard));
@@ -1541,6 +1729,7 @@ const { decodeHTMLEntities } = require('./util.js');
     if (args[0] === 'ipl') {
    const iplembed = new MessageEmbed()
     .setTitle("IPL")
+    .setURL('https://discord.gg/WGtQPBWpT8')
     .setDescription('1)**UpComing:**  \tSchedule of all upcoming IPL matches(at most 6)\n2)**Live:**  \t\tLive Score\n3)**Standings:** \tCurrent Standings\n4)**Player:**    \tPlayer Info e.g +player Patt Cummins')
     .setColor("RANDOM")
     .setTimestamp()
@@ -1553,6 +1742,7 @@ message.channel.send(iplembed)
 const sayMessage = args.join(" ")
 const embed = new MessageEmbed()
     .setColor("RANDOM")
+    .setURL('https://discord.gg/WGtQPBWpT8')
     .setTitle("TRIVIA")
     .setDescription("  1)INFO - ABOUT TRIVIA \n 2)SUGGEST - SUGGESTIONS FOR TRIVIA \n 3)BET - BETTING ON THE TRIVIA")
     .setFooter("Proper Usage : +trivia <©ommand> or +trivia <index number>")
@@ -1717,7 +1907,7 @@ let questions = [
    description: `Currently,There is nearly ${questions.length} questions, if you have any suggestions/ideas for questions please use '${PREFIX}trivia suggest <question, 4 possible answers, and correct answer>'.`
 }})
         }else if(args[0] === 'suggest' || args[0] === '2'){         
-          bot.users.cache.get('654669770549100575').send(message.author.tag + `\n ${args.join(" ").slice(8)}`)
+          bot.users.cache.get('688671832068325386').send(message.author.tag + `\n ${args.join(" ").slice(8)}`)
           console.log(message.content.length)
         }else if(args[0] === 'bet' || args[0] === '3'){
 let user = message.author;
@@ -1760,6 +1950,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
           db.subtract(`money_${message.guild.id}_${user.id}`, amout);
           const Embed = new MessageEmbed()
             .setTitle(q.title)
+            .setURL('https://discord.gg/WGtQPBWpT8')
             .setDescription(
               q.options.map((opt) => {
                 i++;
@@ -1927,6 +2118,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
            var battlenumber = Math.floor(Math.random()* Math.floor(battlelimit));
           const embed = new MessageEmbed()
              .setTitle("Battle")
+             .setURL('https://discord.gg/WGtQPBWpT8')
              .setDescription("Successfully,Generated random number between 0-100,You have 30 seconds to guess the correct number!\nYou have 30seconds and 30 guesses")
              .setFooter("If no one won,then bet amount will be refunded back to your account")
              .setTimestamp()
@@ -1965,6 +2157,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                 message.channel.send(new MessageEmbed()
                     .setTitle(':crossed_swords: | Battle')
                     .setColor(0x00AE86)
+                    .setURL('https://discord.gg/WGtQPBWpT8')
                     .setDescription(`Kek, not willing to fight eh. <@!${message.author.id}>`)
                     .setTimestamp());
             }
@@ -1977,6 +2170,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
             message.channel.send(new MessageEmbed()
                 .setTitle(':crossed_swords: | Battle')
                 .setColor(0xD11313)
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .setDescription(`Time out. ${oppo.tag} did not answer to the request.`)
                 .setTimestamp())
         });
@@ -1987,6 +2181,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
         message.channel.send(new MessageEmbed()
             .setTitle(':crossed_swords: | Battle')
             .setColor(0xD11313)
+            .setURL('https://discord.gg/WGtQPBWpT8')
             .setDescription(`Your request has already been made. Try again later.`));
     }
  
@@ -2252,6 +2447,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                                 message.channel.send(new MessageEmbed()
                                     .setTitle(':crossed_swords: | Battle')
                                     .setColor(0xD11313)
+                                    .setURL('https://discord.gg/WGtQPBWpT8')
                                     .setDescription(`${currentPlayer} missed 2 turns and yield the fight.`)
                                     .setTimestamp());
                             }
@@ -2263,6 +2459,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                                 message.channel.send(new MessageEmbed()
                                     .setTitle(':crossed_swords: | Battle')
                                     .setColor(0xD11313)
+                                    .setURL('https://discord.gg/WGtQPBWpT8')
                                     .setDescription(`${currentPlayer}, you missed your turn.`)
                                     .setTimestamp());
                             }
@@ -2283,6 +2480,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                 message.channel.send(new MessageEmbed()
                     .setTitle(':crown: | Battle')
                     .setColor(0x00AE86)
+                    .setURL('https://discord.gg/WGtQPBWpT8')
                     .setDescription(`The battle is over! Congratulations to the winner ${winner} !\n\n${firstPlayer} HP : ${firstPlayer.health}\n${secondPlayer} HP : ${secondPlayer.health}`)
                     .setTimestamp());
 
@@ -2297,6 +2495,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
                 message.channel.send(new MessageEmbed()
                     .setTitle(':crossed_swords: | Battle')
                     .setColor(0x00AE86)
+                    .setURL('https://discord.gg/WGtQPBWpT8')
                     .setDescription(`Kek, not willing to fight eh. <@!${message.author.id}>`)
                     .setTimestamp());
             }
@@ -2309,6 +2508,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
             message.channel.send(new MessageEmbed()
                 .setTitle(':crossed_swords: | Battle')
                 .setColor(0xD11313)
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .setDescription(`Time out. ${secondPlayer} did not answer to the request.`)
                 .setTimestamp())
         });
@@ -2319,6 +2519,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
         message.channel.send(new MessageEmbed()
             .setTitle(':crossed_swords: | Battle')
             .setColor(0xD11313)
+            .setURL('https://discord.gg/WGtQPBWpT8')
             .setDescription(`Your request has already been made. Try again later.`));
     }
 }
@@ -2418,6 +2619,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
       });
       const Embed = new MessageEmbed()
         .setTitle(`New role!`)
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setDescription(
           `${message.author.username} has created the role "${rName}"\nIts Hex Color Code: ${rColor}\nIts ID: ${rNew.id}`
         )
@@ -2434,6 +2636,7 @@ let money = await db.fetch(`money_${message.guild.id}_${user.id}`);
       roleDelete.delete();
       const Embed1 = new MessageEmbed()
         .setTitle(`Deleted role!`)
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setColor(roleDelete.color)
         .setDescription(
           `${message.author.username} has deleted the role "${roleDelete.name}"\nIts ID: ${roleDelete.id}\nIts Hex Color Code: ${roleDelete.color}`
@@ -2559,6 +2762,7 @@ if (!message.member.hasPermission('MANAGE_GUILD') && message.author.id !== '3575
   
   const embed = new MessageEmbed()
     .setTitle(args.join(' '))
+    .setURL('https://discord.gg/WGtQPBWpT8')
     .setFooter('DROP A VOTE!')
     .setColor('RANDOM')
     const pollTitle = await message.channel.send({ embed });
@@ -2599,6 +2803,7 @@ if (!message.member.hasPermission('MANAGE_GUILD') && message.author.id !== '3575
 }});
     const Embed = new MessageEmbed()
       .setTitle(`New poll!`)
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setDescription(`${question}`)
       .setFooter(`${message.author.username} created this poll.`)
       .setColor(`RANDOM`);
@@ -2617,6 +2822,7 @@ let Str = message.content.slice(PREFIX.length + 2 + 1);
           .setThumbnail(message.author.displayAvatarURL())
           .setTitle(`New advertisement from ${message.author.tag}!`)
           .setDescription(Str)
+          .setURL('https://discord.gg/WGtQPBWpT8')
           .setColor(`BLUE`)
       );
     message.channel.send({embed: {
@@ -2807,6 +3013,7 @@ message.reply((me.createdTimestamp-m.createdTimestamp)/1000)
 
     let emb = new MessageEmbed()
       .setTitle(args[0])
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setColor("RANDOM")
       .setDescription(args[1])
       .setFooter(`Command Used by : ${message.author.tag}`, message.author.avatarURL)
@@ -2888,6 +3095,7 @@ const { Timers } = require("./variable.js");
     setTimeout(() => {
       let Embed = new MessageEmbed()
         .setTitle(`Timer finished`)
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setDescription(
           `Your timer for ${args[0]} (${ms(args[0])}MS) has finished!`
         )
@@ -2931,7 +3139,7 @@ const { Timers } = require("./variable.js");
     if (command === "blacklist" ) {
         
   
-    if (message.author.id != 654669770549100575) return message.reply("you do not have permission to use this command!")
+    if (message.author.id != 688671832068325386) return message.reply("you do not have permission to use this command!")
     const user = message.mentions.users.first()
     if (!user) return message.reply("Please mention someone!")
     
@@ -3046,6 +3254,7 @@ const { Timers } = require("./variable.js");
             db.set(`warnings_${message.guild.id}_${user.id}`, 1);
             const warnembed = new MessageEmbed()
               .setTitle('Warning')
+              .setURL('https://discord.gg/WGtQPBWpT8')
               .setDescription(`You were warned in ${message.guild.name}`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
@@ -3057,6 +3266,7 @@ const { Timers } = require("./variable.js");
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
+              .setURL('https://discord.gg/WGtQPBWpT8')
               .setDescription(`**${user.username}** has been warned!`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
@@ -3071,6 +3281,7 @@ const { Timers } = require("./variable.js");
             db.add(`warnings_${message.guild.id}_${user.id}`, 1)
             const warnembed = new MessageEmbed()
               .setTitle('Warning')
+              .setURL('https://discord.gg/WGtQPBWpT8')
               .setDescription(`You were warned in ${message.guild.name}`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
@@ -3081,6 +3292,7 @@ const { Timers } = require("./variable.js");
             const helpembed = new MessageEmbed()
               .setAuthor(`${message.guild.name}`, message.author.displayAvatarURL())
               .setTitle('Warning')
+              .setURL('https://discord.gg/WGtQPBWpT8')
               .setDescription(`**<@${id}>** has been warned!`)
               .addField('Reason:', `${reason}`)
               .addField('Moderator:', `${message.author.tag}`)
@@ -3110,7 +3322,8 @@ const { Timers } = require("./variable.js");
      let levelfetch = db.fetch(`level_${message.guild.id}_${user.id}`)
      if (levelfetch === null) levelfetch = 0;
      const embed = new MessageEmbed()
-      .setTitle("Among Us Official")
+      .setTitle("Noob Army Official")
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setDescription(`${user}'s Level : ${levelfetch}`)
       .setTimestamp()
     message.channel.send(embed)
@@ -3120,7 +3333,8 @@ const { Timers } = require("./variable.js");
     let mymessages = db.fetch(`messages_${message.guild.id}_${user.id}`)
     if (mymessages === null) mymessages = 0;
     const embed = new MessageEmbed()
-      .setTitle("Among Us Official")
+      .setTitle("Noob Army Official")
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setDescription(`Total Messages sent by ${user} is ${mymessages}`)
       .setTimestamp()
     message.channel.send(embed)
@@ -3227,6 +3441,7 @@ const ms = require("parse-ms");
   if (levelfetch === null) levelfetch = 0;
     const embed = new MessageEmbed()
         .setTitle("Points")
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setColor("RANDOM")
         .setDescription(`${message.author.id} \n Total Messages : ${messages} \n Level : {levelfetch}`)
      message.channel.send(embed)
@@ -3613,7 +3828,7 @@ const ms = require("parse-ms");
   }
 }
     if (command === "addmoney" || command === "am" ) {
-        let ownerID = '654669770549100575'
+        let ownerID = '688671832068325386'
   if(message.author.id !== ownerID) return;
 
   let user = message.mentions.members.first() || message.author;
@@ -3629,7 +3844,7 @@ const ms = require("parse-ms");
 
 }
     if (command === "removemoney" || command === "rm" ) {
-        let ownerID = '654669770549100575'
+        let ownerID = '688671832068325386'
   if(message.author.id !== ownerID) return;
 
   let user = message.mentions.members.first() || message.author;
@@ -3724,6 +3939,7 @@ let percents = ["3,51", "3,91", "4,00", "4,31", "4,72", "4,99"]
 
         const Embed = new MessageEmbed()
         .setTitle("Inventory")
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setColor("RANDOM")
         .addField('Nike(s):', nikes)
         .addField('Car(s):', car)
@@ -3829,6 +4045,7 @@ let user = message.author;
        const sayMessage = args.join(" ")
      let infoembed = new MessageEmbed()
        .setTitle("Store Info")
+       .setURL('https://discord.gg/WGtQPBWpT8')
        .setColor("RANDOM")
        .setDescription("1)Bronze \n2)Nikes \n3)Car \n4)Mansion")
        .setTimestamp()
@@ -3917,6 +4134,7 @@ const sayMessage = args.join(" ")
      let infoembed = new MessageEmbed()
        .setTitle("Leaderboard Command")
        .setColor("RANDOM")
+       .setURL('https://discord.gg/WGtQPBWpT8')
        .setDescription("1)Coin \n2)Nike \n3)Car \n4)Mansion")
        .setTimestamp()
        .setFooter(`Type +lb <indexnumber> or +lb <name>`, message.author.avatarURL)
@@ -4074,6 +4292,7 @@ const sayMessage = args.join(" ")
 
         const embed = new MessageEmbed()
         .setColor(0x808080)
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setTitle('Calculator')
         .addField('Question', `\`\`\`css\n${args.join(' ')}\`\`\``)
         .addField('Answer', `\`\`\`css\n${resp}\`\`\``)
@@ -4124,7 +4343,8 @@ const sayMessage = args.join(" ")
   } 
 
   let xdemb = new MessageEmbed()
-  .setColor("#00ff00")
+  .setColor("RANDOM")
+  .setURL('https://discord.gg/WGtQPBWpT8')
   .setTitle(`Addrole command`)
   .addField("Description:", "Add role to member", true)
   .addField("Usage", "!addrole [user] [role]", true)
@@ -4172,7 +4392,8 @@ const sayMessage = args.join(" ")
   } 
 
   let xdemb = new MessageEmbed()
-  .setColor("#00ff00")
+  .setColor("RANDOM")
+  .setURL('https://discord.gg/WGtQPBWpT8')
   .setTitle(`Removerole command`)
   .addField("Description:", "Take role from member", true)
   .addField("Usage", "!removerole [user] [role]", true)
@@ -4216,15 +4437,16 @@ const sayMessage = args.join(" ")
   description:`You did not specify your message to send!`
 }});
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
     const embed = new MessageEmbed()
-         .setTitle("Among Us")
+         .setTitle("Noob Army")
+         .setURL('https://discord.gg/WGtQPBWpT8')
          .setDescription(`${MSG}`)
-         .addField("Support server", `[Click here!](https://discord.com/api/oauth2/authorize?client_id=758889056649216041&permissions=8&scope=bot)`)
-         .setFooter("Bot Owner : Roc$tarLS109#8861")
+         .addField("Support server", `[Click here!](https://discord.gg/noobarmy)`)
+         .setFooter("Bot Owner : Aᴋ᭄Abhiᴮᴼˢˢ࿐")
          .setTimestamp()
       bot.guilds.cache.forEach(guild => {
 guild.owner.send(embed) })
@@ -4239,7 +4461,7 @@ guild.owner.send(embed) })
     if (command === "answer" ) {
 
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -4255,10 +4477,11 @@ guild.owner.send(embed) })
    let contact = new MessageEmbed()
    .setAuthor(Owner.username)
    .setColor("00ff00")
+   .setURL('https://discord.gg/WGtQPBWpT8')
    .setThumbnail(Owner.displayAvatarURL)
    .setTitle("Response  from your contact!")
    .addField("Response:", sayMessage)
-   .addField("Support Server", "[Gamer's World](https://discord.gg/NqT45sY)")
+   .addField("Support Server", "[Gamer's World](https://discord.gg/WGtQPBWpT8)")
    .setTimestamp()
 
     bot.users.cache.get(id).send(contact);
@@ -4299,6 +4522,7 @@ guild.owner.send(embed) })
         );
       let Embed = new MessageEmbed()
         .setTitle(`New report!`)
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setDescription(
           `The moderator \`${message.author.tag}\` has reported the user \`${User.tag}\`! `
         )
@@ -4370,16 +4594,18 @@ guild.owner.send(embed) })
    .setThumbnail(Sender.displayAvatarURL)
    .setDescription(`Contact message from [${message.guild.name}]`)
    .setTitle("Message from contact command!")
+   .setURL('https://discord.gg/WGtQPBWpT8')
    .addField("User", Sender, true)
    .addField("User ID: ", Sender.id, true)
    .addField("Message: ", sayMessage)
    .setTimestamp()
 
-    bot.users.cache.get("654669770549100575").send(contact);
+    bot.users.cache.get("688671832068325386").send(contact);
 
     let embed = new MessageEmbed()
     .setColor("#00ff00")
     .setTitle("Message Sent!")
+    .setURL('https://discord.gg/WGtQPBWpT8')
     .setDescription("Your contact message has been sent!")
     .addField("Reqested by ", Sender)
     .addField("Message: ", sayMessage)
@@ -4388,20 +4614,32 @@ guild.owner.send(embed) })
     message.channel.send(embed).then(msg => {msg.delete(10000)});
 
     }
+    if (command == 'block') {
+let Owner = message.author;
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Only the bot owner can use this command!"
+}});
+  let user = message.mentions.users.first();
+  if (user && !blockedUsers.includes(user.id)) blockedUsers.push(user.id);
+ message.reply("Blocked User!");
+}
     if (command === "eval" ) {
 
         let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }});
    const embed = new MessageEmbed()
             .setTitle('Evaluating...')
-        const msg = await message.channel.send(embed);
+            .setURL('https://discord.gg/WGtQPBWpT8')
+        const msg = await message.author.send(embed);
         try {
             const data = eval(args.join(' ').replace(/```/g, ''));
             const embed = new MessageEmbed()
                 .setTitle('Output: ')
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .setDescription(await data)
             await msg.edit(embed)
             await msg.react('✅')
@@ -4422,7 +4660,8 @@ guild.owner.send(embed) })
                 })
         } catch (e) {
             const embed = new MessageEmbed()
-                .setTitle(`Error: ${e}`)
+                .setTitle(`${e}`)
+                .setURL('https://discord.gg/WGtQPBWpT8')
             return await msg.edit(embed);
 
         }
@@ -4469,7 +4708,7 @@ var rndInt = getRandomInt(20) + 1;
         message.channel.send(`<@${message.author.id}>,You've rolled **` + rndInt + "**");
 let number = "11";
 let number1 = "20";// You can custom it through /number command and reroll it through /reroll
-let ownerID = '654669770549100575';
+let ownerID = '688671832068325386';
 let channelID = '763233532797124649';
         if(message.channel.id === channelID) {
         if(rndInt == number) {
@@ -4681,6 +4920,7 @@ message.channel.send("Fetching Informtion for API").then(msg => {
     
     let embed = new discord.MessageEmbed()
     .setTitle(movie.title)
+    .setURL('https://discord.gg/WGtQPBWpT8')
     .setColor("#ff2050")
     .setThumbnail(movie.poster)
     .setDescription(movie.plot)
@@ -4781,6 +5021,7 @@ const translate = require('google-translate-api');
 
             let emb = new MessageEmbed()
             .setColor("#00ff00")
+            .setURL('https://discord.gg/WGtQPBWpT8')
             .setTitle("Please choose language to translate to:")
             .setDescription("'afrikaans','albanian','amharic','arabic','armenian','azerbaijani','bangla','basque','belarusian','bengali','bosnian','bulgarian','burmese','catalan','cebuano','chichewa','chinese simplified','chinese traditional','corsican','croatian','czech','danish','dutch','english','esperanto','estonian','filipino','finnish','french','frisian','galician','georgian','german','greek','gujarati','haitian creole','hausa','hawaiian','hebrew','hindi','hmong','hungarian','icelandic','igbo','indonesian','irish','italian','japanese','javanese','kannada','kazakh','khmer','korean','kurdish (kurmanji)','kyrgyz','lao','latin','latvian','lithuanian','luxembourgish','macedonian','malagasy','malay','malayalam','maltese','maori','marathi','mongolian','myanmar (burmese)','nepali','norwegian','nyanja','pashto','persian','polish','portugese','punjabi','romanian','russian','samoan','scottish gaelic','serbian','sesotho','shona','sindhi','sinhala','slovak','slovenian','somali','spanish','sundanese','swahili','swedish','tajik','tamil','telugu','thai','turkish','ukrainian','urdu','uzbek','vietnamese','welsh','xhosa','yiddish','yoruba','zulu'")
             .addField("Usage", `!translate <language> | <text>`)
@@ -4791,6 +5032,7 @@ const translate = require('google-translate-api');
 
             let emb = new MessageEmbed()
             .setColor("#00ff00")
+            .setURL('https://discord.gg/WGtQPBWpT8')
             .setTitle("What do you want to translate?")
             .setDescription("'afrikaans','albanian','amharic','arabic','armenian','azerbaijani','bangla','basque','belarusian','bengali','bosnian','bulgarian','burmese','catalan','cebuano','chichewa','chinese simplified','chinese traditional','corsican','croatian','czech','danish','dutch','english','esperanto','estonian','filipino','finnish','french','frisian','galician','georgian','german','greek','gujarati','haitian creole','hausa','hawaiian','hebrew','hindi','hmong','hungarian','icelandic','igbo','indonesian','irish','italian','japanese','javanese','kannada','kazakh','khmer','korean','kurdish (kurmanji)','kyrgyz','lao','latin','latvian','lithuanian','luxembourgish','macedonian','malagasy','malay','malayalam','maltese','maori','marathi','mongolian','myanmar (burmese)','nepali','norwegian','nyanja','pashto','persian','polish','portugese','punjabi','romanian','russian','samoan','scottish gaelic','serbian','sesotho','shona','sindhi','sinhala','slovak','slovenian','somali','spanish','sundanese','swahili','swedish','tajik','tamil','telugu','thai','turkish','ukrainian','urdu','uzbek','vietnamese','welsh','xhosa','yiddish','yoruba','zulu'")
             .addField("Usage", `!translate <language> | <text>`)
@@ -4807,6 +5049,7 @@ const translate = require('google-translate-api');
 
                 let emb = new MessageEmbed()
                 .setColor("#00ff00")
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .setTitle("Language not found!")
                 .setDescription("'afrikaans','albanian','amharic','arabic','armenian','azerbaijani','bangla','basque','belarusian','bengali','bosnian','bulgarian','burmese','catalan','cebuano','chichewa','chinese simplified','chinese traditional','corsican','croatian','czech','danish','dutch','english','esperanto','estonian','filipino','finnish','french','frisian','galician','georgian','german','greek','gujarati','haitian creole','hausa','hawaiian','hebrew','hindi','hmong','hungarian','icelandic','igbo','indonesian','irish','italian','japanese','javanese','kannada','kazakh','khmer','korean','kurdish (kurmanji)','kyrgyz','lao','latin','latvian','lithuanian','luxembourgish','macedonian','malagasy','malay','malayalam','maltese','maori','marathi','mongolian','myanmar (burmese)','nepali','norwegian','nyanja','pashto','persian','polish','portugese','punjabi','romanian','russian','samoan','scottish gaelic','serbian','sesotho','shona','sindhi','sinhala','slovak','slovenian','somali','spanish','sundanese','swahili','swedish','tajik','tamil','telugu','thai','turkish','ukrainian','urdu','uzbek','vietnamese','welsh','xhosa','yiddish','yoruba','zulu'")
                 .addField("Usage", `!translate <language> | <text>`)
@@ -4829,6 +5072,7 @@ const translate = require('google-translate-api');
       
     const embed = new MessageEmbed()
     .setColor("00ff00")
+    .setURL('https://discord.gg/WGtQPBWpT8')
     .setTitle("Please choose a language to translate to:")
     .setDescription('`afrikaans`, `albanian`, `amharic`, `arabic`, `armenian`, `azerbaijani`, `bangla`, `basque`, `belarusian`, `bengali`, `bosnian`, `bulgarian`, `burmese`, `catalan`, `cebuano`, `chichewa`, `chinese simplified`, `chinese traditional`, `corsican`, `croatian`, `czech`, `danish`, `dutch`, `english`, `esperanto`, `estonian`, `filipino`, `finnish`, `french`, `frisian`, `galician`, `georgian`, `german`, `greek`, `gujarati`, `haitian creole`, `hausa`, `hawaiian`, `hebrew`, `hindi`, `hmong`, `hungarian`, `icelandic`, `igbo`, `indonesian`, `irish`, `italian`, `japanese`, `javanese`, `kannada`, `kazakh`, `khmer`, `korean`, `kurdish (kurmanji)`, `kyrgyz`, `lao`, `latin`, `latvian`, `lithuanian`, `luxembourgish`, `macedonian`, `malagasy`, `malay`, `malayalam`, `maltese`, `maori`, `marathi`, `mongolian`, `myanmar (burmese)`, `nepali`, `norwegian`, `nyanja`, `pashto`, `persian`, `polish`, `portugese`, `punjabi`, `romanian`, `russian`, `samoan`, `scottish gaelic`, `serbian`, `sesotho`, `shona`, `sindhi`, `sinhala`, `slovak`, `slovenian`, `somali`, `spanish`, `sundanese`, `swahili`, `swedish`, `tajik`, `tamil`, `telugu`, `thai`, `turkish`, `ukrainian`, `urdu`, `uzbek`, `vietnamese`, `welsh`, `xhosa`, `yiddish`, `yoruba`, `zulu`');
 
@@ -4969,8 +5213,8 @@ try {
       let processArticle = article => {
         const embed = new MessageEmbed()
           .setColor('#FF4F00')
+          .setURL('https://discord.gg/WGtQPBWpT8')
           .setTitle(article.title)
-          .setURL(article.url)
           .setAuthor(article.author)
           .setDescription(article.description)
           .setThumbnail(article.urlToImage)
@@ -5000,8 +5244,8 @@ try {
       let processArticle = article => {
         const embed = new MessageEmbed()
           .setColor('#FF4F00')
+          .setURL('https://discord.gg/WGtQPBWpT8')
           .setTitle(article.title)
-          .setURL(article.url)
           .setAuthor(article.author)
           .setDescription(article.description)
           .setThumbnail(article.urlToImage)
@@ -5031,8 +5275,8 @@ try {
       let processArticle = article => {
         const embed = new MessageEmbed()
           .setColor('#FF4F00')
+          .setURL('https://discord.gg/WGtQPBWpT8')
           .setTitle(article.title)
-          .setURL(article.url)
           .setAuthor(article.author)
           .setDescription(article.description)
           .setThumbnail(article.urlToImage)
@@ -5061,6 +5305,7 @@ try {
 
         const noArgs = new MessageEmbed()
         .setTitle('Missing arguments')
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setColor(0xFF0000)
         .setDescription('You are missing some args (ex: +covid all || +covid <country name>)')
         .setTimestamp()
@@ -5077,6 +5322,7 @@ try {
 
                 const embed = new MessageEmbed()
                 .setTitle(`Worldwide COVID-19 Stats 🌎`)
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .addField('Confirmed Cases', confirmed)
                 .addField('Recovered', recovered)
                 .addField('Deaths', deaths)
@@ -5093,6 +5339,7 @@ try {
 
                 const embed = new MessageEmbed()
                 .setTitle(`COVID-19 Stats for **${countries}**`)
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .addField('Confirmed Cases', confirmed)
                 .addField('Recovered', recovered)
                 .addField('Deaths', deaths)
@@ -5121,6 +5368,7 @@ try {
 }});
     const _ = new MessageEmbed()
       .setTitle(`New announcement!`)
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setDescription(`${MSG}`)
       .setColor("RANDOM");
     rChannel.send(_);
@@ -5147,6 +5395,7 @@ const embeds = [];
         {
             embeds.push(new MessageEmbed()
                 .setColor("RANDOM")
+                .setURL('https://discord.gg/WGtQPBWpT8')
                 .setAuthor(message.author.tag, message.author.avatarURL({ dynamic: true }))
                 .setTitle(`Are you sure you want to nuke this channel?`)
                 .setDescription(`Nuking this channel will delete all messages that are sent in this channel. This action is irreversable.`)
@@ -5219,6 +5468,7 @@ const embeds = [];
 
 bot.on("message", async (message) => { // eslint-disable-line
     if (message.author.bot) return;
+    if (blockedUsers.includes(message.author.id)) return message.author.send("You are blocked!");
     if (!message.content.startsWith(PREFIX)) return;
 
     
@@ -5246,20 +5496,37 @@ bot.on("message", async (message) => { // eslint-disable-line
 }
     if (command === "botstats") {
 let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
   let msg =  bot.guilds.cache.map(guild => `**${guild.name}** Members: ${guild.memberCount}`).join('\n');
   let embed = new MessageEmbed()
+  .setURL('https://discord.gg/WGtQPBWpT8')
   .setTitle(`I am in ${bot.guilds.cache.size} guilds!`)
   .setDescription(`${msg}`)
   .setColor("#ebf442");
   message.channel.send(embed);
 }
+    if (command === "rules") {
+    let Owner = message.author;
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"You can't use this command,\n Dm Aᴋ᭄Abhiᴮᴼˢˢ࿐ for more details!"
+}})
+       const rulesembed = new MessageEmbed()
+             .setTitle("Rules:")
+             .setAuthor(`${message.guild.name}`, message.guild.iconURL)
+             .setColor("RANDOM")
+             .setImage(message.guild.iconURL())
+             .setTimestamp()
+             .setDescription(`1. ► No Self Promotion or Promoting Others in Normal Channels.\n\n2. ►No Racism/Abuse/Profanity, Treat Each Other Humbly.\n\n3. ►No Trash Talking For other Youtubers/Streamers.\n\n4. ► Use Every Channel for Their Purpose they Made For. Don't Do Any Extra Activity.\n\n5. ►Respect Moderators.\n\n6. ►Do not ask why got muted.\n\n7. ► Respect Each Member.\n\n8. ►Don' t let anyone spoil your fun in chat and help in keeping the chat  clean by reporting spammers/abusive trolls.\n\n9. ► No invitation LINKS.\n\n10. ► Don't Spam in Chat Either Mod Have Power to Kick/Mute/Warn/Ban You.\n\n11. ► Don't Argue With Any Mod/Staff.  Their Decision will be last Decision.\n\n12. ► Don't Share Your Personal Life / Photographs /Contact Number/Other Personal Things Here Either Mod Will Ban you Permanently.\n\n13. ► Do not impersonate staff /mod/leader - This is something we take seriously, regardless if its a joke or not.\n\n14.  ► Listen and respect To everyone , especially the Mods/Admins/leader.\n\n15. ►Only Chat in English & If its urgency Then You guys can speak Hindi (or) If you can't Explain your prblm,Then only Chat in ENGLISH.\n\n16. ► if your Behavior is Not Deemed "Appropriate" for this server, Mod/Staff have the ability to enforce a kick/ban even if does not line up with the Above Rules.`)
+         message.channel.send(rulesembed)
+         message.channel.send("<@everyone>")
+    }
     if (command === "stats") {
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -5314,7 +5581,7 @@ let Owner = message.author;
 }
     if (command === "leave") {
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -5325,7 +5592,7 @@ let Owner = message.author;
     }
     if (command === "leave") {
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -5344,6 +5611,7 @@ let Owner = message.author;
   user.setNickname(nickname);
   
   const embed = new MessageEmbed()
+  .setURL('https://discord.gg/WGtQPBWpT8')
   .setTitle("Nickname succesfully given.")
   .setColor("RANDOM")
   .setDescription(`Succesfully changed  the nickname of ${user}.`)
@@ -5353,7 +5621,7 @@ let Owner = message.author;
 }
     if (command === "setbotnick") {
     let Owner = message.author;
-    if(Owner.id !== "654669770549100575" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Only the bot owner can use this command!"
 }})
@@ -5377,6 +5645,7 @@ let Owner = message.author;
         const helpembed = new MessageEmbed()
         .setTitle(`${member.username}'s avatar`)
         .setImage(avatar)
+        .setURL('https://discord.gg/WGtQPBWpT8')
         .setColor("RANDOM")
 
         message.channel.send(helpembed);
@@ -5425,13 +5694,14 @@ let Owner = message.author;
                       let servericon = message.author.displayAvatarURL;
                                         const form = new Discord.MessageEmbed()
                                             .setTitle('New Entry')
+                                            .setURL('https://discord.gg/WGtQPBWpT8')
                                             .addField("Submitted by:", message.author.tag)
                                             .addField("Freind Discord Tag:", nome)
                                             .addField("Description:", serve)
-                                            .setFooter(`Among Us`)
+                                            .setFooter(`Noob Army`)
                                             .setThumbnail(servericon)
                                             .setColor('RANDOM')
-                                        bot.channels.cache.get('766581746505613352').send(`|| <@654669770549100575> ||`, form).then(async msg => {
+                                        bot.channels.cache.get('787908794743128084').send(`|| <@688671832068325386> ||`, form).then(async msg => {
                                             const collector = msg.createReactionCollector((r, u) => (r.emoji.name === '✔') && (u.id !== bot.user.id && u.id === message.author.id))
                                             collector.on("collect", r => {
                                                 switch (r.emoji.name) {
@@ -5492,6 +5762,7 @@ let Owner = message.author;
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
         const helpembed = new MessageEmbed()
              .setColor("VIOLET")
+             .setURL('https://discord.gg/WGtQPBWpT8')
              .setTitle("Your Health Status")
              .setAuthor(message.author.username)
              .setDescription(randomMessage)
@@ -5791,11 +6062,11 @@ const member = message.guild.member(user);
 
     let serverembed = new MessageEmbed()
         .setColor("#9400D3")
-        .setAuthor(`Among Us`, bot.user.displayAvatarURL())
-        .setDescription(`Among Us Music Bot Information`)
+        .setAuthor(`Noob Army`, bot.user.displayAvatarURL())
+        .setDescription(`Noob Army Music Bot Information`)
         .setImage(bot.user.displayAvatarURL())
-        .addField("Bot Owner", `Roc$tarLS109#8861(Rock Star)`)
-        .addField("Owner Id", `654669770549100575`)
+        .addField("Bot Owner", `Aᴋ᭄Abhiᴮᴼˢˢ࿐`)
+        .addField("Owner Id", `688671832068325386`)
         .addField("My Id", `758889056649216041`)
         .addField("My Prefix", `+`)
         .addField(`Servers`,`${servers}`, true)
@@ -5865,6 +6136,7 @@ const Options = {
     const Embed = new MessageEmbed()
       .setTitle(`The oldest member in ${message.guild.name}`)
       .setColor(`RANDOM`)
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setFooter(`Date format: MM/DD/YYYY`)
       .setDescription(
         `${mem.user.tag} is the oldest user in ${
@@ -5882,6 +6154,7 @@ const Options = {
     const Embed = new MessageEmbed()
       .setTitle(`The youngest member in ${message.guild.name}`)
       .setColor(`RANDOM`)
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setFooter(`Date format: MM/DD/YYYY`)
       .setDescription(
         `${mem.user.tag} is the youngest user in ${
@@ -5911,6 +6184,7 @@ const Options = {
     });
     let Embed = new MessageEmbed()
       .setTitle(`Emojis in ${message.guild.name}.`)
+      .setURL('https://discord.gg/WGtQPBWpT8')
       .setDescription(
         `**Animated [${Animated}]**:\n${EmojisAnimated}\n\n**Standard [${EmojiCount}]**:\n${Emojis}\n\n**Over all emojis [${OverallEmojis}]**`
       )
