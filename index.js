@@ -1372,9 +1372,40 @@ bot.on("message", async (message) => { // eslint-disable-line
          .setFooter(`Be Ready...`)
          .setColor("RANDOM");
            
+        const emoji1 = '❌'
+    const emoji = '✅'
+    message.channel.send(`${message.author}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, checkemb).then(msg => {
+        msg.react(emoji).then(r => {
+            msg.react(emoji1)
+            const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
+            const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
+            const sure = msg.createReactionCollector(yes, {
+                time: 600000,
+                errors: ['time'],
+            });
+            const no = msg.createReactionCollector(nopleas, {
+                time: 600000,
+                errors: ['time'],
+            });
+            sure.on('collect', r => {
+                msg.delete();
         //Sending Embed
         const guildu = bot.guilds.cache.get(guildId);
-        await guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(`<@&785810182797131786>`, time);
+        guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(`<@&785810182797131786>`, time);
+ 
+            })
+            no.on('collect', r => {
+                  msg.delete();
+                  message.author.send({embed: {
+  color: 3066993,
+  description: "Recorded Cancelled\nTo Record/Submit Details again Type *+hr*!"
+}});
+            })
+        })
+    }).catch((collect) => msg.edit({embed: {
+  color: 3066993,
+  description: "Recorded Cancelled!\nReason: Time's Up!\nTo Record/Submit Details again Type *+hr*!"
+}}));
         
     }
     if (command === "seizure") {
