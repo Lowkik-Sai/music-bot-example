@@ -1298,8 +1298,8 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setTimestamp()
         .setColor("RANDOM");
 
-    const emoji1 = '🇳'
-    const emoji = '🇾'
+    const emoji1 = '❌'
+    const emoji = '✔️'
     message.channel.send(checkemb).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
@@ -1312,7 +1312,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                 time: 60000
             });
             sure.on('collect', r => {
-                
+                msg.delete();
         const guild = bot.guilds.cache.get(guildId);
         const guildu = bot.guilds.cache.get(guildId);
         const roomuu = bot.guilds.cache.get(guildId);
@@ -1322,7 +1322,11 @@ bot.on("message", async (message) => { // eslint-disable-line
  
             })
             no.on('collect', r => {
-                message.author.send("Recorded Failed");
+                  msg.delete();
+                  message.author.send({embed: {
+  color: 3066993,
+  description: "Recorded Failed!"
+}});
             })
         })
     })
