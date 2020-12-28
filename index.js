@@ -1307,11 +1307,11 @@ bot.on("message", async (message) => { // eslint-disable-line
             const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
             const sure = msg.createReactionCollector(yes, {
                 time: 60000,
-                errors: ['time']
+                errors: ['time'],
             });
             const no = msg.createReactionCollector(nopleas, {
                 time: 60000,
-                errors: ['time']
+                errors: ['time'],
             });
             sure.on('collect', r => {
                 msg.delete();
@@ -1330,7 +1330,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   description: "Recorded Cancelled\nTo Record/Submit Details again Type *+hr*!"
 }});
             })
-        }).catch(() => 
+        }).catch((e) => 
 msg.delete();
 message.author.send({embed: {
   color: 3066993,
