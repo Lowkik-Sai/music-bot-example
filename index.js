@@ -1249,6 +1249,11 @@ bot.on("message", async (message) => { // eslint-disable-line
         const ign = (answer.map(answers => answers.content).join());
 
         //Fourth Question
+        await message.author.send(`Room created by\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999)`);
+        answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const room = (answer.map(answers => answers.content).join());
+
+        //Fifth Question
         await message.author.send('Any Remarks/Issues');
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const location = (answer.map(answers => answers.content).join());
@@ -1271,7 +1276,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         .addField('*Remarks:*', location)
         .setImage(name)
         .setTimestamp()
-        .setFooter(`From ${message.author.tag}`)
+        .setFooter('*Room created by:*', room)
         .setColor("RANDOM");
 
         //Sending Embed
