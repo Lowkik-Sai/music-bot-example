@@ -1279,7 +1279,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         const embed = new MessageEmbed()        
         .addField('*Tournament Name:*', age)
-        .addField('*Screenshot:*', name)
+        .addField('*Screenshot:*', ss)
         .addField('*Remarks:*', location)
         .setImage(ss)
         .setTimestamp()
