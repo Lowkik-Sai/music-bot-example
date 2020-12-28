@@ -1270,6 +1270,13 @@ bot.on("message", async (message) => { // eslint-disable-line
          .setFooter(`From ${message.author.tag}`)
          .setColor("RANDOM");
 
+        //Embed
+        const created = new MessageEmbed()
+         .setTitle(age)
+         .addField('*Created by*', room)
+         .setTimestamp()
+         .setColor("RANDOM");
+
         const embed = new MessageEmbed()        
         .addField('*Tournament Name:*', age)
         .addField('*Screenshot:*', name)
@@ -1286,6 +1293,10 @@ bot.on("message", async (message) => { // eslint-disable-line
         //Sending Embed
         const guildu = bot.guilds.cache.get(guildId);
         await guildu.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ʀᴇᴄᴏʀᴅꜱ').send(winner);
+
+        //Sending Embed
+        const room = bot.guilds.cache.get(guildId);
+        await room.channels.cache.find(channel => channel.name === '𒃽・ᴄᴜꜱᴛᴏᴍ-ʀᴇᴄᴏʀᴅꜱ').send(created);
   
     }
     if(command === 'hostingtime' || command === 'ht') {
