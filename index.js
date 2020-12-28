@@ -1336,8 +1336,7 @@ msg.delete();
 message.author.send({embed: {
   color: 3066993,
   description: "Recorded Cancelled!\nReason: Time's Up!\nTo Record/Submit Details again Type *+hr*!"
-}})
-);
+}}));
          
     }
     if(command === 'hostingtime' || command === 'ht') {
