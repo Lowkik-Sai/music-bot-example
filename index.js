@@ -1321,8 +1321,8 @@ bot.on("message", async (message) => { // eslint-disable-line
            
         //Sending Embed
         const guildu = bot.guilds.cache.get(guildId);
-        await guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(`<@&785810182797131786>`, winner);
-  
+        await guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(winner);
+        await guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(`<@&785810182797131786>`);
     }
     if (command === "seizure") {
     const emoji1 = '🇳'
