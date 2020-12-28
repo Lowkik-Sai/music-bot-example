@@ -1279,6 +1279,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         const embed = new MessageEmbed()        
         .addField('*Tournament Name:*', age)
+        .addField('*Winner IGN:*', ign)
         .addField('*Screenshot:*', ss)
         .addField('*Room Created By:*', room)
         .addField('*Remarks:*', location)
@@ -1315,9 +1316,9 @@ bot.on("message", async (message) => { // eslint-disable-line
         const guild = bot.guilds.cache.get(guildId);
         const guildu = bot.guilds.cache.get(guildId);
         const roomuu = bot.guilds.cache.get(guildId);
-        await guild.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ʀᴇᴄᴏʀᴅꜱ').send(embed);
-        await guildu.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ʀᴇᴄᴏʀᴅꜱ').send(winner);
-        await roomuu.channels.cache.find(channel => channel.name === '𒃽・ᴄᴜꜱᴛᴏᴍ-ʀᴇᴄᴏʀᴅꜱ').send(created);
+        guild.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ʀᴇᴄᴏʀᴅꜱ').send(embed);
+        guildu.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ʀᴇᴄᴏʀᴅꜱ').send(winner);
+        roomuu.channels.cache.find(channel => channel.name === '𒃽・ᴄᴜꜱᴛᴏᴍ-ʀᴇᴄᴏʀᴅꜱ').send(created);
  
             })
             no.on('collect', r => {
