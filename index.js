@@ -1331,7 +1331,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 }});
             })
         })
-    }).catch(() => message.author.send({embed: {
+    }).catch(() => msg.edit({embed: {
   color: 3066993,
   description: "Recorded Cancelled!\nReason: Time's Up!\nTo Record/Submit Details again Type *+hr*!"
 }}));
