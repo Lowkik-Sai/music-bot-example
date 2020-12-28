@@ -1297,21 +1297,35 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setTimestamp()
         .setColor("RANDOM");
 
-      await message.author.send(checkemb);
-            message.react(
-
-        //Sending Embed
+    const emoji1 = '🇳'
+    const emoji = '🇾'
+    message.channel.send(checkemb).then(msg => {
+        msg.react(emoji).then(r => {
+            msg.react(emoji1)
+            const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
+            const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
+            const sure = msg.createReactionCollector(yes, {
+                time: 1000000
+            });
+            const no = msg.createReactionCollector(nopleas, {
+                time: 1000000
+            });
+            sure.on('collect', r => {
+                
         const guild = bot.guilds.cache.get(guildId);
-        await guild.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ʀᴇᴄᴏʀᴅꜱ').send(embed);
-      
-        //Sending Embed
         const guildu = bot.guilds.cache.get(guildId);
-        await guildu.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ʀᴇᴄᴏʀᴅꜱ').send(winner);
-
-        //Sending Embed
         const roomuu = bot.guilds.cache.get(guildId);
+        await guild.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ʀᴇᴄᴏʀᴅꜱ').send(embed);
+        await guildu.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ʀᴇᴄᴏʀᴅꜱ').send(winner);
         await roomuu.channels.cache.find(channel => channel.name === '𒃽・ᴄᴜꜱᴛᴏᴍ-ʀᴇᴄᴏʀᴅꜱ').send(created);
-  
+ 
+            })
+            no.on('collect', r => {
+                message.author.send("Recorded Failed");
+            })
+        })
+    })
+         
     }
     if(command === 'hostingtime' || command === 'ht') {
        const guildId = '785777717966536724';
