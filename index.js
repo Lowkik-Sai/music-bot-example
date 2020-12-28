@@ -1295,8 +1295,8 @@ bot.on("message", async (message) => { // eslint-disable-line
         await guildu.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ʀᴇᴄᴏʀᴅꜱ').send(winner);
 
         //Sending Embed
-        const room = bot.guilds.cache.get(guildId);
-        await room.channels.cache.find(channel => channel.name === '𒃽・ᴄᴜꜱᴛᴏᴍ-ʀᴇᴄᴏʀᴅꜱ').send(created);
+        const roomuu = bot.guilds.cache.get(guildId);
+        await roomuu.channels.cache.find(channel => channel.name === '𒃽・ᴄᴜꜱᴛᴏᴍ-ʀᴇᴄᴏʀᴅꜱ').send(created);
   
     }
     if(command === 'hostingtime' || command === 'ht') {
