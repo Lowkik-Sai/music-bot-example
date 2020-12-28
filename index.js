@@ -1267,23 +1267,24 @@ bot.on("message", async (message) => { // eslint-disable-line
          .addField('*Tournament Name:*', age)
          .addField('*IGN:*', ign)
          .setTimestamp()
-         .setFooter(`From ${message.author.tag}`)
+         .setFooter(`Updated by ${message.author.tag}`)
          .setColor("RANDOM");
 
         //Embed
         const created = new MessageEmbed()
          .setTitle(age)
-         .addField('*Created by*', room)
+         .addField('*Room Created By*', room)
          .setTimestamp()
          .setColor("RANDOM");
 
         const embed = new MessageEmbed()        
         .addField('*Tournament Name:*', age)
         .addField('*Screenshot:*', ss)
+        .addField('*Room Created By:*', room)
         .addField('*Remarks:*', location)
         .setImage(ss)
+        .setFooter(`Updated by ${message.author.tag}`)
         .setTimestamp()
-        .setFooter('*Room created by:*', room)
         .setColor("RANDOM");
 
         //Sending Embed
