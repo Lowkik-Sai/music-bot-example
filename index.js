@@ -1231,7 +1231,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             message.channel.send('Use this command in DMs!');
             return;
         }
-        message.author.send('Application started!');
+        message.author.send('Record Started!');
 
         //First Question
         await message.author.send(`Tournament Name\n(Ex : NA | FF SOLO 109 || POWERED BY GAME.TV)`);
@@ -1281,6 +1281,47 @@ bot.on("message", async (message) => { // eslint-disable-line
         //Sending Embed
         const guildu = bot.guilds.cache.get(guildId);
         await guildu.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ʀᴇᴄᴏʀᴅꜱ').send(winner);
+  
+    }
+    if(command === 'hostingtime' || command === 'ht') {
+       const guildId = '785777717966536724';
+        let Owner = message.author;
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Sorry, You can't use this command!"
+}})
+        //Has to be in DMs
+        if(message.channel.type != 'dm') {
+            message.channel.send('Use this command in DMs!');
+            return;
+        }
+        message.author.send('Record Started!');
+
+        //First Question
+        await message.author.send(`Date and Month\n(Ex : 10th Feb)`);
+        let answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const age = (answer.map(answers => answers.content).join());
+
+        //Second Question
+        await message.author.send('Timings\n(Ex : 11:00 AM\n12:00 PM\netc...)');
+        answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const name = (answer.map(answers => answers.content).join());
+
+        await message.author.send({embed: {
+  color: 3066993,
+  description: "Successfully Applied!"
+}});
+        //Embed
+        const winner = new MessageEmbed()
+         .setTitle(age)
+         .addField('*Timings:*', name)
+         .setTimestamp()
+         .setFooter(`Be Ready...)
+         .setColor("RANDOM");
+           
+        //Sending Embed
+        const guildu = bot.guilds.cache.get(guildId);
+        await guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(`<@&785810182797131786>`, winner);
   
     }
     if (command === "seizure") {
