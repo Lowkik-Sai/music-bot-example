@@ -1228,7 +1228,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 }})
         //Has to be in DMs
         if(message.channel.type != 'dm') {
-            message.channel.send('Use this command in DMs!');
+            message.channel.send('Use this command in my DMs!');
             return;
         }
         message.author.send('Record Started!');
@@ -1299,17 +1299,19 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setColor("RANDOM");
 
     const emoji1 = '❌'
-    const emoji = '✔️'
-    message.channel.send(`Check Whether You Entered Details Correctly Or Not\nReact with ✔️ to submit!\nReact with ❌ to cancel!`, checkemb).then(msg => {
+    const emoji = '✅'
+    message.channel.send(`${message.author}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, checkemb).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
             const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
             const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
             const sure = msg.createReactionCollector(yes, {
-                time: 60000
+                time: 60000,
+                errors: ['time'],
             });
             const no = msg.createReactionCollector(nopleas, {
                 time: 60000
+                errors: ['time'],
             });
             sure.on('collect', r => {
                 msg.delete();
@@ -1325,11 +1327,17 @@ bot.on("message", async (message) => { // eslint-disable-line
                   msg.delete();
                   message.author.send({embed: {
   color: 3066993,
-  description: "Recorded Cancelled\nTo Record/Submit Details Type *+hr* again!"
+  description: "Recorded Cancelled\nTo Record/Submit Details again Type *+hr*!"
 }});
             })
         })
-    })
+    }).catch(() => 
+msg.delete();
+message.author.send({embed: {
+  color: 3066993,
+  description: "Recorded Cancelled!\nReason: Time's Up!\nTo Record/Submit Details again Type *+hr*!"
+}})
+);
          
     }
     if(command === 'hostingtime' || command === 'ht') {
