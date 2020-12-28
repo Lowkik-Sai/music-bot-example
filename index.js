@@ -1300,7 +1300,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
     const emoji1 = '❌'
     const emoji = '✔️'
-    message.channel.send(checkemb).then(msg => {
+    message.channel.send(`Check Whether You Entered Details Correctly Or Not\nReact with ✔️ to submit!\nReact with ❌ to cancel!`, checkemb).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
             const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
@@ -1325,7 +1325,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                   msg.delete();
                   message.author.send({embed: {
   color: 3066993,
-  description: "Recorded Failed!"
+  description: "Recorded Cancelled\nTo Record/Submit Details Type *+hr* again!"
 }});
             })
         })
