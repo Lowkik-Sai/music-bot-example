@@ -1287,6 +1287,19 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setTimestamp()
         .setColor("RANDOM");
 
+        const checkemb = new MessageEmbed()        
+        .addField('*Tournament Name:*', age)
+        .addField('*Screenshot:*', ss)
+        .addField('*IGN:*', ign)
+        .addField('*Room Created By:*', room)
+        .addField('*Remarks:*', location)
+        .setImage(ss)
+        .setTimestamp()
+        .setColor("RANDOM");
+
+      await message.author.send(checkemb);
+            message.react(
+
         //Sending Embed
         const guild = bot.guilds.cache.get(guildId);
         await guild.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ʀᴇᴄᴏʀᴅꜱ').send(embed);
