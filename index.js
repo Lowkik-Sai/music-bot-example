@@ -1330,14 +1330,14 @@ bot.on("message", async (message) => { // eslint-disable-line
   description: "Recorded Cancelled\nTo Record/Submit Details again Type *+hr*!"
 }});
             })
-        }).catch((e) => 
+        })
+    }).catch(() => {
 msg.delete();
 message.author.send({embed: {
   color: 3066993,
   description: "Recorded Cancelled!\nReason: Time's Up!\nTo Record/Submit Details again Type *+hr*!"
-}}));
-         })
-    }
+}}))};
+ }
     if(command === 'hostingtime' || command === 'ht') {
        const guildId = '785777717966536724';
         let Owner = message.author;
