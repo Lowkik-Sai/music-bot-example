@@ -1306,11 +1306,11 @@ bot.on("message", async (message) => { // eslint-disable-line
             const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
             const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
             const sure = msg.createReactionCollector(yes, {
-                time: 60000,
+                time: 600000,
                 errors: ['time'],
             });
             const no = msg.createReactionCollector(nopleas, {
-                time: 60000,
+                time: 600000,
                 errors: ['time'],
             });
             sure.on('collect', r => {
