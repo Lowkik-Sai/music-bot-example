@@ -1260,7 +1260,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         await message.author.send({embed: {
   color: 3066993,
-  description: "Successfully Applied!"
+  description: "Successfully Recorded!"
 }});
         //Embed
         const winner = new MessageEmbed()
@@ -1314,7 +1314,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         await message.author.send({embed: {
   color: 3066993,
-  description: "Successfully Applied!"
+  description: "Successfully Recorded!"
 }});
         //Embed
         const time = new MessageEmbed()
