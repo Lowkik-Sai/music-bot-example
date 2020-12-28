@@ -1312,16 +1312,16 @@ bot.on("message", async (message) => { // eslint-disable-line
   description: "Successfully Applied!"
 }});
         //Embed
-        const winner = new MessageEmbed()
+        const time = new MessageEmbed()
          .setTitle(age)
          .addField('*Timings:*', name)
          .setTimestamp()
-         .setFooter(`Be Ready...)
+         .setFooter(`Be Ready...`)
          .setColor("RANDOM");
            
         //Sending Embed
         const guildu = bot.guilds.cache.get(guildId);
-        await guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(winner);
+        await guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(`<@&785810182797131786>`, time);
         
     }
     if (command === "seizure") {
