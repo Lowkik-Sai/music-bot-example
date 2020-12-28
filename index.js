@@ -1241,7 +1241,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         //Second Question
         await message.author.send('Screenshot Link');
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
-        const name = (answer.map(answers => answers.content).join());
+        const ss = (answer.map(answers => answers.content).join());
 
         //Third Question
         await message.author.send(`Winner IGN\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
@@ -1281,7 +1281,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         .addField('*Tournament Name:*', age)
         .addField('*Screenshot:*', name)
         .addField('*Remarks:*', location)
-        .setImage(name)
+        .setImage(ss)
         .setTimestamp()
         .setFooter('*Room created by:*', room)
         .setColor("RANDOM");
