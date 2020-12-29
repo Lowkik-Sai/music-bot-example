@@ -1420,7 +1420,7 @@ bot.on("message", async (message) => { // eslint-disable-line
    description: 'Hey Congratulations on winning tournament Powered By Game.tv🎉\n*NOOB ARMY*\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!'
 }});
 
-    await message.channel.send({embed: {
+        message.channel.send({embed: {
  color: 3066993,
  description: `Prize claim form process started with ${user}!`
 }});
