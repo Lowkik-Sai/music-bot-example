@@ -1417,12 +1417,17 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         useru.send({embed: {
    color: 3066993,
-   description: 'Hey Congratulations on winning tournament Powered By Game.tv🎉\n*NOOB ARMY*\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!'
+   description: `Hey Congratulations on winning tournament in Noob Army Server || Powered By Game.tv🎉\n__[NOOB ARMY(NA)](https://discord.gg/noobarmy)__\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!\nIf any issues found Dm Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 from NA server!`
 }});
+        
 
         //First Question
         await useru.send(`*In which method you wanted to claim your prize?*\n1)1 WEEKLY MEMBERSHIP\n2)110 DIAMOMDS\n3)75RS PAYTM OR 75RS REDEEMCODE`);
         let answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        let processing = await message.channel.send({embed: {
+  color: 3066993,
+  description: `Prize claim process started with ${user}'s Dm!`
+}});
         const age = (answer.map(answers => answers.content).join());
 
         //Second Question
