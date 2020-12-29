@@ -1258,10 +1258,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const location = (answer.map(answers => answers.content).join());
 
-        await message.author.send({embed: {
-  color: 3066993,
-  description: "Successfully Recorded!"
-}});
         //Embed
         const winner = new MessageEmbed()
          .addField('*Tournament Name:*', age)
@@ -1321,7 +1317,10 @@ bot.on("message", async (message) => { // eslint-disable-line
         guild.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ʀᴇᴄᴏʀᴅꜱ').send(embed);
         guildu.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ʀᴇᴄᴏʀᴅꜱ').send(winner);
         roomuu.channels.cache.find(channel => channel.name === '𒃽・ᴄᴜꜱᴛᴏᴍ-ʀᴇᴄᴏʀᴅꜱ').send(created);
- 
+        message.author.send({embed: {
+  color: 3066993,
+  description: "Successfully Recorded!"
+}});
             })
             no.on('collect', r => {
                   msg.delete();
@@ -1360,10 +1359,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const name = (answer.map(answers => answers.content).join());
 
-        await message.author.send({embed: {
-  color: 3066993,
-  description: "Successfully Recorded!"
-}});
         //Embed
         const time = new MessageEmbed()
          .setTitle(age)
@@ -1392,7 +1387,10 @@ bot.on("message", async (message) => { // eslint-disable-line
         //Sending Embed
         const guildu = bot.guilds.cache.get(guildId);
         guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(`<@&785810182797131786>`, time);
- 
+        message.author.send({embed: {
+  color: 3066993,
+  description: "Successfully Recorded!"
+}});
             })
             no.on('collect', r => {
                   msg.delete();
