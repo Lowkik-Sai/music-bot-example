@@ -1415,7 +1415,10 @@ bot.on("message", async (message) => { // eslint-disable-line
 }})
         let user = message.mentions.users.first();
 
-        user.send('Hey <@${user.id}>,\n*NOOB ARMY*\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!');
+        user.send({embed: {
+   color: 3066993,
+   description: 'Hey ,\n*NOOB ARMY*\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!'
+}});
 
         //First Question
         await user.send(`*In which method you wanted to claim your prize?*\n(Options:\n1)1 WEEKLY MEMBERSHIP\n2)110 DIAMOMDS\n3)75RS PAYTM OR 75RS REDEEMCODE)`);
@@ -1433,7 +1436,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         const uid = (answer.map(answers => answers.content).join());
 
         //Fourth Question
-        await user.send(`If 75rs,Send me your Paytm number(MUST HAVE FULL KYC)\nIf not,type *none* to skip this question!`);
+        await user.send(`If 75rs,Send me your Paytm number & Name associated with your Paytm number(MUST HAVE FULL KYC)!\nIf not,type *none* to skip this question!`);
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytm = (answer.map(answers => answers.content).join());
 
@@ -1453,8 +1456,8 @@ bot.on("message", async (message) => { // eslint-disable-line
     message.channel.send(`${user}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, win).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
-            const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
-            const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
+            const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === user.id;
+            const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === user.id;
             const sure = msg.createReactionCollector(yes, {
                 time: 600000,
                 errors: ['time'],
