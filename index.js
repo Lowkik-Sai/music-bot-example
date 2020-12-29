@@ -1415,7 +1415,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 }})
         let user = message.mentions.users.first();
 
-        user.send('Hey,\n*NOOB ARMY*\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!');
+        user.send('Hey <@${user.id}>,\n*NOOB ARMY*\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!');
 
         //First Question
         await user.send(`*In which method you wanted to claim your prize?*\n(Options:\n1)1 WEEKLY MEMBERSHIP\n2)110 DIAMOMDS\n3)75RS PAYTM OR 75RS REDEEMCODE)`);
