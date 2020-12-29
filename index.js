@@ -1369,7 +1369,7 @@ bot.on("message", async (message) => { // eslint-disable-line
            
         const emoji1 = '❌'
     const emoji = '✅'
-    message.channel.send(`${message.author}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, checkemb).then(msg => {
+    message.channel.send(`${message.author}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, time).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
             const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
@@ -1450,7 +1450,7 @@ bot.on("message", async (message) => { // eslint-disable-line
            
         const emoji1 = '❌'
     const emoji = '✅'
-    message.channel.send(`${user}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, checkemb).then(msg => {
+    message.channel.send(`${user}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, win).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
             const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
