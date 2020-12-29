@@ -1448,7 +1448,7 @@ bot.on("message", async (message) => { // eslint-disable-line
          .addField('*UID:*', uid)
          .addField('*Paytm Number:*', paytm)
          .setTimestamp()
-         .setFooter(`From : ${user.tag}`)
+         .setFooter(`From : ${useru.tag}`)
          .setColor("RANDOM");
            
         const emoji1 = '❌'
