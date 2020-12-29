@@ -1415,7 +1415,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 }})
         let user = message.mentions.users.first();
 
-        user.send('Hey ${user},\n*NOOB ARMY*\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!');
+        user.send('Hey,\n*NOOB ARMY*\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!');
 
         //First Question
         await user.send(`*In which method you wanted to claim your prize?*\n(Options:\n1)1 WEEKLY MEMBERSHIP\n2)110 DIAMOMDS\n3)75RS PAYTM OR 75RS REDEEMCODE)`);
@@ -1428,7 +1428,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         const ign = (answer.map(answers => answers.content).join());
 
         //Third Question
-        await message.author.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1219122358)`);
+        await user.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1219122358)`);
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const uid = (answer.map(answers => answers.content).join());
 
@@ -1438,7 +1438,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         const paytm = (answer.map(answers => answers.content).join());
 
         //Embed
-        const time = new MessageEmbed()
+        const win = new MessageEmbed()
          .setTitle("Noob Army Prize Claim")
          .addField('*Prize Method:*', age)
          .addField('*IGN:*', ign)
@@ -1467,7 +1467,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                 msg.delete();
         //Sending Embed
         const guildu = bot.guilds.cache.get(guildId);
-        guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(`<@&785810182797131786>`, time);
+        guildu.channels.cache.find(channel => channel.name === '𒃽・ᴘʀɪᴢᴇ-ʀᴇᴄᴏʀᴅꜱ').send(win);
         user.send({embed: {
   color: 3066993,
   description: "Successfully Form Recorded!"
