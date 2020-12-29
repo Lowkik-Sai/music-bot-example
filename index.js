@@ -1422,22 +1422,22 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         //First Question
         await user.send(`*In which method you wanted to claim your prize?*\n(Options:\n1)1 WEEKLY MEMBERSHIP\n2)110 DIAMOMDS\n3)75RS PAYTM OR 75RS REDEEMCODE)`);
-        let answer = await message.author.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        let answer = await user.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const age = (answer.map(answers => answers.content).join());
 
         //Second Question
         await user.send(`Your IN-GAME-NAME(IGN)\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
-        answer = await message.author.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        answer = await user.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const ign = (answer.map(answers => answers.content).join());
 
         //Third Question
         await user.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1219122358)`);
-        answer = await message.author.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        answer = await user.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const uid = (answer.map(answers => answers.content).join());
 
         //Fourth Question
         await user.send(`If 75rs,Send me your Paytm number & Name associated with your Paytm number(MUST HAVE FULL KYC)!\nIf not,type *none* to skip this question!`);
-        answer = await message.author.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        answer = await user.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytm = (answer.map(answers => answers.content).join());
 
         //Embed
