@@ -1417,7 +1417,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         useru.send({embed: {
    color: 3066993,
-   description: `Hey Congratulations on winning tournament in Noob Army Server || Powered By Game.tv🎉\n__[NOOB ARMY(NA)](https://discord.gg/noobarmy)__\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!\nIf any issues found Dm Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 from NA server!`
+   description: `Hey Congratulations on winning tournament in Noob Army Server || Powered By Game.tv🎉\n__[NOOB ARMY(NA)](https://discord.gg/noobarmy)__\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!\nIf i am not giving any reply for your answers/any issues found Dm *@Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999* from NA server!`
 }});
         
 
