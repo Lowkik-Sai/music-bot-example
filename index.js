@@ -1435,7 +1435,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         const ign = (answer.map(answers => answers.content).join());
 
         //Third Question
-        await useru.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1278741067);
+        await useru.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1278741067)`);
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const uid = (answer.map(answers => answers.content).join());
 
