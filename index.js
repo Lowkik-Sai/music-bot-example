@@ -1413,31 +1413,31 @@ bot.on("message", async (message) => { // eslint-disable-line
     color: 3066993,
     description:"Sorry, You can't use this command!"
 }})
-        let user = message.mentions.users.first();
+        let useru = message.mentions.users.first();
 
-        user.send({embed: {
+        useru.send({embed: {
    color: 3066993,
    description: 'Hey ,\n*NOOB ARMY*\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!'
 }});
 
         //First Question
-        await user.send(`*In which method you wanted to claim your prize?*\n(Options:\n1)1 WEEKLY MEMBERSHIP\n2)110 DIAMOMDS\n3)75RS PAYTM OR 75RS REDEEMCODE)`);
-        let answer = await user.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        await useru.send(`*In which method you wanted to claim your prize?*\n(Options:\n1)1 WEEKLY MEMBERSHIP\n2)110 DIAMOMDS\n3)75RS PAYTM OR 75RS REDEEMCODE)`);
+        let answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const age = (answer.map(answers => answers.content).join());
 
         //Second Question
-        await user.send(`Your IN-GAME-NAME(IGN)\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
-        answer = await user.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        await useru.send(`Your IN-GAME-NAME(IGN)\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const ign = (answer.map(answers => answers.content).join());
 
         //Third Question
-        await user.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1219122358)`);
-        answer = await user.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        await useru.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1219122358)`);
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const uid = (answer.map(answers => answers.content).join());
 
         //Fourth Question
-        await user.send(`If 75rs,Send me your Paytm number & Name associated with your Paytm number(MUST HAVE FULL KYC)!\nIf not,type *none* to skip this question!`);
-        answer = await user.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        await useru.send(`If 75rs,Send me your Paytm number & Name associated with your Paytm number(MUST HAVE FULL KYC)!\nIf not,type *none* to skip this question!`);
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytm = (answer.map(answers => answers.content).join());
 
         //Embed
@@ -1453,11 +1453,11 @@ bot.on("message", async (message) => { // eslint-disable-line
            
         const emoji1 = '❌'
     const emoji = '✅'
-    user.send(`${user}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, win).then(msg => {
+    useru.send(`${useru}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, win).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
-            const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === user.id;
-            const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === user.id;
+            const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === useru.id;
+            const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === useru.id;
             const sure = msg.createReactionCollector(yes, {
                 time: 600000,
                 errors: ['time'],
@@ -1471,14 +1471,14 @@ bot.on("message", async (message) => { // eslint-disable-line
         //Sending Embed
         const guildu = bot.guilds.cache.get(guildId);
         guildu.channels.cache.find(channel => channel.name === '𒃽・ᴘʀɪᴢᴇ-ʀᴇᴄᴏʀᴅꜱ').send(win);
-        user.send({embed: {
+        useru.send({embed: {
   color: 3066993,
   description: "Successfully Form Recorded!"
 }});
             })
             no.on('collect', r => {
                   msg.delete();
-                  user.send({embed: {
+                  useru.send({embed: {
   color: 3066993,
   description: "Form Claim Process Cancelled\nTo Fill Form Again DM Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 in https://discord.gg/noobarmy server!"
 }});
