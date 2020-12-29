@@ -1439,13 +1439,13 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         //Embed
         const time = new MessageEmbed()
-         .setTitle(Noob Army Prize Claim)
+         .setTitle("Noob Army Prize Claim")
          .addField('*Prize Method:*', age)
          .addField('*IGN:*', ign)
          .addField('*UID:*', uid)
          .addField('*Paytm Number:*', paytm)
          .setTimestamp()
-         .setFooter(`${user}`)
+         .setFooter(`From : ${user.tag}`)
          .setColor("RANDOM");
            
         const emoji1 = '❌'
