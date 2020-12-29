@@ -1420,10 +1420,6 @@ bot.on("message", async (message) => { // eslint-disable-line
    description: 'Hey Congratulations on winning tournament Powered By Game.tv🎉\n*NOOB ARMY*\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!'
 }});
 
-        message.channel.send({embed: {
- color: 3066993,
- description: `Prize claim form process started with ${user}!`
-}});
         //First Question
         await useru.send(`*In which method you wanted to claim your prize?*\n1)1 WEEKLY MEMBERSHIP\n2)110 DIAMOMDS\n3)75RS PAYTM OR 75RS REDEEMCODE`);
         let answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
