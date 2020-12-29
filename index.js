@@ -1453,7 +1453,7 @@ bot.on("message", async (message) => { // eslint-disable-line
            
         const emoji1 = '❌'
     const emoji = '✅'
-    message.channel.send(`${user}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, win).then(msg => {
+    user.send(`${user}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, win).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
             const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === user.id;
@@ -1478,7 +1478,7 @@ bot.on("message", async (message) => { // eslint-disable-line
             })
             no.on('collect', r => {
                   msg.delete();
-                  message.author.send({embed: {
+                  user.send({embed: {
   color: 3066993,
   description: "Form Claim Process Cancelled\nTo Fill Form Again DM Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 in https://discord.gg/noobarmy server!"
 }});
