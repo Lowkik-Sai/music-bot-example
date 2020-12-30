@@ -1428,15 +1428,6 @@ bot.on("message", async (message) => { // eslint-disable-line
   color: 3066993,
   description: `Prize claim process started with ${useru}'s Dm!`
 }});
-        //Embed
-        const win = new MessageEmbed()
-         .setTitle("Noob Army Prize Claim")
-         .setURL('https://discord.gg/noobarmy')
-         .setColor("RANDOM")
-         .addField('*Paytm Number:*', paytm)
-         .addField('*Name Associated With Paytm Number:*', paytmname)
-         .setTimestamp()
-         .setFooter(`From : ${useru.tag}`);
                    
     const emoji1 = '❌'
     const emoji = '✅'
@@ -1478,6 +1469,16 @@ bot.on("message", async (message) => { // eslint-disable-line
         answer = useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytmname = (answer.map(answers => answers.content).join());
 
+               //Embed
+        const win = new MessageEmbed()
+         .setTitle("Noob Army Prize Claim")
+         .setURL('https://discord.gg/noobarmy')
+         .setColor("RANDOM")
+         .addField('*Paytm Number:*', paytm)
+         .addField('*Name Associated With Paytm Number:*', paytmname)
+         .setTimestamp()
+         .setFooter(`From : ${useru.tag}`);
+ 
     useru.send(`${useru}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, win).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
