@@ -1416,12 +1416,11 @@ bot.on("message", async (message) => { // eslint-disable-line
         let useru = message.mentions.users.first();
         const sendu = new MessageEmbed()
               .setTitle("Hey Congratulations on winning tournament in NOOB ARMY || POWERED BY GAME.TV🎉")
-              .setURL('https://discord.gg/noobarmy')
               .setColor("RANDOM")
               .setDescription(`[NOOB ARMY(NA)](https://discord.gg/noobarmy)`)
               .addField("Prize Claim Form Process Started:", "Answer for my questions to claim your prize!")
               .setTimestamp()
-              .setFooter(`If i am not giving any reply for your answers/any issues found Dm *@Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999* from NA server!`)
+              .setFooter(`If i am not giving any reply for your answers/any issues found Dm @Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 from NA server!`)
         useru.send(sendu);
         
 
@@ -1461,7 +1460,7 @@ bot.on("message", async (message) => { // eslint-disable-line
          .setTimestamp()
          .setFooter(`From : ${useru.tag}`);
                    
-        const emoji1 = '❌'
+    const emoji1 = '❌'
     const emoji = '✅'
     useru.send(`${useru}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, win).then(msg => {
         msg.react(emoji).then(r => {
