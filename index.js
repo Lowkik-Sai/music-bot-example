@@ -1414,11 +1414,14 @@ bot.on("message", async (message) => { // eslint-disable-line
     description:"Sorry, You can't use this command!"
 }})
         let useru = message.mentions.users.first();
-
-        useru.send({embed: {
-   color: 3066993,
-   description: `Hey Congratulations on winning tournament in Noob Army Server || Powered By Game.tv🎉\n__[NOOB ARMY(NA)](https://discord.gg/noobarmy)__\nPrize Claim Form Process Started.\nAnswer for my questions to claim your prize!\nIf i am not giving any reply for your answers/any issues found Dm *@Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999* from NA server!`
-}});
+        const sendu = new MessageEmbed()
+              .setTitle("Hey Congratulations on winning tournament in NOOB ARMY || POWERED BY GAME.TV🎉")
+              .setURL('https://discord.gg/noobarmy')
+              .setDescription(`[NOOB ARMY(NA)](https://discord.gg/noobarmy)`]
+              .addField("Prize Claim Form Process Started:", "Answer for my questions to claim your prize!")
+              .setTimestamp()
+              .setFooter(`If i am not giving any reply for your answers/any issues found Dm *@Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999* from NA server!`)
+        useru.send(sendu);
         
 
         //First Question
