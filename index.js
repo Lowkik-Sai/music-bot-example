@@ -1427,8 +1427,30 @@ bot.on("message", async (message) => { // eslint-disable-line
         
 
         //First Question
-        await useru.send(`In which method you wanted to claim your prize?\n\n1)1 Weekly Membership (or) 110 Diamonds\n3)75rs PayTm (or) 75rs Redeem Code`);
-        let answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        await useru.send(`In which method you wanted to claim your prize?\n\n1)1 Weekly Membership (or) 110 Diamonds\n3)75rs PayTm (or) 75rs Redeem Code`).then(msg => {
+        msg.react(opt1).then(r => {
+            msg.react(opt2)
+            const option1 = (reaction, user) => reaction.emoji.name === opt1 && user.id === useru.id;
+            const option2 = (reaction, user) => reaction.emoji.name === opt2 && user.id === useru.id;
+            const o1 = msg.createReactionCollector(option1, {
+                time: 600000,
+                errors: ['time'],
+            });
+            const o2 = msg.createReactionCollector(option2, {
+                time: 600000,
+                errors: ['time'],
+            });
+            o1.on('collect', r => {
+                useru.send(`FILL THIS FORM PROPELY TO CLAIM PRIZE WITH THIS SCREENSHOT:-\n[Click here!](https://forms.gle/bur3TdBFWDLtTSjY7)`)
+            })
+            o2.on('collect', r => {
+        await useru.send(`If 75rs,Send me your Paytm number & Name associated with your Paytm number(MUST HAVE FULL KYC)!\nIf not,type *none* to skip this question!`);
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const paytm = (answer.map(answers => answers.content).join());
+
+            })
+        })
+    })
         let processing = await message.channel.send({embed: {
   color: 3066993,
   description: `Prize claim process started with ${useru}'s Dm!`
@@ -1445,10 +1467,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const uid = (answer.map(answers => answers.content).join());
 
-        //Fourth Question
-        await useru.send(`If 75rs,Send me your Paytm number & Name associated with your Paytm number(MUST HAVE FULL KYC)!\nIf not,type *none* to skip this question!`);
-        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
-        const paytm = (answer.map(answers => answers.content).join());
 
         //Embed
         const win = new MessageEmbed()
