@@ -1446,26 +1446,26 @@ bot.on("message", async (message) => { // eslint-disable-line
                 time: 600000,
                 errors: ['time'],
             });
-            o1.on('collect', r => {
+            o1.on('collect', async r => {
     msg.delete();
-        useru.send(`Your IN-GAME-NAME(IGN)\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
+        await useru.send(`Your IN-GAME-NAME(IGN)\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const ign = (answer.map(answers => answers.content).join());
 
 
-        useru.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1278741067)`);
+        await useru.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1278741067)`);
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const uid = (answer.map(answers => answers.content).join());
 
         lastmsg = useru.send(`FILL THIS FORM PROPELY TO CLAIM PRIZE WITH THIS SCREENSHOT:-\n[Click here!](https://forms.gle/bur3TdBFWDLtTSjY7)`)
             })
-            o2.on('collect', r => {
+            o2.on('collect', async r => {
     msg.delete();
-        useru.send(`Send Me Your Paytm Number(MUST HAVE FULL KYC):`);
+        await useru.send(`Send Me Your Paytm Number(MUST HAVE FULL KYC):`);
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytm = (answer.map(answers => answers.content).join());
 
-        useru.send(`Send Me Your Name Associated With Your Paytm Account(MUST HAVE FULL KYC):`);
+        await useru.send(`Send Me Your Name Associated With Your Paytm Account(MUST HAVE FULL KYC):`);
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytmname = (answer.map(answers => answers.content).join());
 
