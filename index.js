@@ -1407,7 +1407,9 @@ bot.on("message", async (message) => { // eslint-disable-line
         
     }
     if(command === 'prizeclaim') {
-       const guildId = '785777717966536724';
+       const guildId = '785777717966536724'
+       const opt1 = '1️⃣'
+       const opt2 = '2️⃣';
         let Owner = message.author;
     if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
@@ -1425,7 +1427,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         
 
         //First Question
-        await useru.send(`In which method you wanted to claim your prize?\n\n1)1 Weekly Membership\n2)110 Diamonds\n3)75rs PayTm OR 75rs Redeem Code`);
+        await useru.send(`In which method you wanted to claim your prize?\n\n1)1 Weekly Membership (or) 110 Diamonds\n3)75rs PayTm (or) 75rs Redeem Code`);
         let answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         let processing = await message.channel.send({embed: {
   color: 3066993,
@@ -1462,6 +1464,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                    
     const emoji1 = '❌'
     const emoji = '✅'
+    
     useru.send(`${useru}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, win).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
