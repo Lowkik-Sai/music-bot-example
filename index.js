@@ -1459,9 +1459,8 @@ bot.on("message", async (message) => { // eslint-disable-line
          .addField('*UID:*', uid)
          .addField('*Paytm Number & Name Associated with Paytm:*', paytm)
          .setTimestamp()
-         .setFooter(`From : ${useru.tag}`)
-         .setColor("RANDOM");
-           
+         .setFooter(`From : ${useru.tag}`);
+                   
         const emoji1 = '❌'
     const emoji = '✅'
     useru.send(`${useru}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, win).then(msg => {
