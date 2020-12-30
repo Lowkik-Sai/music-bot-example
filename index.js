@@ -1425,7 +1425,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         
 
         //First Question
-        await useru.send(`*In which method you wanted to claim your prize?*\n1)1 WEEKLY MEMBERSHIP\n2)110 DIAMOMDS\n3)75RS PAYTM OR 75RS REDEEMCODE`);
+        await useru.send(`In which method you wanted to claim your prize?\n\n1)1 Weekly Membership\n2)110 Diamonds\n3)75rs PayTm OR 75rs Redeem Code`);
         let answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         let processing = await message.channel.send({embed: {
   color: 3066993,
