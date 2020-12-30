@@ -1431,9 +1431,14 @@ bot.on("message", async (message) => { // eslint-disable-line
                    
     const emoji1 = '❌'
     const emoji = '✅'
+    const method = new MessageEmbed()
+          .setTitle("In which method you wanted to claim your prize?")
+          .setColor("RANDOM")
+          .setDescription(`1️⃣) 1 Weekly Membership (or) 110 Diamonds\n\n2️⃣) 75rs PayTM`)
+          .setTimestamp()
 
         //First Question
-        await useru.send(`In which method you wanted to claim your prize?\n\n1)1 Weekly Membership (or) 110 Diamonds\n3)75rs PayTm (or) 75rs Redeem Code`).then(msg => {
+        await useru.send(method).then(msg => {
         msg.react(opt1).then(r => {
             msg.react(opt2)
             const option1 = (reaction, user) => reaction.emoji.name === opt1 && user.id === useru.id;
@@ -1448,24 +1453,54 @@ bot.on("message", async (message) => { // eslint-disable-line
             });
             o1.on('collect', async r => {
     msg.delete();
-        await useru.send(`Your IN-GAME-NAME(IGN)\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
+        await useru.send({embed: {
+   color: 3066993,
+   description: `Your IN-GAME-NAME(IGN)\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`
+}});
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const ign = (answer.map(answers => answers.content).join());
 
 
-        await useru.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1278741067)`);
+        await useru.send({embed: {
+   color: 3066993,
+   description: `Your UNIQUE-ID in game(UID)\n(Ex : 1278741067)`
+}});
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const uid = (answer.map(answers => answers.content).join());
-
-        lastmsg = useru.send(`FILL THIS FORM PROPELY TO CLAIM PRIZE WITH THIS SCREENSHOT:-\n[Click here!](https://forms.gle/bur3TdBFWDLtTSjY7)`)
+        const form = new MessageEmbed()
+              .setTitle("FILL THIS FORM PROPELY TO CLAIM YOUR PRIZE WITH THIS SCREENSHOT:-")
+              .setDescription(`[Click Here To Fill Form](https://forms.gle/bur3TdBFWDLtTSjY7)`)
+              .setTimestamp()
+        lastmsg = useru.send(form)
+  
+               //Embed
+        const nawin = new MessageEmbed()
+         .setTitle("Noob Army Prize Claim")
+         .setURL('https://discord.gg/noobarmy')
+         .setColor("RANDOM")
+         .addField('*Choosed Prize Method:*', '110 Diamonds or 1 Weekly Membership')
+         .addField('*IGN:*', ign)
+         .addField('*UID:*', uid)
+         .setTimestamp()
+         .setFooter(`From : ${useru.tag}`);
+          //Sending Embed
+        const guildu = bot.guilds.cache.get(guildId);
+        guildu.channels.cache.find(channel => channel.name === '𒃽・ᴘʀɪᴢᴇ-ʀᴇᴄᴏʀᴅꜱ').send(nawin);
+ 
             })
             o2.on('collect', async r => {
     msg.delete();
-        await useru.send(`Send Me Your Paytm Number(MUST HAVE FULL KYC):`);
+        await useru.send({embed: {
+   color: 3066993,
+   description: `Send Me Your Paytm Number(MUST HAVE FULL KYC):`
+}});
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytm = (answer.map(answers => answers.content).join());
 
-        await useru.send(`Send Me Your Name Associated With Your Paytm Account(MUST HAVE FULL KYC):`);
+        await useru.send({embed: {
+   color: 3066993,
+   description: `Send Me Your Name Associated With Your Paytm Account(MUST HAVE FULL KYC):`
+}});
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytmname = (answer.map(answers => answers.content).join());
 
@@ -1474,6 +1509,7 @@ bot.on("message", async (message) => { // eslint-disable-line
          .setTitle("Noob Army Prize Claim")
          .setURL('https://discord.gg/noobarmy')
          .setColor("RANDOM")
+         .addField('*Choosed Prize Method:*', 'Paytm')
          .addField('*Paytm Number:*', paytm)
          .addField('*Name Associated With Paytm Number:*', paytmname)
          .setTimestamp()
