@@ -1417,7 +1417,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         const sendu = new MessageEmbed()
               .setTitle("Hey Congratulations on winning tournament in NOOB ARMY || POWERED BY GAME.TV🎉")
               .setURL('https://discord.gg/noobarmy')
-              .setDescription(`[NOOB ARMY(NA)](https://discord.gg/noobarmy)`]
+              .setDescription(`[NOOB ARMY(NA)](https://discord.gg/noobarmy)`)
               .addField("Prize Claim Form Process Started:", "Answer for my questions to claim your prize!")
               .setTimestamp()
               .setFooter(`If i am not giving any reply for your answers/any issues found Dm *@Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999* from NA server!`)
