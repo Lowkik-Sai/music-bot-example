@@ -1410,7 +1410,7 @@ bot.on("message", async (message) => { // eslint-disable-line
        const guildId = '785777717966536724'
        const opt1 = '1️⃣'
        const opt2 = '2️⃣';
-       let screenshot = args[1];
+       let screenshot = args[2];
         let Owner = message.author;
     if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
