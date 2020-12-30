@@ -1410,6 +1410,7 @@ bot.on("message", async (message) => { // eslint-disable-line
        const guildId = '785777717966536724'
        const opt1 = '1️⃣'
        const opt2 = '2️⃣';
+       let screenshot = args[1];
         let Owner = message.author;
     if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
@@ -1471,6 +1472,7 @@ bot.on("message", async (message) => { // eslint-disable-line
               .setTitle("FILL THIS FORM PROPELY TO CLAIM YOUR PRIZE WITH THIS SCREENSHOT:-")
               .setDescription(`[Click Here To Fill Form](https://forms.gle/bur3TdBFWDLtTSjY7)`)
               .setTimestamp()
+              .setImage(screenshot)
         lastmsg = useru.send(form)
   
                //Embed
