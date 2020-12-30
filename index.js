@@ -1449,12 +1449,12 @@ bot.on("message", async (message) => { // eslint-disable-line
             o1.on('collect', r => {
     msg.delete();
         useru.send(`Your IN-GAME-NAME(IGN)\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
-        answer = useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const ign = (answer.map(answers => answers.content).join());
 
 
         useru.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1278741067)`);
-        answer = useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const uid = (answer.map(answers => answers.content).join());
 
         lastmsg = useru.send(`FILL THIS FORM PROPELY TO CLAIM PRIZE WITH THIS SCREENSHOT:-\n[Click here!](https://forms.gle/bur3TdBFWDLtTSjY7)`)
@@ -1462,11 +1462,11 @@ bot.on("message", async (message) => { // eslint-disable-line
             o2.on('collect', r => {
     msg.delete();
         useru.send(`Send Me Your Paytm Number(MUST HAVE FULL KYC):`);
-        answer = useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytm = (answer.map(answers => answers.content).join());
 
         useru.send(`Send Me Your Name Associated With Your Paytm Account(MUST HAVE FULL KYC):`);
-        answer = useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytmname = (answer.map(answers => answers.content).join());
 
                //Embed
