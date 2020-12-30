@@ -1451,10 +1451,11 @@ bot.on("message", async (message) => { // eslint-disable-line
         //Embed
         const win = new MessageEmbed()
          .setTitle("Noob Army Prize Claim")
+         .setURL('https://discord.gg/noobarmy')
          .addField('*Prize Method:*', age)
          .addField('*IGN:*', ign)
          .addField('*UID:*', uid)
-         .addField('*Paytm Number:*', paytm)
+         .addField('*Paytm Number & Name Associated with Paytm:*', paytm)
          .setTimestamp()
          .setFooter(`From : ${useru.tag}`)
          .setColor("RANDOM");
