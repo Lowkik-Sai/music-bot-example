@@ -407,11 +407,11 @@ function ContestInfo(message) {
 }
 
 setInterval(function(){
-let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Noob Army Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
+let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Noob Army Official" ,"Type prefix to know my prefix" ,"My Prefix is +" ,"https://discord.gg/noobarmy" ,"With my owner @Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999"];
 let sts= st[Math.floor(Math.random()*st.length)];
 bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
-},10000);
+},15000);
 
 const {
     getUpcommingMatch,
