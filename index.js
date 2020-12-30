@@ -1426,7 +1426,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         let answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         let processing = await message.channel.send({embed: {
   color: 3066993,
-  description: `Prize claim process started with ${user}'s Dm!`
+  description: `Prize claim process started with ${useru}'s Dm!`
 }});
         const age = (answer.map(answers => answers.content).join());
 
