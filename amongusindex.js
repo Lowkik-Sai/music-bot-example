@@ -407,11 +407,11 @@ function ContestInfo(message) {
 }
 
 setInterval(function(){
-let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Noob Army Official" ,"Type prefix to know my prefix" ,"My Prefix is +"];
+let st=["What am i supposed to write here!" ,"I'm Ok Now!" ,"+help" ,"+invite" ,"Dm me for help!" ,"Noob Army Official" ,"Type prefix to know my prefix" ,"My Prefix is +" ,"https://discord.gg/noobarmy" ,"With my owner @Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999"];
 let sts= st[Math.floor(Math.random()*st.length)];
 bot.user.setPresence({ activity: { name: sts }, status: 'online' })
 .catch(console.error);
-},10000);
+},15000);
 
 const {
     getUpcommingMatch,
@@ -1218,7 +1218,7 @@ bot.on("message", async (message) => { // eslint-disable-line
          .setTimestamp();
     message.channel.send(acEmbed)
     }
-            //commands
+            
     if(command === 'hostingrecords' || command === 'hr') {
        const guildId = '785777717966536724';
         let Owner = message.author;
@@ -1228,7 +1228,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 }})
         //Has to be in DMs
         if(message.channel.type != 'dm') {
-            message.channel.send('Use this command in DMs!');
+            message.channel.send('Use this command in my DMs!');
             return;
         }
         message.author.send('Record Started!');
@@ -1258,10 +1258,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const location = (answer.map(answers => answers.content).join());
 
-        await message.author.send({embed: {
-  color: 3066993,
-  description: "Successfully Recorded!"
-}});
         //Embed
         const winner = new MessageEmbed()
          .addField('*Tournament Name:*', age)
@@ -1279,6 +1275,7 @@ bot.on("message", async (message) => { // eslint-disable-line
 
         const embed = new MessageEmbed()        
         .addField('*Tournament Name:*', age)
+        .addField('*Winner IGN:*', ign)
         .addField('*Screenshot:*', ss)
         .addField('*Room Created By:*', room)
         .addField('*Remarks:*', location)
@@ -1287,19 +1284,57 @@ bot.on("message", async (message) => { // eslint-disable-line
         .setTimestamp()
         .setColor("RANDOM");
 
-        //Sending Embed
-        const guild = bot.guilds.cache.get(guildId);
-        await guild.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ʀᴇᴄᴏʀᴅꜱ').send(embed);
-      
-        //Sending Embed
-        const guildu = bot.guilds.cache.get(guildId);
-        await guildu.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ʀᴇᴄᴏʀᴅꜱ').send(winner);
+        const checkemb = new MessageEmbed()        
+        .addField('*Tournament Name:*', age)
+        .addField('*Screenshot:*', ss)
+        .addField('*IGN:*', ign)
+        .addField('*Room Created By:*', room)
+        .addField('*Remarks:*', location)
+        .setImage(ss)
+        .setTimestamp()
+        .setColor("RANDOM");
 
-        //Sending Embed
+    const emoji1 = '❌'
+    const emoji = '✅'
+    message.channel.send(`${message.author}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, checkemb).then(msg => {
+        msg.react(emoji).then(r => {
+            msg.react(emoji1)
+            const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
+            const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
+            const sure = msg.createReactionCollector(yes, {
+                time: 600000,
+                errors: ['time'],
+            });
+            const no = msg.createReactionCollector(nopleas, {
+                time: 600000,
+                errors: ['time'],
+            });
+            sure.on('collect', r => {
+                msg.delete();
+        const guild = bot.guilds.cache.get(guildId);
+        const guildu = bot.guilds.cache.get(guildId);
         const roomuu = bot.guilds.cache.get(guildId);
-        await roomuu.channels.cache.find(channel => channel.name === '𒃽・ᴄᴜꜱᴛᴏᴍ-ʀᴇᴄᴏʀᴅꜱ').send(created);
-  
-    }
+        guild.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ʀᴇᴄᴏʀᴅꜱ').send(embed);
+        guildu.channels.cache.find(channel => channel.name === '𒃽・ᴡʀɪᴛᴛᴇɴ-ʀᴇᴄᴏʀᴅꜱ').send(winner);
+        roomuu.channels.cache.find(channel => channel.name === '𒃽・ᴄᴜꜱᴛᴏᴍ-ʀᴇᴄᴏʀᴅꜱ').send(created);
+        message.author.send({embed: {
+  color: 3066993,
+  description: "Successfully Recorded!"
+}});
+            })
+            no.on('collect', r => {
+                  msg.delete();
+                  message.author.send({embed: {
+  color: 3066993,
+  description: "Recorded Cancelled\nTo Record/Submit Details again Type *+hr*!"
+}});
+            })
+        })
+    }).catch(() => msg.edit({embed: {
+  color: 3066993,
+  description: "Recorded Cancelled!\nReason: Time's Up!\nTo Record/Submit Details again Type *+hr*!"
+}}));
+ }
     if(command === 'hostingtime' || command === 'ht') {
        const guildId = '785777717966536724';
         let Owner = message.author;
@@ -1324,10 +1359,6 @@ bot.on("message", async (message) => { // eslint-disable-line
         answer = await message.channel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const name = (answer.map(answers => answers.content).join());
 
-        await message.author.send({embed: {
-  color: 3066993,
-  description: "Successfully Recorded!"
-}});
         //Embed
         const time = new MessageEmbed()
          .setTitle(age)
@@ -1336,10 +1367,143 @@ bot.on("message", async (message) => { // eslint-disable-line
          .setFooter(`Be Ready...`)
          .setColor("RANDOM");
            
+        const emoji1 = '❌'
+    const emoji = '✅'
+    message.channel.send(`${message.author}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, time).then(msg => {
+        msg.react(emoji).then(r => {
+            msg.react(emoji1)
+            const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
+            const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
+            const sure = msg.createReactionCollector(yes, {
+                time: 600000,
+                errors: ['time'],
+            });
+            const no = msg.createReactionCollector(nopleas, {
+                time: 600000,
+                errors: ['time'],
+            });
+            sure.on('collect', r => {
+                msg.delete();
         //Sending Embed
         const guildu = bot.guilds.cache.get(guildId);
-        await guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(`<@&785810182797131786>`, time);
+        guildu.channels.cache.find(channel => channel.name === '𒃽・ʜᴏꜱᴛɪɴɢ-ᴛɪᴍᴇ').send(`<@&785810182797131786>`, time);
+        message.author.send({embed: {
+  color: 3066993,
+  description: "Successfully Recorded!"
+}});
+            })
+            no.on('collect', r => {
+                  msg.delete();
+                  message.author.send({embed: {
+  color: 3066993,
+  description: "Recorded Cancelled\nTo Record/Submit Details again Type *+hr*!"
+}});
+            })
+        })
+    }).catch((collect) => msg.edit({embed: {
+  color: 3066993,
+  description: "Recorded Cancelled!\nReason: Time's Up!\nTo Record/Submit Details again Type *+hr*!"
+}}));
         
+    }
+    if(command === 'prizeclaim') {
+       const guildId = '785777717966536724'
+       const opt1 = '1️⃣'
+       const opt2 = '2️⃣';
+        let Owner = message.author;
+    if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
+    color: 3066993,
+    description:"Sorry, You can't use this command!"
+}})
+        let useru = message.mentions.users.first();
+        const sendu = new MessageEmbed()
+              .setTitle("Hey Congratulations on winning tournament in NOOB ARMY || POWERED BY GAME.TV🎉")
+              .setColor("RANDOM")
+              .setDescription(`[NOOB ARMY(NA)](https://discord.gg/noobarmy)`)
+              .addField("Prize Claim Form Process Started:", "Answer for my questions to claim your prize!")
+              .setTimestamp()
+              .setFooter(`If i am not giving any reply for your answers/any issues found Dm @Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 from NA server!`)
+        useru.send(sendu);
+        
+
+        //First Question
+        await useru.send(`In which method you wanted to claim your prize?\n\n1)1 Weekly Membership (or) 110 Diamonds\n3)75rs PayTm (or) 75rs Redeem Code`);
+        let answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        let processing = await message.channel.send({embed: {
+  color: 3066993,
+  description: `Prize claim process started with ${useru}'s Dm!`
+}});
+        const age = (answer.map(answers => answers.content).join());
+
+        //Second Question
+        await useru.send(`Your IN-GAME-NAME(IGN)\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const ign = (answer.map(answers => answers.content).join());
+
+        //Third Question
+        await useru.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1278741067)`);
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const uid = (answer.map(answers => answers.content).join());
+
+        //Fourth Question
+        await useru.send(`If 75rs,Send me your Paytm number & Name associated with your Paytm number(MUST HAVE FULL KYC)!\nIf not,type *none* to skip this question!`);
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const paytm = (answer.map(answers => answers.content).join());
+
+        //Embed
+        const win = new MessageEmbed()
+         .setTitle("Noob Army Prize Claim")
+         .setURL('https://discord.gg/noobarmy')
+         .setColor("RANDOM")
+         .addField('*Prize Method:*', age)
+         .addField('*IGN:*', ign)
+         .addField('*UID:*', uid)
+         .addField('*Paytm Number & Name Associated with Paytm:*', paytm)
+         .setTimestamp()
+         .setFooter(`From : ${useru.tag}`);
+                   
+    const emoji1 = '❌'
+    const emoji = '✅'
+    
+    useru.send(`${useru}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, win).then(msg => {
+        msg.react(emoji).then(r => {
+            msg.react(emoji1)
+            const yes = (reaction, user) => reaction.emoji.name === emoji && user.id === useru.id;
+            const nopleas = (reaction, user) => reaction.emoji.name === emoji1 && user.id === useru.id;
+            const sure = msg.createReactionCollector(yes, {
+                time: 600000,
+                errors: ['time'],
+            });
+            const no = msg.createReactionCollector(nopleas, {
+                time: 600000,
+                errors: ['time'],
+            });
+            sure.on('collect', r => {
+                msg.delete();
+        //Sending Embed
+        const guildu = bot.guilds.cache.get(guildId);
+        guildu.channels.cache.find(channel => channel.name === '𒃽・ᴘʀɪᴢᴇ-ʀᴇᴄᴏʀᴅꜱ').send(win);
+        useru.send({embed: {
+  color: 3066993,
+  description: "Successfully Form Recorded!"
+}});
+            })
+            no.on('collect', r => {
+                  msg.delete();
+                  useru.send({embed: {
+  color: 3066993,
+  description: "Form Claim Process Cancelled\nTo Fill Form Again DM Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 in https://discord.gg/noobarmy server!"
+}});
+            })
+        })
+    }).catch((collect) => msg.edit({embed: {
+  color: 3066993,
+  description: "Recorded Cancelled!\nReason: Time's Up!\nTo Record/Submit Details again Type *+hr*!"
+}}));
+        
+    }
+    if (command === "ff") {
+    message.channel.send("UID : 1278741067\nIGN : Aᴋ᭄Abhiᴮᴼˢˢ࿐")
     }
     if (command === "seizure") {
     const emoji1 = '🇳'
