@@ -1456,6 +1456,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                 errors: ['time'],
             });
             o1.on('collect', r => {
+    msg.delete();
         await useru.send(`Your IN-GAME-NAME(IGN)\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const ign = (answer.map(answers => answers.content).join());
@@ -1468,6 +1469,7 @@ bot.on("message", async (message) => { // eslint-disable-line
         lastmsg = await useru.send(`FILL THIS FORM PROPELY TO CLAIM PRIZE WITH THIS SCREENSHOT:-\n[Click here!](https://forms.gle/bur3TdBFWDLtTSjY7)`)
             })
             o2.on('collect', r => {
+    msg.delete();
         await useru.send(`Send Me Your Paytm Number(MUST HAVE FULL KYC):`);
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytm = (answer.map(answers => answers.content).join());
