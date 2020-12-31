@@ -16,5 +16,5 @@ app.get("/", function (request, response) {
 });
 
 setInterval(() => {
-    http.get(`https://among-us-bot-india.herokuapp.com/`);
+    http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
 }, 280000);
