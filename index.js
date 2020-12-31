@@ -1435,7 +1435,8 @@ bot.on("message", async (message) => { // eslint-disable-line
     const method = new MessageEmbed()
           .setTitle("In which method you wanted to claim your prize?")
           .setColor("RANDOM")
-          .setDescription(`1️⃣) 1 Weekly Membership (or) 110 Diamonds\n\n2️⃣) 75rs PayTM`)
+          .setImage(args[2])
+          .setDescription(`1️⃣ 1 Weekly Membership (or) 110 Diamonds\n\n2️⃣ 75rs PayTM`)
           .setTimestamp()
 
         //First Question
@@ -1470,8 +1471,10 @@ bot.on("message", async (message) => { // eslint-disable-line
         const uid = (answer.map(answers => answers.content).join());
         const form = new MessageEmbed()
               .setTitle("FILL THIS FORM PROPELY TO CLAIM YOUR PRIZE WITH THIS SCREENSHOT:-")
-              .setDescription(`[Click Here To Fill Form](https://forms.gle/bur3TdBFWDLtTSjY7)`)
+              .setDescription(`[Click Here To Fill Form!](https://forms.gle/bur3TdBFWDLtTSjY7)`)
               .setTimestamp()
+              .setColor("RANDOM")
+              .setFooter("If you have any issues Dm @Aᴋ᭄Abhiᴮᴼˢˢ࿐!")
               .setImage(screenshot)
         lastmsg = useru.send(form)
   
