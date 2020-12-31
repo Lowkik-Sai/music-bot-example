@@ -1524,6 +1524,7 @@ bot.on("message", async (message) => { // eslint-disable-line
          .addField('*Choosed Prize Method:*', 'Paytm')
          .addField('*Paytm Number:*', paytm)
          .addField('*Name Associated With Paytm Number:*', paytmname)
+         .addField('*Remarks/Issues:*', remarks)
          .setTimestamp()
          .setFooter(`From : ${useru.tag}`);
  
