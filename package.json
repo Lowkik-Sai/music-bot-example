@@ -33,6 +33,7 @@
     "discord.js": "^12.2.0",
     "he": "^1.2.0",
     "googleapis": "^43.0.0",
+    "woke-dyno": "^0.0.4",
     "google-spreadsheet": "^3.0.14",
     "dotenv": "^8.2.0",
     "axios": "^0.20.0",
