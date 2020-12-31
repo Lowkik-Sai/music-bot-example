@@ -389,11 +389,6 @@ function FlipCoin()
 
 let CHANNELID = '763233532797124649';
 
-// main.js
-function ping() {
-  UrlFetchApp.fetch("https://among-us-bot-india.herokuapp.com/");
-}
-
 function ContestInfo(message) {
     if (giveawayActive) {
        const trueembed = new MessageEmbed()
