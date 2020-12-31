@@ -1509,6 +1509,13 @@ bot.on("message", async (message) => { // eslint-disable-line
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytmname = (answer.map(answers => answers.content).join());
 
+        await useru.send({embed: {
+   color: 3066993,
+   description: `Any Remarks/Issues\n(If not,Type *NONE* to skip this question!):`
+}});
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const remarks = (answer.map(answers => answers.content).join());
+
                //Embed
         const win = new MessageEmbed()
          .setTitle("Noob Army Prize Claim")
