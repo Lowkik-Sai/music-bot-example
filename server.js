@@ -6,7 +6,7 @@ const wakeDyno = require("woke-dyno");
 
 // start the server, then call wokeDyno(url).start()
 app.listen(PORT, () => {
-    wakeDyno(https://among-us-bot-india.herokuapp.com/).start(); // DYNO_URL should be the url of your Heroku app
+    wakeDyno(`https://among-us-bot-india.herokuapp.com/`).start(); // DYNO_URL should be the url of your Heroku app
 });
 // Ping the app
 app.use(express.static("public"));
