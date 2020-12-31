@@ -1411,7 +1411,7 @@ bot.on("message", async (message) => { // eslint-disable-line
        const id1 = "623096574620467200"; 
        const id2 = "688671832068325386";// Discord User IDs look like a long string of random numbers
        const user1 = await bot.users.fetch(id1);
-       const user2 = await bot.users.fetch(id2(;
+       const user2 = await bot.users.fetch(id2);
 // Create/access a DM thread between the bot account and the user
        const divya = await user1.createDM();
        const abhiboss = await user2.createDM();
