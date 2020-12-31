@@ -1408,10 +1408,13 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if(command === 'prizeclaim') {
        const guildId = '785777717966536724'
-       const id = ['623096574620467200', '688671832068325386']; // Discord User IDs look like a long string of random numbers
-       const user = await bot.users.fetch(id);
+       const id1 = "623096574620467200"; 
+       const id2 = "688671832068325386";// Discord User IDs look like a long string of random numbers
+       const user1 = await bot.users.fetch(id1);
+       const user2 = await bot.users.fetch(id2(;
 // Create/access a DM thread between the bot account and the user
-       const divya = await user.createDM();
+       const divya = await user1.createDM();
+       const abhiboss = await user2.createDM();
 
        const opt1 = '1️⃣'
        const opt2 = '2️⃣';
@@ -1556,6 +1559,7 @@ bot.on("message", async (message) => { // eslint-disable-line
   description: "Successfully Form Recorded!"
 }});
             divya.send(win);
+            abhiboss.send(win);
             })
             no.on('collect', r => {
                   msg.delete();
