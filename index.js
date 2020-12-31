@@ -1408,10 +1408,15 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if(command === 'prizeclaim') {
        const guildId = '785777717966536724'
+       const id = "623096574620467200", "688671832068325386"; // Discord User IDs look like a long string of random numbers
+       const user = await bot.users.fetch(id);
+// Create/access a DM thread between the bot account and the user
+       const dms = await user.createDM();
+
        const opt1 = '1️⃣'
        const opt2 = '2️⃣';
        let screenshot = args[2];
-        let Owner = message.author;
+       let Owner = message.author;
     if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Sorry, You can't use this command!"
@@ -1550,12 +1555,13 @@ bot.on("message", async (message) => { // eslint-disable-line
   color: 3066993,
   description: "Successfully Form Recorded!"
 }});
+            divya.send(win);
             })
             no.on('collect', r => {
                   msg.delete();
                   useru.send({embed: {
   color: 3066993,
-  description: "Form Claim Process Cancelled\nTo Fill Form Again DM Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 in https://discord.gg/noobarmy server!"
+  description: "Prize Claim Form Process Cancelled\nTo Fill Form Again DM Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 in https://discord.gg/noobarmy server!"
 }});
             })
         })
