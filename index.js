@@ -1542,11 +1542,11 @@ const mes = await useru.send({embed: {
             msg.react(emoji1)
             const approve = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
             const reject = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
-            const appr = msg.createReactionCollector(yes, {
+            const appr = msg.createReactionCollector(approve, {
                 time: 600000,
                 errors: ['time'],
             });
-            const reje = msg.createReactionCollector(nopleas, {
+            const reje = msg.createReactionCollector(reject, {
                 time: 600000,
                 errors: ['time'],
             });
