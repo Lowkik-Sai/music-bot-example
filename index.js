@@ -1537,11 +1537,11 @@ const mes = await useru.send({embed: {
   color: 3066993,
   description: "Successfully your details sent to [Noob Army Staff](https://discord.gg/noobarmy).\nThey will check your details whether it is valid or invalid.\nI'll send you a confirmation message asap!"
 }});
-    message.author.send(`React with ✅ to Approve!\nReact with ❌ to Reject!`, win).then(msg => {
+    abhiboss.send(`React with ✅ to Approve!\nReact with ❌ to Reject!`, win).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
-            const approve = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
-            const reject = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
+            const approve = (reaction, user) => reaction.emoji.name === emoji && user.id === abhiboss.id;
+            const reject = (reaction, user) => reaction.emoji.name === emoji1 && user.id === abhiboss.id;
             const appr = msg.createReactionCollector(approve, {
                 time: 600000,
                 errors: ['time'],
