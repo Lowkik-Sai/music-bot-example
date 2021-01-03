@@ -922,25 +922,7 @@ bot.on("ready", async () => {
 });
 
 bot.on("message", async message => {
-  db.add(`messages_${message.guild.id}_${message.author.id}`, 1)
-  let messagefetch = db.fetch(`messages_${message.guild.id}_${message.author.id}`)
-
-  let messages;
-  if (messagefetch == 25) messages = 25; //Level 1
-  else if (messagefetch == 65) messages = 65; // Level 2
-  else if (messagefetch == 115) messages = 115; // Level 3
-  else if (messagefetch == 200) messages = 200; // Level 4
-  else if (messagefetch == 300) messages = 300; // Level 5
-
-  if (!isNaN(messages)) {
-    db.add(`level_${message.guild.id}_${message.author.id}`, 1)
-    let levelfetch = db.fetch(`level_${message.guild.id}_${message.author.id}`)
-
-    let levelembed = new Discord.MessageEmbed()
-      .setDescription(`${message.author}, You have leveled up to level ${levelfetch}`)
-    message.channel.send(levelembed)
-  }
-
+  
   if (message.channel.id === giveawayChannel) {
     if (giveawayActive && !message.author.bot && !blacklist.includes(message.author.id)) {
         if (!roleblacklist.some(role => { if(message.member.roles.cache.has(role)) return true; })) {
@@ -1408,9 +1390,18 @@ bot.on("message", async (message) => { // eslint-disable-line
     }
     if(command === 'prizeclaim') {
        const guildId = '785777717966536724'
+       const id1 = "623096574620467200"; 
+       const id2 = "688671832068325386";// Discord User IDs look like a long string of random numbers
+       const user1 = await bot.users.fetch(id1);
+       const user2 = await bot.users.fetch(id2);
+// Create/access a DM thread between the bot account and the user
+       const divya = await user1.createDM();
+       const abhiboss = await user2.createDM();
+
        const opt1 = '1️⃣'
        const opt2 = '2️⃣';
-        let Owner = message.author;
+       let screenshot = args[2];
+       let Owner = message.author;
     if(Owner.id !== "688671832068325386" && Owner.id !== "213588167406649346") return message.reply({embed: {
     color: 3066993,
     description:"Sorry, You can't use this command!"
@@ -1424,47 +1415,109 @@ bot.on("message", async (message) => { // eslint-disable-line
               .setTimestamp()
               .setFooter(`If i am not giving any reply for your answers/any issues found Dm @Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 from NA server!`)
         useru.send(sendu);
-        
-
-        //First Question
-        await useru.send(`In which method you wanted to claim your prize?\n\n1)1 Weekly Membership (or) 110 Diamonds\n3)75rs PayTm (or) 75rs Redeem Code`);
-        let answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
-        let processing = await message.channel.send({embed: {
+        processing = await message.channel.send({embed: {
   color: 3066993,
   description: `Prize claim process started with ${useru}'s Dm!`
 }});
-        const age = (answer.map(answers => answers.content).join());
+                   
+    const emoji1 = '❌'
+    const emoji = '✅'
+    const method = new MessageEmbed()
+          .setTitle("In which method you wanted to claim your prize?")
+          .setColor("RANDOM")
+          .setImage(args[2])
+          .setDescription(`1️⃣ 1 Weekly Membership (or) 110 Diamonds\n\n2️⃣ 75rs PayTM`)
+          .setTimestamp()
 
-        //Second Question
-        await useru.send(`Your IN-GAME-NAME(IGN)\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`);
+        //First Question
+        await useru.send(method).then(msg => {
+        msg.react(opt1).then(r => {
+            msg.react(opt2)
+            const option1 = (reaction, user) => reaction.emoji.name === opt1 && user.id === useru.id;
+            const option2 = (reaction, user) => reaction.emoji.name === opt2 && user.id === useru.id;
+            const o1 = msg.createReactionCollector(option1, {
+                time: 600000,
+                errors: ['time'],
+            });
+            const o2 = msg.createReactionCollector(option2, {
+                time: 600000,
+                errors: ['time'],
+            });
+            o1.on('collect', async r => {
+    msg.delete();
+        await useru.send({embed: {
+   color: 3066993,
+   description: `Your IN-GAME-NAME(IGN)\n(Ex : Aᴋ᭄Abhiᴮᴼˢˢ࿐)`
+}});
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const ign = (answer.map(answers => answers.content).join());
 
-        //Third Question
-        await useru.send(`Your UNIQUE-ID in game(UID)\n(Ex : 1278741067)`);
+
+        await useru.send({embed: {
+   color: 3066993,
+   description: `Your UNIQUE-ID in game(UID)\n(Ex : 1278741067)`
+}});
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const uid = (answer.map(answers => answers.content).join());
-
-        //Fourth Question
-        await useru.send(`If 75rs,Send me your Paytm number & Name associated with your Paytm number(MUST HAVE FULL KYC)!\nIf not,type *none* to skip this question!`);
+        const form = new MessageEmbed()
+              .setTitle("FILL THIS FORM PROPELY TO CLAIM YOUR PRIZE WITH THIS SCREENSHOT:-")
+              .setDescription(`[Click Here To Fill Form!](https://forms.gle/bur3TdBFWDLtTSjY7)`)
+              .setTimestamp()
+              .setColor("RANDOM")
+              .setFooter("If you have any issues Dm @Aᴋ᭄Abhiᴮᴼˢˢ࿐!")
+              .setImage(screenshot)
+        lastmsg = useru.send(form)
+  
+               //Embed
+        const nawin = new MessageEmbed()
+         .setTitle("Noob Army Prize Claim")
+         .setURL('https://discord.gg/noobarmy')
+         .setColor("RANDOM")
+         .addField('*Choosed Prize Method:*', '110 Diamonds or 1 Weekly Membership')
+         .addField('*IGN:*', ign)
+         .addField('*UID:*', uid)
+         .setTimestamp()
+         .setFooter(`From : ${useru.tag}`);
+          //Sending Embed
+        const guildu = bot.guilds.cache.get(guildId);
+        guildu.channels.cache.find(channel => channel.name === '𒃽・ᴘʀɪᴢᴇ-ʀᴇᴄᴏʀᴅꜱ').send(nawin);
+ 
+            })
+            o2.on('collect', async r => {
+    msg.delete();
+        await useru.send({embed: {
+   color: 3066993,
+   description: `Send Me Your Paytm Number(MUST HAVE FULL KYC):`
+}});
         answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const paytm = (answer.map(answers => answers.content).join());
 
-        //Embed
+        await useru.send({embed: {
+   color: 3066993,
+   description: `Send Me Your Name Associated With Your Paytm Account(MUST HAVE FULL KYC):`
+}});
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const paytmname = (answer.map(answers => answers.content).join());
+
+        await useru.send({embed: {
+   color: 3066993,
+   description: `Any Remarks/Issues\n(If not,Type *NONE* to skip this question!):`
+}});
+        answer = await useru.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const remarks = (answer.map(answers => answers.content).join());
+
+               //Embed
         const win = new MessageEmbed()
          .setTitle("Noob Army Prize Claim")
          .setURL('https://discord.gg/noobarmy')
          .setColor("RANDOM")
-         .addField('*Prize Method:*', age)
-         .addField('*IGN:*', ign)
-         .addField('*UID:*', uid)
-         .addField('*Paytm Number & Name Associated with Paytm:*', paytm)
+         .addField('*Choosed Prize Method:*', 'Paytm')
+         .addField('*Paytm Number:*', paytm)
+         .addField('*Name Associated With Paytm Number:*', paytmname)
+         .addField('*Remarks/Issues:*', remarks)
          .setTimestamp()
          .setFooter(`From : ${useru.tag}`);
-                   
-    const emoji1 = '❌'
-    const emoji = '✅'
-    
+ 
     useru.send(`${useru}*Check Whether You Entered Details Correctly Or Not?*\nReact with ✅ to submit!\nReact with ❌ to cancel!`, win).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
@@ -1487,12 +1540,14 @@ bot.on("message", async (message) => { // eslint-disable-line
   color: 3066993,
   description: "Successfully Form Recorded!"
 }});
+            divya.send(win);
+            abhiboss.send(win);
             })
             no.on('collect', r => {
                   msg.delete();
                   useru.send({embed: {
   color: 3066993,
-  description: "Form Claim Process Cancelled\nTo Fill Form Again DM Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 in https://discord.gg/noobarmy server!"
+  description: "Prize Claim Form Process Cancelled\nTo Fill Form Again DM Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 in https://discord.gg/noobarmy server!"
 }});
             })
         })
@@ -1500,7 +1555,10 @@ bot.on("message", async (message) => { // eslint-disable-line
   color: 3066993,
   description: "Recorded Cancelled!\nReason: Time's Up!\nTo Record/Submit Details again Type *+hr*!"
 }}));
-        
+            })
+        })
+    })
+               
     }
     if (command === "ff") {
     message.channel.send("UID : 1278741067\nIGN : Aᴋ᭄Abhiᴮᴼˢˢ࿐")
