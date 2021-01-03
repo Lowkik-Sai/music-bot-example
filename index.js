@@ -1533,15 +1533,47 @@ bot.on("message", async (message) => { // eslint-disable-line
             });
             sure.on('collect', r => {
                 msg.delete();
+useru.send({embed: {
+  color: 3066993,
+  description: "Successfully Your Prize Claim Form Recorded!\n "
+}});
+     abhiboss.send(`React with ✅ to Approve!\nReact with ❌ to Reject!`, win).then(msg => {
+        msg.react(emoji).then(r => {
+            msg.react(emoji1)
+            const approve = (reaction, user) => reaction.emoji.name === emoji && user.id === abhiboss.id;
+            const reject = (reaction, user) => reaction.emoji.name === emoji1 && user.id === abhiboss.id;
+            const appr = msg.createReactionCollector(yes, {
+                time: 600000,
+                errors: ['time'],
+            });
+            const reje = msg.createReactionCollector(nopleas, {
+                time: 600000,
+                errors: ['time'],
+            });
+            appr.on('collect', r => {
+                msg.delete();
         //Sending Embed
         const guildu = bot.guilds.cache.get(guildId);
         guildu.channels.cache.find(channel => channel.name === '𒃽・ᴘʀɪᴢᴇ-ʀᴇᴄᴏʀᴅꜱ').send(win);
-        useru.send({embed: {
-  color: 3066993,
-  description: "Successfully Form Recorded!"
-}});
             divya.send(win);
             abhiboss.send(win);
+            })
+            reje.on('collect', r => {
+                  msg.delete();
+        await abhiboss.send({embed: {
+   color: 3066993,
+   description: `What's the reason that you'd rejected the prize claim entry?`
+}});
+        answer = await abhiboss.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        const reason = (answer.map(answers => answers.content).join());
+
+                  useru.send({embed: {
+  color: 3066993,
+  description: `🤗Sorry, Your Paytm Prize Claim Is Declined By Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999!\nReason : ${reason}/nDm Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 for more details. `
+}});
+            })
+        })
+    })
             })
             no.on('collect', r => {
                   msg.delete();
