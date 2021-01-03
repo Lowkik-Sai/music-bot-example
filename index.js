@@ -1535,7 +1535,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                 msg.delete();
 const mes = await useru.send({embed: {
   color: 3066993,
-  description: "Successfully your details sent to [Noob Army Staff](https://discord.gg/noobarmy),\nThey will check your details whether it is valid or invalid,\nI'll send you a confirmation message asap!"
+  description: "Successfully your details sent to [Noob Army Staff](https://discord.gg/noobarmy).\nThey will check your details whether it is valid or invalid.\nI'll send you a confirmation message asap!"
 }});
     message.author.send(`React with ✅ to Approve!\nReact with ❌ to Reject!`, win).then(msg => {
         msg.react(emoji).then(r => {
@@ -1573,7 +1573,7 @@ mes.edit({embed: {
 
 mes.edit({embed: {
   color: 3066993,
-  description: `🤗Sorry,Your Paytm Prize Claim Is Declined By Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999!\nReason : ${reason}/nDm Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 for more details. `
+  description: `🤗Sorry,Your Paytm Prize Claim Is Declined By Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999!\nReason : ${reason}\nDm Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 for more details. `
 }});
             })
         })
