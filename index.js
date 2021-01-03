@@ -1464,7 +1464,7 @@ bot.on("message", async (message) => { // eslint-disable-line
               .setDescription(`[Click Here To Fill Form!](https://forms.gle/bur3TdBFWDLtTSjY7)`)
               .setTimestamp()
               .setColor("RANDOM")
-              .setFooter("If you have any issues Dm @Aᴋ᭄Abhiᴮᴼˢˢ࿐!")
+              .setFooter(`If you have any issues Dm @Aᴋ᭄Abhiᴮᴼˢˢ࿐ from [NA server](https://discord.gg/noobarmy)!`)
               .setImage(screenshot)
         lastmsg = useru.send(form)
   
@@ -1473,7 +1473,7 @@ bot.on("message", async (message) => { // eslint-disable-line
          .setTitle("Noob Army Prize Claim")
          .setURL('https://discord.gg/noobarmy')
          .setColor("RANDOM")
-         .addField('*Choosed Prize Method:*', '110 Diamonds or 1 Weekly Membership')
+         .addField('*Selected Prize Method:*', '110 Diamonds or 1 Weekly Membership')
          .addField('*IGN:*', ign)
          .addField('*UID:*', uid)
          .setTimestamp()
@@ -1511,7 +1511,7 @@ bot.on("message", async (message) => { // eslint-disable-line
          .setTitle("Noob Army Prize Claim")
          .setURL('https://discord.gg/noobarmy')
          .setColor("RANDOM")
-         .addField('*Choosed Prize Method:*', 'Paytm')
+         .addField('*Selected Prize Method:*', 'Paytm')
          .addField('*Paytm Number:*', paytm)
          .addField('*Name Associated With Paytm Number:*', paytmname)
          .addField('*Remarks/Issues:*', remarks)
@@ -1533,9 +1533,9 @@ bot.on("message", async (message) => { // eslint-disable-line
             });
             sure.on('collect', r => {
                 msg.delete();
-useru.send({embed: {
+const mes = await useru.send({embed: {
   color: 3066993,
-  description: "Successfully Your Prize Claim Form Recorded!\n "
+  description: "Successfully your details sent to [Noob Army Staff](https://discord.gg/noobarmy),\nThey will check your details whether it is valid or invalid,\nI'll send you a confirmation message asap!"
 }});
      abhiboss.send(`React with ✅ to Approve!\nReact with ❌ to Reject!`, win).then(msg => {
         msg.react(emoji).then(r => {
@@ -1557,6 +1557,10 @@ useru.send({embed: {
         guildu.channels.cache.find(channel => channel.name === '𒃽・ᴘʀɪᴢᴇ-ʀᴇᴄᴏʀᴅꜱ').send(win);
             divya.send(win);
             abhiboss.send(win);
+mes.edit({embed: {
+  color: 3066993,
+  description: `🎉Congratulations,Your Paytm Prize Claim Is Approved By Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999.\nPlease wait 15days to receive your prize!`
+}});
             })
             reje.on('collect', r => {
                   msg.delete();
@@ -1567,9 +1571,9 @@ useru.send({embed: {
         answer = await abhiboss.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const reason = (answer.map(answers => answers.content).join());
 
-                  useru.send({embed: {
+mes.edit({embed: {
   color: 3066993,
-  description: `🤗Sorry, Your Paytm Prize Claim Is Declined By Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999!\nReason : ${reason}/nDm Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 for more details. `
+  description: `🤗Sorry,Your Paytm Prize Claim Is Declined By Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999!\nReason : ${reason}/nDm Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 for more details. `
 }});
             })
         })
