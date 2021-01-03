@@ -1537,11 +1537,11 @@ const mes = await useru.send({embed: {
   color: 3066993,
   description: "Successfully your details sent to [Noob Army Staff](https://discord.gg/noobarmy),\nThey will check your details whether it is valid or invalid,\nI'll send you a confirmation message asap!"
 }});
-     abhiboss.send(`React with ✅ to Approve!\nReact with ❌ to Reject!`, win).then(msg => {
+    message.author.send(`React with ✅ to Approve!\nReact with ❌ to Reject!`, win).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
-            const approve = (reaction, user) => reaction.emoji.name === emoji && user.id === abhiboss.id;
-            const reject = (reaction, user) => reaction.emoji.name === emoji1 && user.id === abhiboss.id;
+            const approve = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
+            const reject = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
             const appr = msg.createReactionCollector(yes, {
                 time: 600000,
                 errors: ['time'],
@@ -1568,7 +1568,7 @@ mes.edit({embed: {
    color: 3066993,
    description: `What's the reason that you'd rejected the prize claim entry?`
 }});
-        answer = await abhiboss.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
+        answer = await message.author.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const reason = (answer.map(answers => answers.content).join());
 
 mes.edit({embed: {
