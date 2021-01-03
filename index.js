@@ -1531,7 +1531,7 @@ bot.on("message", async (message) => { // eslint-disable-line
                 time: 600000,
                 errors: ['time'],
             });
-            sure.on('collect', r => {
+            sure.on('collect', async r => {
                 msg.delete();
 const mes = await useru.send({embed: {
   color: 3066993,
@@ -1550,7 +1550,7 @@ const mes = await useru.send({embed: {
                 time: 600000,
                 errors: ['time'],
             });
-            appr.on('collect', r => {
+            appr.on('collect', async r => {
                 msg.delete();
         //Sending Embed
         const guildu = bot.guilds.cache.get(guildId);
@@ -1562,7 +1562,7 @@ mes.edit({embed: {
   description: `🎉Congratulations,Your Paytm Prize Claim Is Approved By Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999.\nPlease wait 15days to receive your prize!`
 }});
             })
-            reje.on('collect', r => {
+            reje.on('collect', async r => {
                   msg.delete();
         await abhiboss.send({embed: {
    color: 3066993,
@@ -1579,7 +1579,7 @@ mes.edit({embed: {
         })
     })
             })
-            no.on('collect', r => {
+            no.on('collect', async r => {
                   msg.delete();
                   useru.send({embed: {
   color: 3066993,
