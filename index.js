@@ -1557,7 +1557,7 @@ const mes = await useru.send({embed: {
         guildu.channels.cache.find(channel => channel.name === '𒃽・ᴘʀɪᴢᴇ-ʀᴇᴄᴏʀᴅꜱ').send(win);
             divya.send(win);
             abhiboss.send(win);
-mes.edit({embed: {
+useru.send({embed: {
   color: 3066993,
   description: `🎉Congratulations,Your Paytm Prize Claim Is Approved By Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999.\nPlease wait 15days to receive your prize!`
 }});
@@ -1571,7 +1571,12 @@ mes.edit({embed: {
         answer = await message.author.dmChannel.awaitMessages(answer => answer.author.id != bot.user.id,  {max: 1});
         const reason = (answer.map(answers => answers.content).join());
 
-mes.edit({embed: {
+        await abhiboss.send({embed: {
+   color: 3066993,
+   description: `Done 👍🏻`
+}});
+
+useru.send({embed: {
   color: 3066993,
   description: `🤗Sorry,Your Paytm Prize Claim Is Declined By Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999!\nReason : ${reason}\nDm Aᴋ᭄Abhiᴮᴼˢˢ࿐#9999 for more details. `
 }});
