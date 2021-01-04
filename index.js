@@ -1464,7 +1464,7 @@ bot.on("message", async (message) => { // eslint-disable-line
               .setDescription(`[Click Here To Fill Form!](https://forms.gle/bur3TdBFWDLtTSjY7)`)
               .setTimestamp()
               .setColor("RANDOM")
-              .setFooter(`If you have any issues Dm @Aᴋ᭄Abhiᴮᴼˢˢ࿐ from [NA server](https://discord.gg/noobarmy)!`)
+              .setFooter(`If you have any issues Dm @Aᴋ᭄Abhiᴮᴼˢˢ࿐ from NA Server!`)
               .setImage(screenshot)
         lastmsg = useru.send(form)
   
@@ -1540,8 +1540,8 @@ const mes = await useru.send({embed: {
     abhiboss.send(`React with ✅ to Approve!\nReact with ❌ to Reject!`, win).then(msg => {
         msg.react(emoji).then(r => {
             msg.react(emoji1)
-            const approve = (reaction, user) => reaction.emoji.name === emoji && user.id === abhiboss.id;
-            const reject = (reaction, user) => reaction.emoji.name === emoji1 && user.id === abhiboss.id;
+            const approve = (reaction, user) => reaction.emoji.name === emoji && user.id === message.author.id;
+            const reject = (reaction, user) => reaction.emoji.name === emoji1 && user.id === message.author.id;
             const appr = msg.createReactionCollector(approve, {
                 time: 600000,
                 errors: ['time'],
